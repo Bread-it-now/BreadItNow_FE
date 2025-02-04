@@ -11,6 +11,11 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: { // ✅ 올바른 위치
+      "no-console": "error", // 🚨 console.log 사용 시 에러 발생
+    },
+  },
 ];
 
 export default eslintConfig;

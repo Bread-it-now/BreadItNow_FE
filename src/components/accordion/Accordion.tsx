@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import arrowUp from "@/assets/icons/arrow-up.svg";
+import arrowDown from "@/assets/icons/arrow-down.svg";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -39,7 +39,15 @@ const Accordion = ({ title, children }: AccordionProps) => {
         )}
       >
         <span className={cn("text-gray-900", "text-body-m")}>{title}</span>
-        <Image src={arrowUp} alt="arrow-up" width={20} height={20} />
+        <Image
+          src={arrowDown}
+          alt="arrow"
+          width={20}
+          height={20}
+          className={cn(
+            `transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"}`,
+          )}
+        />
       </div>
       <div
         ref={contentRef}

@@ -1,4 +1,4 @@
-import breadImage from "./bread.png";
+import breadImage from "../../assets/bread.png";
 import Image from "next/image";
 import Checkbox from "@/components/common/checkbox/Checkbox";
 function BreadReserveCard() {

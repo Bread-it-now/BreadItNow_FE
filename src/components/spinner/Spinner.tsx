@@ -28,6 +28,7 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
   ) => {
     const inputId = useId();
     const [quantity, setQuantity] = useState<number>(ininitialQuantity);
+
     const increaseQuantity = () => {
       if (maxQuantity > quantity) setQuantity((prev) => prev + 1);
     };
@@ -35,6 +36,10 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
     const decreaseQuantity = () => {
       if (minQuantity < quantity) setQuantity((prev) => prev - 1);
     };
+
+    const buttonBasestyle = cn(
+      "bg-white hover:bg-gray-100 active:bg-gray-200 transition duration-200 ease-in-out",
+    );
 
     return (
       <>
@@ -46,13 +51,13 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
             "w-[88px] h-[34px] px-[6px] py-[3px]",
           )}
         >
-          <button onClick={increaseQuantity}>
+          <button onClick={increaseQuantity} className={buttonBasestyle}>
             <Image
               aria-label="수량 1 증가"
               src={plusIcon}
               alt="increase"
-              width={20}
-              height={20}
+              width={24}
+              height={24}
             />
           </button>
           <input
@@ -66,13 +71,13 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
             )}
             readOnly
           />
-          <button onClick={decreaseQuantity}>
+          <button onClick={decreaseQuantity} className={buttonBasestyle}>
             <Image
               aria-label="수량 1 감소"
               src={minusIcon}
               alt="decrease"
-              width={20}
-              height={20}
+              width={24}
+              height={24}
             />
           </button>
         </div>

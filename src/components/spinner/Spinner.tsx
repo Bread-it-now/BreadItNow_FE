@@ -4,7 +4,7 @@ import { cn } from "@/utils/cn";
 import plusIcon from "@/assets/icons/plus.svg";
 import minusIcon from "@/assets/icons/minus.svg";
 import Image from "next/image";
-import { forwardRef, useId } from "react";
+import { forwardRef, useId, useState } from "react";
 
 //
 export interface SpinnerProps {
@@ -22,8 +22,19 @@ export interface SpinnerProps {
 }
 
 const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
-  ({ ininitialQuantity = 1, label }, ref) => {
+  (
+    { minQuantity = 1, maxQuantity = 10, ininitialQuantity = 1, label },
+    ref,
+  ) => {
     const inputId = useId();
+    const [quantity, setQuantity] = useState<number>(ininitialQuantity);
+    const increaseQuantity = () => {
+      if (maxQuantity > quantity) setQuantity((prev) => prev + 1);
+    };
+
+    const decreaseQuantity = () => {
+      if (minQuantity < quantity) setQuantity((prev) => prev - 1);
+    };
 
     return (
       <>
@@ -35,7 +46,7 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
             "w-[88px] h-[34px] px-[6px] py-[3px]",
           )}
         >
-          <button>
+          <button onClick={increaseQuantity}>
             <Image
               aria-label="수량 1 증가"
               src={plusIcon}
@@ -46,7 +57,7 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
           </button>
           <input
             type="number"
-            value={ininitialQuantity}
+            value={quantity}
             ref={ref}
             className={cn(
               "flex items-center justify-center text-center",
@@ -55,7 +66,7 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
             )}
             readOnly
           />
-          <button>
+          <button onClick={decreaseQuantity}>
             <Image
               aria-label="수량 1 감소"
               src={minusIcon}

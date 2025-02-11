@@ -86,5 +86,5 @@ const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
   },
 );
 
-Spinner.displayName = "Input";
+Spinner.displayName = "Spinner";
 export default Spinner;

@@ -20,6 +20,15 @@ body {
   font-family: 'Pretendard'
 }
 
+@layer utilities {
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+}
+
+
 @font-face {
   font-family: 'Pretendard';
   font-weight: 800;

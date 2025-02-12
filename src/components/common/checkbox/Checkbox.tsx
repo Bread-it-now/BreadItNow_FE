@@ -1,7 +1,7 @@
 interface Props {
   id: string;
   checked: boolean;
-  onChange: () => void | Promise<void>;
+  onChange: (checked: boolean) => void;
 }
 
 function Checkbox({ id, checked, onChange }: Props) {
@@ -32,7 +32,7 @@ function Checkbox({ id, checked, onChange }: Props) {
         type="checkbox"
         id={id}
         checked={checked}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.checked)}
       />
     </label>
   );

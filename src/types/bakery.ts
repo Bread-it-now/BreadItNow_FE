@@ -12,7 +12,7 @@ export interface Bakery {
   address: string;
   phone: string;
   introudction: string;
-  profileImg: string;
+  profileImgUrl: string;
   openTime: string;
   city: string;
   region: string;

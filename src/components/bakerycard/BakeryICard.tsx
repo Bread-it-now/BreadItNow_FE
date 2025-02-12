@@ -36,7 +36,11 @@ const BakeryCard = ({
           </div>
           <div className={cn("flex items-center gap-1", "w-full h-[19px]")}>
             <span
-              className={cn("font-semibold", "text-[13px]", "text-secondary")}
+              className={cn(
+                "font-semibold",
+                "text-[13px]",
+                operatingStatus === "OPEN" ? "text-secondary" : "text-gray-500",
+              )}
             >
               {OPERATING_STATUS[operatingStatus]}
             </span>

@@ -1,7 +1,13 @@
+export const OPERATING_STATUS = {
+  OPEN: "영업중",
+  CLOSED: "영업 종료",
+  TEMPORARY_CLOSED: "임시 휴업",
+} as const;
+
 export interface Bakery {
   id: number;
   ownerId: number;
-  opeartingStatus: "OPEN" | "CLOSED" | "TEMPORARY_CLOSED";
+  operatingStatus: keyof typeof OPERATING_STATUS;
   name: string;
   address: string;
   phone: string;

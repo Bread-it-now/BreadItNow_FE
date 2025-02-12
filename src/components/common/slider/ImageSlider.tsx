@@ -92,11 +92,10 @@ const ImageSlider = ({
   }, [currentIndex, isDragging, touchEnd, touchStart]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="slider-container">
       <div
         ref={sliderRef}
-        className={`w-full h-full flex transition-transform duration-300 ease-out
-          ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+        className="slider-wrapper"
         style={{
           transform: getTransformStyle(),
         }}

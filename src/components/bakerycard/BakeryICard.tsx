@@ -7,6 +7,7 @@ export interface BakeryCardProps
   extends Pick<Bakery, "id" | "operatingStatus" | "profileImg" | "name"> {
   rank: number;
   distance?: number;
+  size?: "normal" | "large";
 }
 
 const BakeryCard = ({
@@ -14,10 +15,21 @@ const BakeryCard = ({
   name,
   rank,
   distance,
+  size = "normal",
 }: BakeryCardProps) => {
   return (
-    <div className={cn(" flex flex-col items-start gap-3", "w-60")}>
-      <div className={cn("relative w-full h-40")}>
+    <div
+      className={cn(
+        " flex flex-col items-start gap-3",
+        size === "normal" ? "w-60" : "w-full",
+      )}
+    >
+      <div
+        className={cn(
+          "relative",
+          `w-full ${size === "normal" ? "h-40" : "h-[223px]"}`,
+        )}
+      >
         <Image src={profileImage} fill alt="bakery" className="rounded-md" />
       </div>
       <div className={cn("flex items-start gap-[10px]", "w-full h-11")}>

@@ -37,15 +37,18 @@ const BakeryCard = ({
         <Image src={profileImgUrl} fill alt="bakery" className="rounded-md" />
       </div>
       <div className={cn("flex items-start gap-[10px]", "w-full h-11")}>
-        <span
-          className={cn(
-            "w-5 h-[26px]",
-            "text-center",
-            "text-gray-900 text-lg font-semibold",
-          )}
-        >
-          {rank}
-        </span>
+        {size === "normal" && (
+          <span
+            className={cn(
+              "w-5 h-[26px]",
+              "text-center",
+              "text-gray-900 text-lg font-semibold",
+            )}
+          >
+            {rank}
+          </span>
+        )}
+
         <div
           className={cn("flex justify-between items-center gap-5", "w-full")}
         >

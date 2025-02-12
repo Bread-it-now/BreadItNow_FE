@@ -30,8 +30,8 @@ const Button = ({
   };
 
   const contentStyles = cn(
-    `flex items-center justify-center w-full h-full gap-1.5 ${variant === "default" ? "text-black" : "text-white"}`,
-    "text-body-m",
+    `flex items-center justify-center w-full h-full gap-1.5`,
+    `${variant === "default" ? "text-black" : "text-white"} text-[15px] font-semibolid`,
   );
 
   return (

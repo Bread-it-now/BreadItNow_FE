@@ -1,10 +1,10 @@
-interface Props {
+interface CheckboxProps {
   id: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
 }
 
-function Checkbox({ id, checked, onChange }: Props) {
+function Checkbox({ id, checked, onChange }: CheckboxProps) {
   return (
     <label
       className={`checkbox ${

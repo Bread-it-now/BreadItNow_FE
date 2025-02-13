@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Checkbox from "@/components/common/checkbox/Checkbox";
 import { useState, useEffect } from "react";
-interface Props {
+interface BreadReserveCardProps {
   url?: string;
   checked?: boolean;
   name: string;
@@ -17,7 +17,7 @@ function BreadReserveCard({
   subText,
   price,
   count,
-}: Props) {
+}: BreadReserveCardProps) {
   const [isChecked, setIsChecked] = useState<boolean>(checked);
   useEffect(() => {
     setIsChecked(checked);

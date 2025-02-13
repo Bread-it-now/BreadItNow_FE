@@ -27,6 +27,24 @@ export default {
       fontFamily: {
         Pretendard: ['Pretendard', 'sans-serif'],
       },
+      fontSize: {
+        'body-s': [
+          '13px',
+          {
+            lineHeight: '20px',
+            letterSpacing: '-0.01em',
+            fontWeight: '500',
+          },
+        ],
+        'body-m': [
+          '15px',
+          {
+            lineHeight: '21px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+      },
     },
   },
   plugins: [],

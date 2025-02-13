@@ -3,6 +3,7 @@
 import { useState } from "react";
 import HotBreadTab from "@/components/common/tabs/HotBreadTab";
 import RoundTab from "@/components/common/tabs/RoundTab";
+import BakerySchedule from "@/components/bakedetail/BakerySchedule";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("hot");
@@ -68,6 +69,7 @@ function BreadCategoryContent() {
       <BreadCard name="크로와상" description="겉바속촉 크로와상" />
       <BreadCard name="소금빵" description="고소하고 짭짤한 소금빵" />
       <BreadCard name="앙버터 바게트" description="버터와 팥이 조화로운 빵" />
+      <BakerySchedule />
     </div>
   );
 }

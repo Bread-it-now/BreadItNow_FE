@@ -4,6 +4,7 @@ import close from "@/assets/icons/close.svg";
 import { createPortal } from "react-dom";
 import Button from "../button/Button";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -25,6 +26,16 @@ const BottomSheet = ({
   cancelText,
   confirmText,
 }: BottomSheetProps) => {
+  const [bottomSheetRoot, setBottomSheetRoot] = useState<Element | null>(null);
+
+  useEffect(() => {
+    const rootElement = document.getElementById("bottomsheet-root");
+    if (rootElement) {
+      setBottomSheetRoot(rootElement);
+    }
+  }, []);
+
+  if (!bottomSheetRoot) return null;
   return (
     <>
       {createPortal(
@@ -77,7 +88,7 @@ const BottomSheet = ({
             </div>
           </div>
         </div>,
-        document.body,
+        bottomSheetRoot,
       )}
     </>
   );

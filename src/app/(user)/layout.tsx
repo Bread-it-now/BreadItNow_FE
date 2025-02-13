@@ -4,8 +4,11 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="">
-      <div className="w-full h-full">{children}</div>
+    <div className="min-h-screen flex justify-center bg-gray-100">
+      <div className="relative w-full h-full max-w-[375px] max-h-[812px] bg-gray-400 border-1 mx-auto pt-[44px] h-lvh">
+        <div id="bottomsheet-root" />
+        {children}
+      </div>
     </div>
   );
 }

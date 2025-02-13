@@ -107,8 +107,8 @@ const ImageSlider = ({
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}
       >
-        {images.map((image, index) => (
-          <div key={index} className="min-w-full h-full">
+        {images.map((image) => (
+          <div key={image} className="min-w-full h-full">
             <div
               className="w-full h-full bg-center bg-cover"
               style={{ backgroundImage: `url(${image})` }}
@@ -118,13 +118,17 @@ const ImageSlider = ({
       </div>
 
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {images.map((_, index) => (
+        <div>
+          {" "}
+          {currentIndex}.{images.length}
+        </div>
+        {/* {images.map((_, index) => (
           <div
             key={index}
             className={`h-2 w-2 rounded-full cursor-pointer transition-colors
               ${currentIndex === index ? "bg-white" : "bg-white/50"}`}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );

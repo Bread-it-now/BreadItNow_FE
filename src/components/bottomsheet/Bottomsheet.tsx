@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Button from "../button/Button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { cn } from "@/utils/cn";
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -39,7 +40,12 @@ const BottomSheet = ({
   return (
     <>
       {createPortal(
-        <div className="absolute bottom-0 w-full h-full">
+        <div
+          className={cn(
+            "absolute bottom-0 w-full h-full",
+            isOpen ? "visible" : "hidden",
+          )}
+        >
           {/* Backdrop */}
           <div
             className={`absolute w-full h-full bg-black ${isOpen ? "bg-opacity-50" : "bg-opacity-0"}`}

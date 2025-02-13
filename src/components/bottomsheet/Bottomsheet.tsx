@@ -1,42 +1,84 @@
 "use client";
 
-import { cn } from "@/utils/cn";
-import React, { HTMLAttributes, PropsWithChildren } from "react";
+import close from "@/assets/icons/close.svg";
+import { createPortal } from "react-dom";
+import Button from "../button/Button";
+import Image from "next/image";
 
-interface BottomSheetContentProps
-  extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {
+interface BottomSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
   children: React.ReactNode;
+  onConfirm?: () => void;
+  title?: string;
+  cancelText?: string;
+  confirmText?: string;
+  confirmDisabled?: boolean;
 }
 
-interface BottomSheetContainerProps
-  extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {
-  children: React.ReactNode;
-}
-
-const BottomSheetHeader = () => {
-  return <div className={cn("w-full h-[30px] bg-white rounded-t-3xl")}></div>;
-};
-
-const BottomSheetContent = ({ children }: BottomSheetContentProps) => {
-  return (
-    <div className={cn("flex flex-col w-full bg-white gap-6")}>{children}</div>
-  );
-};
-
-const BottomSheet = ({ children, className }: BottomSheetContainerProps) => {
+const BottomSheet = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  children,
+  title,
+  cancelText,
+  confirmText,
+}: BottomSheetProps) => {
   return (
     <>
-      <div
-        className={cn(
-          "absolute top-0 w-screen h-screen max-w-[375px] max-h-[812px] bg-[rgba(0, 0, 0, 0.5)]",
-          className,
-        )}
-      >
-        <div className="relative top-[60px] w-full">
-          <BottomSheetHeader />
-          <BottomSheetContent>{children}</BottomSheetContent>
-        </div>
-      </div>
+      {createPortal(
+        <div className="absolute bottom-0 w-full h-full">
+          {/* Backdrop */}
+          <div
+            className={`absolute w-full h-full bg-black ${isOpen ? "bg-opacity-50" : "bg-opacity-0"}`}
+            onClick={onClose}
+          />
+
+          {/* Sheet */}
+          <div
+            className={`absolute bottom-0 w-full max-h-[752px] pt-[1.875rem] bg-white rounded-t-[1.5rem] overflow-scroll`}
+          >
+            <div className="flex flex-col items-center px-[1.25rem] gap-[1.5rem]">
+              {title && (
+                <div className="flex justify-between items-center w-full h-[1.5rem]">
+                  <h2 className="text-gray-950 text-[18px] font-semibold">
+                    {title}
+                  </h2>
+                  <button onClick={onClose}>
+                    <Image src={close} width={24} height={24} alt="닫기" />
+                  </button>
+                </div>
+              )}
+              <div className="flex flex-col w-full overflow-scroll">
+                {children}
+              </div>
+            </div>
+            <div>
+              {(cancelText || confirmText) && (
+                <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
+                  {cancelText && (
+                    <Button onClick={onClose} className="">
+                      {cancelText}
+                    </Button>
+                  )}
+                  {confirmText && (
+                    <Button
+                      onClick={onConfirm}
+                      fullWidth
+                      variant="primary"
+                      className=""
+                    >
+                      {confirmText}
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
     </>
   );
 };

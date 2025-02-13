@@ -99,3 +99,8 @@ img {
   -o-user-drag: none;
   user-drag: none;
 }
+
+/* ===== scrollbar CSS ===== */
+*::-webkit-scrollbar {
+  display: none;
+}

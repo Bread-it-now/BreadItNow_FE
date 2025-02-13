@@ -1,3 +1,5 @@
+import BottomNavbar from "@/components/common/BottomNavbar";
+
 export default function UserLayout({
   children,
 }: {
@@ -5,8 +7,9 @@ export default function UserLayout({
 }) {
   return (
     <div className="min-h-screen flex justify-center bg-gray-100">
-      <div className="w-full h-full max-w-[375px] max-h-[812px] bg-white border-1 mx-auto pt-[44px]">
-        {children}
+      <div className="relative w-full max-w-[375px] bg-white mx-auto min-h-screen flex flex-col">
+        <div className="flex-grow">{children}</div>
+        <BottomNavbar />
       </div>
     </div>
   );

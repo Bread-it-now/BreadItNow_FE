@@ -36,19 +36,17 @@ export default function Page() {
 
   return (
     <div className="space-y-4 p-4">
-      {schedule.map((slot, index) => (
-        <div key={index} className="relative flex space-x-4">
+      {schedule.map((slot) => (
+        <div key={slot.time} className="relative flex space-x-4">
           <div className="flex-shrink-0">
             <Tag label={slot.time} type="time" />
           </div>
 
-          {index !== schedule.length && (
-            <div className="absolute left-8 top-[50%] w-[1px] min-h-[20px] h-full bg-gray-300 translate-y-[-50%]" />
-          )}
+          <div className="absolute left-8 top-[50%] w-[1px] min-h-[20px] h-full bg-gray-300 translate-y-[-50%]" />
 
           <div className="flex flex-wrap gap-2">
             {slot.items.map((item, idx) => (
-              <Tag key={idx} label={item} />
+              <Tag key={`${slot.time}-${idx}`} label={item} />
             ))}
           </div>
         </div>

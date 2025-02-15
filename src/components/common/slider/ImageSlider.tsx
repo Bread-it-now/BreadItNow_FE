@@ -1,6 +1,6 @@
 "use client";
-import { useState, useRef, TouchEvent, MouseEvent, useCallback } from "react";
-
+import { useCallback } from "react";
+import { useImageSlider } from "@/hooks/useSlideEvent";
 interface ImageSliderProps {
   images?: string[];
 }
@@ -12,75 +12,21 @@ const ImageSlider = ({
     "https://placehold.co/800x1000",
   ],
 }: ImageSliderProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const {
+    currentIndex,
+    touchStart,
+    touchEnd,
+    isDragging,
+    sliderRef,
+    handleTouchStart,
+    handleTouchMove,
+    handleDragEnd,
+    handleMouseDown,
+    handleMouseMove,
+  } = useImageSlider({ images });
 
-  const minSwipeDistance = 50;
-
-  // 이미지 인덱스 변경 로직
-  const updateIndex = useCallback(
-    (direction: "next" | "prev") => {
-      setCurrentIndex((prevIndex) => {
-        if (direction === "next") {
-          return prevIndex === images.length - 1 ? 0 : prevIndex + 1;
-        }
-        return prevIndex === 0 ? images.length - 1 : prevIndex - 1;
-      });
-    },
-    [images.length],
-  );
-
-  // 터치 시작 핸들러
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-    setTouchEnd(e.targetTouches[0].clientX);
-    setIsDragging(true);
-  }, []);
-
-  // 터치 이동 핸들러
-  const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (!isDragging) return;
-      setTouchEnd(e.targetTouches[0].clientX);
-    },
-    [isDragging],
-  );
-
-  // 마우스 다운 핸들러
-  const handleMouseDown = useCallback((e: MouseEvent) => {
-    setIsDragging(true);
-    setTouchStart(e.clientX);
-    setTouchEnd(e.clientX);
-  }, []);
-
-  // 마우스 이동 핸들러
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!isDragging) return;
-      setTouchEnd(e.clientX);
-    },
-    [isDragging],
-  );
-
-  // 드래그 종료 처리
-  const handleDragEnd = useCallback(() => {
-    if (!isDragging) return;
-    // 터치 이동 거리 계산
-    const swipeDistance = touchEnd - touchStart;
-    if (Math.abs(swipeDistance) > minSwipeDistance) {
-      updateIndex(swipeDistance > 0 ? "prev" : "next");
-    }
-
-    setIsDragging(false);
-    setTouchStart(0);
-    setTouchEnd(0);
-  }, [isDragging, touchEnd, touchStart, updateIndex]);
-
-  // 트랜지션 스타일 계산
-  const getTransformStyle = useCallback(() => {
+  // 드래그시 트랜스폼 스타일 계산
+  const getTransformStyle = useCallback<() => string>(() => {
     if (isDragging) {
       const dragDistance = touchEnd - touchStart;
       const baseTransform = -currentIndex * 100;
@@ -89,7 +35,7 @@ const ImageSlider = ({
       return `translateX(${baseTransform + dragPercentage}%)`;
     }
     return `translateX(-${currentIndex * 100}%)`;
-  }, [currentIndex, isDragging, touchEnd, touchStart]);
+  }, [currentIndex, isDragging, sliderRef, touchEnd, touchStart]);
 
   return (
     <div className="slider-container">
@@ -119,16 +65,8 @@ const ImageSlider = ({
 
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         <div>
-          {" "}
           {currentIndex}.{images.length}
         </div>
-        {/* {images.map((_, index) => (
-          <div
-            key={index}
-            className={`h-2 w-2 rounded-full cursor-pointer transition-colors
-              ${currentIndex === index ? "bg-white" : "bg-white/50"}`}
-          />
-        ))} */}
       </div>
     </div>
   );

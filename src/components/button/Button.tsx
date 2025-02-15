@@ -21,7 +21,7 @@ const Button = ({
   className,
 }: ButtonProps) => {
   const baseStyles = cn(
-    `flex center justify-center items-center w-[120px] h-[52px] rounded-lg px-[24px] py-[14px] gap-[10px] ${fullWidth && "w-full"}`,
+    `flex center justify-center items-center w-[120px] h-[52px] rounded-lg px-[24px] py-[14px] ${fullWidth && "w-full"}`,
   );
 
   const variants = {
@@ -30,7 +30,9 @@ const Button = ({
   };
 
   const contentStyles = cn(
-    `flex items-center justify-center w-full h-full ${variant === "default" ? "text-black" : "text-white"}`,
+    `flex items-center justify-center w-full h-full gap-1.5`,
+    `${variant === "default" ? "text-black" : "text-white"} text-[15px] font-semibolid`,
+    `text-nowrap`,
   );
 
   return (
@@ -39,7 +41,7 @@ const Button = ({
       disabled={disabled}
       type={type ?? "button"}
     >
-      <div className={contentStyles}>{children}</div>
+      <div className={cn(contentStyles)}>{children}</div>
     </button>
   );
 };

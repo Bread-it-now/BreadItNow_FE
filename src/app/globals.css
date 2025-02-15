@@ -20,6 +20,15 @@ body {
   font-family: 'Pretendard'
 }
 
+@layer utilities {
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+}
+
+
 @font-face {
   font-family: 'Pretendard';
   font-weight: 800;
@@ -67,4 +76,31 @@ body {
   font-weight: 200;
   font-display: swap;
   src: url('../assets/fonts/Pretendard-ExtraLight-subset.woff2') format('woff2'), url('../assets/fonts/Pretendard-ExtraLight-subset.woff') format('woff');
+}
+
+/* ===== 텍스트 드래그 방지 CSS ===== */
+* {
+  -webkit-user-select: none;
+  /* Chrome, Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* 표준 */
+}
+
+/* ===== 이미지 드래그 방지 CSS ===== */
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* ===== scrollbar CSS ===== */
+*::-webkit-scrollbar {
+  display: none;
 }

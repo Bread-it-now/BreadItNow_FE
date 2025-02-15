@@ -7,11 +7,9 @@ export default function UserLayout({
 }) {
   return (
     <div className="min-h-screen flex justify-center bg-gray-100">
-      <div className="relative w-full max-w-[375px] bg-white mx-auto flex flex-col h-screen">
-        <div className="flex-grow overflow-y-auto pb-[58px] scrollbar-hide">
-          {children}
-        </div>
-
+      <div className="relative w-full max-w-[375px] max-h-[812px] bg-white border-1 mx-auto pt-[44px] pb-[58px] h-lvh">
+        <div id="bottomsheet-root" />
+        {children}
         <div className="absolute bottom-0 left-0 w-full">
           <BottomNavbar />
         </div>

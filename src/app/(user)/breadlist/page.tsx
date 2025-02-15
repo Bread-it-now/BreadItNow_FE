@@ -6,7 +6,7 @@ import RoundTab from "@/components/common/tabs/RoundTab";
 import BakerySchedule from "@/components/bakedetail/BakerySchedule";
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState("hot");
+  const [activeTab, setActiveTab] = useState<"hot" | "popular">("hot");
 
   return (
     <div className="w-full min-h-screen bg-gray-50">
@@ -27,7 +27,9 @@ export default function Page() {
 }
 
 function HotBreadContent() {
-  const [activeCategory, setActiveCategory] = useState("bread");
+  const [activeCategory, setActiveCategory] = useState<"bread" | "other">(
+    "bread",
+  );
 
   return (
     <div>
@@ -39,6 +41,7 @@ function HotBreadContent() {
           { key: "bread", label: "빵류" },
           { key: "other", label: "기타" },
         ]}
+        activeTab={activeCategory}
         onTabChange={setActiveCategory}
       />
 
@@ -62,7 +65,7 @@ function PopularBreadContent() {
   );
 }
 
-// 예시로 추가
+// 빵 리스트
 function BreadCategoryContent() {
   return (
     <div className="space-y-4">
@@ -84,6 +87,7 @@ function OtherCategoryContent() {
   );
 }
 
+// 빵 카드 컴포넌트
 function BreadCard({
   name,
   description,

@@ -1,36 +1,29 @@
 "use client";
 
-import { useState } from "react";
-
-interface Category {
-  key: string;
+interface Category<T extends string> {
+  key: T;
   label: string;
 }
 
-interface RoundTabProps {
-  categories: Category[];
-  onTabChange?: (key: string) => void;
+interface RoundTabProps<T extends string> {
+  categories: Category<T>[];
+  activeTab: T;
+  onTabChange?: (key: T) => void;
 }
 
-export default function RoundTab({ categories, onTabChange }: RoundTabProps) {
-  const [activeTab, setActiveTab] = useState(categories[0].key);
-
-  const handleTabClick = (key: string) => {
-    setActiveTab(key);
-    onTabChange?.(key);
-  };
-
+export default function RoundTab<T extends string>({
+  categories,
+  activeTab,
+  onTabChange,
+}: RoundTabProps<T>) {
   return (
     <div className="w-full h-[34px] flex items-center gap-1.5 overflow-x-auto px-5">
       {categories.map(({ key, label }) => (
         <div
           key={key}
-          className={`px-4 py-1 rounded-[99px] flex justify-center items-center cursor-pointer ${
-            activeTab === key
-              ? "bg-primary text-white"
-              : "bg-white border border-gray200 text-gray400"
-          }`}
-          onClick={() => handleTabClick(key)}
+          className={`px-4 py-1 rounded-[99px] flex justify-center items-center cursor-pointer 
+            ${activeTab === key ? "bg-primary text-white" : "bg-white border border-gray-200 text-gray-400"}`}
+          onClick={() => onTabChange?.(key)}
         >
           <span className="text-sm font-semibold">{label}</span>
         </div>

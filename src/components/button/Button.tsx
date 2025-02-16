@@ -10,6 +10,7 @@ export interface ButtonProps
   className?: string;
   type?: "button" | "submit" | "reset";
   fullWidth?: boolean;
+  onClick: () => void;
 }
 
 const Button = ({
@@ -19,6 +20,7 @@ const Button = ({
   type = "button",
   fullWidth = false,
   className,
+  onClick,
 }: ButtonProps) => {
   const baseStyles = cn(
     `flex center justify-center items-center w-[120px] h-[52px] rounded-lg px-[24px] py-[14px] ${fullWidth && "w-full"}`,
@@ -40,6 +42,7 @@ const Button = ({
       className={cn(baseStyles, variants[variant], className)}
       disabled={disabled}
       type={type ?? "button"}
+      onClick={onClick}
     >
       <div className={cn(contentStyles)}>{children}</div>
     </button>

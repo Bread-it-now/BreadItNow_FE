@@ -45,7 +45,29 @@ export default {
           },
         ],
       },
+      animation: {
+        slideUp: 'slideUp 0.5s ease-out',
+        slideDown: 'slideDown 0.5s ease-out',
+      },
+      keyframes: {
+        slideUp: {
+          '0%': {
+            transform: 'translateY(100%)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
+        },
+        slideDown: {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '100%': {
+            transform: 'translateY(100%)',
+          },
+        },
+      },
     },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [require('tailwind-scrollbar-hide')],
 } satisfies Config;

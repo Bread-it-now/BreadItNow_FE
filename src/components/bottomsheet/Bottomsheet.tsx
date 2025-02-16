@@ -54,7 +54,10 @@ const BottomSheet = ({
 
           {/* Sheet */}
           <div
-            className={`absolute bottom-0 w-full max-h-[752px] pt-[1.875rem] bg-white rounded-t-[1.5rem] overflow-scroll`}
+            className={cn(
+              `absolute bottom-0 w-full max-h-[752px] pt-[1.875rem] bg-white rounded-t-[1.5rem] overflow-scroll`,
+              isOpen ? "animate-slideUp" : "anmiate-slideDown",
+            )}
           >
             <div className="flex flex-col items-center px-[1.25rem] gap-[1.5rem]">
               {title && (

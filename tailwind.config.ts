@@ -46,8 +46,8 @@ export default {
         ],
       },
       animation: {
-        slideUp: 'slideUp 0.5s ease-out',
-        slideDown: 'slideDown 0.5s ease-out',
+        slideUp: 'slideUp 0.5s ease-out forwards',
+        slideDown: 'slideDown 0.5s ease-out forwards',
       },
       keyframes: {
         slideUp: {

@@ -27,7 +27,10 @@ const BottomSheet = ({
   cancelText,
   confirmText,
 }: BottomSheetProps) => {
-  const [bottomSheetRoot, setBottomSheetRoot] = useState<Element | null>(null);
+  const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(
+    null,
+  );
+  const [isAnimating, setIsAnimating] = useState(isOpen);
 
   useEffect(() => {
     const rootElement = document.getElementById("bottomsheet-root");
@@ -36,16 +39,26 @@ const BottomSheet = ({
     }
   }, []);
 
-  if (!bottomSheetRoot) return null;
+  useEffect(() => {
+    if (isOpen && bottomSheetRoot) {
+      setIsAnimating(true);
+      bottomSheetRoot.style.setProperty("overflow", "hidden");
+    }
+  }, [isOpen, bottomSheetRoot]);
+
+  const handleBottomSheetSlideDownEnd = () => {
+    if (!isOpen && bottomSheetRoot) {
+      setIsAnimating(false);
+      bottomSheetRoot.style.setProperty("overflow", "");
+    }
+  };
+
+  if (!bottomSheetRoot || !isAnimating) return null;
+
   return (
     <>
       {createPortal(
-        <div
-          className={cn(
-            "absolute bottom-0 w-full h-full z-10",
-            isOpen ? "visible" : "hidden",
-          )}
-        >
+        <div className={cn("absolute bottom-0 w-full h-full z-10")}>
           {/* Backdrop */}
           <div
             className={`absolute w-full h-full bg-black ${isOpen ? "bg-opacity-50" : "bg-opacity-0"}`}
@@ -56,8 +69,9 @@ const BottomSheet = ({
           <div
             className={cn(
               `absolute bottom-0 w-full max-h-[752px] pt-[1.875rem] bg-white rounded-t-[1.5rem] overflow-scroll`,
-              isOpen ? "animate-slideUp" : "anmiate-slideDown",
+              isOpen ? "animate-slideUp" : "animate-slideDown",
             )}
+            onAnimationEnd={handleBottomSheetSlideDownEnd}
           >
             <div className="flex flex-col items-center px-[1.25rem] gap-[1.5rem]">
               {title && (

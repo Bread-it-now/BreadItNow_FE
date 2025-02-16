@@ -5,6 +5,22 @@ interface ImageSliderProps {
   images?: string[];
 }
 
+function TagPagination({
+  currentPage,
+  lastPage,
+}: {
+  currentPage: number;
+  lastPage: number;
+}) {
+  return (
+    <div className="absolute bg-gray-900 backdrop-blur-[20px] bg-opacity-40 bottom-5 right-5 py-1 px-[14px] font-semibold rounded-2xl text-[11px]">
+      {currentPage + 1}
+      <span className="px-1">&#183;</span>
+      {lastPage}
+    </div>
+  );
+}
+
 const ImageSlider = ({
   images = [
     "https://placehold.co/300x400",
@@ -63,11 +79,7 @@ const ImageSlider = ({
         ))}
       </div>
 
-      <div className="absolute bg-gray-900 backdrop-blur-[20px] bg-opacity-40 bottom-5 right-5 py-1 px-[14px] font-semibold rounded-2xl text-[11px]">
-        {currentIndex + 1}
-        <span className="px-1">&#183;</span>
-        {images.length}
-      </div>
+      <TagPagination currentPage={currentIndex} lastPage={images.length} />
     </div>
   );
 };

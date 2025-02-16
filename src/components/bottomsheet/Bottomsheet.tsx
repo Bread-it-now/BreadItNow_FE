@@ -79,7 +79,7 @@ const BottomSheet = ({
                       {cancelText}
                     </Button>
                   )}
-                  {confirmText && (
+                  {confirmText && onConfirm && (
                     <Button
                       onClick={onConfirm}
                       fullWidth

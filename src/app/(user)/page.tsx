@@ -6,7 +6,8 @@ import { bakeryCardMockData } from "@/mocks/data/bakery";
 import Link from "next/link";
 
 export default function Page() {
-  const { isOpen, open, close, title } = useReservationBottomSheet();
+  const { isOpen, open, close, title, handleAddReservation } =
+    useReservationBottomSheet();
 
   return (
     <div>
@@ -25,7 +26,7 @@ export default function Page() {
         cancelText="취소"
         confirmText="관심지역 설정하기"
         onClose={close}
-        onConfirm={() => {}}
+        onConfirm={handleAddReservation}
       >
         <div className="overflow-hidden">
           <BakeryCard {...bakeryCardMockData} />

@@ -50,7 +50,7 @@ const BottomSheet = ({
     }
   }, [isOpen, bottomSheetRoot]);
 
-  const handleBottomSheetSlideDownEnd = () => {
+  const handleBottomSheetAnimationEnd = () => {
     if (!isOpen && bottomSheetRoot) {
       setIsAnimating(false);
       bottomSheetRoot.style.setProperty("overflow", "");
@@ -77,7 +77,7 @@ const BottomSheet = ({
               `pt-[1.875rem] bg-white rounded-t-[1.5rem]`,
               isOpen ? "animate-slideUp" : "animate-slideDown",
             )}
-            onAnimationEnd={handleBottomSheetSlideDownEnd}
+            onAnimationEnd={handleBottomSheetAnimationEnd}
           >
             <div className="flex flex-col items-center px-[1.25rem] gap-[1.5rem]">
               {title && (

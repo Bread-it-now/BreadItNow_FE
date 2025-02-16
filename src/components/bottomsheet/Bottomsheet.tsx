@@ -16,6 +16,8 @@ interface BottomSheetProps {
   cancelText?: string;
   confirmText?: string;
   confirmDisabled?: boolean;
+  maxHeight?: number;
+  maxContentHeight?: number;
 }
 
 const BottomSheet = ({
@@ -26,8 +28,13 @@ const BottomSheet = ({
   title,
   cancelText,
   confirmText,
+  maxHeight = 752,
+  maxContentHeight = 630,
 }: BottomSheetProps) => {
-  const [bottomSheetRoot, setBottomSheetRoot] = useState<Element | null>(null);
+  const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(
+    null,
+  );
+  const [isAnimating, setIsAnimating] = useState(isOpen);
 
   useEffect(() => {
     const rootElement = document.getElementById("bottomsheet-root");
@@ -36,16 +43,26 @@ const BottomSheet = ({
     }
   }, []);
 
-  if (!bottomSheetRoot) return null;
+  useEffect(() => {
+    if (isOpen && bottomSheetRoot) {
+      setIsAnimating(true);
+      bottomSheetRoot.style.setProperty("overflow", "hidden");
+    }
+  }, [isOpen, bottomSheetRoot]);
+
+  const handleBottomSheetAnimationEnd = () => {
+    if (!isOpen && bottomSheetRoot) {
+      setIsAnimating(false);
+      bottomSheetRoot.style.setProperty("overflow", "");
+    }
+  };
+
+  if (!bottomSheetRoot || !isAnimating) return null;
+
   return (
     <>
       {createPortal(
-        <div
-          className={cn(
-            "absolute bottom-0 w-full h-full z-10",
-            isOpen ? "visible" : "hidden",
-          )}
-        >
+        <div className={cn("absolute bottom-0 w-full h-full z-10")}>
           {/* Backdrop */}
           <div
             className={`absolute w-full h-full bg-black ${isOpen ? "bg-opacity-50" : "bg-opacity-0"}`}
@@ -54,7 +71,13 @@ const BottomSheet = ({
 
           {/* Sheet */}
           <div
-            className={`absolute bottom-0 w-full max-h-[752px] pt-[1.875rem] bg-white rounded-t-[1.5rem] overflow-scroll`}
+            className={cn(
+              `absolute bottom-0`,
+              `w-full overflow-y-auto max-h-[${maxHeight}px]`,
+              `pt-[1.875rem] bg-white rounded-t-[1.5rem]`,
+              isOpen ? "animate-slideUp" : "animate-slideDown",
+            )}
+            onAnimationEnd={handleBottomSheetAnimationEnd}
           >
             <div className="flex flex-col items-center px-[1.25rem] gap-[1.5rem]">
               {title && (
@@ -67,7 +90,12 @@ const BottomSheet = ({
                   </button>
                 </div>
               )}
-              <div className="flex flex-col w-full overflow-scroll">
+              <div
+                className={cn(
+                  "flex flex-col",
+                  ` w-full overflow-y-auto max-h-[${maxContentHeight}px]`,
+                )}
+              >
                 {children}
               </div>
             </div>
@@ -79,7 +107,7 @@ const BottomSheet = ({
                       {cancelText}
                     </Button>
                   )}
-                  {confirmText && (
+                  {confirmText && onConfirm && (
                     <Button
                       onClick={onConfirm}
                       fullWidth

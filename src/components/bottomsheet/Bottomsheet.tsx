@@ -42,7 +42,7 @@ const BottomSheet = ({
       {createPortal(
         <div
           className={cn(
-            "absolute bottom-0 w-full h-full",
+            "absolute bottom-0 w-full h-full z-10",
             isOpen ? "visible" : "hidden",
           )}
         >

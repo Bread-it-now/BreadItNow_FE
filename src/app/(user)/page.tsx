@@ -14,6 +14,7 @@ export default function Page() {
       <br />
       <Link href="/search">검색페이지 이동</Link>
       <Link href="/login">로그인페이지 이동</Link>
+      <Link href="/breadlist">빵 리스트 이동</Link>
       <div>
         <button onClick={open}>바텀시트 열기</button>
       </div>

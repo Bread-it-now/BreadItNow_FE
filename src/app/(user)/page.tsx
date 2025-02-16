@@ -4,7 +4,6 @@ import BottomSheet from "@/components/bottomsheet/Bottomsheet";
 import { useReservationBottomSheet } from "@/hooks/useReservationBottomSheet";
 import { bakeryCardMockData } from "@/mocks/data/bakery";
 import Link from "next/link";
-
 export default function Page() {
   const { isOpen, open, close, title } = useReservationBottomSheet();
 

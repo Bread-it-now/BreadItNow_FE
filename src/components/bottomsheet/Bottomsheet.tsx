@@ -16,6 +16,8 @@ interface BottomSheetProps {
   cancelText?: string;
   confirmText?: string;
   confirmDisabled?: boolean;
+  maxHeight?: number;
+  maxContentHeight?: number;
 }
 
 const BottomSheet = ({
@@ -26,6 +28,8 @@ const BottomSheet = ({
   title,
   cancelText,
   confirmText,
+  maxHeight = 752,
+  maxContentHeight = 630,
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(
     null,
@@ -68,7 +72,9 @@ const BottomSheet = ({
           {/* Sheet */}
           <div
             className={cn(
-              `absolute bottom-0 w-full max-h-[752px] pt-[1.875rem] bg-white rounded-t-[1.5rem] overflow-scroll`,
+              `absolute bottom-0`,
+              `w-full overflow-y-auto max-h-[${maxHeight}px]`,
+              `pt-[1.875rem] bg-white rounded-t-[1.5rem]`,
               isOpen ? "animate-slideUp" : "animate-slideDown",
             )}
             onAnimationEnd={handleBottomSheetSlideDownEnd}
@@ -84,7 +90,12 @@ const BottomSheet = ({
                   </button>
                 </div>
               )}
-              <div className="flex flex-col w-full overflow-scroll">
+              <div
+                className={cn(
+                  "flex flex-col",
+                  ` w-full overflow-y-auto max-h-[${maxContentHeight}px]`,
+                )}
+              >
                 {children}
               </div>
             </div>

@@ -28,7 +28,9 @@ export default function Page() {
         onClose={close}
         onConfirm={handleAddReservation}
       >
-        <div className="overflow-hidden">
+        <div>
+          <BakeryCard {...bakeryCardMockData} />
+          <BakeryCard {...bakeryCardMockData} />
           <BakeryCard {...bakeryCardMockData} />
           <BakeryCard {...bakeryCardMockData} />
         </div>

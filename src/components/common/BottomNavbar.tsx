@@ -15,11 +15,18 @@ export default function BottomNavbar() {
   const pathname = usePathname();
 
   const activeTab = useMemo(() => {
-    if (pathname === ROUTES.HOME) return "home";
-    if (pathname.startsWith(ROUTES.SEARCH)) return "search";
-    if (pathname.startsWith(ROUTES.NOTIFICATIONS)) return "notifications";
-    if (pathname.startsWith(ROUTES.MYPAGE.HOME)) return "my";
-    return "";
+    switch (true) {
+      case pathname === ROUTES.HOME:
+        return "home";
+      case pathname.startsWith(ROUTES.SEARCH):
+        return "search";
+      case pathname.startsWith(ROUTES.NOTIFICATIONS):
+        return "notifications";
+      case pathname.startsWith(ROUTES.MYPAGE.HOME):
+        return "my";
+      default:
+        return "";
+    }
   }, [pathname]);
 
   const handleTabClick = (path: string) => {

@@ -1,6 +1,10 @@
 "use client";
+import { useMemo } from "react";
 
 import { usePathname, useRouter } from "next/navigation";
+
+import { ROUTES } from "@/constants/routes";
+
 import HomeIcon from "@/components/common/Icons/HomeIcon";
 import SearchIcon from "@/components/common/Icons/SearchIcon";
 import NotificationIcon from "@/components/common/Icons/NotificationIcon";
@@ -10,15 +14,15 @@ export default function BottomNavbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const activeTab = (() => {
-    if (pathname === "/") return "home";
-    if (pathname.startsWith("/search")) return "search";
-    if (pathname.startsWith("/notifications")) return "notifications";
-    if (pathname.startsWith("/my")) return "my";
+  const activeTab = useMemo(() => {
+    if (pathname === ROUTES.HOME) return "home";
+    if (pathname.startsWith(ROUTES.SEARCH)) return "search";
+    if (pathname.startsWith(ROUTES.NOTIFICATIONS)) return "notifications";
+    if (pathname.startsWith(ROUTES.MYPAGE.HOME)) return "my";
     return "";
-  })();
+  }, [pathname]);
 
-  const handleTabClick = (tab: string, path: string) => {
+  const handleTabClick = (path: string) => {
     router.push(path);
   };
 
@@ -26,7 +30,7 @@ export default function BottomNavbar() {
     <div className="w-full max-w-[375px] h-[58px] absolute bottom-0 left-0 bg-white rounded-t-2xl shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)] flex justify-center items-center gap-8">
       <div
         className="flex flex-col items-center w-[60px] cursor-pointer"
-        onClick={() => handleTabClick("home", "/")}
+        onClick={() => handleTabClick(ROUTES.HOME)}
       >
         <HomeIcon color={activeTab === "home" ? "#FF7651" : "#1C1E20"} />
         <span
@@ -40,7 +44,7 @@ export default function BottomNavbar() {
 
       <div
         className="flex flex-col items-center w-[60px] cursor-pointer"
-        onClick={() => handleTabClick("search", "/search")}
+        onClick={() => handleTabClick(ROUTES.SEARCH)}
       >
         <SearchIcon color={activeTab === "search" ? "#FF7651" : "#1C1E20"} />
         <span
@@ -54,7 +58,7 @@ export default function BottomNavbar() {
 
       <div
         className="flex flex-col items-center w-[60px] cursor-pointer"
-        onClick={() => handleTabClick("notifications", "/notifications")}
+        onClick={() => handleTabClick(ROUTES.NOTIFICATIONS)}
       >
         <NotificationIcon
           color={activeTab === "notifications" ? "#FF7651" : "#1C1E20"}
@@ -72,7 +76,7 @@ export default function BottomNavbar() {
 
       <div
         className="flex flex-col items-center w-[60px] cursor-pointer"
-        onClick={() => handleTabClick("my", "/my")}
+        onClick={() => handleTabClick(ROUTES.MYPAGE.HOME)}
       >
         <MyIcon color={activeTab === "my" ? "#FF7651" : "#1C1E20"} />
         <span

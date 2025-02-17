@@ -2,12 +2,13 @@
 import Image from "next/image";
 import Checkbox from "@/components/common/checkbox/Checkbox";
 import { useState, useEffect } from "react";
+import { comma } from "@/utils/comma";
 interface BreadReserveCardProps {
   url?: string;
   checked?: boolean;
   name: string;
   subText: string;
-  price: string;
+  price: string | number;
   count: number;
 }
 function BreadReserveCard({
@@ -35,11 +36,11 @@ function BreadReserveCard({
           <Checkbox id="checkbox" checked={isChecked} onChange={onChange} />
         </div>
       </div>
-      <div className="flex flex-col gap-1 line-heigh">
-        <div className="font-medium text-sm">{name}</div>
-        <div className="text-[13px] text-gray-500">{subText}</div>
+      <div className="flex flex-col gap-1 line-heigh text-gray-900 font-medium">
+        <div className="font-semibold text-sm">{name}</div>
+        <div className="text-[13px] font-normal text-gray-500">{subText}</div>
         <div className="text-[13px] text-gray-700">{count}개 남음</div>
-        <div className="text-sm font-medium">{price}원</div>
+        <div className="text-sm">{comma(price) ? comma(price) : "0"}원</div>
       </div>
     </div>
   );

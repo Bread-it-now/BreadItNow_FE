@@ -11,7 +11,9 @@ function StoreInfo({ title, isOpen, distance, description }: StoreProps) {
     <article className="bg-white rounded-2xl px-5 py-[30px]">
       <div>
         <div className="flex justify-between">
-          <div className="font-semibold text-[22px]">소금 한 꼬집</div>
+          <div className="font-semibold text-black text-[22px]">
+            소금 한 꼬집
+          </div>
           <button className="ml-auto">검색</button>
         </div>
         <div>

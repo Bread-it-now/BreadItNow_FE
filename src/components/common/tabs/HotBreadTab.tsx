@@ -30,7 +30,7 @@ export default function HotBreadTab<T extends string>({
               {label}
             </span>
             {activeTab === key && (
-              <div className="absolute bottom-0 w-4/5 h-0.5 bg-primary rounded-[99px]" />
+              <div className="absolute bottom-0 w-full h-0.5 bg-primary rounded-[99px]" />
             )}
           </div>
         ))}

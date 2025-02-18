@@ -12,11 +12,11 @@ import BreadCard from "@/components/bakerycard/BreadCard";
 import { suggestions, bakeryList, breadList } from "./searchData";
 
 export default function SearchPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSearchActive, setIsSearchActive] = useState(false);
-  const [activeTab, setActiveTab] = useState("빵집");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<"빵집" | "빵">("빵집");
 
-  const handleSearchEnter = () => {
+  const handleSearchEnter = (): void => {
     setIsSearchActive(true);
   };
 

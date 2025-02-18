@@ -9,14 +9,12 @@ import HotBreadTab from "@/components/common/tabs/HotBreadTab";
 import FilterDropdown from "@/components/search/FilterDropdown";
 import BakeryCard from "@/components/bakerycard/BakeryCard";
 import BreadCard from "@/components/bakerycard/BreadCard";
-import BakeryImg from "@/assets/images/bakery.png";
+import { suggestions, bakeryList, breadList } from "./searchData";
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [activeTab, setActiveTab] = useState("빵집");
-
-  const suggestions = ["즐거운 빵집", "빵 굽는집", "즐거운 빵집"];
 
   const handleSearchEnter = () => {
     setIsSearchActive(true);
@@ -79,70 +77,24 @@ export default function SearchPage() {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
-          <div className="flex-1 overflow-y-auto scrollbar-hide">
-            <div className="flex items-center justify-between p-4 text-gray-900">
+          <div className="flex-1 overflow-y-auto scrollbar-hide text-gray900">
+            <div className="flex items-center justify-between p-4">
               <span>
-                총 <span className="text-primary">99</span>개
+                총 <span className="text-primary">{bakeryList.length}</span>개
               </span>
               <FilterDropdown />
             </div>
             {activeTab === "빵집" ? (
-              <>
-                <div className="p-4">
-                  <BakeryCard
-                    id={1}
-                    operatingStatus="OPEN"
-                    profileImgUrl={BakeryImg.src}
-                    name="라 메종 뒤 팡 에 뒤 레브"
-                    distance={1.5}
-                    size="large"
-                  />
-                </div>
-                <div className="p-4">
-                  <BakeryCard
-                    id={2}
-                    operatingStatus="OPEN"
-                    profileImgUrl={BakeryImg.src}
-                    name="라 메종 뒤 팡 에 뒤 레브"
-                    distance={1.5}
-                    size="large"
-                  />
-                </div>
-              </>
+              <div className="p-4 space-y-4">
+                {bakeryList.map((bakery) => (
+                  <BakeryCard key={bakery.id} {...bakery} />
+                ))}
+              </div>
             ) : (
               <div className="grid grid-cols-2 gap-4 p-4">
-                <BreadCard
-                  id={1}
-                  profileImgUrl={BakeryImg.src}
-                  name="크루아상"
-                  description="달콤한 아침"
-                  price="3,200원"
-                  size="normal"
-                />
-                <BreadCard
-                  id={2}
-                  profileImgUrl={BakeryImg.src}
-                  name="바게트"
-                  description="달콤한 아침"
-                  price="3,200원"
-                  size="normal"
-                />
-                <BreadCard
-                  id={3}
-                  profileImgUrl={BakeryImg.src}
-                  name="크루아상"
-                  description="달콤한 아침"
-                  price="3,200원"
-                  size="normal"
-                />
-                <BreadCard
-                  id={4}
-                  profileImgUrl={BakeryImg.src}
-                  name="바게트"
-                  description="달콤한 아침"
-                  price="3,200원"
-                  size="normal"
-                />
+                {breadList.map((bread) => (
+                  <BreadCard key={bread.id} {...bread} />
+                ))}
               </div>
             )}
           </div>

@@ -80,7 +80,14 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(
           </button>
         )}
 
-        <SearchIcon color={"#1C1E20"} />
+        <button
+          type="button"
+          onClick={onEnter}
+          className="flex items-center justify-center"
+          aria-label="검색"
+        >
+          <SearchIcon color={"#1C1E20"} />
+        </button>
       </label>
     );
   },

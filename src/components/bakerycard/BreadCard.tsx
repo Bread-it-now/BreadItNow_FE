@@ -24,7 +24,7 @@ const BreadCard = ({
 }: BreadCardProps) => {
   return (
     <Link
-      href={`/bakery/${id}`}
+      href={`/bread/${id}`}
       className={cn(
         "flex flex-col items-start gap-3 relative",
         size === "normal" ? "w-40" : "w-32",
@@ -39,8 +39,8 @@ const BreadCard = ({
         <Image
           src={profileImgUrl}
           fill
-          alt="bakery"
-          className="object-cover w-full h-full"
+          alt="bread"
+          className="object-cover p-1 rounded-[10px] w-full h-full"
         />
         <button
           className="absolute bottom-2 right-2 flex justify-center items-center w-8 h-8 min-w-8 border rounded-full border-gray100 bg-white shadow-md"
@@ -49,7 +49,7 @@ const BreadCard = ({
           <Image width={16} height={16} src={bookmark} alt="bookmark" />
         </button>
       </div>
-      <div className="flex flex-col items-start gap-1 w-full">
+      <div className="flex flex-col px-1 items-start gap-1 w-full">
         <div className="self-stretch flex-col justify-start items-start gap-0.5 flex">
           <div className="self-stretch text-gray700 text-[13px] font-normal  leading-[19px]">
             {description}

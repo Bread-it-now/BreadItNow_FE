@@ -2,6 +2,7 @@ import { ROUTES } from '@/constants/routes';
 
 import Link from 'next/link';
 
+const reservationId = 1;
 export default function Page() {
   return (
     <div>
@@ -15,7 +16,7 @@ export default function Page() {
       <br />
       <Link href={ROUTES.MYPAGE.RESERVATIONS}>예약 내역 페이지</Link>
       <br />
-      <Link href={ROUTES.MYPAGE.RESERVATION_DETAIL}>예약 내역 상세 페이지</Link>
+      <Link href={`${ROUTES.MYPAGE.RESERVATIONS}/${reservationId}`}>예약 내역 상세 페이지</Link>
       <br />
       <Link href={ROUTES.MYPAGE.DO_NOT_DISTURB}>방해금지 모드 설정 페이지</Link>
     </div>

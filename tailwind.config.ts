@@ -13,15 +13,15 @@ export default {
         foreground: 'var(--foreground)',
         gray900: '#1c1e20',
         gray700: '#4e5052',
-        gray500: "#808284",
-        gray400: "#999b9d",
-        gray300: "#b2b4b6",
-        gray200: "#d7d9db",
-        gray100: "#e8eaec",
-        gray50: "#f2f4f6",
-        primary: "#ff7651",
-        secondary: "#26cf9f",
-        white: "#ffffff",
+        gray500: '#808284',
+        gray400: '#999b9d',
+        gray300: '#b2b4b6',
+        gray200: '#d7d9db',
+        gray100: '#e8eaec',
+        gray50: '#f2f4f6',
+        primary: '#ff7651',
+        secondary: '#26cf9f',
+        white: '#ffffff',
       },
 
       fontFamily: {
@@ -40,6 +40,70 @@ export default {
           '15px',
           {
             lineHeight: '21px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+        'title-page': [
+          '24px',
+          {
+            lineHeight: '34px',
+            letterSpacing: '-0.01em',
+            fontWeight: '700',
+          },
+        ],
+        'title-detailpage': [
+          '22px',
+          {
+            lineHeight: '32px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+        'title-content-xl': [
+          '20px',
+          {
+            lineHeight: '28px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+        'title-content-l': [
+          '18px',
+          {
+            lineHeight: '26px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+        'title-content-m': [
+          '16px',
+          {
+            lineHeight: '22px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+        'title-subtitle': [
+          '15px',
+          {
+            lineHeight: '21px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+        'title-content-s': [
+          '14px',
+          {
+            lineHeight: '20px',
+            letterSpacing: '-0.01em',
+            fontWeight: '600',
+          },
+        ],
+        'title-content-xs': [
+          '13px',
+          {
+            lineHeight: '19px',
             letterSpacing: '-0.01em',
             fontWeight: '600',
           },

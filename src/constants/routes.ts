@@ -13,7 +13,7 @@ export const ROUTES = {
     DO_NOT_DISTURB: '/mypage/settings/do-not-disturb',
     NOTIFICATIONS: '/mypage/notifications',
     RESERVATIONS: '/mypage/reservations',
-    RESERVATION_DETAIL: '/mypage/reservations/:reservationId',
+    RESERVATION_DETAIL: '/mypage/reservations/[id]',
   },
 } as const;
 

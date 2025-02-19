@@ -25,10 +25,13 @@ export interface ToggleSwitchProps {
 
   /* Check 상태 */
   checked?: boolean;
+
+  /** className */
+  className?: string;
 }
 
 const ToggleSwitch = React.forwardRef<boolean, ToggleSwitchProps>(
-  ({ type, disabled = false, toggleMutate, params = {}, checked = true }, ref) => {
+  ({ type, disabled = false, toggleMutate, params = {}, checked = true, className }, ref) => {
     const [clicked, setClicked] = useState(checked);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       setClicked(e.target.checked);
@@ -40,7 +43,7 @@ const ToggleSwitch = React.forwardRef<boolean, ToggleSwitchProps>(
     };
 
     return (
-      <div className="relative">
+      <div className={(cn('relative'), className)}>
         <input
           type="checkbox"
           role="switch"

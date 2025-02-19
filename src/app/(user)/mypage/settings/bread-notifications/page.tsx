@@ -6,16 +6,9 @@ import arrowLeft from '@/assets/icons/arrow-left-sub.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
-
-const EditBtn = () => {
-  return (
-    <button className="absolute right-5 top-[3.625rem]">
-      <span className={cn('w-[1.625rem] h-full text-right', 'text-body-m font-medium text-primary hover:opacity-70')}>
-        편집
-      </span>
-    </button>
-  );
-};
+import Stack from '@/components/common/stack/Stack';
+import BreadNotificationCard from '@/components/notifications/breadynotificationcard/BreadNotificationSettingCard';
+import { breadNotificationCardMockData } from '@/mocks/data/bakery';
 
 export default function Page() {
   const router = useRouter();
@@ -32,6 +25,23 @@ export default function Page() {
           <Image src={arrowLeft} width={20} height={20} alt="방해금지 모드 페이지 이동 버트" />
         </button>
       </section>
+      <section className={cn('flex flex-row items-start px-[1.875rem] py-5', 'w-full min-h-[673px] bg-white')}>
+        <Stack gap={20} divider={<div className="w-full h-[1px] bg-gray100"></div>}>
+          {breadNotificationCardMockData.map((data) => (
+            <BreadNotificationCard key={data.id} {...data} />
+          ))}
+        </Stack>
+      </section>
     </div>
   );
 }
+
+const EditBtn = () => {
+  return (
+    <button className="absolute right-5 top-[3.625rem]">
+      <span className={cn('w-[1.625rem] h-full text-right', 'text-body-m font-medium text-primary hover:opacity-70')}>
+        편집
+      </span>
+    </button>
+  );
+};

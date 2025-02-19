@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/utils/cn';
 import React, { ChangeEvent, useState } from 'react';
 
@@ -31,7 +33,7 @@ export interface ToggleSwitchProps {
 }
 
 const ToggleSwitch = React.forwardRef<boolean, ToggleSwitchProps>(
-  ({ type, disabled = false, toggleMutate, params = {}, checked = true, className }, ref) => {
+  ({ type, disabled = false, toggleMutate, params = {}, checked = false, className }, ref) => {
     const [clicked, setClicked] = useState(checked);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       setClicked(e.target.checked);

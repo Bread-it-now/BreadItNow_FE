@@ -1,7 +1,7 @@
 import { BakeryCardProps } from '@/components/bakerycard/BakeryCard';
 import bakery from '@/assets/images/bakery.png';
 import bread from '@/assets/images/bread.png';
-import { BreadNotificationCardProps } from '@/components/notifications/breadynotificationcard/BreadNotificationSettingCard';
+import { BreadNotificationSettingCardProps } from '@/components/notifications/breadnotificationsettingcard/BreadNotificationSettingCard';
 
 export const bakeryCardMockData: BakeryCardProps = {
   id: 1,
@@ -12,7 +12,7 @@ export const bakeryCardMockData: BakeryCardProps = {
   size: 'large',
 };
 
-export const breadNotificationCardMockData: BreadNotificationCardProps[] = [
+export const breadNotificationCardMockData: BreadNotificationSettingCardProps[] = [
   {
     id: 1,
     name: '크루아상',

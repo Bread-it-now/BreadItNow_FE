@@ -4,20 +4,20 @@ import { Bread } from '@/types/bakery';
 import Tag from '@/components/common/Tag';
 import ToggleSwitch from '@/components/common/toggleswitch/ToggleSwitch';
 
-export interface BreadNotificationCardProps
+export interface BreadNotificationSettingCardProps
   extends Pick<Bread, 'id' | 'name' | 'imgUrl' | 'bakeryName' | 'bakeryName' | 'releaseTimes'> {
   isDoNotDistubMode?: boolean;
   checked: boolean;
 }
 
-const BreadNotificationCard = ({
+const BreadNotificationSettingCard = ({
   name,
   imgUrl,
   bakeryName,
   releaseTimes,
   isDoNotDistubMode = false,
   checked,
-}: BreadNotificationCardProps) => {
+}: BreadNotificationSettingCardProps) => {
   return (
     <div className={cn('flex items-center gap-4 w-full h-[68px] bg-white')}>
       <Image className="h-full" src={imgUrl} width={68} height={68} alt="bread" />
@@ -46,4 +46,4 @@ const BreadNotificationCard = ({
   );
 };
 
-export default BreadNotificationCard;
+export default BreadNotificationSettingCard;

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import Stack from '@/components/common/stack/Stack';
-import BreadNotificationCard from '@/components/notifications/breadynotificationcard/BreadNotificationSettingCard';
+import BreadNotificationSettingCard from '@/components/notifications/breadnotificationsettingcard/BreadNotificationSettingCard';
 import { breadNotificationCardMockData } from '@/mocks/data/bakery';
 
 export default function Page() {
@@ -28,7 +28,7 @@ export default function Page() {
       <section className={cn('flex flex-row items-start px-[1.875rem] py-5', 'w-full min-h-[673px] bg-white')}>
         <Stack gap={20} divider={<div className="w-full h-[1px] bg-gray100"></div>}>
           {breadNotificationCardMockData.map((data) => (
-            <BreadNotificationCard key={data.id} {...data} />
+            <BreadNotificationSettingCard key={data.id} {...data} />
           ))}
         </Stack>
       </section>

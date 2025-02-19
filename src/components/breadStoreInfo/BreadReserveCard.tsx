@@ -3,6 +3,8 @@ import Image from "next/image";
 import Checkbox from "@/components/common/checkbox/Checkbox";
 import { useState, useEffect } from "react";
 import { comma } from "@/utils/comma";
+import Tag from "../common/Tag";
+import BellIcon from "../common/Icons/BellIcon";
 interface BreadReserveCardProps {
   url?: string;
   checked?: boolean;
@@ -29,7 +31,7 @@ function BreadReserveCard({
   };
 
   return (
-    <div className="flex gap-4 h-[109px]">
+    <div className="flex gap-4 border-b py-5 relative">
       <div className="min-w-[90px] w-[90px] h-[90px] relative shrink-0">
         <Image src={url} alt="bread" className="object-cover rounded-lg" fill />
         <div className="absolute top-2 left-2 z-10">
@@ -41,7 +43,17 @@ function BreadReserveCard({
         <div className="text-[13px] font-normal text-gray-500">{subText}</div>
         <div className="text-[13px] text-gray-700">{count}개 남음</div>
         <div className="text-sm">{comma(price) ? comma(price) : "0"}원</div>
+        <div className="flex gap-[2px]">
+          <Tag type="time" label="08:00" />
+          <Tag type="time" label="08:00" />
+          <Tag type="time" label="08:00" />
+        </div>
       </div>
+      <button className="absolute right-0 bottom-5 w-9 h-9 rounded-full bg-primary bg-opacity-10">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <BellIcon />
+        </div>
+      </button>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import bookmark from '@/assets/icons/bookmark.svg';
 import Link from 'next/link';
 
 export interface BakeryCardProps extends Pick<Bakery, 'id' | 'operatingStatus' | 'profileImgUrl' | 'name'> {
-  rank: number;
+  rank?: number;
   distance?: number;
   size?: 'normal' | 'large';
 }

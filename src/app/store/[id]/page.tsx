@@ -55,7 +55,7 @@ function Page() {
     }
   };
   return (
-    <div className="flex flex-col gap-[10px] ">
+    <div className="flex flex-col gap-[10px] overflow-y-scroll">
       <div className="h-[250px] rounded-b-2xl overflow-hidden">
         <ImageSlider images={images} />
       </div>

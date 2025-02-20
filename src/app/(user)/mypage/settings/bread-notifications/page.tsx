@@ -9,13 +9,15 @@ import { ROUTES } from '@/constants/routes';
 import Stack from '@/components/common/stack/Stack';
 import BreadNotificationSettingCard from '@/components/notifications/breadnotificationsettingcard/BreadNotificationSettingCard';
 import { breadNotificationCardMockData } from '@/mocks/data/bakery';
+import { SetStateAction, useState } from 'react';
 
 export default function Page() {
   const router = useRouter();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col gap-[0.625rem] bg-gray100 w-full h-full">
-      <EditBtn />
+      <EditBtn isEdit={isEdit} handleEdit={setIsEdit} />
       <section className={cn('flex items-center px-5 pt-6 pb-[1.875rem] gap-5', 'w-full rounded-b-2xl bg-white')}>
         <InfoField title="방해금지 모드" content="주중 • 오전 10:00 - 오후 06:00" />
         <button
@@ -28,7 +30,7 @@ export default function Page() {
       <section className={cn('flex flex-row items-start px-5 py-[1.875rem]', 'w-full min-h-[673px] bg-white')}>
         <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
           {breadNotificationCardMockData.map((data) => (
-            <BreadNotificationSettingCard key={data.id} {...data} />
+            <BreadNotificationSettingCard key={data.id} {...data} isEdit={isEdit} />
           ))}
         </Stack>
       </section>
@@ -36,11 +38,16 @@ export default function Page() {
   );
 }
 
-const EditBtn = () => {
+interface EditBtnProps {
+  isEdit: boolean;
+  handleEdit: React.Dispatch<SetStateAction<boolean>>;
+}
+
+const EditBtn = ({ isEdit, handleEdit }: EditBtnProps) => {
   return (
-    <button className="absolute right-5 top-[3.625rem]">
+    <button className="absolute right-5 top-[3.625rem]" onClick={() => handleEdit((prev) => !prev)}>
       <span className={cn('w-[1.625rem] h-full text-right', 'text-body-m font-medium text-primary hover:opacity-70')}>
-        편집
+        {isEdit ? '삭제' : '편집'}
       </span>
     </button>
   );

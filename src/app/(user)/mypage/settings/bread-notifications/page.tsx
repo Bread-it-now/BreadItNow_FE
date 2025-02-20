@@ -22,11 +22,11 @@ export default function Page() {
           className={cn('flex items-center justify-end gap-1', 'w-[37px] h-full', 'hover:opacity-70')}
           onClick={() => router.push(ROUTES.MYPAGE.DO_NOT_DISTURB)}>
           <span className={cn('w-full text-body-m text-gray500')}>켬</span>
-          <Image src={arrowLeft} width={20} height={20} alt="방해금지 모드 페이지 이동 버트" />
+          <Image src={arrowLeft} width={20} height={20} alt="방해금지 모드 페이지 이동 버튼" />
         </button>
       </section>
-      <section className={cn('flex flex-row items-start px-[1.875rem] py-5', 'w-full min-h-[673px] bg-white')}>
-        <Stack gap={20} divider={<div className="w-full h-[1px] bg-gray100"></div>}>
+      <section className={cn('flex flex-row items-start px-5 py-[1.875rem]', 'w-full min-h-[673px] bg-white')}>
+        <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
           {breadNotificationCardMockData.map((data) => (
             <BreadNotificationSettingCard key={data.id} {...data} />
           ))}

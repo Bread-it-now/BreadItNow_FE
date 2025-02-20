@@ -16,7 +16,7 @@ export default function Page() {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col gap-[0.625rem] bg-gray100 w-full h-full">
+    <>
       <EditBtn isEdit={isEdit} handleEdit={setIsEdit} />
       <section className={cn('flex items-center px-5 pt-6 pb-[1.875rem] gap-5', 'w-full rounded-b-2xl bg-white')}>
         <InfoField title="방해금지 모드" content="주중 • 오전 10:00 - 오후 06:00" />
@@ -34,7 +34,7 @@ export default function Page() {
           ))}
         </Stack>
       </section>
-    </div>
+    </>
   );
 }
 

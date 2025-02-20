@@ -5,7 +5,7 @@ import React, { ChangeEvent, useState } from 'react';
 
 export interface ToggleSwitchProps {
   /** 설정 타입 */
-  type: 'BREAD_NOTIFICATION' | 'DO_NOT_DISTURB' | 'RESERVATION_NOTIFICATION' | 'PUSH_NOTIFICATION';
+  type: 'BREAD_NOTIFICATION' | 'DO_NOT_DISTURB' | 'RESERVATION_NOTIFICATION' | 'PUSH_NOTIFICATION' | 'APP_NOTIFICATION';
 
   /** 토글 시 실행할 로직이 포함된 mutate 함수 */
   toggleMutate?: ({
@@ -13,7 +13,12 @@ export interface ToggleSwitchProps {
     params,
     active,
   }: {
-    type: 'BREAD_NOTIFICATION' | 'DO_NOT_DISTURB' | 'RESERVATION_NOTIFICATION' | 'PUSH_NOTIFICATION';
+    type:
+      | 'BREAD_NOTIFICATION'
+      | 'DO_NOT_DISTURB'
+      | 'RESERVATION_NOTIFICATION'
+      | 'PUSH_NOTIFICATION'
+      | 'APP_NOTIFICATION';
     params: object;
     active: boolean;
   }) => void;

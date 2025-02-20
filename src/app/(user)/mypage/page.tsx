@@ -10,6 +10,8 @@ export default function Page() {
       <br />
       <Link href={ROUTES.MYPAGE.BREAD_NOTIFICATIONS_SETTING}>빵 알림 설정 페이지</Link>
       <br />
+      <Link href={ROUTES.MYPAGE.APP_NOTIFICATIONS_SETTING}>알림 설정 페이지</Link>
+      <br />
       <Link href={ROUTES.MYPAGE.PROFILE_SETTING}>프로필 설정 페이지</Link>
       <br />
       <Link href={ROUTES.MYPAGE.NOTIFICATIONS}>알림 내역 페이지</Link>

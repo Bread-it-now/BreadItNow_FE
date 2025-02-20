@@ -20,7 +20,7 @@ export const breadNotificationCardMockData: BreadNotificationSettingCardProps[] 
     bakeryName: '파리바게뜨',
     releaseTimes: ['07:00', '09:30', '12:00'],
     isDoNotDistubMode: false,
-    checked: true,
+    isNotificationOn: true,
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ export const breadNotificationCardMockData: BreadNotificationSettingCardProps[] 
     bakeryName: '파리바게뜨',
     releaseTimes: ['07:00', '09:30', '12:00'],
     isDoNotDistubMode: false,
-    checked: false,
+    isNotificationOn: false,
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ export const breadNotificationCardMockData: BreadNotificationSettingCardProps[] 
     bakeryName: '파리바게뜨',
     releaseTimes: ['07:00', '09:30', '12:00'],
     isDoNotDistubMode: true,
-    checked: false,
+    isNotificationOn: false,
   },
   {
     id: 4,
@@ -47,7 +47,7 @@ export const breadNotificationCardMockData: BreadNotificationSettingCardProps[] 
     bakeryName: '파리바게뜨',
     releaseTimes: ['07:00', '09:30', '12:00'],
     isDoNotDistubMode: true,
-    checked: false,
+    isNotificationOn: false,
   },
   {
     id: 5,
@@ -56,7 +56,7 @@ export const breadNotificationCardMockData: BreadNotificationSettingCardProps[] 
     bakeryName: '파리바게뜨',
     releaseTimes: ['07:00', '09:30', '12:00'],
     isDoNotDistubMode: true,
-    checked: false,
+    isNotificationOn: false,
   },
 
   {
@@ -66,6 +66,6 @@ export const breadNotificationCardMockData: BreadNotificationSettingCardProps[] 
     bakeryName: '파리바게뜨',
     releaseTimes: ['07:00', '09:30', '12:00'],
     isDoNotDistubMode: true,
-    checked: false,
+    isNotificationOn: false,
   },
 ];

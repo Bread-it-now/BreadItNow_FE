@@ -7,7 +7,7 @@ import ToggleSwitch from '@/components/common/toggleswitch/ToggleSwitch';
 export interface BreadNotificationSettingCardProps
   extends Pick<Bread, 'id' | 'name' | 'imgUrl' | 'bakeryName' | 'bakeryName' | 'releaseTimes'> {
   isDoNotDistubMode?: boolean;
-  checked: boolean;
+  isNotificationOn: boolean;
 }
 
 const BreadNotificationSettingCard = ({
@@ -16,7 +16,7 @@ const BreadNotificationSettingCard = ({
   bakeryName,
   releaseTimes,
   isDoNotDistubMode = false,
-  checked,
+  isNotificationOn,
 }: BreadNotificationSettingCardProps) => {
   return (
     <div className={cn('flex items-center gap-4 w-full h-[68px] bg-white')}>
@@ -39,7 +39,7 @@ const BreadNotificationSettingCard = ({
           <ToggleSwitch
             className={`${isDoNotDistubMode && 'invisible'} `}
             type="BREAD_NOTIFICATION"
-            checked={checked}
+            checked={isNotificationOn}
             disabled={isDoNotDistubMode}
           />
         }

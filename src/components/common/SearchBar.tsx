@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { forwardRef, useState } from "react";
-import SearchIcon from "@/components/common/Icons/SearchIcon";
-import CloseIcon from "@/components/common/Icons/CloseIcon";
+import { forwardRef, useState } from 'react';
+import SearchIcon from '@/components/common/Icons/SearchIcon';
+import CloseIcon from '@/components/common/Icons/CloseIcon';
 
 interface SearchInputProps {
   name: string;
@@ -26,71 +26,62 @@ interface SearchInputProps {
  * @param onClear - X 버튼 클릭 시 검색어를 초기화하는 함수 (optional)
  */
 
-const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(
-  function SearchBar(
-    {
-      name,
-      placeholder = "검색...",
-      width = "w-full",
-      height = "h-[40px]",
-      onChange,
-      onEnter,
-      onClear,
-      value,
-    }: SearchInputProps,
-    ref,
-  ) {
-    const [isFocus, setIsFocus] = useState(false);
+const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function SearchBar(
+  {
+    name,
+    placeholder = '검색...',
+    width = 'w-full',
+    height = 'h-[40px]',
+    onChange,
+    onEnter,
+    onClear,
+    value,
+  }: SearchInputProps,
+  ref,
+) {
+  const [isFocus, setIsFocus] = useState(false);
 
-    const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter" && onEnter) {
-        onEnter();
-      }
-    };
+  const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && onEnter) {
+      onEnter();
+    }
+  };
 
-    return (
-      <label
-        className={`flex items-center rounded-[8px] bg-white transition-all px-4 shadow-sm 
+  return (
+    <label
+      className={`flex items-center rounded-[8px] bg-white transition-all px-4 shadow-sm 
         ${width} ${height} ${
-          isFocus
-            ? "outline outline-1 outline-gray400 text-black"
-            : "outline outline-1 outline-gray200 text-gray400"
+          isFocus ? 'outline outline-1 outline-gray400 text-black' : 'outline outline-1 outline-gray200 text-gray400'
         }`}
-        htmlFor={name}
-      >
-        <input
-          ref={ref}
-          name={name}
-          value={value}
-          placeholder={placeholder}
-          onChange={onChange}
-          onKeyDown={handlePressEnter}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          className="flex-1 bg-transparent border-none outline-none px-0 text-black"
-        />
+      htmlFor={name}>
+      <input
+        ref={ref}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+        onKeyDown={handlePressEnter}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        className="flex-1 bg-transparent border-none outline-none px-0 text-black"
+      />
 
+      <div className="w-5 h-5 flex items-center justify-center mr-2">
         {value && (
           <button
             type="button"
             onClick={onClear}
-            className="flex items-center justify-center w-5 h-5 p-1.5 bg-gray-100 rounded-full mr-2"
-          >
+            className="flex items-center justify-center w-5 h-5 p-1.5 bg-gray-100 rounded-full mr-2">
             <CloseIcon color="#808284" />
           </button>
         )}
+      </div>
 
-        <button
-          type="button"
-          onClick={onEnter}
-          className="flex items-center justify-center"
-          aria-label="검색"
-        >
-          <SearchIcon color={"#1C1E20"} />
-        </button>
-      </label>
-    );
-  },
-);
+      <button type="button" onClick={onEnter} className="flex items-center justify-center" aria-label="검색">
+        <SearchIcon color={'#1C1E20'} />
+      </button>
+    </label>
+  );
+});
 
 export default SearchBar;

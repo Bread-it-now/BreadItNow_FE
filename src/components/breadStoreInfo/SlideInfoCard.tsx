@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
-
+import { useState, useMemo } from "react";
+import Image from "next/image";
+import ArrowUp from "@/assets/icons/arrow-up.svg";
+import ArrowDown from "@/assets/icons/arrow-down.svg";
 interface SlideInfoCardProps {
   title: string;
   contentComponent: React.ReactNode;
@@ -9,7 +11,9 @@ interface SlideInfoCardProps {
 
 function SlideInfoCard({ title, contentComponent }: SlideInfoCardProps) {
   const [visible, setVisible] = useState<boolean>(false);
-
+  const arrowIcon = useMemo(() => {
+    return visible ? ArrowUp : ArrowDown;
+  }, [visible]);
   const onClick = () => setVisible(!visible);
   return (
     <article className="bg-white rounded-2xl px-5 py-[30px]">
@@ -17,7 +21,7 @@ function SlideInfoCard({ title, contentComponent }: SlideInfoCardProps) {
         <div className="flex justify-between">
           <div className="font-semibold text-black text-md">{title}</div>
           <button onClick={onClick} className="ml-auto">
-            검색
+            <Image src={arrowIcon} alt="arrow-up" />
           </button>
         </div>
         <div

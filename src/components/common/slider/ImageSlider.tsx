@@ -69,8 +69,8 @@ const ImageSlider = ({
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}
       >
-        {images.map((image) => (
-          <div key={image} className="min-w-full h-full">
+        {images.map((image, index) => (
+          <div key={`slider-${index}`} className="min-w-full h-full">
             <div
               className="w-full h-full bg-center bg-cover"
               style={{ backgroundImage: `url(${image})` }}

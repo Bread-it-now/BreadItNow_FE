@@ -17,7 +17,7 @@ export default function RoundTab<T extends string>({
   onTabChange,
 }: RoundTabProps<T>) {
   return (
-    <div className="w-full h-[34px] flex items-center gap-1.5 overflow-x-auto px-5">
+    <div className="w-full h-[34px] flex items-center gap-1.5 overflow-x-auto">
       {categories.map(({ key, label }) => (
         <div
           key={key}

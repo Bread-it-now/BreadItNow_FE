@@ -8,6 +8,11 @@ import { ResservationInfo } from '@/mocks/data/reservation';
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<ReservationStatus | 'ALL'>('ALL');
+  const selectedReservationCards = ResservationInfo.filter((reservation) => {
+    if (selectedCategory === 'ALL') return true;
+    return reservation.status === selectedCategory;
+  });
+
   return (
     <>
       <section className="flex items-center pl-5 py-[0.625rem] g-[0.375rem] h-[55px] overflow-y-auto bg-white border-b-[1px] border-b-gray100">
@@ -27,10 +32,10 @@ export default function Page() {
       </section>
       <section className="flex flex-col justify-center items-start gap-4 px-5 pt-6 pb-[50px] w-full">
         <p className="flex justify-start w-full text-title-content-s font-normal text-gray900">
-          총&nbsp;<span className="text-primary"> 99</span>개
+          총&nbsp;<span className="text-primary"> {selectedReservationCards.length}</span>개
         </p>
         <div className="flex flex-col items-start gap-[0.625rem] w-full">
-          {ResservationInfo.map((reservation) => (
+          {selectedReservationCards.map((reservation) => (
             <ReservationCard key={reservation.date} {...reservation} />
           ))}
         </div>

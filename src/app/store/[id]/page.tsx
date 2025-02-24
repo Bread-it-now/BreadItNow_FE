@@ -20,6 +20,7 @@ interface BreadInfo {
   count: number;
   existReserveTime: boolean;
 }
+
 function BreadStoreImages({ images }: { images: string[] }) {
   //TODO... 이미지 마지막 이미지를 클릭했을 때 어떤 로직이 필요한지..?
   return (
@@ -154,10 +155,7 @@ function Page() {
     "https://placehold.co/600x400/png",
     "https://placehold.co/600x1000/png",
   ];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [checkedProducts, setCheckedProducts] = useState<BreadInfo[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onCheckProduct = (item: unknown) => {};
+  const [checkedProducts, setCheckProducts] = useState<BreadInfo[]>([]);
   return (
     <div className="flex flex-col gap-[10px] overflow-y-scroll">
       <div className="h-[250px] relative rounded-b-2xl overflow-hidden">
@@ -200,7 +198,7 @@ function Page() {
         <ReservationBottonSheet
           reserveStep={reserveStep}
           checkedProducts={checkedProducts}
-          setCheckedProducts={onCheckProduct}
+          setCheckProducts={setCheckProducts}
         />
       </BottomSheet>
       <Footer onClick={open} />

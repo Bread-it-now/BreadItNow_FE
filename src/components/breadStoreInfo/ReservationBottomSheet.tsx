@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import RoundTab from "../common/tabs/RoundTab";
+import BreadReserveCard from "./BreadReserveCard";
 // import BreadReserveCard from "@/components/breadStoreInfo/BreadReserveCard";
 interface MenuCategoryProps {
   key: string;
@@ -15,15 +16,32 @@ interface BreadInfo {
   existReserveTime: boolean;
 }
 
-// const breadInfo =   {
-//   url: "https://placehold.co/300x400/png",
-//   name: "크루아상",
-//   subText: "1000원",
-//   price: 1000,
-//   count: 1,
-//   existReserveTime: true
-// }
-// const breadList = [breadInfo, breadInfo, breadInfo, breadInfo];
+const breadList: BreadInfo[] = [
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "소금빵",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "휘낭시에",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "마들렌",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+];
 const menuCategories: MenuCategoryProps[] = [
   {
     key: "1",
@@ -37,12 +55,11 @@ const menuCategories: MenuCategoryProps[] = [
 function ReservationBottonSheet({
   reserveStep,
   checkedProducts,
+  setCheckProducts,
 }: {
   reserveStep: number;
-
   checkedProducts: BreadInfo[];
-
-  setCheckedProducts: (item: BreadInfo) => void;
+  setCheckProducts: (item: BreadInfo[]) => void;
 }) {
   const [category, setCategory] = useState<string>(menuCategories[0].key);
   const onTabChange = (key: string) => {
@@ -52,12 +69,18 @@ function ReservationBottonSheet({
     }
   };
 
-  // const isCheckedProduct = (id:string):boolean => {
-  //   return !!checkedProducts.find((item) => item?.url === id);
-  // }
+  const setCheckProductsisCheckedProduct = (breadInfo: BreadInfo): void => {
+    if (checkedProducts.find((product) => product.name === breadInfo.name)) {
+      setCheckProducts(
+        checkedProducts.filter((product) => product.name !== breadInfo.name),
+      );
+    } else {
+      setCheckProducts([...checkedProducts, breadInfo]);
+    }
+  };
 
   return (
-    <div className="h-[630px] flex flex-col overflow-y-scroll">
+    <div className="h-[630px] flex flex-col ">
       {reserveStep === 1 ? (
         <>
           <RoundTab
@@ -65,26 +88,34 @@ function ReservationBottonSheet({
             activeTab={category}
             onTabChange={onTabChange}
           />
-          <div className="bg-white  overflow-y-scroll h-[500px]">
-            {/* {
-              breadList.map((bread, index) => {
-                return <BreadReserveCard isChecked={isCheckedProduct(bread.url)} setIsChecked={setCheckedProducts}  {...bread} key={`brad-${index}`} />
-              })
-            } */}
+          <div className="">
+            {breadList.map((bread, index) => (
+              <div key={`bread-${index}`}>
+                <BreadReserveCard
+                  isChecked={
+                    checkedProducts.find(
+                      (product) => product.name === bread.name,
+                    )
+                      ? true
+                      : false
+                  }
+                  setIsChecked={() => setCheckProductsisCheckedProduct(bread)}
+                  {...bread}
+                />
+              </div>
+            ))}
           </div>
         </>
       ) : (
         <>
-          <div className="bg-white  overflow-y-scroll h-[500px]">
-            {/* {
-              breadList.map((bread, index) => {
-                return <BreadReserveCard isChecked={isCheckedProduct(bread.url)} setIsChecked={setCheckedProducts} {...bread} key={`brad-${index}`} />
-              })
-            } */}
+          <div className="bg-white  overflow-y-scroll">
+            {checkedProducts.map((bread, index) => {
+              return <BreadReserveCard {...bread} key={`brad-${index}`} />;
+            })}
             <div className="mt-[30px] mb-[56px] bg-gray-50 font-semibold">
               <div className="px-5 py-[23px] flex justify-between items-center text-black">
                 <div>
-                  총{" "}
+                  총
                   <span className="text-primary">{checkedProducts.length}</span>
                   건 상품 금액
                 </div>

@@ -32,18 +32,13 @@ function BreadReserveCard({
   price,
   count,
   type = "select",
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setIsChecked = (value: string) => {},
+  setIsChecked = () => {},
   isChecked = false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   existReserveTime = false,
 }: BreadReserveCardProps) {
-  // useEffect(() => {
-  //   setIsChecked(checked);
-  // }, [checked, setIsChecked]);
-
-  const onChange = () => {
-    // setIsChecked(id);
+  const onCheckboxChange = () => {
+    setIsChecked(name);
   };
 
   return (
@@ -57,7 +52,11 @@ function BreadReserveCard({
         />
         {type === "select" ? (
           <div className="absolute top-2 left-2 z-10">
-            <Checkbox id="checkbox" checked={isChecked} onChange={onChange} />
+            <Checkbox
+              id={name}
+              checked={isChecked}
+              onChange={onCheckboxChange}
+            />
           </div>
         ) : (
           <div className="absolute right-2 bottom-2 z-10">

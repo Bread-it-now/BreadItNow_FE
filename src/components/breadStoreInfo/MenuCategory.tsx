@@ -25,7 +25,48 @@ const menuCategories: MenuCategoryProps[] = [
     label: "기타",
   },
 ];
-
+const breadList = [
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "소금빵",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "휘낭시에",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "마들렌",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "식빵",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+  {
+    url: "https://placehold.co/300x400/png",
+    name: "크루아상",
+    subText: "1000원",
+    price: 1000,
+    count: 1,
+    existReserveTime: true,
+  },
+];
 const MemoizedMenuList = memo(
   ({
     category,
@@ -36,7 +77,12 @@ const MemoizedMenuList = memo(
     breadMenu: BreadReserveCardProps[];
     otherMenu: BreadReserveCardProps[];
   }) => {
-    return <MenuList menuList={category === "1" ? breadMenu : otherMenu} />;
+    return (
+      <MenuList
+        menuList={category === "1" ? breadMenu : otherMenu}
+        title={category === "1" ? "빵류" : "기타"}
+      />
+    );
   },
 );
 
@@ -59,7 +105,11 @@ function MenuCategory() {
           onTabChange={onTabChange}
         />
       </div>
-      <MemoizedMenuList category={category} breadMenu={[]} otherMenu={[]} />
+      <MemoizedMenuList
+        category={category}
+        breadMenu={breadList}
+        otherMenu={[]}
+      />
     </>
   );
 }

@@ -3,10 +3,13 @@
 import ToggleSwitch from '@/components/common/toggleswitch/ToggleSwitch';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
+import DayPicker from '@/components/daypicker/DayPicker';
+import { Day } from '@/types/date';
 
 export default function Page() {
   const { isOpen: isStartTimePickerOpen, dispatch: startTimePickerDispatch } = useBaseBottomSheet();
   const { isOpen: isEndTimePickerOpen, dispatch: endTimePickerDispatch } = useBaseBottomSheet();
+  const initDays: Day[] = [2, 3, 4, 5, 6];
   return (
     <>
       <section>
@@ -41,7 +44,10 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <section></section>
+      <section className="flex flex-col items-start px-5 py-[1.875rem] gap-5 w-full bg-white rounded-2xl">
+        <p className="text-title-content-m text-gray900">요일 설정</p>
+        <DayPicker initialDays={initDays} />
+      </section>
       <BottomSheet
         isOpen={isStartTimePickerOpen}
         title={'Time Picker'}

@@ -1,8 +1,12 @@
 'use client';
 
 import ToggleSwitch from '@/components/common/toggleswitch/ToggleSwitch';
+import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
+import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 
 export default function Page() {
+  const { isOpen: isStartTimePickerOpen, dispatch: startTimePickerDispatch } = useBaseBottomSheet();
+  const { isOpen: isEndTimePickerOpen, dispatch: endTimePickerDispatch } = useBaseBottomSheet();
   return (
     <>
       <section>
@@ -21,19 +25,41 @@ export default function Page() {
         <div className="flex flex-col items-start gap-[0.625rem] w-full">
           <div className="flex justify-between items-center w-full h-[33px]">
             <span className="text-title-content-s font-medium">시작시간</span>
-            <button className="flex items-center justify-center px-[0.375rem] py-[0.75rem] rounded-lg w-[90px] h-full gap-2 bg-gray50">
+            <button
+              className="flex items-center justify-center px-[0.375rem] py-[0.75rem] rounded-lg w-[90px] h-full gap-2 bg-gray50"
+              onClick={() => startTimePickerDispatch.open()}>
               <span className="text-body-m text-gray900 font-normal">오전 10:00</span>
             </button>
           </div>
           <div className="flex justify-between items-center w-full h-[33px]">
             <span className="text-title-content-s font-medium">종료시간</span>
-            <button className="flex items-center justify-center px-[0.375rem] py-[0.75rem] rounded-lg w-[90px] h-full gap-2 bg-gray50 ">
-              <span className="text-body-m text-gray900 font-normal">오전 10:00</span>
+            <button
+              className="flex items-center justify-center px-[0.375rem] py-[0.75rem] rounded-lg w-[90px] h-full gap-2 bg-gray50"
+              onClick={() => endTimePickerDispatch.open()}>
+              <span className="text-body-m text-gray900 font-normal">오후 18:00</span>
             </button>
           </div>
         </div>
       </section>
       <section></section>
+      <BottomSheet
+        isOpen={isStartTimePickerOpen}
+        title={'Time Picker'}
+        cancelText="취소"
+        confirmText="완료"
+        onClose={startTimePickerDispatch.close}
+        onConfirm={() => {}}>
+        <div className="flex flex-col justify-end items-start py-5 gap-6 w-full h-[198px]"></div>
+      </BottomSheet>
+      <BottomSheet
+        isOpen={isEndTimePickerOpen}
+        title={'Time Picker'}
+        cancelText="취소"
+        confirmText="완료"
+        onClose={endTimePickerDispatch.close}
+        onConfirm={() => {}}>
+        <div className="flex flex-col justify-end items-start py-5 gap-6 w-full h-[198px]"></div>
+      </BottomSheet>
     </>
   );
 }

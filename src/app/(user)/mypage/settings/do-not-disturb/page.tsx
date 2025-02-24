@@ -5,11 +5,13 @@ import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import DayPicker from '@/components/daypicker/DayPicker';
 import { Day } from '@/types/date';
+import Button from '@/components/button/Button';
 
 export default function Page() {
   const { isOpen: isStartTimePickerOpen, dispatch: startTimePickerDispatch } = useBaseBottomSheet();
   const { isOpen: isEndTimePickerOpen, dispatch: endTimePickerDispatch } = useBaseBottomSheet();
   const initDays: Day[] = [2, 3, 4, 5, 6];
+
   return (
     <>
       <section>
@@ -48,6 +50,12 @@ export default function Page() {
         <p className="text-title-content-m text-gray900">요일 설정</p>
         <DayPicker initialDays={initDays} />
       </section>
+      <section className="absolute left-0 bottom-0 p-5 w-full h-[92px] bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)] z-10">
+        <Button variant="primary" fullWidth onClick={() => {}}>
+          저장
+        </Button>
+      </section>
+
       <BottomSheet
         isOpen={isStartTimePickerOpen}
         title={'Time Picker'}

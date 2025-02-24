@@ -7,7 +7,7 @@ import Checkbox from '@/components/common/checkbox/Checkbox';
 import { useId, useState } from 'react';
 
 export interface BreadNotificationSettingCardProps
-  extends Pick<Bread, 'id' | 'name' | 'imgUrl' | 'bakeryName' | 'bakeryName' | 'releaseTimes'> {
+  extends Pick<Bread, 'id' | 'name' | 'imgUrl' | 'bakeryName' | 'releaseTimes'> {
   isNotificationOn: boolean;
   isEdit: boolean;
 }

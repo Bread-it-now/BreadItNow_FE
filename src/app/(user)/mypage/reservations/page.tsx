@@ -1,7 +1,10 @@
 'use client';
+
 import RoundTab from '@/components/common/tabs/RoundTab';
 import { ReservationStatus } from '@/types/bakery';
+import ReservationCard from '@/components/reservation/ReservationCard';
 import { useState } from 'react';
+import { ResservationInfo } from '@/mocks/data/reservation';
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<ReservationStatus | 'ALL'>('ALL');
@@ -13,7 +16,7 @@ export default function Page() {
             { key: 'ALL', label: '전체' },
             { key: 'PENDING', label: '예약 대기' },
             { key: 'ACCEPTED', label: '예약 승인' },
-            { key: 'PARTIALLY_APPROVED', label: '예약 부분 승인' },
+            { key: 'PARTIALLY_ACCEPTED', label: '예약 부분 승인' },
             { key: 'CANCELED', label: '예약 취소' },
             { key: 'COMPLETED', label: '결제 완료' },
           ]}
@@ -21,6 +24,16 @@ export default function Page() {
           onTabChange={setSelectedCategory}
           className="px-0 py-0"
         />
+      </section>
+      <section className="flex flex-col justify-center items-start gap-4 px-5 pt-6 pb-[50px] w-full">
+        <p className="flex justify-start w-full text-title-content-s font-normal text-gray900">
+          총&nbsp;<span className="text-primary"> 99</span>개
+        </p>
+        <div className="flex flex-col items-start gap-[0.625rem] w-full">
+          {ResservationInfo.map((reservation) => (
+            <ReservationCard key={reservation.date} {...reservation} />
+          ))}
+        </div>
       </section>
     </>
   );

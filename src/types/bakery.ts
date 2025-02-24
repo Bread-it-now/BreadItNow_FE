@@ -35,4 +35,4 @@ export interface Bread {
   isActive: boolean;
 }
 
-export type ReservationStatus = 'PENDING' | 'ACCEPTED' | 'PARTIALLY_APPROVED' | 'CANCELED' | 'COMPLETED';
+export type ReservationStatus = 'PENDING' | 'ACCEPTED' | 'PARTIALLY_ACCEPTED' | 'CANCELED' | 'COMPLETED';

@@ -3,9 +3,9 @@ export type NotificationType = 'ALERT' | 'RESERVATION';
 export interface Notification {
   notificationId: number;
   bakeryId: number;
-  prooductId: number;
+  productId: number;
   type: NotificationType;
   content: string;
   isRead: boolean;
-  creatdAt: string;
+  createAt: string;
 }

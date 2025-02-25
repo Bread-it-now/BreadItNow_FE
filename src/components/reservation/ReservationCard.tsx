@@ -3,6 +3,11 @@
 import { ReservationStatus, Reservation } from '@/types/reservation';
 import Image from 'next/image';
 import { comma } from '@/utils/comma';
+import { getDay, getDate, getTime } from '@/utils/date';
+
+const getPickupDeadlineFormat = (pickupDeadline: string) => {
+  return getDate(pickupDeadline) + `(${getDay(pickupDeadline)}) ` + getTime(pickupDeadline);
+};
 
 const RESERVATION_STATUS: Record<ReservationStatus, string> = {
   WAITING: '예약 대기',
@@ -38,7 +43,7 @@ const ReservationCard = ({
         <p className="w-full text-title-content-m text-gray900">{RESERVATION_STATUS[status]}</p>
         <div className="flex justify-end items-center gap-[0.375rem] w-full h-full text-title-content-xs font-normal text-gray500">
           {reservationNumber && <p className="w-full text-nowrap">예약번호 {reservationNumber} •</p>}
-          <p>{reservationDate}</p>
+          <p>{getDate(reservationDate)}</p>
         </div>
       </div>
       <div className="flex items-center gap-4 w-full h-[68px]">
@@ -63,7 +68,13 @@ const ReservationCard = ({
           {(status === 'APPROVED' || status === 'PARTIALLY_APPROVED') && (
             <span className="font-semibold text-primary">픽업일시</span>
           )}
-          <span>{status === 'CANCELED' ? cancelDetail : pickupDeadline}</span>
+          <span>
+            {status === 'CANCELED'
+              ? cancelDetail
+              : pickupDeadline !== undefined
+                ? getPickupDeadlineFormat(pickupDeadline)
+                : ''}
+          </span>
         </div>
       )}
     </div>

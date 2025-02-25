@@ -7,11 +7,11 @@ import { getDay, getDate, getTime } from '@/utils/date';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
 
-const getPickupDeadlineFormat = (pickupDeadline: string) => {
+export const getPickupDeadlineFormat = (pickupDeadline: string) => {
   return getDate(pickupDeadline) + `(${getDay(pickupDeadline)}) ` + getTime(pickupDeadline);
 };
 
-const RESERVATION_STATUS: Record<ReservationStatus, string> = {
+export const RESERVATION_STATUS: Record<ReservationStatus, string> = {
   WAITING: '예약 대기',
   APPROVED: '예약 승인',
   PARTIALLY_APPROVED: '예약 부분 승인',

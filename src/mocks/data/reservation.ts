@@ -49,6 +49,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 503,
     reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'XD24DFV',
     status: 'CANCELED',
     bakeryId: 4,
     bakeryName: '파리바게뜨',
@@ -60,6 +61,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 504,
     reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'XD24DFV',
     status: 'CANCELED',
     bakeryId: 5,
     bakeryName: '파리바게뜨',
@@ -71,6 +73,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 505,
     reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'XD24DFV',
     status: 'CANCELED',
     bakeryId: 6,
     bakeryName: '파리바게뜨',
@@ -151,7 +154,7 @@ export const reservationItems: ReservationItem[] = [
   },
 ];
 
-export const ResservationDetails: ReservationDetail[] = [
+export const reservationDetails: ReservationDetail[] = [
   {
     bakery: {
       name: '파리바게뜨',
@@ -165,7 +168,7 @@ export const ResservationDetails: ReservationDetail[] = [
       reservationDate: '2025-02-01T10:00:00Z',
       status: 'WAITING',
       totalPrice: 10000,
-      reservationItems: [...reservationItems.slice(2)],
+      reservationItems: [...reservationItems],
     },
   },
   {
@@ -200,7 +203,7 @@ export const ResservationDetails: ReservationDetail[] = [
       reservationNumber: 'XD24DFV',
       status: 'PARTIALLY_APPROVED',
       totalPrice: 30000,
-      reservationItems: [...reservationItems.slice(6)],
+      reservationItems: [...reservationItems],
       pickupDeadline: '2025-02-01T10:30:00Z',
     },
   },
@@ -215,10 +218,10 @@ export const ResservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 503,
       reservationDate: '2025-02-01T10:00:00Z',
+      reservationNumber: 'XD24DFV',
       status: 'CANCELED',
       totalPrice: 40000,
-      reservationItems: [...reservationItems.slice(6)],
-
+      reservationItems: [...reservationItems],
       cancelDetail: '픽업 기한 내 미수령으로 예약 취소',
     },
   },
@@ -233,10 +236,10 @@ export const ResservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 504,
       reservationDate: '2025-02-01T10:00:00Z',
+      reservationNumber: 'XD24DFV',
       status: 'CANCELED',
       totalPrice: 50000,
-      reservationItems: [...reservationItems.slice(6)],
-
+      reservationItems: [...reservationItems],
       cancelDetail: '판매자 사정으로 예약 취소',
     },
   },
@@ -251,9 +254,10 @@ export const ResservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 505,
       reservationDate: '2025-02-01T10:00:00Z',
+      reservationNumber: 'XD24DFV',
       status: 'CANCELED',
       totalPrice: 60000,
-      reservationItems: [...reservationItems.slice(6)],
+      reservationItems: [...reservationItems],
       cancelDetail: '고객 요청으로 예약 취소',
     },
   },
@@ -271,7 +275,7 @@ export const ResservationDetails: ReservationDetail[] = [
       reservationNumber: 'XD24DFV',
       status: 'PAYMENT_COMPLETED',
       totalPrice: 70000,
-      reservationItems: [...reservationItems.slice(6)],
+      reservationItems: [...reservationItems],
     },
   },
 ];

@@ -21,7 +21,7 @@ const RESERVATION_STATUS: Record<ReservationStatus, string> = {
 
 export interface ReservationCardProps extends Reservation {
   /** 예약 빵 내역 */
-  reservedBreads: string[];
+  reservationItemsNames: string[];
   /** 빵집 이미지 */
   imgUrl: string;
   /** 취소 상세 이유 */
@@ -34,7 +34,7 @@ const ReservationCard = ({
   reservationNumber,
   status,
   bakeryName,
-  reservedBreads,
+  reservationItemsNames,
   totalPrice,
   pickupDeadline,
   cancelDetail,
@@ -59,9 +59,9 @@ const ReservationCard = ({
           <div className="flex flex-col items-start gap-[0.125rem] w-full">
             <p className="w-full text-title-content-xs font-normal text-gray700">{bakeryName}</p>
             <p className="w-full text-title-content-s text-gray900 truncate">
-              {reservedBreads.length === 1
-                ? reservedBreads[0]
-                : `${reservedBreads[0]} 외 ${reservedBreads.length - 1}건`}
+              {reservationItemsNames.length === 1
+                ? reservationItemsNames[0]
+                : `${reservationItemsNames[0]} 외 ${reservationItemsNames.length - 1}건`}
             </p>
           </div>
           <p className="text-title-content-s font-normal text-gray900">{comma(totalPrice)}원</p>

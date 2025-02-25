@@ -4,6 +4,8 @@ import { ReservationStatus, Reservation } from '@/types/reservation';
 import Image from 'next/image';
 import { comma } from '@/utils/comma';
 import { getDay, getDate, getTime } from '@/utils/date';
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes';
 
 const getPickupDeadlineFormat = (pickupDeadline: string) => {
   return getDate(pickupDeadline) + `(${getDay(pickupDeadline)}) ` + getTime(pickupDeadline);
@@ -27,6 +29,7 @@ export interface ReservationCardProps extends Reservation {
 }
 
 const ReservationCard = ({
+  reservationId,
   reservationDate,
   reservationNumber,
   status,
@@ -38,7 +41,9 @@ const ReservationCard = ({
   imgUrl,
 }: ReservationCardProps) => {
   return (
-    <div className="flex flex-col items-start p-6 gap-4 w-full bg-white rounded-2xl">
+    <Link
+      href={`${ROUTES.MYPAGE.RESERVATIONS}/${reservationId}`}
+      className="flex flex-col items-start p-6 gap-4 w-full bg-white rounded-2xl">
       <div className="flex items-center gap-5 w-full h-[22px]">
         <p className="w-full text-title-content-m text-gray900">{RESERVATION_STATUS[status]}</p>
         <div className="flex justify-end items-center gap-[0.375rem] w-full h-full text-title-content-xs font-normal text-gray500">
@@ -77,7 +82,7 @@ const ReservationCard = ({
           </span>
         </div>
       )}
-    </div>
+    </Link>
   );
 };
 

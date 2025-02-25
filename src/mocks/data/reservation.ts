@@ -1,5 +1,7 @@
 import { ReservationCardProps } from '@/components/reservation/ReservationCard';
+import { ReservationDetail, ReservationItem } from '@/types/reservation';
 import bread from '@/assets/images/bread.png';
+import bakery from '@/assets/images/bakery.png';
 
 export const ResservationInfo: ReservationCardProps[] = [
   {
@@ -10,7 +12,7 @@ export const ResservationInfo: ReservationCardProps[] = [
     bakeryName: '파리바게뜨',
     totalPrice: 10000,
     reservationItemsNames: ['크루아상', '바게트'],
-    imgUrl: bread,
+    imgUrl: bakery,
   },
   {
     reservationId: 501,
@@ -29,7 +31,7 @@ export const ResservationInfo: ReservationCardProps[] = [
       '피자빵',
       '마늘빵',
     ],
-    imgUrl: bread,
+    imgUrl: bakery,
     pickupDeadline: '2025-02-01T10:30:00Z',
   },
   {
@@ -41,7 +43,7 @@ export const ResservationInfo: ReservationCardProps[] = [
     bakeryName: '파리바게뜨',
     totalPrice: 30000,
     reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bread,
+    imgUrl: bakery,
     pickupDeadline: '2025-02-01T10:30:00Z',
   },
   {
@@ -52,7 +54,7 @@ export const ResservationInfo: ReservationCardProps[] = [
     bakeryName: '파리바게뜨',
     totalPrice: 40000,
     reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bread,
+    imgUrl: bakery,
     cancelDetail: '픽업 기한 내 미수령으로 예약 취소',
   },
   {
@@ -63,7 +65,7 @@ export const ResservationInfo: ReservationCardProps[] = [
     bakeryName: '파리바게뜨',
     totalPrice: 50000,
     reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bread,
+    imgUrl: bakery,
     cancelDetail: '판매자 사정으로 예약 취소',
   },
   {
@@ -74,7 +76,7 @@ export const ResservationInfo: ReservationCardProps[] = [
     bakeryName: '파리바게뜨',
     totalPrice: 60000,
     reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bread,
+    imgUrl: bakery,
     cancelDetail: '고객 요청으로 예약 취소',
   },
   {
@@ -86,6 +88,190 @@ export const ResservationInfo: ReservationCardProps[] = [
     bakeryName: '파리바게뜨',
     totalPrice: 70000,
     reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bread,
+    imgUrl: bakery,
+  },
+];
+
+export const reservationItems: ReservationItem[] = [
+  {
+    productId: 1,
+    name: '크루아상',
+    quantity: 3,
+    unitPrice: 4000,
+    totalPrice: 12000,
+    breadImage: bread,
+  },
+  {
+    productId: 2,
+    name: '바게트',
+    quantity: 1,
+    unitPrice: 5000,
+    totalPrice: 5000,
+    breadImage: bread,
+  },
+  {
+    productId: 3,
+    name: '단팥빵',
+    quantity: 3,
+    unitPrice: 4000,
+    totalPrice: 12000,
+    breadImage: bread,
+  },
+  {
+    productId: 4,
+    name: '소보로',
+    quantity: 3,
+    unitPrice: 4000,
+    totalPrice: 12000,
+    breadImage: bread,
+  },
+  {
+    productId: 5,
+    name: '왕밤빵',
+    quantity: 3,
+    unitPrice: 4000,
+    totalPrice: 12000,
+    breadImage: bread,
+  },
+  {
+    productId: 6,
+    name: '피자빵',
+    quantity: 3,
+    unitPrice: 4000,
+    totalPrice: 12000,
+    breadImage: bread,
+  },
+  {
+    productId: 7,
+    name: '마늘빵',
+    quantity: 3,
+    unitPrice: 4000,
+    totalPrice: 12000,
+    breadImage: bread,
+  },
+];
+
+export const ResservationDetails: ReservationDetail[] = [
+  {
+    bakery: {
+      name: '파리바게뜨',
+      bakeryId: 1,
+      address: '대전광역시 중구 대종로480번길 15 (은행동)',
+      phone: '010-0000-000',
+      profileImage: bakery,
+    },
+    reservation: {
+      reservationId: 500,
+      reservationDate: '2025-02-01T10:00:00Z',
+      status: 'WAITING',
+      totalPrice: 10000,
+      reservationItems: [...reservationItems.slice(2)],
+    },
+  },
+  {
+    bakery: {
+      name: '파리바게뜨',
+      bakeryId: 2,
+      address: '대전광역시 중구 대종로480번길 15 (은행동)',
+      phone: '010-0000-000',
+      profileImage: bakery,
+    },
+    reservation: {
+      reservationId: 501,
+      reservationDate: '2025-02-01T10:00:00Z',
+      reservationNumber: 'XD24DFV',
+      status: 'APPROVED',
+      totalPrice: 20000,
+      reservationItems: [...reservationItems],
+      pickupDeadline: '2025-02-01T10:30:00Z',
+    },
+  },
+  {
+    bakery: {
+      name: '파리바게뜨',
+      bakeryId: 3,
+      address: '대전광역시 중구 대종로480번길 15 (은행동)',
+      phone: '010-0000-000',
+      profileImage: bakery,
+    },
+    reservation: {
+      reservationId: 502,
+      reservationDate: '2025-02-01T10:00:00Z',
+      reservationNumber: 'XD24DFV',
+      status: 'PARTIALLY_APPROVED',
+      totalPrice: 30000,
+      reservationItems: [...reservationItems.slice(6)],
+      pickupDeadline: '2025-02-01T10:30:00Z',
+    },
+  },
+  {
+    bakery: {
+      name: '파리바게뜨',
+      bakeryId: 4,
+      address: '대전광역시 중구 대종로480번길 15 (은행동)',
+      phone: '010-0000-000',
+      profileImage: bakery,
+    },
+    reservation: {
+      reservationId: 503,
+      reservationDate: '2025-02-01T10:00:00Z',
+      status: 'CANCELED',
+      totalPrice: 40000,
+      reservationItems: [...reservationItems.slice(6)],
+
+      cancelDetail: '픽업 기한 내 미수령으로 예약 취소',
+    },
+  },
+  {
+    bakery: {
+      name: '파리바게뜨',
+      bakeryId: 5,
+      address: '대전광역시 중구 대종로480번길 15 (은행동)',
+      phone: '010-0000-000',
+      profileImage: bakery,
+    },
+    reservation: {
+      reservationId: 504,
+      reservationDate: '2025-02-01T10:00:00Z',
+      status: 'CANCELED',
+      totalPrice: 50000,
+      reservationItems: [...reservationItems.slice(6)],
+
+      cancelDetail: '판매자 사정으로 예약 취소',
+    },
+  },
+  {
+    bakery: {
+      name: '파리바게뜨',
+      bakeryId: 6,
+      address: '대전광역시 중구 대종로480번길 15 (은행동)',
+      phone: '010-0000-000',
+      profileImage: bakery,
+    },
+    reservation: {
+      reservationId: 505,
+      reservationDate: '2025-02-01T10:00:00Z',
+      status: 'CANCELED',
+      totalPrice: 60000,
+      reservationItems: [...reservationItems.slice(6)],
+      cancelDetail: '고객 요청으로 예약 취소',
+    },
+  },
+  {
+    bakery: {
+      name: '파리바게뜨',
+      bakeryId: 7,
+      address: '대전광역시 중구 대종로480번길 15 (은행동)',
+      phone: '010-0000-000',
+      profileImage: bakery,
+    },
+    reservation: {
+      reservationId: 506,
+      reservationDate: '2025-02-01T10:00:00Z',
+      reservationNumber: 'XD24DFV',
+      status: 'PAYMENT_COMPLETED',
+      totalPrice: 70000,
+      reservationItems: [...reservationItems.slice(6)],
+    },
   },
 ];

@@ -98,7 +98,7 @@ export const ResservationInfo: ReservationCardProps[] = [
 export const reservationItems: ReservationItem[] = [
   {
     productId: 1,
-    name: '크루아상',
+    name: '크루아상크루아상크루아상크루아상크루아상',
     quantity: 3,
     unitPrice: 4000,
     totalPrice: 12000,

@@ -50,7 +50,7 @@ export default function Page() {
         <p className="text-title-content-m text-gray900">요일 설정</p>
         <DayPicker initialDays={initDays} />
       </section>
-      <section className="absolute left-0 bottom-0 p-5 w-full h-[92px] bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)] z-10">
+      <section className="p-5 w-full h-[92px] bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)]">
         <Button variant="primary" fullWidth onClick={() => {}}>
           저장
         </Button>

@@ -12,14 +12,26 @@ import Footer from "@/components/breadStoreInfo/Footer";
 import MenuCategory from "@/components/breadStoreInfo/MenuCategory";
 import ReservationBottonSheet from "@/components/breadStoreInfo/ReservationBottomSheet";
 import { useState } from "react";
-interface BreadInfo {
-  url: string;
-  name: string;
-  subText: string;
-  price: number;
-  count: number;
-  existReserveTime: boolean;
-}
+import type { Bakery } from "@/types/bakery";
+import { Product } from "@/types/product";
+
+const bakery: Bakery = {
+  id: 1,
+  ownerId: 1,
+  operatingStatus: "OPEN",
+  address: "서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층",
+  name: "빵집",
+  phone: "02-123-4567",
+  introudction: "빵집 소개",
+  profileImgUrl: "https://placehold.co/300x400/png",
+  openTime: "07:00",
+  city: "서울특별시",
+  region: "강남구",
+  description: "빵집 소개",
+  zipcode: "12345",
+  latitude: "37.498095",
+  longitude: "126.854614",
+};
 
 function BreadStoreImages({ images }: { images: string[] }) {
   //TODO... 이미지 마지막 이미지를 클릭했을 때 어떤 로직이 필요한지..?
@@ -46,13 +58,10 @@ function BreadStoreImages({ images }: { images: string[] }) {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function BreadStoreOpenInfo({ info = [""] }: { info?: string[] }) {
+function BreadStoreOpenInfo({ openInfo }: { openInfo: string }) {
   return (
     <div className="text-[13px] font-light mt-5 text-gray-700">
-      <div>평일 | 오전 07:00 - 오후 10:00</div>
-      <div>토요일 | 오전 07:00 - 오후 06:00</div>
-      <div>*정기 휴무 매주 일요일</div>
+      <div>{openInfo}</div>
     </div>
   );
 }
@@ -155,7 +164,7 @@ function Page() {
     "https://placehold.co/600x400/png",
     "https://placehold.co/600x1000/png",
   ];
-  const [checkedProducts, setCheckProducts] = useState<BreadInfo[]>([]);
+  const [checkedProducts, setCheckProducts] = useState<Product[]>([]);
   return (
     <div className="flex flex-col gap-[10px] overflow-y-scroll">
       <div className="h-[250px] relative rounded-b-2xl overflow-hidden">
@@ -165,18 +174,20 @@ function Page() {
           className="w-6 h-6 absolute left-5 top-[14px] z-10"
           alt="back"
         />
+        {/* TODO 빵집 섬네일은 1개인데 슬라이더가 필요한가? */}
         <ImageSlider images={images} />
       </div>
-      <StoreInfo />
+      <StoreInfo bakery={bakery} />
       <SlideInfoCard
         title="영업 시간"
-        contentComponent={<BreadStoreOpenInfo />}
+        contentComponent={<BreadStoreOpenInfo openInfo={bakery.openTime} />}
       />
       <SlideInfoCard
         title="예상 빵 나오는 시간"
         contentComponent={<BreadComesOutInfo comesOutInfo={obj} />}
       />
-
+      {/* TODO 마지막 이미지 클릭한 후 이동할 페이지 필요  */}
+      {/* 이미지 어디서 가져오나? */}
       <SlideInfoCard
         title="이미지"
         contentComponent={<BreadStoreImages images={images} />}

@@ -2,44 +2,46 @@
 import { useState } from "react";
 import RoundTab from "../common/tabs/RoundTab";
 import BreadReserveCard from "./BreadReserveCard";
+import { Product } from "@/types/product";
 // import BreadReserveCard from "@/components/breadStoreInfo/BreadReserveCard";
 interface MenuCategoryProps {
   key: string;
   label: string;
 }
-interface BreadInfo {
-  url: string;
-  name: string;
-  subText: string;
-  price: number;
-  count: number;
-  existReserveTime: boolean;
-}
 
-const breadList: BreadInfo[] = [
+const breadList: Product[] = [
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "1",
+    bakery_id: "1",
+    type: "BREAD",
     name: "소금빵",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "소금빵 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "2",
+    bakery_id: "1",
+    type: "BREAD",
     name: "휘낭시에",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "휘낭시에 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "3",
+    bakery_id: "1",
+    type: "BREAD",
     name: "마들렌",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "마들렌 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
 ];
 const menuCategories: MenuCategoryProps[] = [
@@ -58,8 +60,8 @@ function ReservationBottonSheet({
   setCheckProducts,
 }: {
   reserveStep: number;
-  checkedProducts: BreadInfo[];
-  setCheckProducts: (item: BreadInfo[]) => void;
+  checkedProducts: Product[];
+  setCheckProducts: (item: Product[]) => void;
 }) {
   const [category, setCategory] = useState<string>(menuCategories[0].key);
   const onTabChange = (key: string) => {
@@ -69,13 +71,13 @@ function ReservationBottonSheet({
     }
   };
 
-  const setCheckProductsisCheckedProduct = (breadInfo: BreadInfo): void => {
-    if (checkedProducts.find((product) => product.name === breadInfo.name)) {
+  const setCheckProductsisCheckedProduct = (item: Product): void => {
+    if (checkedProducts.find((product) => product.name === item.name)) {
       setCheckProducts(
-        checkedProducts.filter((product) => product.name !== breadInfo.name),
+        checkedProducts.filter((product) => product.name !== item.name),
       );
     } else {
-      setCheckProducts([...checkedProducts, breadInfo]);
+      setCheckProducts([...checkedProducts, item]);
     }
   };
 
@@ -92,6 +94,7 @@ function ReservationBottonSheet({
             {breadList.map((bread, index) => (
               <div key={`bread-${index}`}>
                 <BreadReserveCard
+                  openType="select"
                   isChecked={
                     checkedProducts.find(
                       (product) => product.name === bread.name,
@@ -110,7 +113,13 @@ function ReservationBottonSheet({
         <>
           <div className="bg-white  overflow-y-scroll">
             {checkedProducts.map((bread, index) => {
-              return <BreadReserveCard {...bread} key={`brad-${index}`} />;
+              return (
+                <BreadReserveCard
+                  openType="bookmark"
+                  {...bread}
+                  key={`brad-${index}`}
+                />
+              );
             })}
             <div className="mt-[30px] mb-[56px] bg-gray-50 font-semibold">
               <div className="px-5 py-[23px] flex justify-between items-center text-black">

@@ -1,20 +1,10 @@
 import BreadReserveCard from "./BreadReserveCard";
+import { Product } from "@/types/product";
 interface BreadReserveCardProps {
-  url?: string;
-  checked?: boolean;
-  name: string;
-  subText: string;
-  price: string | number;
-  count: number;
-  existReserveTime?: boolean;
-}
-function MenuList({
-  menuList,
-  title,
-}: {
-  menuList: BreadReserveCardProps[];
+  menuList: Product[];
   title: string;
-}) {
+}
+function MenuList({ menuList, title }: BreadReserveCardProps) {
   return (
     <article className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll h-[600px]">
       <div className="f lex justify-between">

@@ -1,18 +1,10 @@
 import RoundTab from "../common/tabs/RoundTab";
 import MenuList from "@/components/breadStoreInfo/MenuList";
 import { useState, memo } from "react";
+import { Product } from "@/types/product";
 interface MenuCategoryProps {
   key: string;
   label: string;
-}
-interface BreadReserveCardProps {
-  url?: string;
-  checked?: boolean;
-  name: string;
-  subText: string;
-  price: string | number;
-  count: number;
-  existReserveTime?: boolean;
 }
 
 const menuCategories: MenuCategoryProps[] = [
@@ -25,46 +17,61 @@ const menuCategories: MenuCategoryProps[] = [
     label: "기타",
   },
 ];
-const breadList = [
+const breadList: Product[] = [
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "1",
+    bakery_id: "1",
+    type: "BREAD",
     name: "소금빵",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "소금빵 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "2",
+    bakery_id: "1",
+    type: "BREAD",
     name: "휘낭시에",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "휘낭시에 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "3",
+    bakery_id: "1",
+    type: "BREAD",
     name: "마들렌",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "마들렌 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "4",
+    bakery_id: "1",
+    type: "BREAD",
     name: "식빵",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "식빵 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
   {
-    url: "https://placehold.co/300x400/png",
+    productId: "5",
+    bakery_id: "1",
+    type: "BREAD",
     name: "크루아상",
-    subText: "1000원",
     price: 1000,
-    count: 1,
-    existReserveTime: true,
+    stock: 10,
+    description: "크루아상 소개",
+    image: "https://placehold.co/600x400/png",
+    isActive: true,
   },
 ];
 const MemoizedMenuList = memo(
@@ -74,8 +81,8 @@ const MemoizedMenuList = memo(
     otherMenu,
   }: {
     category: string;
-    breadMenu: BreadReserveCardProps[];
-    otherMenu: BreadReserveCardProps[];
+    breadMenu: Product[];
+    otherMenu: Product[];
   }) => {
     return (
       <MenuList

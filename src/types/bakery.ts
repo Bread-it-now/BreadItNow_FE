@@ -34,5 +34,3 @@ export interface Bread {
   releaseTimes: string[];
   isActive: boolean;
 }
-
-export type ReservationStatus = 'PENDING' | 'ACCEPTED' | 'PARTIALLY_ACCEPTED' | 'CANCELED' | 'COMPLETED';

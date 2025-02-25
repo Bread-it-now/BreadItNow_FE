@@ -1,7 +1,7 @@
 'use client';
 
 import RoundTab from '@/components/common/tabs/RoundTab';
-import { ReservationStatus } from '@/types/bakery';
+import { ReservationStatus } from '@/types/reservation';
 import ReservationCard from '@/components/reservation/ReservationCard';
 import { useState } from 'react';
 import { ResservationInfo } from '@/mocks/data/reservation';
@@ -19,11 +19,11 @@ export default function Page() {
         <RoundTab
           categories={[
             { key: 'ALL', label: '전체' },
-            { key: 'PENDING', label: '예약 대기' },
-            { key: 'ACCEPTED', label: '예약 승인' },
-            { key: 'PARTIALLY_ACCEPTED', label: '예약 부분 승인' },
+            { key: 'WAITING', label: '예약 대기' },
+            { key: 'APPROVED', label: '예약 승인' },
+            { key: 'PARTIALLY_APPROVED', label: '예약 부분 승인' },
             { key: 'CANCELED', label: '예약 취소' },
-            { key: 'COMPLETED', label: '결제 완료' },
+            { key: 'PAYMENT_COMPLETED', label: '결제 완료' },
           ]}
           activeTab={selectedCategory}
           onTabChange={setSelectedCategory}
@@ -36,7 +36,7 @@ export default function Page() {
         </p>
         <div className="flex flex-col items-start gap-[0.625rem] w-full">
           {selectedReservationCards.map((reservation) => (
-            <ReservationCard key={reservation.date} {...reservation} />
+            <ReservationCard key={reservation.reservationId} {...reservation} />
           ))}
         </div>
       </section>

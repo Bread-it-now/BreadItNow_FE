@@ -3,7 +3,7 @@
 import { getPickupDeadlineFormat, RESERVATION_STATUS } from '@/components/reservation/ReservationCard';
 import { reservationDetails } from '@/mocks/data/reservation';
 import { getDate } from '@/utils/date';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import arrowRight from '@/assets/icons/arrow-right.svg';
 import copy from '@/assets/icons/copy.svg';
 import Image from 'next/image';
@@ -18,7 +18,8 @@ export default function Page() {
   const { reservation, bakery } = reservationDetail;
   const { reservationNumber, reservationDate, status, totalPrice, reservationItems, pickupDeadline, cancelDetail } =
     reservation;
-  const { name: bakeryName, address } = bakery;
+  const { name: bakeryName, address, bakeryId } = bakery;
+  const router = useRouter();
 
   return (
     <>
@@ -37,11 +38,11 @@ export default function Page() {
               <div className="flex items-center gap-1 text-title-content-xs font-normal text-gray500">
                 <span>{address}</span>
                 <button className="p-0 flex items-center justify-center" onClick={() => {}}>
-                  <Image src={copy} width={16} height={16} alt="address copy" />
+                  <Image src={copy} width={16} height={16} alt="address copy" className="hover:opacity-50" />
                 </button>
               </div>
             </div>
-            <button className="p-0 flex items-center justify-center" onClick={() => {}}>
+            <button className="p-0 flex items-center justify-center" onClick={() => router.push(`/bakery/${bakeryId}`)}>
               <Image src={arrowRight} width={20} height={20} alt="move to bakerydetail page" />
             </button>
           </div>

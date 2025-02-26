@@ -16,7 +16,6 @@ const NotificationCard = ({ type, content, isRead, createAt }: Notification) => 
           height={18}
           layout="intrinsic"
           alt="notification"
-          w-full
         />
       </div>
       <div

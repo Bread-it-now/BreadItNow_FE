@@ -6,11 +6,15 @@ import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import DayPicker from '@/components/daypicker/DayPicker';
 import { Day } from '@/types/date';
 import Button from '@/components/button/Button';
+import { useState } from 'react';
 
 export default function Page() {
   const { isOpen: isStartTimePickerOpen, dispatch: startTimePickerDispatch } = useBaseBottomSheet();
   const { isOpen: isEndTimePickerOpen, dispatch: endTimePickerDispatch } = useBaseBottomSheet();
   const initDays: Day[] = [2, 3, 4, 5, 6];
+  const [isChangeDays, setIsChangeDays] = useState<boolean>(false);
+  const handleChangeDays = (days: Day[]) =>
+    setIsChangeDays(initDays.length === days.length && initDays.every((day: Day) => days.includes(day)));
 
   return (
     <>
@@ -48,10 +52,10 @@ export default function Page() {
       </section>
       <section className="flex flex-col items-start px-5 py-[1.875rem] gap-5 w-full bg-white rounded-2xl">
         <p className="text-title-content-m text-gray900">요일 설정</p>
-        <DayPicker initialDays={initDays} />
+        <DayPicker initialDays={initDays} handleChangeDays={handleChangeDays} />
       </section>
       <section className="p-5 w-full h-[92px] bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)]">
-        <Button variant="primary" fullWidth onClick={() => {}}>
+        <Button variant="primary" fullWidth onClick={() => {}} disabled={isChangeDays}>
           저장
         </Button>
       </section>

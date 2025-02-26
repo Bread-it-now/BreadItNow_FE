@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DayChip from '../common/chips/DayChip';
 import { Day } from '@/types/date';
 
@@ -21,7 +21,10 @@ interface DayPickerProps {
 
 const DayPicker = ({ initialDays, handleChangeDays }: DayPickerProps) => {
   const [selectedDays, setSelectedDays] = useState<Day[]>([...initialDays]);
-  handleChangeDays(selectedDays);
+
+  useEffect(() => {
+    handleChangeDays(selectedDays);
+  }, [selectedDays, handleChangeDays]);
 
   return (
     <div className="flex items-center gap-[0.375rem] w-full h-[2.5rem]">

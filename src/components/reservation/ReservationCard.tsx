@@ -45,7 +45,7 @@ const ReservationCard = ({
       href={`${ROUTES.MYPAGE.RESERVATIONS}/${reservationId}`}
       className="flex flex-col items-start p-6 gap-4 w-full bg-white rounded-2xl">
       <div className="flex items-center gap-5 w-full h-[22px]">
-        <p className="w-full text-title-content-m text-gray900">{RESERVATION_STATUS[status]}</p>
+        <p className="w-full text-title-content-m text-gray900 text-nowrap">{RESERVATION_STATUS[status]}</p>
         <div className="flex justify-end items-center gap-[0.375rem] w-full h-full text-title-content-xs font-normal text-gray500">
           {reservationNumber && <p className="w-full text-nowrap">예약번호 {reservationNumber} •</p>}
           <p>{getDate(reservationDate)}</p>

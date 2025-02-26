@@ -39,3 +39,23 @@ export const getTime = (isoDateStr: string) => {
 
   return `${period} ${hours}:${minutes.toString().padStart(2, '0')}`;
 };
+
+const TIME_FACTORS = {
+  MINUTE: 60,
+  HOUR: 60 * 60,
+  DAY: 60 * 60 * 24,
+};
+
+export const getElapsedTime = (createdAt: string): string => {
+  const diff = new Date().getTime() - new Date(createdAt).getTime();
+  const diffSec = diff / 1000;
+
+  // 1분 이내
+  if (diffSec < TIME_FACTORS.MINUTE) return `방금전`;
+  // 1시간 이내
+  if (diffSec < TIME_FACTORS.HOUR) return `${Math.floor(diffSec / TIME_FACTORS.MINUTE)}분 전`;
+  // 1일 이내
+  if (diffSec < TIME_FACTORS.DAY) return `${Math.floor(diffSec / TIME_FACTORS.HOUR)}시간 전`;
+
+  return `${Math.floor(diffSec / TIME_FACTORS.DAY)}일 전`;
+};

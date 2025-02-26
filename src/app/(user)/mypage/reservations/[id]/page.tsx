@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import arrowRight from '@/assets/icons/arrow-right.svg';
 import copy from '@/assets/icons/copy.svg';
 import Image from 'next/image';
-import ProductItem from '@/components/productItem/ProductItem';
+import ReservationItem from '@/components/reservation/\bReservationItem';
 import Stack from '@/components/common/stack/Stack';
 import { comma } from '@/utils/comma';
 import Button from '@/components/button/Button';
@@ -69,7 +69,7 @@ export default function Page() {
           <div className="flex flex-col gap-[1.875rem] w-full">
             <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
               {reservationItems.map((item) => (
-                <ProductItem key={`${item.productId}-${item.name}`} {...item} />
+                <ReservationItem key={`${item.productId}-${item.name}`} {...item} />
               ))}
             </Stack>
           </div>
@@ -80,7 +80,7 @@ export default function Page() {
         <div className="flex flex-col gap-[1.875rem] w-full">
           <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
             {reservationItems.map((item) => (
-              <ProductItem key={`${item.productId}-${item.name}`} {...item} />
+              <ReservationItem key={`${item.productId}-${item.name}`} {...item} />
             ))}
           </Stack>
         </div>

@@ -5,6 +5,10 @@ import { NotificationType } from '@/types/notification';
 import { useState } from 'react';
 import { notificatinoMockData } from '@/mocks/data/notification';
 import NotificationCard from '@/components/notifications/notificationCard';
+import setting from '@/assets/icons/setting.svg';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<NotificationType | 'ALL'>('ALL');
@@ -13,8 +17,17 @@ export default function Page() {
     return notification.type === selectedCategory;
   });
 
+  const router = useRouter();
+
   return (
     <>
+      <button
+        className="absolute right-5 top-[3.625rem]"
+        onClick={() => router.push(ROUTES.MYPAGE.APP_NOTIFICATIONS_SETTING)}>
+        <span className={'w-[1.5rem] h-[1.5rem] text-right text-body-m font-medium text-primary hover:opacity-70'}>
+          <Image src={setting} width={24} height={24} alt="setting" />
+        </span>
+      </button>
       <section className="flex items-center pl-5 py-[0.625rem] g-[0.375rem] h-[55px] overflow-y-auto bg-white border-b-[1px] border-b-gray100">
         <RoundTab
           categories={[

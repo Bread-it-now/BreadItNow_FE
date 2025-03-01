@@ -1,7 +1,7 @@
 export const OPERATING_STATUS = {
-  OPEN: "영업중",
-  CLOSED: "영업 종료",
-  TEMPORARY_CLOSED: "임시 휴업",
+  OPEN: '영업중',
+  CLOSED: '영업 종료',
+  TEMPORARY_CLOSED: '임시 휴업',
 } as const;
 
 export interface Bakery {
@@ -20,4 +20,17 @@ export interface Bakery {
   zipcode: string;
   latitude?: string;
   longitude?: string;
+}
+
+export interface Bread {
+  id: number;
+  bakeryId: number;
+  price: number;
+  name: string;
+  bakeryName: string;
+  description: string;
+  imgUrl: string;
+  stock: number;
+  releaseTimes: string[];
+  isActive: boolean;
 }

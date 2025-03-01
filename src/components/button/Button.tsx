@@ -1,14 +1,13 @@
-"use client";
+'use client';
 
-import { cn } from "@/utils/cn";
+import { cn } from '@/utils/cn';
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "primary";
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'default' | 'primary';
   children: React.ReactNode;
   disabled?: boolean;
   className?: string;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   fullWidth?: boolean;
   onClick: () => void;
 }
@@ -16,24 +15,24 @@ export interface ButtonProps
 const Button = ({
   children,
   disabled = false,
-  variant = "default",
-  type = "button",
+  variant = 'default',
+  type = 'button',
   fullWidth = false,
   className,
   onClick,
 }: ButtonProps) => {
   const baseStyles = cn(
-    `flex center justify-center items-center w-[120px] h-[52px] rounded-lg px-[24px] py-[14px] ${fullWidth && "w-full"}`,
+    `flex center justify-center items-center w-[120px] h-[52px] rounded-lg px-[24px] py-[14px] ${fullWidth && 'w-full'} hover:cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed`,
   );
 
   const variants = {
-    default: cn("bg-white", "border border-gray-200"),
-    primary: cn("bg-primary"),
+    default: cn('bg-white', 'border border-gray-200'),
+    primary: cn('bg-primary'),
   };
 
   const contentStyles = cn(
     `flex items-center justify-center w-full h-full gap-1.5`,
-    `${variant === "default" ? "text-black" : "text-white"} text-[15px] font-semibolid`,
+    `${variant === 'default' ? 'text-black' : 'text-white'} text-[15px] font-semibolid`,
     `text-nowrap`,
   );
 
@@ -41,9 +40,8 @@ const Button = ({
     <button
       className={cn(baseStyles, variants[variant], className)}
       disabled={disabled}
-      type={type ?? "button"}
-      onClick={onClick}
-    >
+      type={type ?? 'button'}
+      onClick={onClick}>
       <div className={cn(contentStyles)}>{children}</div>
     </button>
   );

@@ -2,7 +2,7 @@ import { ROUTES } from '@/constants/routes';
 
 import Link from 'next/link';
 
-const reservationId = 1;
+const reservationId = 500;
 export default function Page() {
   return (
     <div>

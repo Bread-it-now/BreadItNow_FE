@@ -21,11 +21,27 @@ body {
 }
 
 @layer utilities {
+
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     @apply appearance-none;
   }
 }
+
+/* 전체 스크롤바 숨기기 */
+* {
+  /* Internet Explorer 10+ */
+  -ms-overflow-style: none;
+  /* Firefox */
+  scrollbar-width: none;
+
+}
+
+*::-webkit-scrollbar {
+  /* Safari, Chrome */
+  display: none;
+}
+
 
 @font-face {
   font-family: "Pretendard";

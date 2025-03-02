@@ -1,5 +1,5 @@
 'use client';
-// import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import BackIcon from '@/assets/icons/back.svg';
 import Image from 'next/image';
 import BreadSuccess from '@/assets/icons/reserve-success.svg';
@@ -46,7 +46,7 @@ const breadList: Product[] = [
 function Page() {
   // const { id } = useParams();
   const isSuccess = false;
-
+  const router = useRouter();
   return (
     <>
       {isSuccess ? (
@@ -96,7 +96,7 @@ function Page() {
             </div>
           </div>
           <div className="w-full border-box fixed z-10 bottom-0 bg-white p-5 flex gap-2">
-            <Button onClick={() => alert('메인')} variant="default" fullWidth>
+            <Button onClick={() => router.push('/')} variant="default" fullWidth>
               메인
             </Button>
             <Button onClick={() => alert('예약 상세')} variant="primary" fullWidth>
@@ -122,7 +122,7 @@ function Page() {
             </div>
           </div>
           <div className="w-full border-box fixed z-10 bottom-0 bg-white p-5 flex gap-2">
-            <Button onClick={() => alert('메인')} variant="primary" fullWidth>
+            <Button onClick={() => router.push('/')} variant="primary" fullWidth>
               메인
             </Button>
           </div>

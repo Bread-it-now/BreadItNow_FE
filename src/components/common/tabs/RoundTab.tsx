@@ -21,7 +21,7 @@ export default function RoundTab<T extends string>({
   className,
 }: RoundTabProps<T>) {
   return (
-    <div className={cn('w-full h-[34px] flex items-center gap-1.5 overflow-x-auto px-5', className)}>
+    <div className={cn('w-full h-[34px] flex items-center gap-1.5 overflow-x-auto', className)}>
       {categories.map(({ key, label }) => (
         <div
           key={key}

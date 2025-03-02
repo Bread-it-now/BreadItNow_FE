@@ -1,9 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import RoundTab from '../common/tabs/RoundTab';
 import BreadReserveCard from './BreadReserveCard';
 import { Product } from '@/types/product';
+import Spinner from '@/components/spinner/Spinner';
+import Checkbox from '@/components/common/checkbox/Checkbox';
+import { comma } from '@/utils/comma';
 // import BreadReserveCard from "@/components/breadStoreInfo/BreadReserveCard";
+
 interface MenuCategoryProps {
   key: string;
   label: string;
@@ -54,6 +58,32 @@ const menuCategories: MenuCategoryProps[] = [
     label: '기타',
   },
 ];
+
+function BreadCheckBox({
+  name,
+  isChecked,
+  onCheckboxChange,
+}: {
+  name: string;
+  isChecked: boolean;
+  onCheckboxChange: () => void;
+}) {
+  return (
+    <div className="absolute z-10 top-2 left-2 w-8 h-8">
+      <Checkbox id={name} checked={isChecked} onChange={onCheckboxChange} />
+    </div>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function SpinnerInfoComponent({ name, price, stock }: { name: string; price: number; stock: number }) {
+  return (
+    <div className="flex items-center w-full mt-4">
+      <Spinner minQuantity={0} maxQuantity={10} ininitialQuantity={1} />
+      <div className="ml-auto">{comma(price)}원</div>
+    </div>
+  );
+}
 function ReservationBottonSheet({
   reserveStep,
   checkedProducts,
@@ -79,36 +109,54 @@ function ReservationBottonSheet({
     }
   };
 
+  const totalPrice = useMemo<string>(() => {
+    const totalPrice = checkedProducts.reduce((acc, product) => acc + product.price, 0);
+    return `${comma(totalPrice)}원`;
+  }, [checkedProducts]);
+
   return (
-    <div className="h-[630px] flex flex-col ">
+    <div className="h-[630px] flex flex-col pb-[56px]">
       {reserveStep === 1 ? (
         <>
           <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
-          <div className="">
-            {breadList.map((bread, index) => (
-              <div key={`bread-${index}`}>
+          <div className="flex flex-col gap-2">
+            {category === '1' ? (
+              breadList.map((bread, index) => (
                 <BreadReserveCard
-                  openType="select"
-                  isChecked={checkedProducts.find((product) => product.name === bread.name) ? true : false}
-                  setIsChecked={() => setCheckProductsisCheckedProduct(bread)}
+                  ImageIconButton={
+                    <BreadCheckBox
+                      name={bread.name}
+                      isChecked={checkedProducts.find((product) => product.name === bread.name) ? true : false}
+                      onCheckboxChange={() => setCheckProductsisCheckedProduct(bread)}
+                    />
+                  }
+                  key={`bread-${index}`}
                   {...bread}
                 />
-              </div>
-            ))}
+              ))
+            ) : (
+              <div>기타</div>
+            )}
           </div>
         </>
       ) : (
         <>
           <div className="bg-white  overflow-y-scroll">
             {checkedProducts.map((bread, index) => {
-              return <BreadReserveCard openType="bookmark" {...bread} key={`brad-${index}`} />;
+              return (
+                <BreadReserveCard
+                  moreInfoComponent={<SpinnerInfoComponent name={bread.name} price={bread.price} stock={bread.stock} />}
+                  {...bread}
+                  key={`brad-${index}`}
+                />
+              );
             })}
             <div className="mt-[30px] mb-[56px] bg-gray-50 font-semibold">
               <div className="px-5 py-[23px] flex justify-between items-center text-black">
                 <div>
                   총<span className="text-primary">{checkedProducts.length}</span>건 상품 금액
                 </div>
-                <div className="text-primary">22,100원</div>
+                <div className="text-primary">{totalPrice}</div>
               </div>
             </div>
           </div>

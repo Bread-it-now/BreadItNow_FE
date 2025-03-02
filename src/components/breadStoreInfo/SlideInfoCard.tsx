@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
-import Image from "next/image";
-import ArrowUp from "@/assets/icons/arrow-up.svg";
-import ArrowDown from "@/assets/icons/arrow-down.svg";
+import { useState, useMemo } from 'react';
+import Image from 'next/image';
+import ArrowUp from '@/assets/icons/arrow-up.svg';
+import ArrowDown from '@/assets/icons/arrow-down.svg';
 interface SlideInfoCardProps {
   title: string;
   contentComponent: React.ReactNode;
@@ -31,12 +31,9 @@ function SlideInfoCard({ title, contentComponent }: SlideInfoCardProps) {
         text-left
         transition-all
         duration-300 
-        ease-in-out 
-        origin-top 
         overflow-hidden
-        ${visible ? "max-h-screen" : "max-h-0"}
-      `}
-        >
+        ${visible ? 'max-h-screen' : 'max-h-0'}
+      `}>
           {contentComponent}
         </div>
       </div>

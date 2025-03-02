@@ -3,47 +3,50 @@
 import BackIcon from '@/assets/icons/back.svg';
 import Image from 'next/image';
 import BreadSuccess from '@/assets/icons/reserve-success.svg';
+import BreadFail from '@/assets/icons/reserve-fail.svg';
 import type { Product } from '@/types/product';
 import BreadReserveCard from '@/components/breadStoreInfo/BreadReserveCard';
 import Button from '@/components/button/Button';
+
+const breadList: Product[] = [
+  {
+    productId: '1',
+    bakery_id: '1',
+    type: 'BREAD',
+    name: '소금빵',
+    price: 1000,
+    stock: 10,
+    description: '소금빵 소개',
+    image: 'https://placehold.co/600x400/png',
+    isActive: true,
+  },
+  {
+    productId: '2',
+    bakery_id: '1',
+    type: 'BREAD',
+    name: '휘낭시에',
+    price: 1000,
+    stock: 10,
+    description: '휘낭시에 소개',
+    image: 'https://placehold.co/600x400/png',
+    isActive: true,
+  },
+  {
+    productId: '3',
+    bakery_id: '1',
+    type: 'BREAD',
+    name: '마들렌',
+    price: 1000,
+    stock: 10,
+    description: '마들렌 소개',
+    image: 'https://placehold.co/600x400/png',
+    isActive: true,
+  },
+];
 function Page() {
   // const { id } = useParams();
-  const isSuccess = true;
-  const breadList: Product[] = [
-    {
-      productId: '1',
-      bakery_id: '1',
-      type: 'BREAD',
-      name: '소금빵',
-      price: 1000,
-      stock: 10,
-      description: '소금빵 소개',
-      image: 'https://placehold.co/600x400/png',
-      isActive: true,
-    },
-    {
-      productId: '2',
-      bakery_id: '1',
-      type: 'BREAD',
-      name: '휘낭시에',
-      price: 1000,
-      stock: 10,
-      description: '휘낭시에 소개',
-      image: 'https://placehold.co/600x400/png',
-      isActive: true,
-    },
-    {
-      productId: '3',
-      bakery_id: '1',
-      type: 'BREAD',
-      name: '마들렌',
-      price: 1000,
-      stock: 10,
-      description: '마들렌 소개',
-      image: 'https://placehold.co/600x400/png',
-      isActive: true,
-    },
-  ];
+  const isSuccess = false;
+
   return (
     <>
       {isSuccess ? (
@@ -102,7 +105,28 @@ function Page() {
           </div>
         </>
       ) : (
-        <div>예약 실패</div>
+        <>
+          <div className="w-full h-full flex flex-col grow bg-white gap-[10px] pb-[92px]">
+            <div className="flex items-center gap-2 px-5 py-[13px] bg-white">
+              <button>
+                <Image src={BackIcon} alt="arrow-left" />
+              </button>
+              <span className="text-title-content-m text-black">예약 완료</span>
+            </div>
+            <div className="w-full px-5 py-6 flex overflow-hidden bg-white flex-col items-center mx-auto">
+              <Image src={BreadFail} alt="bread-success" width={70} height={70} />
+              <div className="mt-4 text-center">
+                <div className="font-semibold text-[22px] text-black">빵 예약을 실패했습니다.</div>
+                <div className="font-normal text-sm text-gray-500">빵집 운영시간이 아닙니다.(실패 사유 노출영역)</div>
+              </div>
+            </div>
+          </div>
+          <div className="w-full border-box fixed z-10 bottom-0 bg-white p-5 flex gap-2">
+            <Button onClick={() => alert('메인')} variant="primary" fullWidth>
+              메인
+            </Button>
+          </div>
+        </>
       )}
     </>
   );

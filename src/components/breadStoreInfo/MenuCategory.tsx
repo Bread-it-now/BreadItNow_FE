@@ -92,7 +92,7 @@ function MenuCategory() {
   };
   return (
     <>
-      <div>
+      <div className="px-5">
         <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
       </div>
       <MemoizedMenuList category={category} breadMenu={breadList} otherMenu={[]} />

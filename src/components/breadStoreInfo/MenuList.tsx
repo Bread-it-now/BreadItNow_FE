@@ -1,9 +1,12 @@
 import BreadReserveCard from './BreadReserveCard';
 import { Product } from '@/types/product';
 import BellIcon from '@/assets/icons/bell.svg';
-import BookmarkIcon from '@/assets/icons/bookmark.svg';
-import Image from 'next/image';
+import BellPressedIcon from '@/assets/icons/bell_pressed.svg';
+import Bookmark from '@/assets/icons/bookmark.svg';
+import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Tag from '@/components/common/Tag';
+import IconButton from '@/components/button/IconButton';
+import { useState } from 'react';
 interface BreadReserveCardProps {
   menuList: Product[];
   title: string;
@@ -11,23 +14,35 @@ interface BreadReserveCardProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function MenuImageIconButton({ bakeryId, productId }: { bakeryId: string; productId: string }) {
+  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(false);
+  const onBookmarkClick = () => {
+    setBookmarkChecked(!bookmarkChecked);
+  };
   return (
-    <div className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-white bg-opacity-80">
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Image src={BookmarkIcon} alt="bookmark" />
-      </div>
-    </div>
+    <IconButton
+      buttonClass="absolute right-2 bottom-2"
+      isChecked={bookmarkChecked}
+      icon={bookmarkChecked ? BookmarkFill : Bookmark}
+      iconText=""
+      onClick={onBookmarkClick}
+    />
   );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function MenuFloatingButton({ bakeryId, productId }: { bakeryId: string; productId: string }) {
+  const [alarmChecked, setAlarmChecked] = useState<boolean>(false);
+  const onClickAlarmBtn = () => {
+    setAlarmChecked(!alarmChecked);
+  };
   return (
-    <div className="absolute bottom-0 w-9 h-9 right-0 rounded-full mb-5 bg-white bg-opacity-80  border-gray-100 border-[1px]">
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Image src={BellIcon} alt="bookmark" width={20} height={20} />
-      </div>
-    </div>
+    <IconButton
+      buttonClass="absolute bottom-0 right-0 mb-5 "
+      isChecked={alarmChecked}
+      icon={alarmChecked ? BellPressedIcon : BellIcon}
+      iconText=""
+      onClick={onClickAlarmBtn}
+    />
   );
 }
 

@@ -1,26 +1,24 @@
-import { ROUTES } from '@/constants/routes';
+'use client';
 
-import Link from 'next/link';
+import Image from 'next/image';
+import bell from '@/assets/icons/bell.svg';
 
-const reservationId = 500;
+const notificationCnt: number = 8;
+
 export default function Page() {
   return (
-    <div>
-      <Link href={ROUTES.MYPAGE.HOME}>home</Link>
-      <br />
-      <Link href={ROUTES.MYPAGE.BREAD_NOTIFICATIONS_SETTING}>빵 알림 설정 페이지</Link>
-      <br />
-      <Link href={ROUTES.MYPAGE.APP_NOTIFICATIONS_SETTING}>알림 설정 페이지</Link>
-      <br />
-      <Link href={ROUTES.MYPAGE.PROFILE_SETTING}>프로필 설정 페이지</Link>
-      <br />
-      <Link href={ROUTES.MYPAGE.NOTIFICATIONS}>알림 내역 페이지</Link>
-      <br />
-      <Link href={ROUTES.MYPAGE.RESERVATIONS}>예약 내역 페이지</Link>
-      <br />
-      <Link href={`${ROUTES.MYPAGE.RESERVATIONS}/${reservationId}`}>예약 내역 상세 페이지</Link>
-      <br />
-      <Link href={ROUTES.MYPAGE.DO_NOT_DISTURB}>방해금지 모드 설정 페이지</Link>
-    </div>
+    <>
+      <button className="absolute right-5 top-[3.625rem]" onClick={() => {}}>
+        <span
+          className={'relative w-[1.5rem] h-[1.5rem] text-right text-body-m font-medium text-primary hover:opacity-70'}>
+          <Image src={bell} width={24} height={24} alt="bell" />
+          {notificationCnt !== 0 && (
+            <div className="absolute top-[-4px] right-[-3px] px-[3px] pb-[1px] flex justify-center text-center items-center w-[15px] h-[15px] bg-primary rounded-full text-white text-[10px] font-semibold">
+              {notificationCnt}
+            </div>
+          )}
+        </span>
+      </button>
+    </>
   );
 }

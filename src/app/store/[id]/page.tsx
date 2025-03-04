@@ -1,36 +1,36 @@
-"use client";
-import ImageSlider from "@/components/common/slider/ImageSlider";
-import StoreInfo from "@/components/breadStoreInfo/StoreInfo";
-import Tag from "@/components/common/Tag";
-import Image from "next/image";
-import SlideInfoCard from "@/components/breadStoreInfo/SlideInfoCard";
-import ArrowLeft from "@/assets/icons/arrow-left.svg";
-import { useRouter } from "next/navigation";
-import BottomSheet from "@/components/bottomsheet/Bottomsheet";
-import { useReservationBottomSheet } from "@/hooks/useReservationBottomSheet";
-import Footer from "@/components/breadStoreInfo/Footer";
-import MenuCategory from "@/components/breadStoreInfo/MenuCategory";
-import ReservationBottonSheet from "@/components/breadStoreInfo/ReservationBottomSheet";
-import { useState } from "react";
-import type { Bakery } from "@/types/bakery";
-import { Product } from "@/types/product";
+'use client';
+import ImageSlider from '@/components/common/slider/ImageSlider';
+import StoreInfo from '@/components/breadStoreInfo/StoreInfo';
+import Tag from '@/components/common/Tag';
+import Image from 'next/image';
+import ArrowLeft from '@/assets/icons/arrow-left.svg';
+import { useRouter } from 'next/navigation';
+import BottomSheet from '@/components/bottomsheet/Bottomsheet';
+import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
+import Footer from '@/components/breadStoreInfo/Footer';
+import MenuCategory from '@/components/breadStoreInfo/MenuCategory';
+import ReservationBottonSheet from '@/components/breadStoreInfo/ReservationBottomSheet';
+import { useState } from 'react';
+import type { Bakery } from '@/types/bakery';
+import { Product } from '@/types/product';
+import Accordion from '@/components/accordion/Accordion';
 
 const bakery: Bakery = {
   id: 1,
   ownerId: 1,
-  operatingStatus: "OPEN",
-  address: "서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층",
-  name: "빵집",
-  phone: "02-123-4567",
-  introudction: "빵집 소개",
-  profileImgUrl: "https://placehold.co/300x400/png",
-  openTime: "07:00",
-  city: "서울특별시",
-  region: "강남구",
-  description: "빵집 소개",
-  zipcode: "12345",
-  latitude: "37.498095",
-  longitude: "126.854614",
+  operatingStatus: 'OPEN',
+  address: '서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층',
+  name: '빵집',
+  phone: '02-123-4567',
+  introudction: '빵집 소개',
+  profileImgUrl: 'https://placehold.co/300x400/png',
+  openTime: '07:00',
+  city: '서울특별시',
+  region: '강남구',
+  description: '빵집 소개',
+  zipcode: '12345',
+  latitude: '37.498095',
+  longitude: '126.854614',
 };
 
 function BreadStoreImages({ images }: { images: string[] }) {
@@ -39,12 +39,7 @@ function BreadStoreImages({ images }: { images: string[] }) {
     <div className="flex gap-[10px] h-[105px] mt-5">
       {images.slice(0, 3).map((image, index) => (
         <div key={`image-${index}`} className="relative w-full h-[105px]">
-          <Image
-            src={`${image}`}
-            alt={`빵집 이미지 ${index + 1}`}
-            fill
-            className="object-cover"
-          />
+          <Image src={`${image}`} alt={`빵집 이미지 ${index + 1}`} fill className="object-cover" />
           {index === 2 && images.length - 3 > 0 && (
             <div className="absolute inset-0 z-10 bg-black bg-opacity-30 rounded-lg h-full ">
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-md">
@@ -66,11 +61,7 @@ function BreadStoreOpenInfo({ openInfo }: { openInfo: string }) {
   );
 }
 
-function BreadComesOutInfo({
-  comesOutInfo,
-}: {
-  comesOutInfo: { time: string; breads: string[] }[];
-}) {
+function BreadComesOutInfo({ comesOutInfo }: { comesOutInfo: { time: string; breads: string[] }[] }) {
   return (
     <>
       {comesOutInfo.map(({ time, breads }) => {
@@ -92,8 +83,7 @@ function BreadComesOutInfo({
                   flex-wrap 
                   gap-x-1 
                   gap-y-1.5
-                "
-            >
+                ">
               {breads.map((bread, index) => (
                 <Tag type="category" label={bread} key={`${bread}-${index}`} />
               ))}
@@ -128,41 +118,41 @@ function Page() {
 
   const obj = [
     {
-      time: "07:00",
+      time: '07:00',
       breads: [
-        "크루아상",
-        "생크림식빵",
-        "마늘바게트",
-        "소보루빵",
-        "베이글",
-        "크루아상",
-        "생크림식빵",
-        "마늘바게트",
-        "소보루빵",
-        "베이글",
+        '크루아상',
+        '생크림식빵',
+        '마늘바게트',
+        '소보루빵',
+        '베이글',
+        '크루아상',
+        '생크림식빵',
+        '마늘바게트',
+        '소보루빵',
+        '베이글',
       ],
     },
     {
-      time: "09:30",
-      breads: ["크루아상", "생크림식빵", "마늘바게트"],
+      time: '09:30',
+      breads: ['크루아상', '생크림식빵', '마늘바게트'],
     },
     {
-      time: "12:00",
-      breads: ["크루아상"],
+      time: '12:00',
+      breads: ['크루아상'],
     },
     {
-      time: "14:30",
-      breads: ["크루아상", "생크림식빵", "마늘바게트", "소보루빵", "베이글"],
+      time: '14:30',
+      breads: ['크루아상', '생크림식빵', '마늘바게트', '소보루빵', '베이글'],
     },
     {
-      time: "16:00",
-      breads: ["크루아상", "생크림식빵", "마늘바게트", "소보루빵"],
+      time: '16:00',
+      breads: ['크루아상', '생크림식빵', '마늘바게트', '소보루빵'],
     },
   ];
   const images = [
-    "https://placehold.co/300x400/png",
-    "https://placehold.co/600x400/png",
-    "https://placehold.co/600x1000/png",
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/600x1000/png',
   ];
   const [checkedProducts, setCheckProducts] = useState<Product[]>([]);
   return (
@@ -178,34 +168,28 @@ function Page() {
         <ImageSlider images={images} />
       </div>
       <StoreInfo bakery={bakery} />
-      <SlideInfoCard
-        title="영업 시간"
-        contentComponent={<BreadStoreOpenInfo openInfo={bakery.openTime} />}
-      />
-      <SlideInfoCard
-        title="예상 빵 나오는 시간"
-        contentComponent={<BreadComesOutInfo comesOutInfo={obj} />}
-      />
+      <Accordion title="영업 시간">
+        <BreadStoreOpenInfo openInfo={bakery.openTime} />
+      </Accordion>
+      <Accordion title="예상 빵 나오는 시간">
+        <BreadComesOutInfo comesOutInfo={obj} />
+      </Accordion>
       {/* TODO 마지막 이미지 클릭한 후 이동할 페이지 필요  */}
       {/* 이미지 어디서 가져오나? */}
-      <SlideInfoCard
-        title="이미지"
-        contentComponent={<BreadStoreImages images={images} />}
-      />
+      <Accordion title="이미지">
+        <BreadStoreImages images={images} />
+      </Accordion>
       <MenuCategory />
 
       <BottomSheet
         isOpen={isOpen}
         title="예약 상품 선택"
-        cancelText={reserveStep === 1 ? "취소" : "이전"}
+        cancelText={reserveStep === 1 ? '취소' : '이전'}
         confirmText={
-          reserveStep === 1
-            ? `총 ${checkedProducts.length}건 선택`
-            : `총 ${checkedProducts.length}건 예약하기`
+          reserveStep === 1 ? `총 ${checkedProducts.length}건 선택` : `총 ${checkedProducts.length}건 예약하기`
         }
         onClose={onCloseStep}
-        onConfirm={onReservationStep}
-      >
+        onConfirm={onReservationStep}>
         <ReservationBottonSheet
           reserveStep={reserveStep}
           checkedProducts={checkedProducts}

@@ -19,7 +19,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <div>
-      <Topbar title={MYPAGE_TITLE[getPageRoute(pathname)]} hasBackBtn={getPageRoute(pathname) !== 'HOME'} />
+      <Topbar title={MYPAGE_TITLE[getPageRoute(pathname)]} />
       <div className="flex flex-col gap-[0.625rem] bg-gray100 w-full h-full">{children}</div>
     </div>
   );

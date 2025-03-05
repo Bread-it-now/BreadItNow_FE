@@ -1,3 +1,6 @@
+import { ROUTES } from '@/constants/routes';
+import { redirect } from 'next/navigation';
+
 export default function Page() {
-  return <div>프로필 설정 페이지</div>;
+  redirect(ROUTES.MYPAGE.APP_NOTIFICATIONS_SETTING);
 }

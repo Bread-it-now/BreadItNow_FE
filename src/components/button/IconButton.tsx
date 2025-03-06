@@ -14,12 +14,12 @@ function IconButton({ icon, onClick, iconText, isChecked = false, buttonClass = 
   return (
     <button
       className={`
-      w-8 h-8 rounded-full
+      w-8 h-8 rounded-full relative
       ${buttonClass}
       ${isChecked ? 'border-none bg-primary bg-opacity-10' : ' border-gray-100 bg-white border-2'}
     `}
       onClick={onClick}>
-      <Image width={16} height={16} className="mx-auto" src={icon} alt={iconText} />
+      <Image fill className="mx-auto" src={icon} alt={iconText} />
     </button>
   );
 }

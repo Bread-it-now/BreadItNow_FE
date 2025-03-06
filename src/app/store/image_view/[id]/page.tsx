@@ -4,7 +4,9 @@ import CloseIcon from '@/assets/icons/close.svg';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import ImageSlider from '@/components/common/slider/ImageSlider';
+import { useRouter } from 'next/navigation';
 function Page() {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   // 이미지 크게보기 모달 오픈
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -50,11 +52,14 @@ function Page() {
       observer.disconnect();
     };
   }, []);
+  const closePage = () => {
+    router.back();
+  };
   return (
     <div className="h-full">
       <div className="px-5 py-[13px] text-black font-semibold flex">
         <div className="text-lg grow">이미지 모아보기</div>
-        <IconButton buttonClass="border-none !bg-transparent" icon={CloseIcon} iconText="닫기" onClick={() => {}} />
+        <Image src={CloseIcon} alt="close" width={24} height={24} onClick={closePage} />
       </div>
       <div className="grid grid-cols-3 gap-1">
         {images.map((image, index) => {

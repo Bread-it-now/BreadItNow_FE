@@ -6,7 +6,22 @@ import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/main/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { bakeryCardMockData } from '@/mocks/data/bakery';
+import HotBreads from '@/components/main/HotBreads';
 
+const hotBreadsData = [
+  { title: '모카 크림빵', subtitle: '달콤한 아침', price: '2,700원', img: Bread },
+  { title: '뺑 오 쇼콜라', subtitle: '버터 앤 드림', price: '2,700원', img: Bread },
+  { title: '생크림 식빵', subtitle: '소금 한 꼬집', price: '2,700원', img: Bread },
+  { title: '크루아상', subtitle: '라 메종 뒤 팡', price: '2,700원', img: Bread },
+  { title: '매듭빵', subtitle: '빵굽는 집', price: '2,700원', img: Bread },
+];
+
+<div className="bg-white rounded-t-2xl mt-6 p-4 w-[100%]">
+  <HotBreads breads={hotBreadsData} />
+</div>;
+
+import Bakery from '@/assets/images/bakery.png';
+import Bread from '@/assets/images/bread.png';
 import MapIcon from '@/assets/icons/map.svg';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
 import Detail from '@/assets/icons/arrow-down.svg';
@@ -25,9 +40,9 @@ export default function Page() {
       <div className="px-4 py-5 text-white flex flex-col gap-3">
         <div className="flex justify-between items-center sticky top-0 left-0 right-0 bg-transparent z-10">
           <button onClick={open} className="flex items-center gap-2 text-lg font-medium">
-            <Image src={MapIcon} alt="bakery" className="w-5 h-5" />
+            <Image src={MapIcon} alt="map" className="w-5 h-5" />
             <span>전체</span>
-            <Image src={ArrowDown} alt="bakery" className="w-4 h-4" />
+            <Image src={ArrowDown} alt="arrow" className="w-4 h-4" />
           </button>
           <div className="flex items-center gap-3">
             <Link href="/search">
@@ -36,7 +51,7 @@ export default function Page() {
             <Link href="/mypage/notifications">
               <div className="relative">
                 <NotificationIcon color="#FFFFFF" />
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">8</span>
+                <span className="absolute -top-1 -right-1 bg-white text-primary text-xs rounded-full px-1">8</span>
               </div>
             </Link>
           </div>
@@ -69,50 +84,9 @@ export default function Page() {
             </button>
           </div>
           <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
-          <ul className="mt-3 space-y-3">
-            {[
-              {
-                title: '모카 크림빵',
-                subtitle: '달콤한 아침',
-                price: '2,700원',
-                img: '/images/bread1.png',
-              },
-              {
-                title: '뺑 오 쇼콜라',
-                subtitle: '버터 앤 드림',
-                price: '2,700원',
-                img: '/images/bread2.png',
-              },
-              {
-                title: '생크림 식빵',
-                subtitle: '소금 한 꼬집',
-                price: '2,700원',
-                img: '/images/bread3.png',
-              },
-              {
-                title: '크루아상',
-                subtitle: '라 메종 뒤 팡',
-                price: '2,700원',
-                img: '/images/bread4.png',
-              },
-              {
-                title: '매듭빵',
-                subtitle: '빵굽는 집',
-                price: '2,700원',
-                img: '/images/bread5.png',
-              },
-            ].map((bread, index) => (
-              <li key={index} className="flex items-center gap-3 py-2">
-                <span className="text-base font-semibold w-6 text-gray900">{index + 1}</span>
-                <img src={bread.img} alt={bread.title} className="w-16 h-16 rounded-lg object-cover" />
-                <div className="flex flex-col">
-                  <p className="text-gray500 text-sm">달콤한 아침</p>
-                  <p className="font-semibold text-gray900">빵 이름</p>
-                  <p className="text-gray-500 text-sm">2,700원</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <div className="bg-white rounded-t-2xl my-1 w-[100%]">
+            <HotBreads breads={hotBreadsData} />
+          </div>
 
           <div className="mt-6">
             <div className="flex justify-between items-center">
@@ -130,38 +104,38 @@ export default function Page() {
                   name: '라 메종 뒤 팡 에 뒤 레브',
                   operatingStatus: 'OPEN' as const,
                   distance: 1.5,
-                  profileImgUrl: '/images/bakery1.png',
+                  profileImgUrl: Bakery.src,
                 },
                 {
                   id: 2,
                   name: '달콤한 아침',
                   operatingStatus: 'CLOSED' as const,
                   distance: 1.7,
-                  profileImgUrl: '/images/bakery2.png',
+                  profileImgUrl: Bakery.src,
                 },
                 {
                   id: 3,
                   name: '버터 앤 드림',
                   operatingStatus: 'OPEN' as const,
                   distance: 2.3,
-                  profileImgUrl: '/images/bakery3.png',
+                  profileImgUrl: Bakery.src,
                 },
                 {
                   id: 4,
                   name: '소금 한 꼬집',
                   operatingStatus: 'CLOSED' as const,
                   distance: 3.0,
-                  profileImgUrl: '/images/bakery4.png',
+                  profileImgUrl: Bakery.src,
                 },
                 {
                   id: 5,
                   name: '빵굽는 집',
                   operatingStatus: 'OPEN' as const,
                   distance: 3.5,
-                  profileImgUrl: '/images/bakery5.png',
+                  profileImgUrl: Bakery.src,
                 },
               ].map((bakery, index) => (
-                <div key={index} className="flex-shrink-0 w-[200px]">
+                <div key={index} className="flex-shrink-0 w-[250px] text-gray900">
                   <BakeryCard
                     id={bakery.id}
                     name={bakery.name}

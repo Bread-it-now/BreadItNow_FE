@@ -1,33 +1,191 @@
-"use client";
-import BakeryCard from "@/components/bakerycard/BakeryCard";
-import BottomSheet from "@/components/bottomsheet/Bottomsheet";
-import { useReservationBottomSheet } from "@/hooks/useReservationBottomSheet";
-import { bakeryCardMockData } from "@/mocks/data/bakery";
-import Link from "next/link";
+'use client';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
+import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
+import TodayBread from '@/components/main/TodayBread';
+import BakeryCard from '@/components/bakerycard/BakeryCard';
+import { bakeryCardMockData } from '@/mocks/data/bakery';
+
+import MapIcon from '@/assets/icons/map.svg';
+import ArrowDown from '@/assets/icons/arrow-down-white.svg';
+import Detail from '@/assets/icons/arrow-down.svg';
+import SearchIcon from '@/components/common/Icons/SearchIcon';
+import NotificationIcon from '@/components/common/Icons/NotificationIcon';
+
 export default function Page() {
-  const { isOpen, open, close, title, handleAddReservation } =
-    useReservationBottomSheet();
+  const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
 
   return (
-    <div>
-      <h1 className="text-primary">메인페이지</h1>
-      <br />
-      <Link href="/search">검색페이지 이동</Link>
-      <Link href="/login">로그인페이지 이동</Link>
-      <Link href="/breadlist">빵 리스트 이동</Link>
-      <div>
-        <button onClick={open}>바텀시트 열기</button>
+    <div
+      className="flex flex-col h-[100%] max-h-[100%]"
+      style={{
+        background: 'linear-gradient(to bottom, #FF6A42 0%, #FF7651 30%, #FFFFFF 100%)',
+      }}>
+      <div className="px-4 py-5 text-white flex flex-col gap-3">
+        <div className="flex justify-between items-center sticky top-0 left-0 right-0 bg-transparent z-10">
+          <button onClick={open} className="flex items-center gap-2 text-lg font-medium">
+            <Image src={MapIcon} alt="bakery" className="w-5 h-5" />
+            <span>전체</span>
+            <Image src={ArrowDown} alt="bakery" className="w-4 h-4" />
+          </button>
+          <div className="flex items-center gap-3">
+            <Link href="/search">
+              <SearchIcon color="#FFFFFF" />
+            </Link>
+            <Link href="/mypage/notifications">
+              <div className="relative">
+                <NotificationIcon color="#FFFFFF" />
+                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">8</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto pb-4">
+        <div className="flex px-4 justify-between items-center my-8">
+          <div className="relative flex items-center">
+            <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>
+            <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
+          </div>
+          <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
+            <span>01월 27일</span>
+            <span>월요일</span>
+          </div>
+        </div>
+
+        <div className="flex gap-3 mx-4 overflow-x-auto pl-1">
+          <TodayBread subTitle="달콤한 아침" title="모카 크림빵" reserveTimes={['8:00', '10:00']} />
+          <TodayBread subTitle="라 메종 뒤 팡" title="생크림 식빵" reserveTimes={['8:00', '10:00', '14:00']} />
+          <TodayBread subTitle="빵굽는 집" title="크루아상" reserveTimes={['8:00', '10:00']} />
+        </div>
+
+        <div className="bg-white rounded-t-2xl mt-6 p-4 w-[100%]">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
+            <button>
+              <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
+            </button>
+          </div>
+          <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
+          <ul className="mt-3 space-y-3">
+            {[
+              {
+                title: '모카 크림빵',
+                subtitle: '달콤한 아침',
+                price: '2,700원',
+                img: '/images/bread1.png',
+              },
+              {
+                title: '뺑 오 쇼콜라',
+                subtitle: '버터 앤 드림',
+                price: '2,700원',
+                img: '/images/bread2.png',
+              },
+              {
+                title: '생크림 식빵',
+                subtitle: '소금 한 꼬집',
+                price: '2,700원',
+                img: '/images/bread3.png',
+              },
+              {
+                title: '크루아상',
+                subtitle: '라 메종 뒤 팡',
+                price: '2,700원',
+                img: '/images/bread4.png',
+              },
+              {
+                title: '매듭빵',
+                subtitle: '빵굽는 집',
+                price: '2,700원',
+                img: '/images/bread5.png',
+              },
+            ].map((bread, index) => (
+              <li key={index} className="flex items-center gap-3 py-2">
+                <span className="text-base font-semibold w-6 text-gray900">{index + 1}</span>
+                <img src={bread.img} alt={bread.title} className="w-16 h-16 rounded-lg object-cover" />
+                <div className="flex flex-col">
+                  <p className="text-gray500 text-sm">달콤한 아침</p>
+                  <p className="font-semibold text-gray900">빵 이름</p>
+                  <p className="text-gray-500 text-sm">2,700원</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-bold text-gray900">핫한 빵집 top 5</h2>
+              <button>
+                <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
+              </button>
+            </div>
+            <p className="text-gray500 text-sm mb-3">최근 한 달 간 예약이 많은 순</p>
+
+            <div className="flex gap-4 overflow-x-auto pl-1 scrollbar-hide pb-10">
+              {[
+                {
+                  id: 1,
+                  name: '라 메종 뒤 팡 에 뒤 레브',
+                  operatingStatus: 'OPEN' as const,
+                  distance: 1.5,
+                  profileImgUrl: '/images/bakery1.png',
+                },
+                {
+                  id: 2,
+                  name: '달콤한 아침',
+                  operatingStatus: 'CLOSED' as const,
+                  distance: 1.7,
+                  profileImgUrl: '/images/bakery2.png',
+                },
+                {
+                  id: 3,
+                  name: '버터 앤 드림',
+                  operatingStatus: 'OPEN' as const,
+                  distance: 2.3,
+                  profileImgUrl: '/images/bakery3.png',
+                },
+                {
+                  id: 4,
+                  name: '소금 한 꼬집',
+                  operatingStatus: 'CLOSED' as const,
+                  distance: 3.0,
+                  profileImgUrl: '/images/bakery4.png',
+                },
+                {
+                  id: 5,
+                  name: '빵굽는 집',
+                  operatingStatus: 'OPEN' as const,
+                  distance: 3.5,
+                  profileImgUrl: '/images/bakery5.png',
+                },
+              ].map((bakery, index) => (
+                <div key={index} className="flex-shrink-0 w-[200px]">
+                  <BakeryCard
+                    id={bakery.id}
+                    name={bakery.name}
+                    operatingStatus={bakery.operatingStatus}
+                    distance={bakery.distance}
+                    profileImgUrl={bakery.profileImgUrl}
+                    rank={index + 1}
+                    size="large"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <BottomSheet
         isOpen={isOpen}
-        title={title}
+        title="관심지역 설정"
         cancelText="취소"
-        confirmText="관심지역 설정하기"
+        confirmText="관심지역 설정 완료"
         onClose={close}
-        onConfirm={handleAddReservation}
-      >
-        <div>
+        onConfirm={handleAddReservation}>
+        <div className="grid grid-cols-2 gap-4">
           <BakeryCard {...bakeryCardMockData} />
           <BakeryCard {...bakeryCardMockData} />
           <BakeryCard {...bakeryCardMockData} />

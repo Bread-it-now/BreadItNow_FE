@@ -60,7 +60,7 @@ export default function Page() {
 
   return (
     <div
-      className="flex flex-col h-screen"
+      className="flex flex-col h-[100%]"
       style={{
         background: 'linear-gradient(to bottom, #FF6A42 0%, #FF7651 15%, #FFFFFF 100%)',
       }}>
@@ -74,7 +74,7 @@ export default function Page() {
             className={`flex items-center gap-2 text-lg font-medium transition-colors ${
               isScrolled ? 'text-black' : 'text-white'
             }`}>
-            <MapIcon color={isScrolled ? 'black' : 'white'} />
+            <MapIcon color={isScrolled ? '#ff7651' : 'white'} />
             <span>전체</span>
             <Image src={isScrolled ? ArrowDownBlack : ArrowDown} alt="arrow" className="w-4 h-4" />
           </button>
@@ -115,27 +115,30 @@ export default function Page() {
           <TodayBread subTitle="빵굽는 집" title="크루아상" reserveTimes={['8:00', '10:00']} />
         </div>
 
-        <div className="bg-white rounded-t-2xl mt-6 p-4 w-[100%]">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
+        <div className="bg-white rounded-t-2xl mt-6 mb-1 p-4 w-[100%]">
+          <div className="flex mt-3 justify-between items-center">
+            <div className="flex flex-col">
+              <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
+              <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
+            </div>
             <button onClick={navigateToBreads}>
               <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
             </button>
           </div>
-          <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
           <div className="bg-white rounded-t-2xl my-1 w-[100%]">
             <HotBreads breads={hotBreadsData} />
           </div>
 
-          <div className="mt-6 mb-[85px]">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-gray900">핫한 빵집 top 5</h2>
+          <div className="mt-6">
+            <div className="mb-6 flex justify-between items-center">
+              <div className="flex flex-col">
+                <h2 className="text-lg font-bold text-gray900">핫한 빵집 top 5</h2>
+                <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
+              </div>
               <button onClick={navigateToBakeries}>
                 <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
               </button>
             </div>
-            <p className="text-gray500 text-sm mb-3">최근 한 달 간 예약이 많은 순</p>
-
             <div className="flex gap-4 overflow-x-auto pl-1 scrollbar-hide pb-10">
               {[
                 {
@@ -183,6 +186,7 @@ export default function Page() {
                     profileImgUrl={bakery.profileImgUrl}
                     rank={index + 1}
                     size="large"
+                    showBookmark={false}
                   />
                 </div>
               ))}

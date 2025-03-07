@@ -8,9 +8,19 @@ export interface BakeryCardProps extends Pick<Bakery, 'id' | 'operatingStatus' |
   rank?: number;
   distance?: number;
   size?: 'normal' | 'large';
+  showBookmark?: boolean;
 }
 
-const BakeryCard = ({ id, operatingStatus, profileImgUrl, name, rank, distance, size = 'normal' }: BakeryCardProps) => {
+const BakeryCard = ({
+  id,
+  operatingStatus,
+  profileImgUrl,
+  name,
+  rank,
+  distance,
+  size = 'normal',
+  showBookmark = true,
+}: BakeryCardProps) => {
   return (
     <Link
       href={`/bakery/${id}`}
@@ -39,7 +49,7 @@ const BakeryCard = ({ id, operatingStatus, profileImgUrl, name, rank, distance, 
               <span className={cn('text-[13px]', 'text-gray-500')}>{distance}KM</span>
             </div>
           </div>
-          {size === 'large' && (
+          {size === 'large' && showBookmark && (
             <button
               className={cn(
                 'flex justify-center items-center',

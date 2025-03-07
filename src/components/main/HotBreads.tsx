@@ -12,7 +12,7 @@ interface HotBreadsProps {
 
 const HotBreads = ({ breads }: HotBreadsProps) => {
   return (
-    <ul className="mt-3 space-y-3">
+    <ul className="mt-3 space-y-3 cursor-pointer">
       {breads.map((bread, index) => (
         <li key={index} className="flex items-center gap-3 py-2">
           <span className="text-base font-semibold w-6 text-gray900">{index + 1}</span>

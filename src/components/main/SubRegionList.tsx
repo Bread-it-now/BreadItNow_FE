@@ -1,6 +1,19 @@
-import { SubRegionListProps } from '@/types/location';
+import { useEffect } from 'react';
+import { SubRegionListProps, Region } from '@/types/location';
 
-const SubRegionList = ({ filteredSubRegions, setRegions }: SubRegionListProps) => {
+const SubRegionList = ({
+  filteredSubRegions,
+  setFilteredSubRegions,
+  setRegions,
+  selectedRegion,
+  setSelectedRegion,
+}: SubRegionListProps) => {
+  useEffect(() => {
+    if (setFilteredSubRegions) {
+      setFilteredSubRegions(selectedRegion.subRegions);
+    }
+  }, [selectedRegion, setFilteredSubRegions]);
+
   return (
     <div className="w-2/3 flex flex-col overflow-y-auto">
       {filteredSubRegions.map((subRegion) => (
@@ -8,14 +21,21 @@ const SubRegionList = ({ filteredSubRegions, setRegions }: SubRegionListProps) =
           key={subRegion.id}
           className="px-5 py-[6.8%] flex items-center justify-start gap-2 text-gray900 text-sm cursor-pointer"
           onClick={() => {
-            setRegions((prevRegions) =>
-              prevRegions.map((region) => ({
+            setRegions((prevRegions: Region[]) => {
+              const updatedRegions = prevRegions.map((region) => ({
                 ...region,
                 subRegions: region.subRegions.map((item) =>
                   item.id === subRegion.id ? { ...item, selected: !item.selected } : item,
                 ),
-              })),
-            );
+              }));
+
+              const newSelectedRegion = updatedRegions.find((region) => region.id === selectedRegion.id);
+              if (newSelectedRegion) {
+                setSelectedRegion(newSelectedRegion);
+              }
+
+              return updatedRegions;
+            });
           }}>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path

@@ -106,6 +106,17 @@ const LocationBottomSheet = ({ isOpen, onClose, onConfirm }: LocationProps) => {
     }
   };
 
+  const resetSelection = () => {
+    const resetRegions = initialRegions.map((region) => ({
+      ...region,
+      subRegions: region.subRegions.map((sub) => ({ ...sub, selected: false })),
+    }));
+
+    setRegions(resetRegions);
+    setSelectedRegion(resetRegions[0]);
+    setFilteredSubRegions(resetRegions[0].subRegions);
+  };
+
   if (!bottomSheetRoot || !isAnimating) return null;
 
   return createPortal(
@@ -147,13 +158,19 @@ const LocationBottomSheet = ({ isOpen, onClose, onConfirm }: LocationProps) => {
             {searchTerm.length === 0 && (
               <RegionList regions={regions} selectedRegion={selectedRegion} setSelectedRegion={setSelectedRegion} />
             )}
-            <SubRegionList filteredSubRegions={filteredSubRegions} setRegions={setRegions} />
+            <SubRegionList
+              filteredSubRegions={filteredSubRegions}
+              setFilteredSubRegions={setFilteredSubRegions}
+              setRegions={setRegions}
+              selectedRegion={selectedRegion}
+              setSelectedRegion={setSelectedRegion}
+            />
           </div>
         </div>
 
         <div className="w-full p-5 bg-white border-t border-gray-300 sticky bottom-0 left-0">
           <div className="flex gap-2">
-            <Button onClick={onClose} className="w-1/2 border border-gray-300">
+            <Button onClick={resetSelection} className="w-1/2 border border-gray-300">
               초기화
             </Button>
             <Button onClick={onConfirm ?? (() => {})} fullWidth variant="primary">

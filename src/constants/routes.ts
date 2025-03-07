@@ -1,6 +1,6 @@
 export const ROUTES = {
   HOME: {
-    ROOT: '/mypage',
+    ROOT: '/',
     BREAD_LIST: '/breadlist',
     BAKERY_LIST: '/bakery',
   },

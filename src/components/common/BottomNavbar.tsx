@@ -16,7 +16,7 @@ export default function BottomNavbar() {
 
   const activeTab = useMemo(() => {
     switch (true) {
-      case pathname === ROUTES.HOME:
+      case pathname === ROUTES.HOME.ROOT:
         return 'home';
       case pathname.startsWith(ROUTES.SEARCH):
         return 'search';
@@ -35,7 +35,9 @@ export default function BottomNavbar() {
 
   return (
     <div className="w-full max-w-[375px] h-[58px] absolute bottom-0 left-0 bg-white rounded-t-2xl shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)] flex justify-center items-center gap-8">
-      <div className="flex flex-col items-center w-[60px] cursor-pointer" onClick={() => handleTabClick(ROUTES.HOME)}>
+      <div
+        className="flex flex-col items-center w-[60px] cursor-pointer"
+        onClick={() => handleTabClick(ROUTES.HOME.ROOT)}>
         <HomeIcon color={activeTab === 'home' ? '#FF7651' : '#1C1E20'} />
         <span
           className={`text-[11px] font-medium ${activeTab === 'home' ? 'text-primary' : 'text-gray900 opacity-60'}`}>

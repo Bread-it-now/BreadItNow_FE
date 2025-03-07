@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
@@ -22,43 +23,76 @@ const hotBreadsData = [
 
 import Bakery from '@/assets/images/bakery.png';
 import Bread from '@/assets/images/bread.png';
-import MapIcon from '@/assets/icons/map.svg';
+import MapIcon from '@/components/common/Icons/MapIcon';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
+import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
 import Detail from '@/assets/icons/arrow-down.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import NotificationIcon from '@/components/common/Icons/NotificationIcon';
 
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      if (scrollContainer.scrollTop > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div
-      className="flex flex-col h-[100%] max-h-[100%]"
+      className="flex flex-col h-screen"
       style={{
-        background: 'linear-gradient(to bottom, #FF6A42 0%, #FF7651 30%, #FFFFFF 100%)',
+        background: 'linear-gradient(to bottom, #FF6A42 0%, #FF7651 15%, #FFFFFF 100%)',
       }}>
-      <div className="px-4 py-5 text-white flex flex-col gap-3">
-        <div className="flex justify-between items-center sticky top-0 left-0 right-0 bg-transparent z-10">
-          <button onClick={open} className="flex items-center gap-2 text-lg font-medium">
-            <Image src={MapIcon} alt="map" className="w-5 h-5" />
+      <div
+        className={`px-4 py-5 flex flex-col gap-3 sticky top-0 left-0 right-0 transition-all duration-100 ${
+          isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        }`}>
+        <div className="flex justify-between items-center">
+          <button
+            onClick={open}
+            className={`flex items-center gap-2 text-lg font-medium transition-colors ${
+              isScrolled ? 'text-black' : 'text-white'
+            }`}>
+            <MapIcon color={isScrolled ? 'black' : 'white'} />
             <span>전체</span>
-            <Image src={ArrowDown} alt="arrow" className="w-4 h-4" />
+            <Image src={isScrolled ? ArrowDownBlack : ArrowDown} alt="arrow" className="w-4 h-4" />
           </button>
           <div className="flex items-center gap-3">
             <Link href="/search">
-              <SearchIcon color="#FFFFFF" />
+              <SearchIcon color={isScrolled ? '#000000' : '#FFFFFF'} />
             </Link>
             <Link href="/mypage/notifications">
               <div className="relative">
-                <NotificationIcon color="#FFFFFF" />
-                <span className="absolute -top-1 -right-1 bg-white text-primary text-xs rounded-full px-1">8</span>
+                <NotificationIcon color={isScrolled ? '#000000' : '#FFFFFF'} />
+                <span
+                  className={`absolute -top-1 -right-1 text-xs rounded-full px-1 transition-all duration-100 ${
+                    isScrolled ? 'text-white bg-primary' : 'text-primary bg-white'
+                  }`}>
+                  8
+                </span>
               </div>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto pb-4">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-4">
         <div className="flex px-4 justify-between items-center my-8">
           <div className="relative flex items-center">
             <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>

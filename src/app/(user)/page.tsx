@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
 import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/main/TodayBread';
@@ -34,6 +36,9 @@ export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
   const [isScrolled, setIsScrolled] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
+  const navigateToBakeries = () => router.push(ROUTES.HOME.BAKERY_LIST);
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -113,7 +118,7 @@ export default function Page() {
         <div className="bg-white rounded-t-2xl mt-6 p-4 w-[100%]">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
-            <button>
+            <button onClick={navigateToBreads}>
               <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
             </button>
           </div>
@@ -125,7 +130,7 @@ export default function Page() {
           <div className="mt-6">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-bold text-gray900">핫한 빵집 top 5</h2>
-              <button>
+              <button onClick={navigateToBakeries}>
                 <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
               </button>
             </div>

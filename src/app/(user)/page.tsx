@@ -1,9 +1,10 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { useScrollDetection } from '@/hooks/useScrollDetection';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
 import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/main/TodayBread';
@@ -34,29 +35,13 @@ import NotificationIcon from '@/components/common/Icons/NotificationIcon';
 
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   const router = useRouter();
   const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
   const navigateToBakeries = () => router.push(ROUTES.HOME.BAKERY_LIST);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer) return;
-
-    const handleScroll = () => {
-      if (scrollContainer.scrollTop > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    scrollContainer.addEventListener('scroll', handleScroll);
-    return () => {
-      scrollContainer.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  const isScrolled = useScrollDetection(scrollContainerRef);
 
   return (
     <div

@@ -31,5 +31,6 @@ export interface SubRegion {
 
 export interface SubRegionListProps {
   filteredSubRegions: SubRegion[];
-  setFilteredSubRegions: (subRegions: SubRegion[]) => void;
+  setFilteredSubRegions?: (subRegions: SubRegion[]) => void;
+  setRegions: React.Dispatch<React.SetStateAction<Region[]>>;
 }

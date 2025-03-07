@@ -4,7 +4,7 @@ import { RegionListProps } from '@/types/location';
 const RegionList = ({ regions, selectedRegion, setSelectedRegion }: RegionListProps) => {
   const regionsWithSelectedCount = regions.map((region) => ({
     ...region,
-    selectedCount: region.subRegions.filter((subRegion) => subRegion.selected).length,
+    selectedCount: region.subRegions.reduce((count, subRegion) => count + (subRegion.selected ? 1 : 0), 0),
   }));
 
   return (

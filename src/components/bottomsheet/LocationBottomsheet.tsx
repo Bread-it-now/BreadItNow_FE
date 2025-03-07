@@ -67,7 +67,7 @@ const LocationBottomSheet = ({ isOpen, onClose, onConfirm }: LocationProps) => {
   const [isAnimating, setIsAnimating] = useState(isOpen);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const [regions] = useState(initialRegions);
+  const [regions, setRegions] = useState<typeof initialRegions>(initialRegions);
   const [selectedRegion, setSelectedRegion] = useState(regions[0]);
   const [filteredSubRegions, setFilteredSubRegions] = useState(selectedRegion.subRegions);
 
@@ -147,7 +147,7 @@ const LocationBottomSheet = ({ isOpen, onClose, onConfirm }: LocationProps) => {
             {searchTerm.length === 0 && (
               <RegionList regions={regions} selectedRegion={selectedRegion} setSelectedRegion={setSelectedRegion} />
             )}
-            <SubRegionList filteredSubRegions={filteredSubRegions} setFilteredSubRegions={setFilteredSubRegions} />
+            <SubRegionList filteredSubRegions={filteredSubRegions} setRegions={setRegions} />
           </div>
         </div>
 

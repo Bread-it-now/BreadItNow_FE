@@ -1,6 +1,6 @@
 import { SubRegionListProps } from '@/types/location';
 
-const SubRegionList = ({ filteredSubRegions, setFilteredSubRegions }: SubRegionListProps) => {
+const SubRegionList = ({ filteredSubRegions, setRegions }: SubRegionListProps) => {
   return (
     <div className="w-2/3 flex flex-col overflow-y-auto">
       {filteredSubRegions.map((subRegion) => (
@@ -8,10 +8,13 @@ const SubRegionList = ({ filteredSubRegions, setFilteredSubRegions }: SubRegionL
           key={subRegion.id}
           className="px-5 py-[6.8%] flex items-center justify-start gap-2 text-gray900 text-sm cursor-pointer"
           onClick={() => {
-            setFilteredSubRegions(
-              filteredSubRegions.map((item) =>
-                item.id === subRegion.id ? { ...item, selected: !item.selected } : item,
-              ),
+            setRegions((prevRegions) =>
+              prevRegions.map((region) => ({
+                ...region,
+                subRegions: region.subRegions.map((item) =>
+                  item.id === subRegion.id ? { ...item, selected: !item.selected } : item,
+                ),
+              })),
             );
           }}>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

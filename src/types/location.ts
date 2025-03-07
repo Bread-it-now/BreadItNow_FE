@@ -14,7 +14,7 @@ export interface LocationProps {
 export interface Region {
   id: number;
   name: string;
-  subRegions: { id: number; name: string; selected: boolean }[];
+  subRegions: SubRegion[];
 }
 
 export interface RegionListProps {

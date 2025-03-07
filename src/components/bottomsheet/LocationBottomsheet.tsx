@@ -76,8 +76,11 @@ const LocationBottomSheet = ({ isOpen, onClose, onConfirm }: LocationProps) => {
       setFilteredSubRegions(selectedRegion.subRegions);
     } else {
       const allSubRegions = regions.flatMap((region) => region.subRegions);
+      const uniqueSubRegions = Array.from(
+        new Map(allSubRegions.map((subRegion) => [subRegion.name, subRegion])).values(),
+      );
       setFilteredSubRegions(
-        allSubRegions.filter((subRegion) => subRegion.name.toLowerCase().includes(searchTerm.toLowerCase())),
+        uniqueSubRegions.filter((subRegion) => subRegion.name.toLowerCase().includes(searchTerm.toLowerCase())),
       );
     }
   }, [searchTerm, selectedRegion, regions]);

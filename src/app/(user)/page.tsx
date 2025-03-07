@@ -127,7 +127,7 @@ export default function Page() {
             <HotBreads breads={hotBreadsData} />
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 mb-[85px]">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-bold text-gray900">핫한 빵집 top 5</h2>
               <button onClick={navigateToBakeries}>

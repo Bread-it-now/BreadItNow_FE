@@ -6,6 +6,7 @@ interface InputProps {
   placeholder?: string;
   className?: string;
   maxLength?: number | undefined;
+  id?: string;
 }
 
 function Input({
@@ -15,9 +16,11 @@ function Input({
   placeholder = '',
   className = '',
   maxLength = undefined,
+  id,
 }: InputProps) {
   return (
     <input
+      id={id}
       className={cn('px-4 py-[14px] outline-none text-gray-900', className)}
       onChange={onChange}
       value={value}

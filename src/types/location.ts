@@ -9,8 +9,12 @@ export interface LocationProps {
   maxHeight?: number;
   maxContentHeight?: number;
   children?: React.ReactNode;
+  selectedRegion: {
+    id: number;
+    name: string;
+    subRegions: { id: number; name: string; selected: boolean }[];
+  };
 }
-
 export interface Region {
   id: number;
   name: string;

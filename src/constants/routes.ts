@@ -1,5 +1,9 @@
 export const ROUTES = {
-  HOME: '/',
+  HOME: {
+    ROOT: '/',
+    BREAD_LIST: '/breadlist',
+    BAKERY_LIST: '/bakery',
+  },
   AUTH: {
     LOGIN: '/login',
     SIGNUP: '/signup',

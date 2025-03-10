@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import arrowRight from '@/assets/icons/arrow-right.svg';
 import copy from '@/assets/icons/copy.svg';
 import Image from 'next/image';
-import ReservationItem from '@/components/reservation/\bReservationItem';
+import ReservationItem from '@/components/reservation/ReservationItem';
 import Stack from '@/components/common/stack/Stack';
 import { comma } from '@/utils/comma';
 import Button from '@/components/button/Button';

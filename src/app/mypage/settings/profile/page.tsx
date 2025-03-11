@@ -12,7 +12,7 @@ export default function Page() {
   };
   return (
     <div className="bg-gray-200 text-black overflow-y-auto flex flex-col gap-[10px]">
-      <div className="px-5 pt-6 pb-[30px] bg-white rounded-2xl">
+      <div className="px-5 pt-6 pb-[30px] bg-white rounded-b-2xl">
         <div className="title-content-l">기본 정보</div>
         <div className="mt-6">
           <div className="body-s">프로필 사진</div>
@@ -78,6 +78,11 @@ export default function Page() {
             </Button>
           </div>
         </div>
+      </div>
+      <div className="flex px-5 h-[19px] justify-center items-center font-medium text-[13px] mb-[50px]">
+        <div className="text-gray-500">로그아웃</div>
+        <div className="mx-4 w-[3px] h-[3px] bg-gray-300 rounded-full"></div>
+        <div className="text-primary !bg-none !h-full">회원탈퇴</div>
       </div>
     </div>
   );

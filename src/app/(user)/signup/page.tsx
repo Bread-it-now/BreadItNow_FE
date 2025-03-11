@@ -4,12 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Topbar from '@/components/topbar/Topbar';
 import PrivacyModal from '@/components/login/PrivacyModal';
-import UserTypeSelection from '@/components/login/UserTypeSelection';
-import SignupOptions from '@/components/login/SignupOptions';
-import EmailSignupForm from '@/components/login/EmailSignupForm';
-import EmailVerificationForm from '@/components/login/EmailVerificationForm';
-import PasswordSetupForm from '@/components/login/PasswordSetUpForm';
-import SignupComplete from '@/components/login/SignupComplete';
+import UserTypeSelection from '@/components/signup/UserTypeSelection';
+import SignupOptions from '@/components/signup/SignupOptions';
+import EmailSignupForm from '@/components/signup/EmailSignupForm';
+import EmailVerificationForm from '@/components/signup/EmailVerificationForm';
+import PasswordSetupForm from '@/components/signup/PasswordSetUpForm';
+import SignupComplete from '@/components/signup/SignupComplete';
 
 export default function SignupPage() {
   const [isPrivacyModalOpen, setPrivacyModalOpen] = useState(false);

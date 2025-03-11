@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Button from '@/components/button/Button';
-import CategoryButton from '@/components/button/CategoryButton'; // ✅ 새로 만든 버튼 적용
+import CategoryButton from '@/components/button/CategoryButton';
 import Link from 'next/link';
 import Topbar from '../topbar/Topbar';
 

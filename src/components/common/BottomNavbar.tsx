@@ -31,7 +31,7 @@ export default function BottomNavbar({ NavList }: BottomNavbarProps) {
       {NavList.map(({ name, route, icon: Icon }: NavElement) => (
         <div
           key={route}
-          className="flex flex-col items-center w-[60px] cursor-pointer"
+          className="flex flex-col items-center justify-center w-[60px] cursor-pointer"
           onClick={() => handleTabClick(route)}>
           <Icon color={activeTab === name ? '#FF7651' : '#1C1E20'} />
           <span

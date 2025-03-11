@@ -11,6 +11,7 @@ interface VerificationInputProps {
   showToggle?: boolean;
   timeLeft?: number;
   className?: string;
+  maxLength?: number;
 }
 
 export default function VerificationInput({
@@ -20,6 +21,7 @@ export default function VerificationInput({
   type = 'text',
   showToggle = false,
   timeLeft,
+  maxLength,
 }: VerificationInputProps) {
   const [isVisible, setIsVisible] = useState(type !== 'password');
 
@@ -28,7 +30,7 @@ export default function VerificationInput({
       <input
         type={isVisible ? 'text' : 'password'}
         placeholder={placeholder}
-        maxLength={type === 'text' ? 6 : undefined}
+        maxLength={maxLength}
         className="w-full h-12 px-4 border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-primary pr-14"
         value={value}
         onChange={onChange}

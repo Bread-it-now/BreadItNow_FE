@@ -12,17 +12,19 @@ import naverIcon from '@/assets/icons/naver.svg';
 import googleIcon from '@/assets/icons/google.svg';
 import PasswordToggle from '@/components/login/PasswordToggle';
 import Alert from '@/components/common/Alert';
+import FirstLoginFlow from '@/components/login/FirstLoginFlow';
 
 export default function LoginPage() {
   const router = useRouter();
-
   const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('personal');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const [showAlert, setShowAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertSubtitle, setAlertSubtitle] = useState('');
 
   const handleLogin = async () => {
     try {
@@ -36,19 +38,36 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
+        setAlertTitle('로그인 실패했습니다.');
+        setAlertSubtitle('아이디 또는 비밀번호를 확인해주세요.');
         setShowAlert(true);
         return;
       }
 
-      setShowAlert(true);
+      const data = await res.json();
 
-      setTimeout(() => {
-        router.push('/');
-      }, 1500);
+      if (data.firstLogin) {
+        setIsFirstLogin(true);
+      } else {
+        setAlertTitle('로그인에 성공했습니다!');
+        setAlertSubtitle('메인 화면으로 이동합니다.');
+        setShowAlert(true);
+
+        setTimeout(() => {
+          router.push('/');
+        }, 1500);
+      }
     } catch {
+      setAlertTitle('오류 발생');
+      setAlertSubtitle('로그인 중 문제가 발생했습니다. 다시 시도해주세요.');
       setShowAlert(true);
     }
   };
+
+  if (isFirstLogin) {
+    // TODO: 첫 로그인 시 뜨는 화면 로직 구현
+    return <FirstLoginFlow onComplete={() => router.push('/')} />;
+  }
 
   return (
     <div className="flex flex-col max-h-[100%] bg-white">
@@ -135,7 +154,7 @@ export default function LoginPage() {
 
       {showAlert && (
         <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <Alert title="로그인에 성공했습니다!" subtitle="메인 화면으로 이동합니다." buttonLabel="확인" />
+          <Alert title={alertTitle} subtitle={alertSubtitle} buttonLabel="확인" onClose={() => setShowAlert(false)} />
         </div>
       )}
     </div>

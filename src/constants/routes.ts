@@ -1,3 +1,7 @@
+const OWNER_PREFIX = 'owner';
+const MYPAGE_PREFIX = 'mypage';
+const BAKERY_PREFIX = 'bakery';
+
 export const ROUTES = {
   HOME: {
     ROOT: '/',
@@ -10,16 +14,30 @@ export const ROUTES = {
   },
   SEARCH: '/search',
   MYPAGE: {
-    HOME: '/mypage',
-    CHECK_PASSWPRD: '/mypage/check-password',
-    PROFILE_SETTING: '/mypage/settings/profile',
-    BREAD_NOTIFICATIONS_SETTING: '/mypage/settings/bread-notifications',
-    APP_NOTIFICATIONS_SETTING: '/mypage/settings/notifications',
-    DO_NOT_DISTURB: '/mypage/settings/do-not-disturb',
-    NOTIFICATIONS: '/mypage/notifications',
-    RESERVATIONS: '/mypage/reservations',
-    RESERVATION_DETAIL: '/mypage/reservations/[id]',
-    BOOKMARKS: '/mypage/bookmarks',
+    HOME: `/${MYPAGE_PREFIX}`,
+    CHECK_PASSWPRD: `/${MYPAGE_PREFIX}/check-password`,
+    PROFILE_SETTING: `/${MYPAGE_PREFIX}/settings/profile`,
+    BREAD_NOTIFICATIONS_SETTING: `/${MYPAGE_PREFIX}/settings/bread-notifications`,
+    APP_NOTIFICATIONS_SETTING: `/${MYPAGE_PREFIX}/settings/notifications`,
+    DO_NOT_DISTURB: `/${MYPAGE_PREFIX}/settings/do-not-disturb`,
+    NOTIFICATIONS: `/${MYPAGE_PREFIX}/notifications`,
+    RESERVATIONS: `/${MYPAGE_PREFIX}/reservations`,
+    RESERVATION_DETAIL: `/${MYPAGE_PREFIX}/reservations/[id]`,
+    BOOKMARKS: `/${MYPAGE_PREFIX}/bookmarks`,
+  },
+  OWNER: {
+    HOME: `/${OWNER_PREFIX}`,
+    RESERVATIONS: `/${OWNER_PREFIX}/reservations`,
+    RESERVATION_DETAIL: `/${OWNER_PREFIX}/reservations/[id]`,
+    NOTIFICATIONS: `/${OWNER_PREFIX}/notifications`,
+    MANAGE_BAKERY: {
+      HOME: `/${OWNER_PREFIX}/${BAKERY_PREFIX}`,
+      DELETE_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/delete-menu`,
+      REORDER_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/reorder-menu`,
+      ADD_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/add-menu`,
+      SETTING_HOME: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/settings`,
+      EDIT_PROFILE: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/settings/edit-profile`,
+    },
   },
 } as const;
 

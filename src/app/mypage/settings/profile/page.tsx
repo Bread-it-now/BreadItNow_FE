@@ -4,6 +4,7 @@ import Profile from '@/assets/images/profile.png';
 import Button from '@/components/button/Button';
 import Input from '@/components/inputs/Input';
 import { useState } from 'react';
+import PasswordInput from '@/components/inputs/PasswordInput';
 export default function Page() {
   const [nickname, setNickname] = useState<string>('');
 
@@ -76,6 +77,16 @@ export default function Page() {
             <Button className="mt-2 grow w-full bg-primaryLight" variant="primary" onClick={() => {}}>
               <div className="text-primary">비밀번호 변경하기</div>
             </Button>
+            <PasswordInput
+              className="border border-gray-200 bg-gray-50 rounded-lg"
+              value={nickname}
+              onChange={onChangeNickname}
+            />
+            <PasswordInput
+              className="border border-gray-200 bg-gray-50 rounded-lg"
+              value={nickname}
+              onChange={onChangeNickname}
+            />
           </div>
         </div>
       </div>

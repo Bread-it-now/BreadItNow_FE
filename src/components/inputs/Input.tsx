@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-interface InputProps {
+export interface InputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;

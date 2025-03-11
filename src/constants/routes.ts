@@ -27,6 +27,7 @@ export const ROUTES = {
   },
   OWNER: {
     HOME: `/${OWNER_PREFIX}`,
+    HIDE_MENU: `/${OWNER_PREFIX}/hide-menu`,
     RESERVATIONS: `/${OWNER_PREFIX}/reservations`,
     RESERVATION_DETAIL: `/${OWNER_PREFIX}/reservations/[id]`,
     NOTIFICATIONS: `/${OWNER_PREFIX}/notifications`,

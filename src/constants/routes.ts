@@ -31,7 +31,7 @@ export const ROUTES = {
     RESERVATIONS: `/${OWNER_PREFIX}/reservations`,
     RESERVATION_DETAIL: `/${OWNER_PREFIX}/reservations/[id]`,
     NOTIFICATIONS: `/${OWNER_PREFIX}/notifications`,
-    MANAGE_BAKERY: {
+    BAKERY: {
       HOME: `/${OWNER_PREFIX}/${BAKERY_PREFIX}`,
       DELETE_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/delete-menu`,
       REORDER_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/reorder-menu`,
@@ -53,4 +53,21 @@ export const MYPAGE_TITLE: Record<keyof typeof ROUTES.MYPAGE, string> = {
   RESERVATIONS: '예약 내역',
   RESERVATION_DETAIL: '예약 상세',
   BOOKMARKS: '즐겨찾기',
+};
+
+export const OWNER_PAGE_TITLE: Record<Exclude<keyof typeof ROUTES.OWNER, 'BAKERY'>, string> = {
+  HOME: '운영/상태 관리',
+  HIDE_MENU: '메뉴 숨김',
+  RESERVATIONS: '예약 관리',
+  RESERVATION_DETAIL: `예약 상세`,
+  NOTIFICATIONS: `알림`,
+};
+
+export const OWNER_BAKERY_TITLE: Record<keyof typeof ROUTES.OWNER.BAKERY, string> = {
+  HOME: '빵집',
+  DELETE_MENU: '메뉴 삭제',
+  REORDER_MENU: '메뉴 순서 변경',
+  ADD_MENU: '메뉴 등록',
+  SETTING_HOME: '설정',
+  EDIT_PROFILE: '내 정보 수정',
 };

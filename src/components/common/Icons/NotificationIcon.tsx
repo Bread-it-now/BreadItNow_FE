@@ -1,3 +1,4 @@
+'use client';
 interface IconProps {
   color?: string;
   fillColor?: string;

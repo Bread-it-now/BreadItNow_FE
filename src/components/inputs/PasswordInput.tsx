@@ -23,7 +23,7 @@ function PasswordInput({
       <input
         type={showPassword ? 'text' : 'password'}
         id={id}
-        className={cn('px-4 py-[14px] outline-none text-gray-900 w-full', className)}
+        className={cn('px-4 py-[14px] outline-none text-gray-900 w-full text-[13px]', className)}
         onChange={onChange}
         value={value}
         disabled={disabled}

@@ -14,6 +14,10 @@ import { useState } from 'react';
 import type { Bakery } from '@/types/bakery';
 import { Product } from '@/types/product';
 import Accordion from '@/components/accordion/Accordion';
+import ArrowRight from '@/assets/icons/arrow-right.svg';
+import KakaoIcon from '@/assets/images/kakao.png';
+import NaverIcon from '@/assets/images/naver.png';
+import CopyIcon from '@/assets/icons/copy.svg';
 const bakery: Bakery = {
   id: 1,
   ownerId: 1,
@@ -159,8 +163,17 @@ function Page() {
     'https://placehold.co/600x1000/png',
   ];
   const [checkedProducts, setCheckProducts] = useState<Product[]>([]);
+
+  //주소 바텀 sheet
+  const [isOpenAddressBottomSheet, setIsOpenAddressBottomSheet] = useState(false);
+  const onOpenAddressBottomSheet = () => {
+    setIsOpenAddressBottomSheet(true);
+  };
+  const onCloseAddressBottomSheet = () => {
+    setIsOpenAddressBottomSheet(false);
+  };
   return (
-    <div className="flex flex-col gap-[10px] overflow-y-scroll">
+    <div className="flex flex-col gap-[10px] overflow-y-scroll text-black">
       <div className="h-[250px] relative rounded-b-2xl overflow-hidden">
         <Image
           onClick={() => router.back()}
@@ -183,6 +196,25 @@ function Page() {
       <Accordion title="이미지">
         <BreadStoreImages images={images} />
       </Accordion>
+
+      <div className="flex flex-col gap-[10px] px-5 py-[30px] bg-white rounded-2xl">
+        <div className="flex gap-5">
+          <div className="grow">
+            <div className="text-title-subtitle">주소</div>
+            <div className="text-[13px] font-normal text-gray-500 mt-1">대전광역시 중구 대종로480번길 15 (은행동)</div>
+          </div>
+          <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
+        </div>
+        <hr className="my-5" />
+        <div className="flex gap-5">
+          <div className="grow">
+            <div className="text-title-subtitle">전화번호</div>
+            <div className="text-[13px] font-normal text-gray-500 mt-1">010-1234-5678</div>
+          </div>
+          <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
+        </div>
+      </div>
+
       <MenuCategory />
 
       <BottomSheet
@@ -199,6 +231,27 @@ function Page() {
           checkedProducts={checkedProducts}
           setCheckProducts={setCheckProducts}
         />
+      </BottomSheet>
+
+      <BottomSheet isOpen={isOpenAddressBottomSheet} onClose={onCloseAddressBottomSheet} bgColor="bg-gray-50">
+        <div className="bg-gray-50 w-full h-full">
+          <div className="px-5 py-[30px] text-gray-900 rounded-[10px]">
+            <div className="p-5 bg-white rounded-[10px]">
+              <div className="flex gap-5 items-center justify-between">
+                <div className="text-md font-medium grow">카카오맵</div>
+                <Image src={KakaoIcon} alt="kakao" width={20} height={20} />
+              </div>
+              <div className="flex gap-5 items-center justify-between mt-6">
+                <div className="text-md font-medium grow">네이버 지도</div>
+                <Image src={NaverIcon} alt="naver" width={20} height={20} />
+              </div>
+            </div>
+            <div className="mt-[10px] flex gap-5 items-center justify-between p-5 bg-white rounded-[10px]">
+              <div className="text-md font-medium grow">복사</div>
+              <Image src={CopyIcon} alt="copy" width={20} height={20} />
+            </div>
+          </div>
+        </div>
       </BottomSheet>
       <Footer onClick={open} />
     </div>

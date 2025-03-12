@@ -4,7 +4,7 @@ import RoundTab from '@/components/common/tabs/RoundTab';
 import { NotificationType } from '@/types/notification';
 import { useState } from 'react';
 import { notificatinoMockData } from '@/mocks/data/notification';
-import NotificationCard from '@/components/notifications/notificationCard';
+import NotificationCard from '@/components/notifications/notificationcard/notificationCard';
 import setting from '@/assets/icons/setting.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';

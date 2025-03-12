@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Topbar from '@/components/topbar/Topbar';
+import VerificationInput from '@/components/common/Input/VerificationInput';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import Button from '@/components/button/Button';
 import kakaoIcon from '@/assets/icons/kakao.svg';
 import naverIcon from '@/assets/icons/naver.svg';
 import googleIcon from '@/assets/icons/google.svg';
-import PasswordToggle from '@/components/login/PasswordToggle';
 import Alert from '@/components/common/Alert';
 import FirstLoginFlow from '@/components/login/FirstLoginFlow';
 
@@ -21,11 +21,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
   const [isFirstLogin, setIsFirstLogin] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertSubtitle, setAlertSubtitle] = useState('');
 
+  //TODO: 추후 로그인 API 연동하고 가져오기
   const handleLogin = async () => {
     try {
       const res = await fetch('/api/login', {
@@ -95,23 +95,21 @@ export default function LoginPage() {
       />
 
       <div className="flex flex-col px-5 gap-4 mt-4">
-        <input
-          type="text"
-          placeholder="아이디"
-          className="w-full h-12 border text-gray500 border-gray-300 rounded-lg px-4 text-sm focus:outline-primary"
+        <VerificationInput
           value={email}
+          maxLength={13}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="아이디"
         />
 
         <div className="relative w-full">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="비밀번호"
-            className="w-full h-12 text-gray500 border border-gray-300 rounded-lg px-4 text-sm pr-10 focus:outline-primary"
+          <VerificationInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="영문, 숫자, 특수기호 포함 (8글자 이상)"
+            type="password"
+            showToggle={true}
           />
-          <PasswordToggle isVisible={showPassword} onToggle={() => setShowPassword(!showPassword)} />
         </div>
 
         <div className="flex items-center gap-2">

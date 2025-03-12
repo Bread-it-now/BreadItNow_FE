@@ -55,7 +55,7 @@ export default function EmailVerificationForm({ onVerify }: EmailVerificationFor
           fullWidth
           variant="primary"
           className="h-[52px] text-[15px] font-semibold"
-          disabled={code.length !== 6}
+          disabled={!code}
           onClick={onVerify}>
           다음
         </Button>

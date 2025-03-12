@@ -1,7 +1,7 @@
 export const OPERATING_STATUS = {
-  OPEN: '영업중',
+  OPEN: '영업 중',
   CLOSED: '영업 종료',
-  TEMPORARY_CLOSED: '임시 휴업',
+  TEMPORARY_CLOSED: '일시 중지',
 } as const;
 
 /** 빵집 기본 정보 */

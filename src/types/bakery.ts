@@ -4,24 +4,29 @@ export const OPERATING_STATUS = {
   TEMPORARY_CLOSED: '임시 휴업',
 } as const;
 
-export interface Bakery {
-  id: number;
-  ownerId: number;
-  operatingStatus: keyof typeof OPERATING_STATUS;
+/** 빵집 기본 정보 */
+export interface BaseInfo {
+  bakeryId: number;
   name: string;
   address: string;
   phone: string;
-  introudction: string;
-  profileImgUrl: string;
-  openTime: string;
-  city: string;
-  region: string;
-  description: string;
-  zipcode: string;
-  latitude?: string;
-  longitude?: string;
+  distance?: number;
+  introduction: string;
 }
 
+/** 빵집 운영 관련 정보 */
+export interface OperatingInfo {
+  operatingStatus: keyof typeof OPERATING_STATUS;
+  openTime: string;
+}
+
+/** 빵집 이미지 정보 */
+export interface ImageInfo {
+  profileImage: string;
+  bakeryIamges: string[];
+}
+
+export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}
 export interface Bread {
   id: number;
   bakeryId: number;

@@ -4,17 +4,17 @@ import { Bakery, OPERATING_STATUS } from '@/types/bakery';
 import bookmark from '@/assets/icons/bookmark.svg';
 import Link from 'next/link';
 
-export interface BakeryCardProps extends Pick<Bakery, 'id' | 'operatingStatus' | 'profileImgUrl' | 'name'> {
+export interface BakeryCardProps
+  extends Pick<Bakery, 'bakeryId' | 'operatingStatus' | 'profileImage' | 'name' | 'distance'> {
   rank?: number;
-  distance?: number;
   size?: 'normal' | 'large';
   showBookmark?: boolean;
 }
 
 const BakeryCard = ({
-  id,
+  bakeryId,
   operatingStatus,
-  profileImgUrl,
+  profileImage,
   name,
   rank,
   distance,
@@ -23,10 +23,10 @@ const BakeryCard = ({
 }: BakeryCardProps) => {
   return (
     <Link
-      href={`/bakery/${id}`}
+      href={`/bakery/${bakeryId}`}
       className={cn(' flex flex-col items-start gap-3', size === 'normal' ? 'w-60' : 'w-full')}>
       <div className={cn('relative', `w-full ${size === 'normal' ? 'h-40' : 'h-[223px]'}`)}>
-        <Image src={profileImgUrl} fill alt="bakery" className="rounded-md object-cover" />
+        <Image src={profileImage} fill alt="bakery" className="rounded-md object-cover" />
       </div>
       <div className={cn('flex items-start gap-[10px]', 'w-full h-11')}>
         {size === 'normal' && (

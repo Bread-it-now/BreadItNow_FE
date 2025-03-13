@@ -1,5 +1,8 @@
 'use client';
 import OperatingStatusCard from '@/components/operatingstatuscard/OperatingStatusCard';
+import ProductStockCard, { ProductStockCardProps } from '@/components/productstockcard/ProductStockCard';
+import { mockProducts } from '@/mocks/data/product';
+import Stack from '@/components/common/stack/Stack';
 import Button from '@/components/button/Button';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
@@ -24,7 +27,16 @@ export default function Page() {
             메뉴 숨김 관리
           </Button>
         </div>
-        <div className="flex flex-col items-start px-5 py-[1.875rem] gap-6 w-full bg-white rounded-2xl"></div>
+        <div className="flex flex-col items-start w-full">
+          <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
+            {mockProducts.breadProducts.map((product: ProductStockCardProps) => (
+              <ProductStockCard key={`${product.id}-${product.name}`} {...product} />
+            ))}
+            {mockProducts.otherProducts.map((product: ProductStockCardProps) => (
+              <ProductStockCard key={`${product.id}-${product.name}`} {...product} />
+            ))}
+          </Stack>
+        </div>
       </section>
     </>
   );

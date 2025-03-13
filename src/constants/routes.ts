@@ -31,7 +31,7 @@ export const ROUTES = {
     RESERVATION_DETAIL: `/${OWNER_PREFIX}/reservations/[id]`,
     NOTIFICATIONS: `/${OWNER_PREFIX}/notifications`,
     BAKERY: {
-      HOME: `/${OWNER_PREFIX}/${BAKERY_PREFIX}`,
+      BAKERY_HOME: `/${OWNER_PREFIX}/${BAKERY_PREFIX}`,
       DELETE_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/delete-menu`,
       REORDER_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/reorder-menu`,
       ADD_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/add-menu`,
@@ -62,7 +62,7 @@ export const OWNER_PAGE_TITLE: Record<Exclude<keyof typeof ROUTES.OWNER, 'BAKERY
 };
 
 export const OWNER_BAKERY_TITLE: Record<keyof typeof ROUTES.OWNER.BAKERY, string> = {
-  HOME: '빵집',
+  BAKERY_HOME: '빵집',
   DELETE_MENU: '메뉴 삭제',
   REORDER_MENU: '메뉴 순서 변경',
   ADD_MENU: '메뉴 등록',

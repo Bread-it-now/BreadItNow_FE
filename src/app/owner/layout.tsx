@@ -13,7 +13,7 @@ const UserNavElements: NavElement[] = [
   { name: '관리', navPathname: 'home', route: ROUTES.OWNER.HOME, icon: ManagementIcon },
   { name: '예약', navPathname: 'reservations', route: ROUTES.OWNER.RESERVATIONS, icon: ReservationIcon },
   { name: '알림', navPathname: 'notifications', route: ROUTES.OWNER.NOTIFICATIONS, icon: NotificationIcon },
-  { name: '빵집', navPathname: 'bakery', route: ROUTES.OWNER.BAKERY.HOME, icon: BakeryIcon },
+  { name: '빵집', navPathname: 'bakery', route: ROUTES.OWNER.BAKERY.BAKERY_HOME, icon: BakeryIcon },
 ];
 
 const reservationDetailPathRegex = /^\/owner\/reservations\/\d+$/;

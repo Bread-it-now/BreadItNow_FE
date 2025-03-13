@@ -14,7 +14,7 @@ export const getPickupDeadlineFormat = (pickupDeadline: string) => {
 export const RESERVATION_STATUS: Record<ReservationStatus, string> = {
   WAITING: '예약 대기',
   APPROVED: '예약 승인',
-  PARTIALLY_APPROVED: '예약 부분 승인',
+  PARTIAL_APPROVED: '예약 부분 승인',
   CANCELED: '예약 취소',
   PAYMENT_COMPLETED: '결제 완료',
 };
@@ -67,10 +67,10 @@ const ReservationCard = ({
           <p className="text-title-content-s font-normal text-gray900">{comma(totalPrice)}원</p>
         </div>
       </div>
-      {(status === 'CANCELED' || status === 'APPROVED' || status === 'PARTIALLY_APPROVED') && (
+      {(status === 'CANCELED' || status === 'APPROVED' || status === 'PARTIAL_APPROVED') && (
         <div
           className={`flex justify-center items-center p-[0.75rem] gap-[0.375rem] w-full h-[43px] rounded-lg text-title-content-xs font-normal ${status === 'CANCELED' ? 'bg-gray50 text-gray500' : 'bg-[#FFF0EC] text-primary'}`}>
-          {(status === 'APPROVED' || status === 'PARTIALLY_APPROVED') && (
+          {(status === 'APPROVED' || status === 'PARTIAL_APPROVED') && (
             <span className="font-semibold text-primary">픽업일시</span>
           )}
           <span>

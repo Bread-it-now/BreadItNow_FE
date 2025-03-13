@@ -46,10 +46,10 @@ export default function Page() {
               <Image src={arrowRight} width={20} height={20} alt="move to bakerydetail page" />
             </button>
           </div>
-          {(status === 'CANCELED' || status === 'APPROVED' || status === 'PARTIALLY_APPROVED') && (
+          {(status === 'CANCELED' || status === 'APPROVED' || status === 'PARTIAL_APPROVED') && (
             <div
               className={`flex justify-center items-center p-[0.75rem] gap-[0.375rem] w-full h-[43px] rounded-lg text-title-content-xs font-normal ${status === 'CANCELED' ? 'bg-gray50 text-gray500' : 'bg-[#FFF0EC] text-primary'}`}>
-              {(status === 'APPROVED' || status === 'PARTIALLY_APPROVED') && (
+              {(status === 'APPROVED' || status === 'PARTIAL_APPROVED') && (
                 <span className="font-semibold text-primary">픽업일시</span>
               )}
               <span>

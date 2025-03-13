@@ -58,7 +58,7 @@ export const MYPAGE_TITLE: Record<keyof typeof ROUTES.MYPAGE, string> = {
 export const OWNER_PAGE_TITLE: Record<Exclude<keyof typeof ROUTES.OWNER, 'BAKERY'>, string> = {
   HOME: '운영/상태 관리',
   HIDE_MENU: '메뉴 숨김',
-  RESERVATIONS: '예약 관리',
+  RESERVATIONS: '예약 내역',
   RESERVATION_DETAIL: `예약 상세`,
   NOTIFICATIONS: `알림`,
 };

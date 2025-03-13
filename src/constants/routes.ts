@@ -27,7 +27,6 @@ export const ROUTES = {
   },
   OWNER: {
     HOME: `/${OWNER_PREFIX}`,
-    HIDE_MENU: `/${OWNER_PREFIX}/hide-menu`,
     RESERVATIONS: `/${OWNER_PREFIX}/reservations`,
     RESERVATION_DETAIL: `/${OWNER_PREFIX}/reservations/[id]`,
     NOTIFICATIONS: `/${OWNER_PREFIX}/notifications`,
@@ -57,7 +56,6 @@ export const MYPAGE_TITLE: Record<keyof typeof ROUTES.MYPAGE, string> = {
 
 export const OWNER_PAGE_TITLE: Record<Exclude<keyof typeof ROUTES.OWNER, 'BAKERY'>, string> = {
   HOME: '운영/상태 관리',
-  HIDE_MENU: '메뉴 숨김',
   RESERVATIONS: '예약 내역',
   RESERVATION_DETAIL: `예약 상세`,
   NOTIFICATIONS: `알림`,

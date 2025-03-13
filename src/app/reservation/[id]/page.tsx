@@ -96,10 +96,10 @@ function Page() {
             </div>
           </div>
           <div className="w-full border-box fixed z-10 bottom-0 bg-white p-5 flex gap-2">
-            <Button onClick={() => router.push('/')} variant="default" fullWidth>
+            <Button onClick={() => router.push('/')} variant="default" scale="large" fullWidth>
               메인
             </Button>
-            <Button onClick={() => alert('예약 상세')} variant="primary" fullWidth>
+            <Button onClick={() => alert('예약 상세')} variant="primary" scale="large" fullWidth>
               예약 상세
             </Button>
           </div>

@@ -61,10 +61,10 @@ const LocationBottomSheet = ({ isOpen, onClose, onConfirm }: LocationProps) => {
 
       <div className="sticky bottom-0 left-0 w-full p-5 bg-white border-t border-gray-300 z-10">
         <div className="flex gap-2">
-          <Button onClick={resetSelection} className="w-1/2 border border-gray-300">
+          <Button onClick={resetSelection} scale="large" className="w-1/2 border border-gray-300">
             초기화
           </Button>
-          <Button onClick={onConfirm ?? (() => {})} fullWidth variant="primary">
+          <Button onClick={onConfirm ?? (() => {})} fullWidth scale="large" variant="primary">
             관심지역 설정 완료
           </Button>
         </div>

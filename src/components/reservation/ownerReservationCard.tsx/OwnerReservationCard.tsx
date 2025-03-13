@@ -2,13 +2,9 @@
 
 import { Reservation, OwnerReservationStatus } from '@/types/reservation';
 import { comma } from '@/utils/comma';
-import { getDay, getDate, getTime, getDateFormat } from '@/utils/date';
+import { getDateFormat } from '@/utils/date';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
-
-export const getPickupDeadlineFormat = (pickupDeadline: string) => {
-  return getDate(pickupDeadline) + `(${getDay(pickupDeadline)}) ` + getTime(pickupDeadline);
-};
 
 export const OWNER_RESERVATION_STATUS: Record<OwnerReservationStatus, string> = {
   WAITING: '승인 대기',

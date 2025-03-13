@@ -1,6 +1,6 @@
 'use client';
 
-import { getPickupDeadlineFormat, RESERVATION_STATUS } from '@/components/reservation/ReservationCard';
+import { RESERVATION_STATUS } from '@/components/reservation/ReservationCard';
 import { reservationDetails } from '@/mocks/data/reservation';
 import { getDate } from '@/utils/date';
 import { useParams, useRouter } from 'next/navigation';
@@ -53,11 +53,7 @@ export default function Page() {
                 <span className="font-semibold text-primary">픽업일시</span>
               )}
               <span>
-                {status === 'CANCELED'
-                  ? cancelDetail
-                  : pickupDeadline !== undefined
-                    ? getPickupDeadlineFormat(pickupDeadline)
-                    : ''}
+                {status === 'CANCELED' ? cancelDetail : pickupDeadline !== undefined ? getDate(pickupDeadline) : ''}
               </span>
             </div>
           )}

@@ -3,13 +3,9 @@
 import { ReservationStatus, Reservation } from '@/types/reservation';
 import Image from 'next/image';
 import { comma } from '@/utils/comma';
-import { getDay, getDate, getTime } from '@/utils/date';
+import { getDate, getDateFormat } from '@/utils/date';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
-
-export const getPickupDeadlineFormat = (pickupDeadline: string) => {
-  return getDate(pickupDeadline) + `(${getDay(pickupDeadline)}) ` + getTime(pickupDeadline);
-};
 
 export const RESERVATION_STATUS: Record<ReservationStatus, string> = {
   WAITING: '예약 대기',
@@ -74,11 +70,7 @@ const ReservationCard = ({
             <span className="font-semibold text-primary">픽업일시</span>
           )}
           <span>
-            {status === 'CANCELED'
-              ? cancelDetail
-              : pickupDeadline !== undefined
-                ? getPickupDeadlineFormat(pickupDeadline)
-                : ''}
+            {status === 'CANCELED' ? cancelDetail : pickupDeadline !== undefined ? getDateFormat(pickupDeadline) : ''}
           </span>
         </div>
       )}

@@ -23,10 +23,10 @@ export default function Page() {
       <section className="flex items-center pl-5 py-[0.625rem] g-[0.375rem] h-[55px] bg-white border-b-[1px] border-b-gray100">
         <RoundTab
           categories={[
-            { key: 'WAITING', label: '승인 대기' },
-            { key: 'APPROVED', label: '접수 완료' },
-            { key: 'PAYMENT_COMPLETED', label: '결제 완료' },
-            { key: 'CANCELED', label: '취소' },
+            { key: 'WAITING', label: `승인 대기 ${selectedReservationCards.length}` },
+            { key: 'APPROVED', label: `접수 완료 ${selectedReservationCards.length}` },
+            { key: 'PAYMENT_COMPLETED', label: `결제 완료 ${selectedReservationCards.length}` },
+            { key: 'CANCELED', label: `취소 ${selectedReservationCards.length}` },
           ]}
           activeTab={selectedCategory}
           onTabChange={setSelectedCategory}

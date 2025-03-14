@@ -1,7 +1,9 @@
 import Image from 'next/image';
+import { useState } from 'react';
 import { cn } from '@/utils/cn';
 import { Bakery, OPERATING_STATUS } from '@/types/bakery';
 import bookmark from '@/assets/icons/bookmark.svg';
+import bookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Link from 'next/link';
 
 export interface BakeryCardProps extends Pick<Bakery, 'id' | 'operatingStatus' | 'profileImgUrl' | 'name'> {
@@ -21,6 +23,12 @@ const BakeryCard = ({
   size = 'normal',
   showBookmark = true,
 }: BakeryCardProps) => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsBookmarked((prev) => !prev);
+  };
   return (
     <Link
       href={`/bakery/${id}`}
@@ -51,13 +59,14 @@ const BakeryCard = ({
           </div>
           {size === 'large' && showBookmark && (
             <button
+              onClick={handleBookmarkClick}
               className={cn(
                 'flex justify-center items-center',
                 'w-8 h-8 min-w-8',
                 'border rounded-full border-gray100',
               )}
               aria-label="bookmark">
-              <Image width={16} height={16} src={bookmark} alt="bookmark" />
+              <Image width={16} height={16} src={isBookmarked ? bookmarkFill : bookmark} alt="bookmark" />
             </button>
           )}
         </div>

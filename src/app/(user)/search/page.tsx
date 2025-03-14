@@ -112,7 +112,7 @@ export default function SearchPage() {
                   ))}
                 </div>
               ) : (
-                <EmptyState searchTerm={searchTerm} />
+                <EmptyState message="다른 키워드로 검색해보세요." searchTerm={searchTerm} />
               )
             ) : filteredBreadList.length > 0 ? (
               <div className="grid grid-cols-2 gap-4 p-4">
@@ -126,7 +126,7 @@ export default function SearchPage() {
                 ))}
               </div>
             ) : (
-              <EmptyState searchTerm={searchTerm} />
+              <EmptyState message="다른 키워드로 검색해보세요." searchTerm={searchTerm} />
             )}
           </div>
         </div>

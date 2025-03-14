@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/utils/cn';
 import bookmark from '@/assets/icons/bookmark.svg';
@@ -14,16 +13,20 @@ export interface BreadCardProps {
   description: string;
   price: string;
   size?: 'small' | 'normal';
+  isBookmarked: boolean;
+  onToggleBookmark: () => void;
 }
 
-const BreadCard = ({ id, profileImgUrl, name, description, price, size = 'normal' }: BreadCardProps) => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
-  const handleBookmarkClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsBookmarked((prev) => !prev);
-  };
-
+const BreadCard = ({
+  id,
+  profileImgUrl,
+  name,
+  description,
+  price,
+  size = 'normal',
+  isBookmarked,
+  onToggleBookmark,
+}: BreadCardProps) => {
   return (
     <Link
       href={`/bread/${id}`}
@@ -33,13 +36,16 @@ const BreadCard = ({ id, profileImgUrl, name, description, price, size = 'normal
         <button
           className="absolute opacity-90 bottom-2 right-2 flex justify-center items-center w-8 h-8 min-w-8 border rounded-full border-gray100 bg-white shadow-md"
           aria-label="bookmark"
-          onClick={handleBookmarkClick}>
+          onClick={(e) => {
+            e.preventDefault();
+            onToggleBookmark();
+          }}>
           <Image width={16} height={16} src={isBookmarked ? bookmarkFill : bookmark} alt="bookmark" />
         </button>
       </div>
       <div className="flex flex-col px-1 items-start gap-1 w-full">
         <div className="self-stretch flex-col justify-start items-start gap-0.5 flex">
-          <div className="self-stretch text-gray700 text-[13px] font-normal  leading-[19px]">{description}</div>
+          <div className="self-stretch text-gray700 text-[13px] font-normal leading-[19px]">{description}</div>
           <div className="self-stretch text-gray900 text-sm font-semibold leading-tight">{name}</div>
         </div>
         <div className="text-gray900 text-sm font-medium leading-tight">{price}</div>

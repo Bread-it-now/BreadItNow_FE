@@ -11,6 +11,11 @@ import Bakery from '@/assets/images/bakery.png';
 export default function Page() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'hot' | 'popular'>('hot');
+  const [bookmarkedBakeries, setBookmarkedBakeries] = useState<number[]>([]);
+
+  const toggleBookmark = (id: number) => {
+    setBookmarkedBakeries((prev) => (prev.includes(id) ? prev.filter((bId) => bId !== id) : [...prev, id]));
+  };
 
   return (
     <div className="w-full h-[100%] flex flex-col">
@@ -31,9 +36,21 @@ export default function Page() {
 
       <div className="flex-1 overflow-auto text-gray900 p-4">
         {activeTab === 'hot' ? (
-          <BakeryList title="핫한 빵집" subtitle="최근 한 달 간 예약이 많은 순" bakeryData={hotBakeries} />
+          <BakeryList
+            title="핫한 빵집"
+            subtitle="최근 한 달 간 예약이 많은 순"
+            bakeryData={hotBakeries}
+            bookmarkedBakeries={bookmarkedBakeries}
+            toggleBookmark={toggleBookmark}
+          />
         ) : (
-          <BakeryList title="인기 빵집" subtitle="즐겨찾기 많은 순" bakeryData={popularBakeries} />
+          <BakeryList
+            title="인기 빵집"
+            subtitle="즐겨찾기 많은 순"
+            bakeryData={popularBakeries}
+            bookmarkedBakeries={bookmarkedBakeries}
+            toggleBookmark={toggleBookmark}
+          />
         )}
       </div>
     </div>
@@ -77,6 +94,8 @@ function BakeryList({
   title,
   subtitle,
   bakeryData,
+  bookmarkedBakeries,
+  toggleBookmark,
 }: {
   title: string;
   subtitle: string;
@@ -88,6 +107,8 @@ function BakeryList({
     distance: number;
     rank: number;
   }[];
+  bookmarkedBakeries: number[];
+  toggleBookmark: (id: number) => void;
 }) {
   return (
     <div>
@@ -96,7 +117,13 @@ function BakeryList({
 
       <div className="grid grid-cols-1 gap-4 mt-4">
         {bakeryData.map((bakery) => (
-          <BakeryCard size="large" key={bakery.id} {...bakery} />
+          <BakeryCard
+            size="large"
+            key={bakery.id}
+            {...bakery}
+            isBookmarked={bookmarkedBakeries.includes(bakery.id)}
+            onToggleBookmark={() => toggleBookmark(bakery.id)}
+          />
         ))}
       </div>
     </div>

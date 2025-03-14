@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useState } from 'react';
 import { cn } from '@/utils/cn';
 import { Bakery, OPERATING_STATUS } from '@/types/bakery';
 import bookmark from '@/assets/icons/bookmark.svg';
@@ -11,6 +10,8 @@ export interface BakeryCardProps extends Pick<Bakery, 'id' | 'operatingStatus' |
   distance?: number;
   size?: 'normal' | 'large';
   showBookmark?: boolean;
+  isBookmarked: boolean;
+  onToggleBookmark: () => void;
 }
 
 const BakeryCard = ({
@@ -22,13 +23,9 @@ const BakeryCard = ({
   distance,
   size = 'normal',
   showBookmark = true,
+  isBookmarked,
+  onToggleBookmark,
 }: BakeryCardProps) => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
-  const handleBookmarkClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsBookmarked((prev) => !prev);
-  };
   return (
     <Link
       href={`/bakery/${id}`}
@@ -59,7 +56,10 @@ const BakeryCard = ({
           </div>
           {size === 'large' && showBookmark && (
             <button
-              onClick={handleBookmarkClick}
+              onClick={(e) => {
+                e.preventDefault();
+                onToggleBookmark();
+              }}
               className={cn(
                 'flex justify-center items-center',
                 'w-8 h-8 min-w-8',

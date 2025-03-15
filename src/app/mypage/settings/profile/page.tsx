@@ -39,6 +39,7 @@ export default function Page() {
   const [nicknameButtonMode, setNicknameButtonMode] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [phoneNumberButtonMode, setPhoneNumberButtonMode] = useState<boolean>(false);
+  const [changePassword, setChangePassword] = useState<boolean>(false);
   //Validation을 위해 function으로 wrapping
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -117,21 +118,35 @@ export default function Page() {
           </div>
           <div className="mt-[30px]">
             <div className="text-body-s">비밀번호</div>
-            <Button className="mt-2 grow w-full bg-primaryLight" variant="primary" onClick={() => {}}>
-              <div className="text-primary">비밀번호 변경하기</div>
-            </Button>
-            <PasswordInput
-              className="border border-gray-200  rounded-lg mt-2"
-              value={nickname}
-              onChange={onChangeNickname}
-              placeholder="영문, 숫자, 특수기호 모두 포함 (8글자 이상)"
-            />
-            <PasswordInput
-              className="border border-gray-200 rounded-lg mt-2"
-              value={nickname}
-              onChange={onChangeNickname}
-              placeholder="새 비밀번호 확인"
-            />
+            {changePassword ? (
+              <>
+                <PasswordInput
+                  className="border border-gray-200  rounded-lg mt-2"
+                  value={nickname}
+                  onChange={onChangeNickname}
+                  placeholder="영문, 숫자, 특수기호 모두 포함 (8글자 이상)"
+                />
+                <PasswordInput
+                  className="border border-gray-200 rounded-lg mt-2"
+                  value={nickname}
+                  onChange={onChangeNickname}
+                  placeholder="새 비밀번호 확인"
+                />
+                <Button
+                  onClick={() => setChangePassword(!changePassword)}
+                  className="mt-2 grow w-full bg-primaryLight"
+                  variant="primary">
+                  <div className="text-primary">비밀번호 변경 취소</div>
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => setChangePassword(!changePassword)}
+                className="mt-2 grow w-full bg-primaryLight"
+                variant="primary">
+                <div className="text-primary">비밀번호 변경하기</div>
+              </Button>
+            )}
           </div>
         </div>
       </div>

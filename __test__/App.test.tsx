@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Page from '../src/app/page';
+import Page from '@/app/(user)/page';
 import { describe, it, expect } from 'vitest';
 
 describe('HomePage Rendering Test', () => {

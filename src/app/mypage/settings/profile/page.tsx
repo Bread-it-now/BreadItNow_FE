@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Profile from '@/assets/images/profile.png';
 import Button from '@/components/button/Button';
 import Input from '@/components/inputs/Input';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import PasswordInput from '@/components/inputs/PasswordInput';
 
 interface EditableInputProps {
@@ -40,6 +40,13 @@ export default function Page() {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [phoneNumberButtonMode, setPhoneNumberButtonMode] = useState<boolean>(false);
   const [changePassword, setChangePassword] = useState<boolean>(false);
+
+  //파일 업로드
+  const fileRef = useRef<HTMLInputElement>(null);
+  const handleFileButtonClick = () => {
+    fileRef.current!.click();
+  };
+
   //Validation을 위해 function으로 wrapping
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -77,8 +84,9 @@ export default function Page() {
             <Button className="!h-full grow" variant="default" onClick={() => {}}>
               <div className="text-body-s">기본 이미지로 변경 </div>
             </Button>
-            <Button className="!h-full grow" variant="default" onClick={() => {}}>
+            <Button id="profile-file" className="!h-full grow" variant="default" onClick={handleFileButtonClick}>
               <div className="text-body-s">이미지 변경</div>
+              <input ref={fileRef} id="profile-file" type="file" className="hidden" />
             </Button>
           </div>
           <div className="mt-[30px]">

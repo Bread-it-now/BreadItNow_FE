@@ -9,6 +9,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   fullWidth?: boolean;
+  id?: string;
   onClick: () => void;
 }
 

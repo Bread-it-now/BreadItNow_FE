@@ -68,6 +68,20 @@ export default function Page() {
     }
   };
 
+  const onSubmitProfileImage = async (type: 'default' | 'custom') => {
+    //분기처리
+    if (type === 'default') {
+    } else {
+      if (fileRef.current!.files && fileRef.current!.files.length) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const file: File = fileRef.current!.files[0];
+        // console.log('file:', file.text);
+      } else {
+        //선택된 파일이 없습니다.
+      }
+    }
+  };
+
   return (
     <div className="bg-gray-200 text-black overflow-y-auto flex flex-col gap-[10px]">
       <div className="px-5 pt-6 pb-[30px] bg-white rounded-b-2xl">
@@ -81,12 +95,18 @@ export default function Page() {
             <div className="mt-4 mb-5 title-content-xs">빵잇나우에서 사용할 프로필 사진을 등록해주세요.</div>
           </div>
           <div className="flex gap-2 h-9">
-            <Button className="!h-full grow" variant="default" onClick={() => {}}>
+            <Button className="!h-full grow" variant="default" onClick={() => onSubmitProfileImage('default')}>
               <div className="text-body-s">기본 이미지로 변경 </div>
             </Button>
             <Button id="profile-file" className="!h-full grow" variant="default" onClick={handleFileButtonClick}>
               <div className="text-body-s">이미지 변경</div>
-              <input ref={fileRef} id="profile-file" type="file" className="hidden" />
+              <input
+                onChange={() => onSubmitProfileImage('custom')}
+                ref={fileRef}
+                id="profile-file"
+                type="file"
+                className="hidden"
+              />
             </Button>
           </div>
           <div className="mt-[30px]">

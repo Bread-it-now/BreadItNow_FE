@@ -2,6 +2,7 @@ import { ReservationCardProps } from '@/components/reservation/ReservationCard';
 import { ReservationDetail, ReservationItem } from '@/types/reservation';
 import bread from '@/assets/images/bread.png';
 import bakery from '@/assets/images/bakery.png';
+import { OwnerReservationCardProps } from '@/components/reservation/ownerReservationCard.tsx/OwnerReservationCard';
 
 export const ResservationInfo: ReservationCardProps[] = [
   {
@@ -17,7 +18,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 501,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 'XD24DFV',
+    reservationNumber: 999,
     status: 'APPROVED',
     bakeryId: 2,
     bakeryName: '파리바게뜨',
@@ -37,8 +38,8 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 502,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 'XD24DFV',
-    status: 'PARTIALLY_APPROVED',
+    reservationNumber: 999,
+    status: 'PARTIAL_APPROVED',
     bakeryId: 3,
     bakeryName: '파리바게뜨',
     totalPrice: 30000,
@@ -49,7 +50,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 503,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 'XD24DFV',
+    reservationNumber: 999,
     status: 'CANCELED',
     bakeryId: 4,
     bakeryName: '파리바게뜨',
@@ -61,7 +62,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 504,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 'XD24DFV',
+    reservationNumber: 999,
     status: 'CANCELED',
     bakeryId: 5,
     bakeryName: '파리바게뜨',
@@ -73,7 +74,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 505,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 'XD24DFV',
+    reservationNumber: 999,
     status: 'CANCELED',
     bakeryId: 6,
     bakeryName: '파리바게뜨',
@@ -85,7 +86,7 @@ export const ResservationInfo: ReservationCardProps[] = [
   {
     reservationId: 506,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 'XD24DFV',
+    reservationNumber: 999,
     status: 'PAYMENT_COMPLETED',
     bakeryId: 7,
     bakeryName: '파리바게뜨',
@@ -182,7 +183,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 501,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'XD24DFV',
+      reservationNumber: 999,
       status: 'APPROVED',
       totalPrice: 20000,
       reservationItems: [...reservationItems],
@@ -200,8 +201,8 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 502,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'XD24DFV',
-      status: 'PARTIALLY_APPROVED',
+      reservationNumber: 999,
+      status: 'PARTIAL_APPROVED',
       totalPrice: 30000,
       reservationItems: [...reservationItems],
       pickupDeadline: '2025-02-01T10:30:00Z',
@@ -218,7 +219,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 503,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'XD24DFV',
+      reservationNumber: 999,
       status: 'CANCELED',
       totalPrice: 40000,
       reservationItems: [...reservationItems],
@@ -236,7 +237,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 504,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'XD24DFV',
+      reservationNumber: 999,
       status: 'CANCELED',
       totalPrice: 50000,
       reservationItems: [...reservationItems],
@@ -254,7 +255,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 505,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'XD24DFV',
+      reservationNumber: 999,
       status: 'CANCELED',
       totalPrice: 60000,
       reservationItems: [...reservationItems],
@@ -272,10 +273,95 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 506,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'XD24DFV',
+      reservationNumber: 999,
       status: 'PAYMENT_COMPLETED',
       totalPrice: 70000,
       reservationItems: [...reservationItems],
     },
+  },
+];
+
+export const mockOwnerResservationCards: OwnerReservationCardProps[] = [
+  {
+    reservationId: 500,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'WAITING',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 501,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'WAITING',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 502,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'WAITING',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 503,
+    reservationDate: '2025-02-01T10:00:00Z',
+    approveDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'APPROVED',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 504,
+    reservationDate: '2025-02-01T10:00:00Z',
+    approveDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'PARTIAL_APPROVED',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 505,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'CUSTOMER_CANCELED',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 506,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'OWNER_REJECTED',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 507,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'PAYMENT_COMPLETED',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 508,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'PAYMENT_COMPLETED',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
+  },
+  {
+    reservationId: 509,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 999,
+    status: 'PAYMENT_COMPLETED',
+    totalPrice: 523000,
+    consumerNickname: '닉네임',
   },
 ];

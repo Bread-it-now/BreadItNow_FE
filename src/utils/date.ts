@@ -59,3 +59,5 @@ export const getElapsedTime = (createdAt: string): string => {
 
   return `${Math.floor(diffSec / TIME_FACTORS.DAY)}일 전`;
 };
+
+export const getDateFormat = (date: string) => getDate(date) + `(${getDay(date)}) ` + getTime(date);

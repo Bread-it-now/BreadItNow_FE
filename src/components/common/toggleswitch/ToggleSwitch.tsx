@@ -5,7 +5,13 @@ import React, { ChangeEvent, useState } from 'react';
 
 export interface ToggleSwitchProps {
   /** 설정 타입 */
-  type: 'BREAD_NOTIFICATION' | 'DO_NOT_DISTURB' | 'RESERVATION_NOTIFICATION' | 'PUSH_NOTIFICATION' | 'APP_NOTIFICATION';
+  type:
+    | 'BREAD_NOTIFICATION'
+    | 'DO_NOT_DISTURB'
+    | 'RESERVATION_NOTIFICATION'
+    | 'PUSH_NOTIFICATION'
+    | 'APP_NOTIFICATION'
+    | 'OPERATING_STATUS';
 
   /** 토글 시 실행할 로직이 포함된 mutate 함수 */
   toggleMutate?: ({
@@ -58,7 +64,7 @@ const ToggleSwitch = React.forwardRef<boolean, ToggleSwitchProps>(
           onChange={handleChange}
           disabled={disabled}
           className={cn(
-            `appearance-none relative w-[51px] h-[31px] border-none rounded-full bg-gray-100 cursor-pointer`,
+            `appearance-none relative w-[51px] h-[31px] border-none rounded-full bg-gray-200 cursor-pointer`,
             `before:content-[''] before:absolute before:top-[calc(50%-13.5px)] before:left-[2px] before:w-[27px] before:h-[27px] before:rounded-full before:bg-white before:transition-[left] before:duration-150 before:ease-in-out`,
             `checked:bg-primary checked:transition-[left] checked:duration-150 checked:ease-in-out checked:border-none`,
             'checked:before:absolute checked:before:top-[calc(50%-13.5px)] checked:before:left-[calc(100%-30px)] checked:before:w-[27px] checked:before:h-[27px] checked:before:bg-white',

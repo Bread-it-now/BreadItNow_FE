@@ -20,6 +20,7 @@ export default function Page() {
           </div>
           <Button
             variant="primary"
+            scale="small"
             type="button"
             fullWidth
             aria-label="앱 알림 켜기"

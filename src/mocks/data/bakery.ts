@@ -4,9 +4,9 @@ import bread from '@/assets/images/bread.png';
 import { BreadNotificationSettingCardProps } from '@/components/notifications/breadnotificationsettingcard/BreadNotificationSettingCard';
 
 export const bakeryCardMockData: BakeryCardProps = {
-  id: 1,
+  bakeryId: 1,
   operatingStatus: 'OPEN',
-  profileImgUrl: bakery,
+  profileImage: bakery,
   name: '라 메종 뒤 팡 에 뒤 레브',
   distance: 1.5,
   size: 'large',

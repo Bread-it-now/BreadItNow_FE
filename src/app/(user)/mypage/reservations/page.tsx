@@ -21,7 +21,7 @@ export default function Page() {
             { key: 'ALL', label: '전체' },
             { key: 'WAITING', label: '예약 대기' },
             { key: 'APPROVED', label: '예약 승인' },
-            { key: 'PARTIALLY_APPROVED', label: '예약 부분 승인' },
+            { key: 'PARTIAL_APPROVED', label: '예약 부분 승인' },
             { key: 'CANCELED', label: '예약 취소' },
             { key: 'PAYMENT_COMPLETED', label: '결제 완료' },
           ]}

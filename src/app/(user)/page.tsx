@@ -131,44 +131,44 @@ export default function Page() {
                   name: '라 메종 뒤 팡 에 뒤 레브',
                   operatingStatus: 'OPEN' as const,
                   distance: 1.5,
-                  profileImgUrl: Bakery.src,
+                  profileImage: Bakery.src,
                 },
                 {
                   id: 2,
                   name: '달콤한 아침',
                   operatingStatus: 'CLOSED' as const,
                   distance: 1.7,
-                  profileImgUrl: Bakery.src,
+                  profileImage: Bakery.src,
                 },
                 {
                   id: 3,
                   name: '버터 앤 드림',
                   operatingStatus: 'OPEN' as const,
                   distance: 2.3,
-                  profileImgUrl: Bakery.src,
+                  profileImage: Bakery.src,
                 },
                 {
                   id: 4,
                   name: '소금 한 꼬집',
                   operatingStatus: 'CLOSED' as const,
                   distance: 3.0,
-                  profileImgUrl: Bakery.src,
+                  profileImage: Bakery.src,
                 },
                 {
                   id: 5,
                   name: '빵굽는 집',
                   operatingStatus: 'OPEN' as const,
                   distance: 3.5,
-                  profileImgUrl: Bakery.src,
+                  profileImage: Bakery.src,
                 },
               ].map((bakery, index) => (
                 <div key={index} className="flex-shrink-0 w-[250px] text-gray900">
                   <BakeryCard
-                    id={bakery.id}
+                    bakeryId={bakery.id}
                     name={bakery.name}
                     operatingStatus={bakery.operatingStatus}
                     distance={bakery.distance}
-                    profileImgUrl={bakery.profileImgUrl}
+                    profileImage={bakery.profileImage}
                     rank={index + 1}
                     size="large"
                     showBookmark={false}

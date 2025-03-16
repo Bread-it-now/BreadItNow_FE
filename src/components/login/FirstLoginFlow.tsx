@@ -1,0 +1,24 @@
+'use client';
+
+import { useState } from 'react';
+import PhoneVerification from '@/components/login/PhoneVerification';
+import VerificationCode from '@/components/login/VerificationCode';
+import NicknameSetup from '@/components/login/NicknameSetup';
+import BreadCategorySelection from '@/components/login/BreadCategorySelection';
+
+interface FirstLoginFlowProps {
+  onComplete: () => void;
+}
+
+export default function FirstLoginFlow({ onComplete }: FirstLoginFlowProps) {
+  const [signupStep, setSignupStep] = useState(1);
+
+  return (
+    <div className="flex flex-col h-[100%] max-h-[100%] bg-white">
+      {signupStep === 1 && <PhoneVerification onNext={() => setSignupStep(2)} />}
+      {signupStep === 2 && <VerificationCode onNext={() => setSignupStep(3)} />}
+      {signupStep === 3 && <NicknameSetup onNext={() => setSignupStep(4)} />}
+      {signupStep === 4 && <BreadCategorySelection onComplete={onComplete} />}
+    </div>
+  );
+}

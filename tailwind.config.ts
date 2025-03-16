@@ -20,8 +20,12 @@ export default {
         gray100: '#e8eaec',
         gray50: '#f2f4f6',
         primary: '#ff7651',
+        primaryLight1: '#FFF0EC',
         secondary: '#26cf9f',
+        secondaryLight1: '#6BFFD5',
+        secondaryLight3: '#DFFAF3',
         white: '#ffffff',
+        error: '#FF3B30',
       },
 
       fontFamily: {

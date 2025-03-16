@@ -95,7 +95,7 @@ const BottomSheet = ({
               {(cancelText || confirmText) && (
                 <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
                   {cancelText && (
-                    <Button onClick={onClose} className="">
+                    <Button onClick={onClose} scale="large" className="">
                       {cancelText}
                     </Button>
                   )}

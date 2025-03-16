@@ -19,11 +19,13 @@ function PasswordInput({
     setShowPassword(!showPassword);
   };
   return (
-    <div className="relative">
+    <div className={cn(className, 'relative')}>
       <input
         type={showPassword ? 'text' : 'password'}
         id={id}
-        className={cn('px-4 py-[14px] outline-none text-gray-900 w-full text-[13px]', className)}
+        className={cn(
+          'px-4 py-[14px] outline-none text-gray-900 w-full text-[13px] border border-gray-200  rounded-lg',
+        )}
         onChange={onChange}
         value={value}
         disabled={disabled}

@@ -149,13 +149,13 @@ export default function Page() {
             {changePassword ? (
               <>
                 <PasswordInput
-                  className="border border-gray-200  rounded-lg mt-2"
+                  className="mt-2"
                   value={nickname}
                   onChange={onChangeNickname}
                   placeholder="영문, 숫자, 특수기호 모두 포함 (8글자 이상)"
                 />
                 <PasswordInput
-                  className="border border-gray-200 rounded-lg mt-2"
+                  className="mt-2"
                   value={nickname}
                   onChange={onChangeNickname}
                   placeholder="새 비밀번호 확인"

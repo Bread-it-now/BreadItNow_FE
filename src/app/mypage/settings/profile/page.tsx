@@ -92,7 +92,9 @@ export default function Page() {
             <div className="w-20 h-20 bg-gray-50 rounded-full border border-gray-200 mx-auto">
               <Image src={Profile} width={80} height={80} className="mx-auto" alt="프로필" />
             </div>
-            <div className="mt-4 mb-5 title-content-xs">빵잇나우에서 사용할 프로필 사진을 등록해주세요.</div>
+            <div className="mt-4 mb-5 text-[13px] text-gray-900 font-semibold">
+              빵잇나우에서 사용할 프로필 사진을 등록해주세요.
+            </div>
           </div>
           <div className="flex gap-2 h-9">
             <Button className="!h-full grow" variant="default" onClick={() => onSubmitProfileImage('default')}>

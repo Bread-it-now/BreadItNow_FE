@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
+import Image from 'next/image';
 import SearchBar from '@/components/common/SearchBar';
 import BackIcon from '@/assets/icons/back.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
@@ -9,16 +9,31 @@ import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import FilterDropdown from '@/components/search/FilterDropdown';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import BreadCard from '@/components/bakerycard/BreadCard';
+import EmptyState from '@/components/common/EmptyState';
 import { suggestions, bakeryList, breadList } from './searchData';
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'빵집' | '빵'>('빵집');
+  const [bookmarkedBreads, setBookmarkedBreads] = useState<number[]>([]);
+  const [bookmarkedBakeries, setBookmarkedBakeries] = useState<number[]>([]);
 
   const handleSearchEnter = (): void => {
     setIsSearchActive(true);
   };
+
+  const toggleBreadBookmark = (id: number) => {
+    setBookmarkedBreads((prev) => (prev.includes(id) ? prev.filter((bId) => bId !== id) : [...prev, id]));
+  };
+
+  const toggleBakeryBookmark = (id: number) => {
+    setBookmarkedBakeries((prev) => (prev.includes(id) ? prev.filter((bId) => bId !== id) : [...prev, id]));
+  };
+
+  const filteredBakeryList = bakeryList.filter((b) => b.name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  const filteredBreadList = breadList.filter((b) => b.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="relative flex flex-col items-center w-full max-h-[100%] bg-white p-4">
@@ -75,22 +90,43 @@ export default function SearchPage() {
           <div className="flex-1 overflow-y-auto scrollbar-hide text-gray900">
             <div className="flex items-center justify-between p-4">
               <span>
-                총 <span className="text-primary">{bakeryList.length}</span>개
+                총{' '}
+                <span className="text-primary">
+                  {activeTab === '빵집' ? filteredBakeryList.length : filteredBreadList.length}
+                </span>{' '}
+                개
               </span>
               <FilterDropdown />
             </div>
+
             {activeTab === '빵집' ? (
-              <div className="p-4 space-y-4">
-                {bakeryList.map((bakery) => (
-                  <BakeryCard key={bakery.id} {...bakery} />
+              filteredBakeryList.length > 0 ? (
+                <div className="p-4 space-y-4">
+                  {filteredBakeryList.map((bakery) => (
+                    <BakeryCard
+                      key={bakery.id}
+                      {...bakery}
+                      isBookmarked={bookmarkedBakeries.includes(bakery.id)}
+                      onToggleBookmark={() => toggleBakeryBookmark(bakery.id)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <EmptyState message="다른 키워드로 검색해보세요." searchTerm={searchTerm} />
+              )
+            ) : filteredBreadList.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4 p-4">
+                {filteredBreadList.map((bread) => (
+                  <BreadCard
+                    key={bread.id}
+                    {...bread}
+                    isBookmarked={bookmarkedBreads.includes(bread.id)}
+                    onToggleBookmark={() => toggleBreadBookmark(bread.id)}
+                  />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-4 p-4">
-                {breadList.map((bread) => (
-                  <BreadCard key={bread.id} {...bread} />
-                ))}
-              </div>
+              <EmptyState message="다른 키워드로 검색해보세요." searchTerm={searchTerm} />
             )}
           </div>
         </div>

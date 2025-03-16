@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { cn } from '@/utils/cn';
 import { Bakery, OPERATING_STATUS } from '@/types/bakery';
 import bookmark from '@/assets/icons/bookmark.svg';
+import bookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Link from 'next/link';
 
 export interface BakeryCardProps
@@ -9,6 +10,8 @@ export interface BakeryCardProps
   rank?: number;
   size?: 'normal' | 'large';
   showBookmark?: boolean;
+  isBookmarked: boolean;
+  onToggleBookmark: () => void;
 }
 
 const BakeryCard = ({
@@ -20,6 +23,8 @@ const BakeryCard = ({
   distance,
   size = 'normal',
   showBookmark = true,
+  isBookmarked,
+  onToggleBookmark,
 }: BakeryCardProps) => {
   return (
     <Link
@@ -51,13 +56,17 @@ const BakeryCard = ({
           </div>
           {size === 'large' && showBookmark && (
             <button
+              onClick={(e) => {
+                e.preventDefault();
+                onToggleBookmark();
+              }}
               className={cn(
                 'flex justify-center items-center',
                 'w-8 h-8 min-w-8',
                 'border rounded-full border-gray100',
               )}
               aria-label="bookmark">
-              <Image width={16} height={16} src={bookmark} alt="bookmark" />
+              <Image width={16} height={16} src={isBookmarked ? bookmarkFill : bookmark} alt="bookmark" />
             </button>
           )}
         </div>

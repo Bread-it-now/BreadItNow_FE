@@ -14,7 +14,7 @@ function IconButton({ icon, onClick, iconText, isChecked = false, buttonClass = 
   return (
     <button
       className={`
-      w-8 h-8 rounded-full
+      w-6 h-6 rounded-full
       ${buttonClass}
       ${isChecked ? 'border-none bg-primary bg-opacity-10' : ' border-gray-100 bg-white border-2'}
     `}

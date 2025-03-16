@@ -18,6 +18,7 @@ interface BottomSheetProps {
   confirmDisabled?: boolean;
   maxHeight?: number;
   maxContentHeight?: number;
+  bgColor?: string;
 }
 
 const BottomSheet = ({
@@ -30,6 +31,7 @@ const BottomSheet = ({
   confirmText,
   maxHeight = 752,
   maxContentHeight = 630,
+  bgColor = 'bg-white',
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(null);
   const [isAnimating, setIsAnimating] = useState(isOpen);
@@ -70,10 +72,11 @@ const BottomSheet = ({
           {/* Sheet */}
           <div
             className={cn(
-              `absolute bottom-0 w-full overflow-y-auto pt-[1.875rem] bg-white rounded-t-[1.5rem]`,
+              `absolute bottom-0`,
+              `w-full overflow-y-auto max-h-[${maxHeight}px]`,
+              `pt-[1.875rem] ${bgColor} rounded-t-[1.5rem]`,
               isOpen ? 'animate-slideUp' : 'animate-slideDown',
             )}
-            style={{ maxHeight: maxHeight ? `${maxHeight}px` : '752px' }}
             onAnimationEnd={handleBottomSheetAnimationEnd}>
             <div className="flex flex-col items-center px-[1.25rem] gap-[1.5rem]">
               {title && (
@@ -97,7 +100,7 @@ const BottomSheet = ({
                     </Button>
                   )}
                   {confirmText && onConfirm && (
-                    <Button onClick={onConfirm} fullWidth variant="primary" scale="large" className="">
+                    <Button onClick={onConfirm} fullWidth variant="primary" className="">
                       {confirmText}
                     </Button>
                   )}

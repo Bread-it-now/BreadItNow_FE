@@ -1,24 +1,22 @@
-import { useCallback, useRef, TouchEvent, MouseEvent, useState } from "react";
+import { useCallback, useRef, TouchEvent, MouseEvent, useState } from 'react';
 
 interface SlideEventProps {
   minSwipeDistance?: number;
   images: string[];
+  startIndex: number;
 }
 
-export const useImageSlider = ({
-  images,
-  minSwipeDistance = 50,
-}: SlideEventProps) => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+export const useImageSlider = ({ images, minSwipeDistance = 50, startIndex = 0 }: SlideEventProps) => {
+  const [currentIndex, setCurrentIndex] = useState<number>(startIndex);
   const [touchStart, setTouchStart] = useState<number>(0);
   const [touchEnd, setTouchEnd] = useState<number>(0);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   // 이미지 인덱스 변경 로직
   const updateIndex = useCallback(
-    (direction: "next" | "prev") => {
+    (direction: 'next' | 'prev') => {
       setCurrentIndex((prevIndex: number) => {
-        if (direction === "next") {
+        if (direction === 'next') {
           return prevIndex === images.length - 1 ? 0 : prevIndex + 1;
         }
         return prevIndex === 0 ? images.length - 1 : prevIndex - 1;
@@ -65,7 +63,7 @@ export const useImageSlider = ({
     // 터치 이동 거리 계산
     const swipeDistance = touchEnd - touchStart;
     if (Math.abs(swipeDistance) > minSwipeDistance) {
-      updateIndex(swipeDistance > 0 ? "prev" : "next");
+      updateIndex(swipeDistance > 0 ? 'prev' : 'next');
     }
 
     setIsDragging(false);

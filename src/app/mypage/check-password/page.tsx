@@ -7,6 +7,7 @@ import Button from '@/components/button/Button';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import KakaoIcon from '@/assets/images/kakao.png';
 function Page() {
   const router = useRouter();
   const [password, setPassword] = useState<string>('');
@@ -68,7 +69,10 @@ function Page() {
           </div>
         </div>
         <Button fullWidth onClick={() => {}} className="mt-[30px]" variant="default">
-          <div>카카오로 확인하기</div>
+          <div className="flex items-center gap-2">
+            <Image src={KakaoIcon} width={20} height={20} alt="카카오" />
+            카카오로 확인하기
+          </div>
         </Button>
       </div>
     </div>

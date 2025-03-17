@@ -13,6 +13,7 @@ import naverIcon from '@/assets/icons/naver.svg';
 import googleIcon from '@/assets/icons/google.svg';
 import Alert from '@/components/common/Alert';
 import FirstLoginFlow from '@/components/login/FirstLoginFlow';
+import { signIn } from 'next-auth/react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -61,6 +62,18 @@ export default function LoginPage() {
       setAlertTitle('오류 발생');
       setAlertSubtitle('로그인 중 문제가 발생했습니다. 다시 시도해주세요.');
       setShowAlert(true);
+    }
+  };
+
+  const handleSignIn = async (provider: string) => {
+    try {
+      signIn(provider, {
+        callbackUrl: '/',
+        redirect: true,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+      // console.error('Login error:', error)
     }
   };
 
@@ -140,7 +153,9 @@ export default function LoginPage() {
             <button className="w-14 h-14 bg-yellow-400 rounded-full flex items-center justify-center">
               <Image src={kakaoIcon} width={24} height={24} alt="카카오 로그인" />
             </button>
-            <button className="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center">
+            <button
+              onClick={() => handleSignIn('naver')}
+              className="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center">
               <Image src={naverIcon} width={24} height={24} alt="네이버 로그인" />
             </button>
             <button className="w-14 h-14 border border-gray-300 rounded-full flex items-center justify-center">

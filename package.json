@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.66.0",
+    "framer-motion": "^12.4.11",
     "next": "15.1.6",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",

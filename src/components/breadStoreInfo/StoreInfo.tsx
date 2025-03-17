@@ -28,7 +28,7 @@ function StoreInfo({ bakery }: { bakery: Bakery }) {
           <span className="font-regular text-xs text-gray-500">1.5KM</span>
         </div>
       </div>
-      <div className="mt-5 font-regular text-xs text-gray-500">{bakery.description}</div>
+      <div className="mt-5 font-regular text-xs text-gray-500">{bakery.introduction}</div>
     </article>
   );
 }

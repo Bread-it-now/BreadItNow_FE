@@ -1,13 +1,13 @@
 'use client';
 
-import { getPickupDeadlineFormat, RESERVATION_STATUS } from '@/components/reservation/ReservationCard';
+import { RESERVATION_STATUS } from '@/components/reservation/ReservationCard';
 import { reservationDetails } from '@/mocks/data/reservation';
 import { getDate } from '@/utils/date';
 import { useParams, useRouter } from 'next/navigation';
 import arrowRight from '@/assets/icons/arrow-right.svg';
 import copy from '@/assets/icons/copy.svg';
 import Image from 'next/image';
-import ReservationItem from '@/components/reservation/\bReservationItem';
+import ReservationItem from '@/components/reservation/ReservationItem';
 import Stack from '@/components/common/stack/Stack';
 import { comma } from '@/utils/comma';
 import Button from '@/components/button/Button';
@@ -46,18 +46,14 @@ export default function Page() {
               <Image src={arrowRight} width={20} height={20} alt="move to bakerydetail page" />
             </button>
           </div>
-          {(status === 'CANCELED' || status === 'APPROVED' || status === 'PARTIALLY_APPROVED') && (
+          {(status === 'CANCELED' || status === 'APPROVED' || status === 'PARTIAL_APPROVED') && (
             <div
               className={`flex justify-center items-center p-[0.75rem] gap-[0.375rem] w-full h-[43px] rounded-lg text-title-content-xs font-normal ${status === 'CANCELED' ? 'bg-gray50 text-gray500' : 'bg-[#FFF0EC] text-primary'}`}>
-              {(status === 'APPROVED' || status === 'PARTIALLY_APPROVED') && (
+              {(status === 'APPROVED' || status === 'PARTIAL_APPROVED') && (
                 <span className="font-semibold text-primary">픽업일시</span>
               )}
               <span>
-                {status === 'CANCELED'
-                  ? cancelDetail
-                  : pickupDeadline !== undefined
-                    ? getPickupDeadlineFormat(pickupDeadline)
-                    : ''}
+                {status === 'CANCELED' ? cancelDetail : pickupDeadline !== undefined ? getDate(pickupDeadline) : ''}
               </span>
             </div>
           )}
@@ -93,7 +89,7 @@ export default function Page() {
       </section>
       {status !== 'CANCELED' && (
         <section className="p-5 w-full h-[92px] bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)] z-10">
-          <Button variant="default" fullWidth onClick={() => {}}>
+          <Button variant="default" scale="large" fullWidth onClick={() => {}}>
             예약취소
           </Button>
         </section>

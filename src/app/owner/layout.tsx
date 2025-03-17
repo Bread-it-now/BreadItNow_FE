@@ -46,8 +46,8 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           }
         />
         <div id="bottomsheet-root" />
-        <div className="flex flex-col gap-[0.625rem] bg-gray100 w-full h-full">{children}</div>
-        <div className="absolute bottom-0 left-0 w-full">
+        {children}
+        <div className="fixed bottom-0 w-full">
           <BottomNavbar NavList={[...UserNavElements]} />
         </div>
       </div>

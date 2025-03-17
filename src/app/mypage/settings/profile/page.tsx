@@ -5,6 +5,7 @@ import Button from '@/components/button/Button';
 import Input from '@/components/inputs/Input';
 import { useState, useRef } from 'react';
 import PasswordInput from '@/components/inputs/PasswordInput';
+import ConfirmModal from '@/components/modal/ConfirmModal';
 
 interface EditableInputProps {
   title: string;
@@ -40,6 +41,14 @@ export default function Page() {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [phoneNumberButtonMode, setPhoneNumberButtonMode] = useState<boolean>(false);
   const [changePassword, setChangePassword] = useState<boolean>(false);
+  //TODO... 전역 상태가 필요할 경우 로직 분리 필요
+  const [modalInfo, setModalInfo] = useState<{
+    title?: string;
+    description?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+  }>({});
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   //파일 업로드
   const fileRef = useRef<HTMLInputElement>(null);
@@ -80,6 +89,24 @@ export default function Page() {
         //선택된 파일이 없습니다.
       }
     }
+  };
+
+  const openModal = (type: 'logout' | 'withdrawal') => {
+    if (type === 'logout') {
+      setModalInfo({
+        description: '로그아웃 하시겠습니까?',
+        onCancel: () => setIsModalOpen(false),
+        onConfirm: () => {},
+      });
+    } else {
+      setModalInfo({
+        title: '회원탈퇴 하시겠습니까?',
+        description: '탈퇴시 계정은 삭제되며, 복구되지 않습니다.',
+        onConfirm: () => {},
+        onCancel: () => setIsModalOpen(false),
+      });
+    }
+    setIsModalOpen(true);
   };
 
   return (
@@ -181,10 +208,16 @@ export default function Page() {
         </div>
       </div>
       <div className="flex px-5 h-[19px] justify-center items-center font-medium text-[13px] mb-[50px]">
-        <div className="text-gray-500">로그아웃</div>
+        <button className="text-gray-500" onClick={() => openModal('logout')}>
+          로그아웃
+        </button>
         <div className="mx-4 w-[3px] h-[3px] bg-gray-300 rounded-full"></div>
-        <div className="text-primary !bg-none !h-full">회원탈퇴</div>
+        <button onClick={() => openModal('withdrawal')} className="text-primary !bg-none !h-full">
+          회원탈퇴
+        </button>
       </div>
+
+      <ConfirmModal {...modalInfo} isOpen={isModalOpen} />
     </div>
   );
 }

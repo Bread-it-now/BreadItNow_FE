@@ -22,7 +22,10 @@ export default {
         primary: '#ff7651',
         primaryLight:'#FFF0EC',
         secondary: '#26cf9f',
+        secondaryLight1: '#6BFFD5',
+        secondaryLight3: '#DFFAF3',
         white: '#ffffff',
+        error: '#FF3B30',
       },
 
       fontFamily: {

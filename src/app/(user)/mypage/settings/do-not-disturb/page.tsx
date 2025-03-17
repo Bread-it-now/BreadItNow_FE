@@ -55,7 +55,7 @@ export default function Page() {
         <DayPicker initialDays={initDays} handleChangeDays={handleChangeDays} />
       </section>
       <section className="p-5 w-full h-[92px] bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)]">
-        <Button variant="primary" fullWidth onClick={() => {}} disabled={isChangeDays}>
+        <Button variant="primary" scale="large" fullWidth onClick={() => {}} disabled={isChangeDays}>
           저장
         </Button>
       </section>

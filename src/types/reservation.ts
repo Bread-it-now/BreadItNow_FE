@@ -1,6 +1,7 @@
 import { Bakery } from './bakery';
 
-export type ReservationStatus = 'WAITING' | 'APPROVED' | 'PARTIALLY_APPROVED' | 'CANCELED' | 'PAYMENT_COMPLETED';
+export type ReservationStatus = 'WAITING' | 'APPROVED' | 'PARTIAL_APPROVED' | 'CANCELED' | 'PAYMENT_COMPLETED';
+export type OwnerReservationStatus = Exclude<ReservationStatus, 'CANCELED'> | 'OWNER_REJECTED' | 'CUSTOMER_CANCELED';
 
 /** 예약 상품의 이름 배열(ReservationItemsNames) 필요 */
 export interface Reservation {
@@ -9,7 +10,7 @@ export interface Reservation {
   /** 예약 신청 날짜 */
   reservationDate: string;
   /** 예약 접수 String */
-  reservationNumber?: string;
+  reservationNumber?: number;
   /** 예약 상태 */
   status: ReservationStatus;
   /** 빵집 ID */

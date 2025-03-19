@@ -35,9 +35,10 @@ const getPageRoute = (path: string): keyof typeof OWNER_PAGE_TITLE | keyof typeo
 export default function OwnerLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const pageRoute = getPageRoute(pathname);
+
   return (
-    <div className="min-h-screen flex justify-center bg-gray-100">
-      <div className="relative w-full max-w-[375px] max-h-[812px] bg-white border-1 mx-auto pt-[44px] pb-[58px] h-lvh overflow-scroll">
+    <div className="min-h-screen flex justify-center bg-gray100">
+      <div className="relative w-full max-w-[375px] max-h-[812px] bg-white mx-auto pt-[44px] h-lvh overflow-scroll">
         <Topbar
           title={
             pageRoute in OWNER_PAGE_TITLE
@@ -46,8 +47,8 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           }
         />
         <div id="bottomsheet-root" />
-        {children}
-        <div className="fixed bottom-0 w-full">
+        <div className="flex-1 h-[calc(100%-58px)] pb-[108px] overflow-y-auto ">{children}</div>
+        <div className={`absolute bottom-0 left-0 w-full`}>
           <BottomNavbar NavList={[...UserNavElements]} />
         </div>
       </div>

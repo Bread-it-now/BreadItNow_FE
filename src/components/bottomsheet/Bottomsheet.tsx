@@ -32,7 +32,6 @@ const BottomSheet = ({
   confirmText,
   fullHeight = false,
   maxHeight = 752,
-  maxContentHeight = 630,
   bgColor = 'bg-white',
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(null);
@@ -82,34 +81,36 @@ const BottomSheet = ({
               isOpen ? 'animate-slideUp' : 'animate-slideDown',
             )}
             onAnimationEnd={handleBottomSheetAnimationEnd}>
-            <div className="flex flex-col items-center px-[1.25rem] gap-[1.5rem]">
-              {title && (
-                <div className="flex justify-between items-center w-full h-[1.5rem]">
-                  <h2 className="text-gray-950 text-[18px] font-semibold">{title}</h2>
-                  <button onClick={onClose}>
-                    <Image src={close} width={24} height={24} alt="닫기" />
-                  </button>
+            <div className="relative flex flex-col h-full">
+              <div className="flex flex-col items-center h-full px-[1.25rem] gap-[1.5rem]">
+                {title && (
+                  <div className="flex justify-between items-center w-full h-[1.5rem]">
+                    <h2 className="text-gray-950 text-[18px] font-semibold">{title}</h2>
+                    <button onClick={onClose}>
+                      <Image src={close} width={24} height={24} alt="닫기" />
+                    </button>
+                  </div>
+                )}
+                <div className={cn('flex flex-col', `w-full overflow-y-auto h-full max-h-[calc(100%-142px)]`)}>
+                  {children}
                 </div>
-              )}
-              <div className={cn('flex flex-col', ` w-full overflow-y-auto max-h-[${maxContentHeight}px]`)}>
-                {children}
               </div>
-            </div>
-            <div>
-              {(cancelText || confirmText) && (
-                <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
-                  {cancelText && (
-                    <Button onClick={onClose} scale="large" className="">
-                      {cancelText}
-                    </Button>
-                  )}
-                  {confirmText && onConfirm && (
-                    <Button onClick={onConfirm} fullWidth variant="primary" className="">
-                      {confirmText}
-                    </Button>
-                  )}
-                </div>
-              )}
+              <div>
+                {(cancelText || confirmText) && (
+                  <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
+                    {cancelText && (
+                      <Button onClick={onClose} scale="large" className="">
+                        {cancelText}
+                      </Button>
+                    )}
+                    {confirmText && onConfirm && (
+                      <Button onClick={onConfirm} scale="large" fullWidth variant="primary" className="">
+                        {confirmText}
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>,

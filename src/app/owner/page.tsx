@@ -1,7 +1,6 @@
 'use client';
 import OperatingStatusCard from '@/components/operatingstatuscard/OperatingStatusCard';
 import ProductStockCard from '@/components/productstockcard/ProductStockCard';
-import { mockProducts } from '@/mocks/data/product';
 import Stack from '@/components/common/stack/Stack';
 import Button from '@/components/button/Button';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
@@ -36,6 +35,7 @@ export default function Page() {
     open: openProductHideManagementBottomSheet,
     close: closeProductHideManagementBottomSheet,
   } = useProductHideManagementBottomSheet();
+
   return (
     <div className="flex flex-col items-start gap-[10px] w-full bg-gray100">
       {bakery && (
@@ -56,10 +56,10 @@ export default function Page() {
             </div>
             <div className="flex flex-col items-start w-full">
               <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
-                {mockProducts.breadProducts.map((product: Product) => (
+                {productsInfo.breadProducts.map((product: Product) => (
                   <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
                 ))}
-                {mockProducts.otherProducts.map((product: Product) => (
+                {productsInfo.otherProducts.map((product: Product) => (
                   <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
                 ))}
               </Stack>

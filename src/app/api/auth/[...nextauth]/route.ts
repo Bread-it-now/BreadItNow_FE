@@ -6,12 +6,19 @@ const handler = NextAuth({
     NaverProvider({
       clientId: process.env.NAVER_CLIENT_ID!,
       clientSecret: process.env.NAVER_CLIENT_SECRET!,
+      profile(profile) {
+        return {
+          id: profile.response?.id ? profile.response?.id : profile.id,
+          name: profile.response?.name ? profile.response?.name : profile.name,
+          email: profile.response?.email ? profile.response?.email : profile.email,
+          image: profile.response?.profile_image ? profile.response?.profile_image : profile.image,
+        };
+      },
     }),
   ],
   callbacks: {
     async signIn() {
       try {
-        // 로그인 처리 로직
         return true;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (_) {
@@ -32,6 +39,27 @@ const handler = NextAuth({
         return url;
       }
       return baseUrl;
+    },
+    async jwt({ token, user }) {
+      // 네이버 로그인 시 받아오는 정보를 토큰에 저장
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user = {
+          ...session.user,
+          name: token.name as string,
+          email: token.email as string,
+          image: token.image as string,
+        };
+      }
+      return session;
     },
   },
   pages: {

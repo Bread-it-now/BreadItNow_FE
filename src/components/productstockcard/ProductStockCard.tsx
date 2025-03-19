@@ -1,19 +1,12 @@
 'use client';
 
-import { Product, ProductType } from '@/types/product';
+import { Product } from '@/types/bakery';
 import Image from 'next/image';
 import Button from '../button/Button';
 import { comma } from '@/utils/comma';
-export interface ProductStockCardProps extends Omit<Product, 'productId' | 'bakery_id' | 'type' | 'releaseTime'> {
-  id: number;
-  bakeryId: number;
-  breadCategories?: { categoryId: number; categoryName: string }[];
-  displayOrder: number;
-  productType: ProductType;
-  releaseTimes?: string[];
-}
+import { cn } from '@/utils/cn';
 
-const ProductStockCard = ({ image, stock, name, price }: ProductStockCardProps) => {
+const ProductStockCard = ({ image, stock, name, price }: Product) => {
   const isSoldOut = stock === 0;
   return (
     <div className="flex items-center gap-4 w-full">
@@ -24,7 +17,7 @@ const ProductStockCard = ({ image, stock, name, price }: ProductStockCardProps) 
             alt="product"
             width={68}
             height={68}
-            className={isSoldOut ? 'opacity-70' : 'opacity-100'}
+            className={cn(isSoldOut ? 'opacity-70' : 'opacity-100', 'rounded-lg')}
           />
         )}
         {isSoldOut && (

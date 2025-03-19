@@ -56,3 +56,9 @@ export interface Product {
   breadCategories: { categoryId: number; categoryName: string }[];
   displayOrder?: number;
 }
+
+export interface BakeryProducts {
+  totalCount: number;
+  breadProducts: Product[];
+  otherProducts: Product[];
+}

@@ -1,12 +1,14 @@
 'use client';
 import OperatingStatusCard from '@/components/operatingstatuscard/OperatingStatusCard';
-import ProductStockCard, { ProductStockCardProps } from '@/components/productstockcard/ProductStockCard';
+import ProductStockCard from '@/components/productstockcard/ProductStockCard';
 import { mockProducts } from '@/mocks/data/product';
 import Stack from '@/components/common/stack/Stack';
 import Button from '@/components/button/Button';
-import { useBakeryInfo } from '@/lib/api/bakery';
-import { OperatingInfo } from '@/types/bakery';
+import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
+import { OperatingInfo, Product } from '@/types/bakery';
 import { Fragment } from 'react';
+import useProductHideManagementBottomSheet from '@/hooks/useProductHideManagementBottomSheet';
+import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 
 const bakeryId: number = 1;
 
@@ -27,33 +29,58 @@ const OperatingSection = ({ name }: { bakeryId: number; operatingInfo: Operating
 
 export default function Page() {
   const { data: bakery } = useBakeryInfo(bakeryId);
+  const { data: productsInfo } = useBakeryProducts(bakeryId);
+
+  const {
+    isOpen: isProductHideManagementBottomSheetOpen,
+    open: openProductHideManagementBottomSheet,
+    close: closeProductHideManagementBottomSheet,
+  } = useProductHideManagementBottomSheet();
   return (
     <div className="flex flex-col items-start gap-[10px] w-full bg-gray100">
       {bakery && (
+        <OperatingSection
+          bakeryId={bakeryId}
+          operatingInfo={{ openTime: bakery?.openTime, operatingStatus: bakery?.operatingStatus }}
+          name={bakery?.name}
+        />
+      )}
+      {productsInfo && (
         <Fragment>
-          <OperatingSection
-            bakeryId={bakeryId}
-            operatingInfo={{ openTime: bakery?.openTime, operatingStatus: bakery?.operatingStatus }}
-            name={bakery?.name}
-          />
           <section className="flex flex-col items-start px-5 py-[1.875rem] gap-6 w-full bg-white rounded-2xl">
             <div className="flex justify-between items-center gap-[0.625rem] w-full">
               <p className="text-title-content-m text-gray900">예약 상품</p>
-              <Button scale="xsmall" onClick={() => {}} className="w-[105px]">
+              <Button scale="xsmall" onClick={() => openProductHideManagementBottomSheet()} className="w-[105px]">
                 메뉴 숨김 관리
               </Button>
             </div>
             <div className="flex flex-col items-start w-full">
               <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
-                {mockProducts.breadProducts.map((product: ProductStockCardProps) => (
-                  <ProductStockCard key={`${product.id}-${product.name}`} {...product} />
+                {mockProducts.breadProducts.map((product: Product) => (
+                  <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
                 ))}
-                {mockProducts.otherProducts.map((product: ProductStockCardProps) => (
-                  <ProductStockCard key={`${product.id}-${product.name}`} {...product} />
+                {mockProducts.otherProducts.map((product: Product) => (
+                  <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
                 ))}
               </Stack>
             </div>
           </section>
+          <BottomSheet
+            isOpen={isProductHideManagementBottomSheetOpen}
+            onClose={closeProductHideManagementBottomSheet}
+            fullHeight
+            title="메뉴 숨김 관리"
+            confirmText="확인"
+            onConfirm={() => {}}>
+            <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
+              {productsInfo.breadProducts.map((product: Product) => (
+                <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
+              ))}
+              {productsInfo.otherProducts.map((product: Product) => (
+                <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
+              ))}
+            </Stack>
+          </BottomSheet>
         </Fragment>
       )}
     </div>

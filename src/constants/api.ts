@@ -42,5 +42,7 @@ export const API_END_POINT = {
 
   /** OWNER */
   // BAKERY
-  BAKERY: (bakeryId: number) => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
+  BAKERY_INFO: (bakeryId: number) => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
+  BAKERY_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}`,
 };

@@ -1,7 +1,6 @@
 /** 빵집 메뉴 데이터 조회 API를 통해 조회된 데이터 */
 import bread from '@/assets/images/bread.png';
 import coffee from '@/assets/images/coffee.png';
-
 import { Product } from '@/types/bakery';
 export const mockProducts: {
   breadProducts: Product[];
@@ -17,8 +16,8 @@ export const mockProducts: {
       image: bread,
       description: '신선한 식빵입니다.',
       releaseTimes: ['08:00', '12:00', '16:00'],
-      stock: 100,
-      isActive: true,
+      stock: 0,
+      isActive: false,
       breadCategories: [
         {
           categoryId: 1,
@@ -56,7 +55,7 @@ export const mockProducts: {
       description: '신선한 소보로입니다.',
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 100,
-      isActive: true,
+      isActive: false,
       breadCategories: [
         {
           categoryId: 3,

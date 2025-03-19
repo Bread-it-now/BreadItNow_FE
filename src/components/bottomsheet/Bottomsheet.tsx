@@ -13,6 +13,7 @@ interface BottomSheetProps {
   children: React.ReactNode;
   onConfirm?: () => void;
   title?: string;
+  fullHeight?: boolean;
   cancelText?: string;
   confirmText?: string;
   confirmDisabled?: boolean;
@@ -29,6 +30,7 @@ const BottomSheet = ({
   title,
   cancelText,
   confirmText,
+  fullHeight = false,
   maxHeight = 752,
   maxContentHeight = 630,
   bgColor = 'bg-white',
@@ -64,17 +66,19 @@ const BottomSheet = ({
       {createPortal(
         <div className={cn('absolute bottom-0 w-full h-full z-10')}>
           {/* Backdrop */}
-          <div
-            className={`absolute w-full h-full bg-black ${isOpen ? 'bg-opacity-50' : 'bg-opacity-0'}`}
-            onClick={onClose}
-          />
+          {!fullHeight && (
+            <div
+              className={`absolute w-full h-full ${fullHeight ? 'bg-white' : 'bg-black'} ${isOpen ? 'bg-opacity-50' : 'bg-opacity-0'}`}
+              onClick={onClose}
+            />
+          )}
 
           {/* Sheet */}
           <div
             className={cn(
               `absolute bottom-0`,
-              `w-full overflow-y-auto max-h-[${maxHeight}px]`,
-              `pt-[1.875rem] ${bgColor} rounded-t-[1.5rem]`,
+              `w-full overflow-y-auto ${fullHeight ? 'h-[calc(100vh-44px)]' : `max-h-[${maxHeight}px]`}`,
+              `${bgColor} ${fullHeight ? '' : 'pt-[1.875rem] rounded-t-[1.5rem]'}`,
               isOpen ? 'animate-slideUp' : 'animate-slideDown',
             )}
             onAnimationEnd={handleBottomSheetAnimationEnd}>

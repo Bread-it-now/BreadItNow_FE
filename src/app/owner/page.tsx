@@ -5,7 +5,7 @@ import Stack from '@/components/common/stack/Stack';
 import Button from '@/components/button/Button';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { OperatingInfo, Product } from '@/types/bakery';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import useProductHideManagementBottomSheet from '@/hooks/useProductHideManagementBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 
@@ -29,6 +29,7 @@ const OperatingSection = ({ name }: { bakeryId: number; operatingInfo: Operating
 export default function Page() {
   const { data: bakery } = useBakeryInfo(bakeryId);
   const { data: productsInfo } = useBakeryProducts(bakeryId);
+  const [activeChangeProductIds, setActiveChangeProductIds] = useState<number[]>([1, 2]);
 
   const {
     isOpen: isProductHideManagementBottomSheetOpen,
@@ -57,10 +58,19 @@ export default function Page() {
             <div className="flex flex-col items-start w-full">
               <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
                 {productsInfo.breadProducts.map((product: Product) => (
-                  <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
+                  <ProductStockCard
+                    key={`${product.productId}-${product.name}`}
+                    {...product}
+                    isActive={activeChangeProductIds.includes(product.productId) ? !product.isActive : product.isActive}
+                    handleProductActiveChange={setActiveChangeProductIds}
+                  />
                 ))}
                 {productsInfo.otherProducts.map((product: Product) => (
-                  <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
+                  <ProductStockCard
+                    key={`${product.productId}-${product.name}`}
+                    {...product}
+                    handleProductActiveChange={setActiveChangeProductIds}
+                  />
                 ))}
               </Stack>
             </div>
@@ -74,10 +84,20 @@ export default function Page() {
             onConfirm={() => {}}>
             <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
               {productsInfo.breadProducts.map((product: Product) => (
-                <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
+                <ProductStockCard
+                  key={`${product.productId}-${product.name}`}
+                  {...product}
+                  isEditProductActive
+                  handleProductActiveChange={setActiveChangeProductIds}
+                />
               ))}
               {productsInfo.otherProducts.map((product: Product) => (
-                <ProductStockCard key={`${product.productId}-${product.name}`} {...product} />
+                <ProductStockCard
+                  key={`${product.productId}-${product.name}`}
+                  {...product}
+                  isEditProductActive
+                  handleProductActiveChange={setActiveChangeProductIds}
+                />
               ))}
             </Stack>
           </BottomSheet>

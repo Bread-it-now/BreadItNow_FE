@@ -52,7 +52,7 @@ export interface Product {
   description: string;
   releaseTimes?: string[];
   stock: number;
-  isAcitve: boolean;
+  isActive: boolean;
   breadCategories: { categoryId: number; categoryName: string }[];
   displayOrder?: number;
 }

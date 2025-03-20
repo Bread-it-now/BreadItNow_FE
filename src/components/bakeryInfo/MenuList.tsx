@@ -1,4 +1,4 @@
-import BreadReserveCard from './BreadReserveCard';
+import ProductReserveCard from './ProductReserveCard';
 import { Product } from '@/types/product';
 import BellIcon from '@/assets/icons/bell.svg';
 import BellPressedIcon from '@/assets/icons/bell_pressed.svg';
@@ -7,7 +7,7 @@ import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Tag from '@/components/common/Tag';
 import IconButton from '@/components/button/IconButton';
 import { useState } from 'react';
-interface BreadReserveCardProps {
+interface ProductReserveCardProps {
   menuList: Product[];
   title: string;
 }
@@ -55,14 +55,14 @@ function TimeForBreadComeOut() {
     </div>
   );
 }
-function MenuList({ menuList, title }: BreadReserveCardProps) {
+function MenuList({ menuList, title }: ProductReserveCardProps) {
   return (
     <article className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll h-[600px]">
       <div className="f lex justify-between">
         <div className="font-semibold  text-md">{title}</div>
       </div>
       {menuList.map((menu, index) => (
-        <BreadReserveCard
+        <ProductReserveCard
           ImageIconButton={<MenuImageIconButton bakeryId={menu.bakery_id} productId={menu.productId} />}
           FloatingButton={<MenuFloatingButton bakeryId={menu.bakery_id} productId={menu.productId} />}
           moreInfoComponent={<TimeForBreadComeOut />}

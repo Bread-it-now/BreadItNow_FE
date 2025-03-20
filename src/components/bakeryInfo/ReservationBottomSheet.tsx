@@ -1,19 +1,18 @@
 'use client';
 import { useMemo, useState } from 'react';
 import RoundTab from '../common/tabs/RoundTab';
-import BreadReserveCard from './BreadReserveCard';
+import ProductReserveCard from './ProductReserveCard';
 import { Product } from '@/types/product';
 import Spinner from '@/components/spinner/Spinner';
 import Checkbox from '@/components/common/checkbox/Checkbox';
 import { comma } from '@/utils/comma';
-// import BreadReserveCard from "@/components/breadStoreInfo/BreadReserveCard";
 
 interface MenuCategoryProps {
   key: string;
   label: string;
 }
 
-const breadList: Product[] = [
+const productList: Product[] = [
   {
     productId: '1',
     bakery_id: '1',
@@ -121,17 +120,17 @@ function ReservationBottonSheet({
           <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
           <div className="flex flex-col gap-2">
             {category === '1' ? (
-              breadList.map((bread, index) => (
-                <BreadReserveCard
+              productList.map((product, index) => (
+                <ProductReserveCard
                   ImageIconButton={
                     <BreadCheckBox
-                      name={bread.name}
-                      isChecked={checkedProducts.find((product) => product.name === bread.name) ? true : false}
-                      onCheckboxChange={() => setCheckProductsisCheckedProduct(bread)}
+                      name={product.name}
+                      isChecked={checkedProducts.find((product) => product.name === product.name) ? true : false}
+                      onCheckboxChange={() => setCheckProductsisCheckedProduct(product)}
                     />
                   }
-                  key={`bread-${index}`}
-                  {...bread}
+                  key={`product-${index}`}
+                  {...product}
                 />
               ))
             ) : (
@@ -142,12 +141,14 @@ function ReservationBottonSheet({
       ) : (
         <>
           <div className="bg-white  overflow-y-scroll">
-            {checkedProducts.map((bread, index) => {
+            {checkedProducts.map((product, index) => {
               return (
-                <BreadReserveCard
-                  moreInfoComponent={<SpinnerInfoComponent name={bread.name} price={bread.price} stock={bread.stock} />}
-                  {...bread}
-                  key={`brad-${index}`}
+                <ProductReserveCard
+                  moreInfoComponent={
+                    <SpinnerInfoComponent name={product.name} price={product.price} stock={product.stock} />
+                  }
+                  {...product}
+                  key={`bread-${index}`}
                 />
               );
             })}

@@ -1,15 +1,15 @@
 'use client';
 import ImageSlider from '@/components/common/slider/ImageSlider';
-import StoreInfo from '@/components/breadStoreInfo/StoreInfo';
+import StoreInfo from '@/components/bakeryInfo/StoreInfo';
 import Tag from '@/components/common/Tag';
 import Image from 'next/image';
 import ArrowLeft from '@/assets/icons/arrow-left.svg';
 import { useRouter, useParams } from 'next/navigation';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
-import Footer from '@/components/breadStoreInfo/Footer';
-import MenuCategory from '@/components/breadStoreInfo/MenuCategory';
-import ReservationBottonSheet from '@/components/breadStoreInfo/ReservationBottomSheet';
+import Footer from '@/components/bakeryInfo/Footer';
+import MenuCategory from '@/components/bakeryInfo/MenuCategory';
+import ReservationBottonSheet from '@/components/bakeryInfo/ReservationBottomSheet';
 import { useState } from 'react';
 import type { Bakery } from '@/types/bakery';
 import { Product } from '@/types/product';
@@ -19,24 +19,23 @@ import KakaoIcon from '@/assets/images/kakao.png';
 import NaverIcon from '@/assets/images/naver.png';
 import CopyIcon from '@/assets/icons/copy.svg';
 const bakery: Bakery = {
-  id: 1,
-  ownerId: 1,
-  operatingStatus: 'OPEN',
-  address: '서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층',
+  bakeryId: 1,
   name: '빵집',
+  address: '서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층',
   phone: '02-123-4567',
-  introudction: '빵집 소개',
-  profileImgUrl: 'https://placehold.co/300x400/png',
+  introduction: '빵집 소개',
+  profileImage: 'https://placehold.co/300x400/png',
+  bakeryImages: [
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/300x400/png',
+  ],
   openTime: '07:00',
-  city: '서울특별시',
-  region: '강남구',
-  description: '빵집 소개',
-  zipcode: '12345',
-  latitude: '37.498095',
-  longitude: '126.854614',
+  operatingStatus: 'OPEN',
+  distance: 1.5,
 };
 
-function BreadStoreImages({ images }: { images: string[] }) {
+function BakeryImages({ images }: { images: string[] }) {
   const router = useRouter();
   const params = useParams();
   //TODO... 이미지 마지막 이미지를 클릭했을 때 어떤 로직이 필요한지..?
@@ -61,7 +60,7 @@ function BreadStoreImages({ images }: { images: string[] }) {
   );
 }
 
-function BreadStoreOpenInfo({ openInfo }: { openInfo: string }) {
+function BakeryOpenInfo({ openInfo }: { openInfo: string }) {
   return (
     <div className="text-[13px] font-light mt-5 text-gray-700">
       <div>{openInfo}</div>
@@ -69,7 +68,7 @@ function BreadStoreOpenInfo({ openInfo }: { openInfo: string }) {
   );
 }
 
-function BreadComesOutInfo({ comesOutInfo }: { comesOutInfo: { time: string; breads: string[] }[] }) {
+function BakeryComesOutInfo({ comesOutInfo }: { comesOutInfo: { time: string; breads: string[] }[] }) {
   return (
     <>
       {comesOutInfo.map(({ time, breads }) => {
@@ -186,15 +185,15 @@ function Page() {
       </div>
       <StoreInfo bakery={bakery} />
       <Accordion title="영업 시간">
-        <BreadStoreOpenInfo openInfo={bakery.openTime} />
+        <BakeryOpenInfo openInfo={bakery.openTime} />
       </Accordion>
       <Accordion title="예상 빵 나오는 시간">
-        <BreadComesOutInfo comesOutInfo={obj} />
+        <BakeryComesOutInfo comesOutInfo={obj} />
       </Accordion>
       {/* TODO 마지막 이미지 클릭한 후 이동할 페이지 필요  */}
       {/* 이미지 어디서 가져오나? */}
       <Accordion title="이미지">
-        <BreadStoreImages images={images} />
+        <BakeryImages images={images} />
       </Accordion>
 
       <div className="flex flex-col gap-[10px] px-5 py-[30px] bg-white rounded-2xl">

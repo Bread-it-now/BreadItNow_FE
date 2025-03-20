@@ -13,14 +13,15 @@ import naverIcon from '@/assets/icons/naver.svg';
 import googleIcon from '@/assets/icons/google.svg';
 import Alert from '@/components/common/Alert';
 import FirstLoginFlow from '@/components/login/FirstLoginFlow';
+import OwnerFirstLoginFlow from '@/components/login/OwnerFirstLoginFlow';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('personal');
+  const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('bakery');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
-  const [isFirstLogin, setIsFirstLogin] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertSubtitle, setAlertSubtitle] = useState('');
@@ -65,8 +66,11 @@ export default function LoginPage() {
   };
 
   if (isFirstLogin) {
-    // TODO: 첫 로그인 시 뜨는 화면 로직 구현
-    return <FirstLoginFlow onComplete={() => router.push('/')} />;
+    return activeTab === 'personal' ? (
+      <FirstLoginFlow onComplete={() => router.push('/')} />
+    ) : (
+      <OwnerFirstLoginFlow onComplete={() => router.push('/')} />
+    );
   }
 
   return (

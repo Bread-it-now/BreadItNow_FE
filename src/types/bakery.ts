@@ -23,7 +23,7 @@ export interface OperatingInfo {
 /** 빵집 이미지 정보 */
 export interface ImageInfo {
   profileImage: string;
-  bakeryIamges: string[];
+  bakeryImages: string[];
 }
 
 export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}

@@ -111,7 +111,7 @@ export default function Page() {
 
   return (
     <div className="bg-gray-200 text-black overflow-y-auto flex flex-col gap-[10px]">
-      <div className="px-5 pt-6 pb-[30px] bg-white rounded-b-2xl">
+      <div className="px-5 pb-[30px] bg-white rounded-b-2xl">
         <div className="text-title-content-l">기본 정보</div>
         <div className="mt-6">
           <div className="text-body-s">프로필 사진</div>

@@ -30,6 +30,7 @@ const BottomSheet = ({
   title,
   cancelText,
   confirmText,
+  confirmDisabled,
   fullHeight = false,
   maxHeight = 752,
   bgColor = 'bg-white',
@@ -99,12 +100,12 @@ const BottomSheet = ({
                 {(cancelText || confirmText) && (
                   <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
                     {cancelText && (
-                      <Button onClick={onClose} scale="large" className="">
+                      <Button onClick={onClose} scale="large">
                         {cancelText}
                       </Button>
                     )}
                     {confirmText && onConfirm && (
-                      <Button onClick={onConfirm} scale="large" fullWidth variant="primary" className="">
+                      <Button onClick={onConfirm} scale="large" fullWidth variant="primary" disabled={confirmDisabled}>
                         {confirmText}
                       </Button>
                     )}

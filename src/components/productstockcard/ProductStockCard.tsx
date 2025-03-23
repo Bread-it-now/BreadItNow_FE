@@ -6,7 +6,10 @@ import Button from '../button/Button';
 import { comma } from '@/utils/comma';
 import { cn } from '@/utils/cn';
 import Checkbox from '../common/checkbox/Checkbox';
-import { SetStateAction } from 'react';
+import { ComponentProps, ForwardedRef, forwardRef, Fragment, SetStateAction, useState } from 'react';
+import useProductStockBottomSheet from '@/hooks/useProductStockBottomSheet';
+import BottomSheet from '@/components/bottomsheet/Bottomsheet';
+import Reset from '@/assets/icons/reset.svg';
 
 interface ProductStockCardProps extends Product {
   isEditProductActive?: boolean;
@@ -23,7 +26,15 @@ const ProductStockCard = ({
   isEditProductActive,
   handleProductActiveChange,
 }: ProductStockCardProps) => {
-  const isSoldOut = stock === 0;
+  const [productStockInput, setProductStockInput] = useState<string>(String(stock));
+
+  const {
+    changeStockMutate,
+    isOpen: isProductStockBottomSheetOpen,
+    open: openProductStockBottomSheet,
+    close: closeProductStockBottomSheet,
+  } = useProductStockBottomSheet();
+
   const handleActiveChange = () => {
     if (handleProductActiveChange) {
       handleProductActiveChange((prevIds) => {
@@ -34,6 +45,8 @@ const ProductStockCard = ({
       });
     }
   };
+
+  const isSoldOut = stock === 0;
 
   return (
     <div className="flex items-center gap-4 w-full">
@@ -71,13 +84,83 @@ const ProductStockCard = ({
           <p className="w-full text-title-content-s text-gray900 font-normal">{comma(price)}원</p>
         </div>
         {!isEditProductActive && (
-          <Button variant="secondary" scale="xsmall" onClick={() => {}} className="w-[77px] min-w-[77px]">
+          <Button
+            variant="secondary"
+            scale="xsmall"
+            onClick={() => openProductStockBottomSheet()}
+            className="w-[77px] min-w-[77px]">
             재고 변경
           </Button>
         )}
       </div>
+      {isProductStockBottomSheetOpen && (
+        <BottomSheet
+          isOpen={isProductStockBottomSheetOpen}
+          onClose={closeProductStockBottomSheet}
+          title={name}
+          confirmText="변경"
+          confirmDisabled
+          onConfirm={() => {
+            // 재고 수량 변경 API 호출
+            changeStockMutate();
+            closeProductStockBottomSheet();
+          }}>
+          <div className="flex flex-col items-start justify-center pb-5 gap-6 w-full">
+            <AmountInput
+              name="재고 수량 결정"
+              value={productStockInput}
+              placeholder="수량 입력"
+              onChange={(e) => setProductStockInput(e.target.value)}
+              onReset={() => setProductStockInput('')}
+            />
+          </div>
+        </BottomSheet>
+      )}
     </div>
   );
 };
+
+interface AmountInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  name: string;
+  placeholder?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+  onReset?: () => void;
+}
+
+const AmountInput = forwardRef<HTMLInputElement, ComponentProps<'input'> & AmountInputProps>(
+  (
+    { name = '재고 수량', placeholder = '수량 입력', onChange, value, onReset },
+    ref: ForwardedRef<HTMLInputElement>,
+  ) => {
+    return (
+      <label htmlFor={name} className="flex justify-center items-center py-[10px] gap-[10px] w-full h-full mx-auto">
+        <div className="flex w-full items-center justify-cetner gap-[1px]">
+          <input
+            type="number"
+            placeholder={placeholder}
+            className={`h-[34px] text-[24px] outline-none caret-primary placeholder:font-bold font-bold leading-[34px] tracking-[-0.01em] text-right`}
+            onChange={onChange}
+            value={value}
+            ref={ref}
+          />
+          {value && (
+            <span className="h-[34px] w-[30px] text-[24px] leading-[34px] tracking-[-0.01em] font-bold ">개</span>
+          )}
+        </div>
+
+        <div className="flex items-center justify-center w-[26px]">
+          {value && (
+            <button onClick={onReset} className="w-full">
+              <Image src={Reset} alt="reset-input" width={22} height={22} />
+            </button>
+          )}
+        </div>
+      </label>
+    );
+  },
+);
+
+AmountInput.displayName = 'AmountInput';
 
 export default ProductStockCard;

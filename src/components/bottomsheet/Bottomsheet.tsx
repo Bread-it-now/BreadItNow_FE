@@ -33,6 +33,7 @@ const BottomSheet = ({
   confirmDisabled,
   fullHeight = false,
   maxHeight = 752,
+  maxContentHeight = 630,
   bgColor = 'bg-white',
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(null);
@@ -92,7 +93,11 @@ const BottomSheet = ({
                     </button>
                   </div>
                 )}
-                <div className={cn('flex flex-col', `w-full overflow-y-auto h-full max-h-[calc(100%-142px)]`)}>
+                <div
+                  className={cn(
+                    'flex flex-col',
+                    `w-full overflow-y-auto h-full ${fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`}`,
+                  )}>
                   {children}
                 </div>
               </div>

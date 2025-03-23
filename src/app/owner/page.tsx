@@ -29,7 +29,7 @@ const OperatingSection = ({ name }: { bakeryId: number; operatingInfo: Operating
 export default function Page() {
   const { data: bakery } = useBakeryInfo(bakeryId);
   const { data: productsInfo } = useBakeryProducts(bakeryId);
-  const [activeChangeProductIds, setActiveChangeProductIds] = useState<number[]>([1, 2]);
+  const [activeChangeProductIds, setActiveChangeProductIds] = useState<number[]>([]);
 
   const {
     isOpen: isProductHideManagementBottomSheetOpen,
@@ -61,7 +61,6 @@ export default function Page() {
                   <ProductStockCard
                     key={`${product.productId}-${product.name}`}
                     {...product}
-                    isActive={activeChangeProductIds.includes(product.productId) ? !product.isActive : product.isActive}
                     handleProductActiveChange={setActiveChangeProductIds}
                   />
                 ))}
@@ -88,6 +87,7 @@ export default function Page() {
                   key={`${product.productId}-${product.name}`}
                   {...product}
                   isEditProductActive
+                  isActive={activeChangeProductIds.includes(product.productId) ? !product.isActive : product.isActive}
                   handleProductActiveChange={setActiveChangeProductIds}
                 />
               ))}
@@ -96,6 +96,7 @@ export default function Page() {
                   key={`${product.productId}-${product.name}`}
                   {...product}
                   isEditProductActive
+                  isActive={activeChangeProductIds.includes(product.productId) ? !product.isActive : product.isActive}
                   handleProductActiveChange={setActiveChangeProductIds}
                 />
               ))}

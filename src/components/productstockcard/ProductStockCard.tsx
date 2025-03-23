@@ -49,7 +49,7 @@ const ProductStockCard = ({
             />
             {isEditProductActive && (
               <div className="absolute top-1 left-1 z-1">
-                <Checkbox id={String(productId)} checked={isActive} onChange={handleActiveChange} />
+                <Checkbox id={String(productId)} checked={!isActive} onChange={handleActiveChange} />
               </div>
             )}
           </>

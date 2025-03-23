@@ -32,6 +32,7 @@ export default function Page() {
   const [activeChangeProductIds, setActiveChangeProductIds] = useState<number[]>([]);
 
   const {
+    hideMenuMutate,
     isOpen: isProductHideManagementBottomSheetOpen,
     open: openProductHideManagementBottomSheet,
     close: closeProductHideManagementBottomSheet,
@@ -80,7 +81,11 @@ export default function Page() {
             fullHeight
             title="메뉴 숨김 관리"
             confirmText="확인"
-            onConfirm={() => {}}
+            onConfirm={() => {
+              // 빵집 메뉴 isAcitve 변경 API 호출
+              hideMenuMutate();
+              closeProductHideManagementBottomSheet();
+            }}
             confirmDisabled={activeChangeProductIds.length === 0}>
             <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
               {productsInfo.breadProducts.map((product: Product) => (

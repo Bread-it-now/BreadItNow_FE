@@ -16,15 +16,17 @@ export interface OperatingStatusCardProps {
   type: 'GENERAL' | 'TEMPORARY';
 }
 
+const TEMORARY_CLOSING_TIME_STEPS = [10, 60, 120, 1440];
+
 const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: OperatingStatusCardProps) => {
   const [openingTime, closingTime] = opentime.split('-');
   const {
     isOpen: isManageOperatingStatusBottomSheetOpen,
     open: openManageOperatingStatusBottomSheet,
     close: closeManageOperatingStatusBottomSheet,
-    isTemporaryClosed,
-    setIsTemporaryClosed,
-  } = useManageOperatingStatusBottomSheet(operatingStatus);
+    temporaryClosingTimeStep,
+    setTemporaryClosingTimeStep,
+  } = useManageOperatingStatusBottomSheet();
 
   return (
     <div className="flex flex-col justfiy-center items-start px-6 pt-5 pb-[1.875rem] gap-6 w-full bg-white rounded-[0.625rem]">
@@ -49,13 +51,13 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
               type === 'GENERAL'
                 ? isCurTimeBetweenOpeningTimeAndClosingTime(openingTime, closingTime) &&
                   (operatingStatus === 'OPEN' || operatingStatus === 'TEMPORARY_CLOSED')
-                : operatingStatus === 'TEMPORARY_CLOSED' && isTemporaryClosed
+                : operatingStatus === 'TEMPORARY_CLOSED'
             }
+            disabled={type === 'TEMPORARY' && operatingStatus === 'CLOSED'}
             toggleMutate={
               type === 'TEMPORARY'
                 ? () => {
-                    openManageOperatingStatusBottomSheet();
-                    setIsTemporaryClosed((prev) => !prev);
+                    if (operatingStatus === 'OPEN') openManageOperatingStatusBottomSheet();
                   }
                 : undefined
             }
@@ -82,19 +84,27 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
             : operatingStatus === 'TEMPORARY_CLOSED' && OPERATING_STATUS['TEMPORARY_CLOSED']}
         </div>
       )}
-      {type === 'TEMPORARY' && isTemporaryClosed && isManageOperatingStatusBottomSheetOpen && (
+      {type === 'TEMPORARY' && isManageOperatingStatusBottomSheetOpen && (
         <BottomSheet
           isOpen={isManageOperatingStatusBottomSheetOpen}
-          onClose={closeManageOperatingStatusBottomSheet}
+          onClose={() => {
+            closeManageOperatingStatusBottomSheet();
+            setTemporaryClosingTimeStep(0);
+          }}
           onConfirm={() => {}}
           confirmText="영업 일시중지"
           title="영업 일시중지">
           <div className="flex flex-col items-start pb-5 gap-6 w-full">
             <div className="flex flex-wrap items-center content-center gap-2 w-full">
-              <TimeStepChip step={10} onClick={() => {}} className="w-[163px]" />
-              <TimeStepChip step={60} onClick={() => {}} className="w-[163px]" />
-              <TimeStepChip step={120} onClick={() => {}} className="w-[163px]" />
-              <TimeStepChip step={1440} onClick={() => {}} className="w-[163px]" />
+              {TEMORARY_CLOSING_TIME_STEPS.map((timeStep: number) => (
+                <TimeStepChip
+                  key={timeStep}
+                  step={timeStep}
+                  checked={timeStep === temporaryClosingTimeStep}
+                  onClick={() => setTemporaryClosingTimeStep(timeStep)}
+                  className="w-[163px]"
+                />
+              ))}
             </div>
           </div>
         </BottomSheet>

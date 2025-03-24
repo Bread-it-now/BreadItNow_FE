@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import useBaseBottomSheet from './useBaseBottomSheet';
-import { OPERATING_STATUS } from '@/types/bakery';
 
-const useManageOperatingStatusBottomSheet = (operatingStatus: keyof typeof OPERATING_STATUS) => {
+const useManageOperatingStatusBottomSheet = () => {
   const { isOpen, dispatch } = useBaseBottomSheet();
-  const [breakTime, setBreakTime] = useState<number>(0);
-  const [isTemporaryClosed, setIsTemporaryClosed] = useState<boolean>(operatingStatus === 'TEMPORARY_CLOSED');
+  const [temporaryClosingTimeStep, setTemporaryClosingTimeStep] = useState<number>(0);
+  const [temporaryClosingTime, setTemporaryClosingTime] = useState<string>('');
 
   return {
     isOpen,
     open: dispatch.open,
     close: dispatch.close,
-    isTemporaryClosed,
-    setIsTemporaryClosed,
-    breakTime,
-    setBreakTime,
+    temporaryClosingTimeStep,
+    setTemporaryClosingTimeStep,
+    temporaryClosingTime,
+    setTemporaryClosingTime,
   };
 };
 

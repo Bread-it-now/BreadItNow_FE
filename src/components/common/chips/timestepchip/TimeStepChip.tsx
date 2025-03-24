@@ -27,7 +27,7 @@ const TimeStepChip = ({ step, onClick, checked, className }: TimeStepChipProps) 
         `flex justify-center items-center px-6 gap-[10px] h-[48px] rounded-lg cursor-pointer hover:opacity-70 border text-title-content-s font-normal max-w-[166px] ${checked ? 'bg-primaryLight1 border-primary text-primary' : 'bg-white border-gray200 text-gray900'}`,
         className,
       )}
-      onClick={() => onClick}>
+      onClick={onClick}>
       <span>{content}</span>
     </div>
   );

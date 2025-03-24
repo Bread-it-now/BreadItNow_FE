@@ -13,14 +13,14 @@ const bakeryId: number = 1;
 
 /** 로그인 시 가져온 bakeryId를 통해 빵집 정보 호출 */
 
-const OperatingSection = ({ name }: { bakeryId: number; operatingInfo: OperatingInfo; name: string }) => {
+const OperatingSection = ({ operatingInfo, name }: { operatingInfo: OperatingInfo; name: string }) => {
   return (
     <Fragment>
       <section className="w-full bg-white rounded-b-[0.625rem]">
-        <OperatingStatusCard name={name} operatingStatus="TEMPORARY_CLOSED" type="GENERAL" />
+        <OperatingStatusCard name={name} operatingStatus={operatingInfo.operatingStatus} type="GENERAL" />
       </section>
       <section className="w-full bg-white rounded-[0.625rem]">
-        <OperatingStatusCard operatingStatus="TEMPORARY_CLOSED" type="TEMPORARY" />
+        <OperatingStatusCard operatingStatus={operatingInfo.operatingStatus} type="TEMPORARY" />
       </section>
     </Fragment>
   );

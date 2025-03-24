@@ -30,7 +30,6 @@ const OperatingStatusCard = ({ name, operatingStatus, type }: OperatingStatusCar
 
         {
           <ToggleSwitch
-            type="OPERATING_STATUS"
             checked={type === 'GENERAL' ? operatingStatus === 'OPEN' : operatingStatus === 'TEMPORARY_CLOSED'}
           />
         }

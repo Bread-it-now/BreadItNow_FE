@@ -26,7 +26,7 @@ export default function Page() {
               설정한 요일, 시간동안 모든 빵 알림이 오지 않습니다.
             </p>
           </div>
-          {<ToggleSwitch type="APP_NOTIFICATION" checked />}
+          {<ToggleSwitch checked />}
         </div>
       </section>
       <section className="flex flex-col items-start px-5 py-[1.875rem] gap-5 w-full bg-white rounded-2xl">

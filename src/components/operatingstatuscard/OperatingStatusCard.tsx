@@ -2,15 +2,19 @@
 
 import { OPERATING_STATUS } from '@/types/bakery';
 import ToggleSwitch from '../common/toggleswitch/ToggleSwitch';
+import { isCurTimeBetweenOpeningTimeAndClosingTime } from '@/utils/date';
 
 export interface OperatingStatusCardProps {
   name?: string;
   operatingStatus: keyof typeof OPERATING_STATUS;
+  opentime: string;
   /** 운영 상태 유형 */
   type: 'GENERAL' | 'TEMPORARY';
 }
 
-const OperatingStatusCard = ({ name, operatingStatus, type }: OperatingStatusCardProps) => {
+const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: OperatingStatusCardProps) => {
+  const [openingTime, closingTime] = opentime.split('-');
+
   return (
     <div className="flex flex-col justfiy-center items-start px-6 pt-5 pb-[1.875rem] gap-6 w-full bg-white rounded-[0.625rem]">
       <div className="flex items-center gap-5 w-full">
@@ -30,7 +34,12 @@ const OperatingStatusCard = ({ name, operatingStatus, type }: OperatingStatusCar
 
         {
           <ToggleSwitch
-            checked={type === 'GENERAL' ? operatingStatus === 'OPEN' : operatingStatus === 'TEMPORARY_CLOSED'}
+            checked={
+              type === 'GENERAL'
+                ? isCurTimeBetweenOpeningTimeAndClosingTime(openingTime, closingTime) &&
+                  (operatingStatus === 'OPEN' || operatingStatus === 'TEMPORARY_CLOSED')
+                : operatingStatus === 'TEMPORARY_CLOSED'
+            }
           />
         }
       </div>

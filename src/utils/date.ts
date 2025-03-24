@@ -61,3 +61,19 @@ export const getElapsedTime = (createdAt: string): string => {
 };
 
 export const getDateFormat = (date: string) => getDate(date) + `(${getDay(date)}) ` + getTime(date);
+
+const timeToMinutes = (time: string) => {
+  const [hour, minute] = time.split(':').map((x) => +x);
+  return 60 * hour + minute;
+};
+
+export const isCurTimeBetweenOpeningTimeAndClosingTime = (openingTime: string, closingTime: string) => {
+  const curTimeTotalMinutes = timeToMinutes(new Date().toTimeString().slice(0, 5));
+  const openingTimeTotalMinutes = timeToMinutes(openingTime);
+  const closingTimeTotalMinutes = timeToMinutes(closingTime);
+  if (closingTimeTotalMinutes >= openingTimeTotalMinutes) {
+    return curTimeTotalMinutes >= openingTimeTotalMinutes && curTimeTotalMinutes <= closingTimeTotalMinutes;
+  } else {
+    return curTimeTotalMinutes >= openingTimeTotalMinutes || curTimeTotalMinutes <= closingTimeTotalMinutes;
+  }
+};

@@ -135,26 +135,29 @@ const AmountInput = forwardRef<HTMLInputElement, ComponentProps<'input'> & Amoun
   ) => {
     return (
       <label htmlFor={name} className="flex justify-center items-center py-[10px] gap-[10px] w-full h-full mx-auto">
-        <div className="flex w-full items-center justify-cetner gap-[1px]">
-          <input
-            type="number"
-            placeholder={placeholder}
-            className={`h-[34px] text-[24px] outline-none caret-primary placeholder:font-bold font-bold leading-[34px] tracking-[-0.01em] text-right`}
-            onChange={onChange}
-            value={value}
-            ref={ref}
-          />
-          {value && (
-            <span className="h-[34px] w-[30px] text-[24px] leading-[34px] tracking-[-0.01em] font-bold ">개</span>
-          )}
-        </div>
-
-        <div className="flex items-center justify-center w-[26px]">
-          {value && (
-            <button onClick={onReset} className="w-full">
-              <Image src={Reset} alt="reset-input" width={22} height={22} />
-            </button>
-          )}
+        <div className="flex w-full items-center justify-center gap-[2px]">
+          <div className="flex w-full items-center justify-center gap-[1px]">
+            <input
+              type="number"
+              placeholder={placeholder}
+              className={`h-[34px] w-full text-[24px] outline-none caret-primary placeholder:font-bold font-bold leading-[34px] tracking-[-0.01em] ${value === '' ? 'text-center' : 'text-right w-[20%]'}`}
+              onChange={onChange}
+              value={value}
+              ref={ref}
+            />
+            {value && (
+              <div className="flex gap-2">
+                <div className="h-[34px] w-[full] text-[24px] leading-[34px] tracking-[-0.01em] font-bold ">개</div>
+                <div className="flex items-center justify-center">
+                  {value && (
+                    <button onClick={onReset} className="w-full">
+                      <Image src={Reset} alt="reset-input" width={22} height={22} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </label>
     );

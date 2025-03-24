@@ -64,4 +64,23 @@ const changeStockQuantity = http.patch(
   },
 );
 
-export default [getBakeryInfo, getBakeryProoducts, changeStockQuantity];
+const changeOperatingStatus = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/:bakeryId/operating-status`,
+  async ({ params }) => {
+    const bakeryId = params.bakeryId;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          bakeryId,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export default [getBakeryInfo, getBakeryProoducts, changeStockQuantity, changeOperatingStatus];

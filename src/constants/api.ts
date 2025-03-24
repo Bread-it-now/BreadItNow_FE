@@ -47,4 +47,6 @@ export const API_END_POINT = {
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}`,
   CHANGE_STOCK_QUANTITY: (bakeryId: number, productId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}/product/${productId}/stock`,
+  CHANGE_OPERATING_STATUS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}/operating-status`,
 };

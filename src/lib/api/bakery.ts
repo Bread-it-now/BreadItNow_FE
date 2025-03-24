@@ -1,6 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
-import { Bakery, BakeryProducts } from '@/types/bakery';
+import { Bakery, BakeryProducts, OPERATING_STATUS } from '@/types/bakery';
 import { useQuery } from '@tanstack/react-query';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
@@ -51,6 +51,21 @@ export const changeStockQuantity = async (
   });
 
   if (!response.ok) throw new Error('Failed to fetch bakery products');
+
+  return response.json();
+};
+
+export const changeOperatingStatus = async (
+  bakeryId: number,
+  operatingStatus: keyof typeof OPERATING_STATUS,
+): Promise<{ data: { bakeryId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.CHANGE_OPERATING_STATUS(bakeryId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ operatingStatus }),
+  });
+
+  if (!response.ok) throw new Error('Failed to change operating Status');
 
   return response.json();
 };

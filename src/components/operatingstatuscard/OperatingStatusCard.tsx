@@ -6,6 +6,9 @@ import { getFormattingDate, isCurTimeBetweenOpeningTimeAndClosingTime } from '@/
 import BottomSheet from '../bottomsheet/Bottomsheet';
 import useManageOperatingStatusBottomSheet from '@/hooks/useManageOperatingStatusBottomSheet';
 import TimeStepChip from '../common/chips/timestepchip/TimeStepChip';
+import { changeOperatingStatus } from '@/lib/api/bakery';
+import { useQueryClient } from '@tanstack/react-query';
+import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 
 export interface OperatingStatusCardProps {
   name?: string;
@@ -18,7 +21,7 @@ export interface OperatingStatusCardProps {
 
 const TEMORARY_CLOSING_TIME_STEPS = [10, 60, 120, 1440];
 
-const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: OperatingStatusCardProps) => {
+const OperatingStatusCard = ({ name, operatingStatus, type, opentime, bakeryId }: OperatingStatusCardProps) => {
   const [openingTime, closingTime] = opentime.split('-');
   const {
     isOpen: isManageOperatingStatusBottomSheetOpen,
@@ -27,6 +30,8 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
     temporaryClosingTimeStep,
     setTemporaryClosingTimeStep,
   } = useManageOperatingStatusBottomSheet();
+
+  const queryClient = useQueryClient();
 
   return (
     <div className="flex flex-col justfiy-center items-start px-6 pt-5 pb-[1.875rem] gap-6 w-full bg-white rounded-[0.625rem]">
@@ -59,7 +64,14 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
                 ? () => {
                     if (operatingStatus === 'OPEN') openManageOperatingStatusBottomSheet();
                   }
-                : undefined
+                : () => {
+                    if (operatingStatus === 'OPEN') {
+                      changeOperatingStatus(bakeryId, 'CLOSED');
+                    } else {
+                      changeOperatingStatus(bakeryId, 'OPEN');
+                    }
+                    queryClient.invalidateQueries({ queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)] });
+                  }
             }
           />
         }

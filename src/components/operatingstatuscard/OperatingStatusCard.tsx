@@ -119,6 +119,8 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime, bakeryId }
           onConfirm={() => {
             saveTemporaryClosingTime(temporaryClosingTime);
             closeManageOperatingStatusBottomSheet();
+            changeOperatingStatus(bakeryId, 'TEMPORARY_CLOSED');
+            queryClient.invalidateQueries({ queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)] });
             queryClient.invalidateQueries({ queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)] });
           }}
           confirmDisabled={temporaryClosingTimeStep === 0}

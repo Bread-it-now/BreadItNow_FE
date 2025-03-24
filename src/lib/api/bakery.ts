@@ -37,3 +37,19 @@ export const useBakeryProducts = (bakeryId: number) =>
     queryFn: () => getBakeryProducts(bakeryId),
     select: (data: { data: BakeryProducts }) => data?.data,
   });
+
+export const changeStockQuantity = async (
+  bakeryId: number,
+  productId: number,
+  stock: number,
+): Promise<{ data: { stock: number } }> => {
+  const response = await fetch(`/${API_END_POINT.CHANGE_STOCK_QUANTITY(bakeryId, productId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ stock }),
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch bakery products');
+
+  return response.json();
+};

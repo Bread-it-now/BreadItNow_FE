@@ -44,4 +44,24 @@ const getBakeryProoducts = http.get(
   },
 );
 
-export default [getBakeryInfo, getBakeryProoducts];
+const changeStockQuantity = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/:bakeryId/product/:productId/stock`,
+  async ({ request }) => {
+    const body = (await request.json()) as { stock: number };
+    const stock: number = Number(body.stock);
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          stock: stock,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export default [getBakeryInfo, getBakeryProoducts, changeStockQuantity];

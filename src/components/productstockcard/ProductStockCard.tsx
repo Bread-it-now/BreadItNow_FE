@@ -6,7 +6,7 @@ import Button from '../button/Button';
 import { comma } from '@/utils/comma';
 import { cn } from '@/utils/cn';
 import Checkbox from '../common/checkbox/Checkbox';
-import { ComponentProps, ForwardedRef, forwardRef, Fragment, SetStateAction, useState } from 'react';
+import { ComponentProps, ForwardedRef, forwardRef, Fragment, SetStateAction } from 'react';
 import useProductStockBottomSheet from '@/hooks/useProductStockBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import Reset from '@/assets/icons/reset.svg';
@@ -28,15 +28,16 @@ const ProductStockCard = ({
   productId,
   isEditProductActive,
   handleProductActiveChange,
+  bakeryId,
 }: ProductStockCardProps) => {
-  const [productStockInput, setProductStockInput] = useState<string>(String(stock));
-
   const {
-    changeStockMutate,
+    handleChangeProductStock,
     isOpen: isProductStockBottomSheetOpen,
     open: openProductStockBottomSheet,
     close: closeProductStockBottomSheet,
-  } = useProductStockBottomSheet();
+    handleStockQuantityInput,
+    stockQuantityInput,
+  } = useProductStockBottomSheet({ initStock: stock, bakeryId, productId });
 
   const handleActiveChange = () => {
     if (handleProductActiveChange) {
@@ -100,31 +101,27 @@ const ProductStockCard = ({
         <BottomSheet
           isOpen={isProductStockBottomSheetOpen}
           onClose={() => {
-            setProductStockInput(String(stock));
+            handleStockQuantityInput(String(stock));
             closeProductStockBottomSheet();
           }}
           title={name}
           confirmText="변경"
-          confirmDisabled={productStockInput === '' || productStockInput === String(stock)}
-          onConfirm={() => {
-            // 재고 수량 변경 API 호출
-            changeStockMutate();
-            closeProductStockBottomSheet();
-          }}>
+          confirmDisabled={stockQuantityInput === '' || stockQuantityInput === String(stock)}
+          onConfirm={() => handleChangeProductStock(Number(stockQuantityInput))}>
           <div className="flex flex-col items-start justify-center pb-5 gap-6 w-full">
             <QuantityInput
               name="재고 수량 결정"
-              value={productStockInput}
+              value={stockQuantityInput}
               placeholder="수량 입력"
-              onChange={(e) => setProductStockInput(e.target.value)}
-              onReset={() => setProductStockInput('')}
+              onChange={(e) => handleStockQuantityInput(e.target.value)}
+              onReset={() => handleStockQuantityInput('')}
             />
             <div className="flex items-start justify-evenly w-full h-[36px] ">
               {quantityOptions.map((quantity) => (
                 <QuantityChip
                   key={quantity}
                   quantity={quantity}
-                  onClick={() => setProductStockInput(String(Number(productStockInput) + quantity))}
+                  onClick={() => handleStockQuantityInput(String(Number(stockQuantityInput) + quantity))}
                 />
               ))}
             </div>

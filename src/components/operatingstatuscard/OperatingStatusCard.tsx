@@ -94,12 +94,19 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime, bakeryId }
                 ? 'text-primary bg-[#FFF0EC]'
                 : 'text-gray500 bg-gray50'
           }`}>
-          {type === 'GENERAL'
-            ? isCurTimeBetweenOpeningTimeAndClosingTime(openingTime, closingTime) &&
-              (operatingStatus === 'OPEN' || operatingStatus === 'TEMPORARY_CLOSED')
-              ? OPERATING_STATUS['OPEN']
-              : OPERATING_STATUS['CLOSED']
-            : operatingStatus === 'TEMPORARY_CLOSED' && OPERATING_STATUS['TEMPORARY_CLOSED']}
+          {type === 'GENERAL' ? (
+            isCurTimeBetweenOpeningTimeAndClosingTime(openingTime, closingTime) &&
+            (operatingStatus === 'OPEN' || operatingStatus === 'TEMPORARY_CLOSED') ? (
+              OPERATING_STATUS['OPEN']
+            ) : (
+              OPERATING_STATUS['CLOSED']
+            )
+          ) : (
+            <>
+              <span>{OPERATING_STATUS['TEMPORARY_CLOSED']}</span>
+              <span className="font-normal min-w-[100px]">{`${temporaryClosingTime}까지`}</span>
+            </>
+          )}
         </div>
       )}
       {type === 'TEMPORARY' && isManageOperatingStatusBottomSheetOpen && (

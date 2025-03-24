@@ -11,7 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 
 export interface OperatingStatusCardProps {
-  name?: string;
+  name: string;
   operatingStatus: keyof typeof OPERATING_STATUS;
   opentime: string;
   bakeryId: number;
@@ -23,14 +23,20 @@ const TEMORARY_CLOSING_TIME_STEPS = [10, 60, 120, 1440];
 
 const OperatingStatusCard = ({ name, operatingStatus, type, opentime, bakeryId }: OperatingStatusCardProps) => {
   const [openingTime, closingTime] = opentime.split('-');
+
   const {
     isOpen: isManageOperatingStatusBottomSheetOpen,
     open: openManageOperatingStatusBottomSheet,
     close: closeManageOperatingStatusBottomSheet,
     temporaryClosingTimeStep,
     setTemporaryClosingTimeStep,
-  } = useManageOperatingStatusBottomSheet();
+    saveTemporaryClosingTime,
+  } = useManageOperatingStatusBottomSheet(bakeryId, name);
 
+  const temporaryClosingTime =
+    temporaryClosingTimeStep === 1440
+      ? getFormattingDate(new Date()).split(' ').slice(0, 2).join(' ') + ` ${closingTime}`
+      : getFormattingDate(new Date(), temporaryClosingTimeStep);
   const queryClient = useQueryClient();
 
   return (
@@ -103,7 +109,12 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime, bakeryId }
             closeManageOperatingStatusBottomSheet();
             setTemporaryClosingTimeStep(0);
           }}
-          onConfirm={() => {}}
+          onConfirm={() => {
+            saveTemporaryClosingTime(temporaryClosingTime);
+            closeManageOperatingStatusBottomSheet();
+            queryClient.invalidateQueries({ queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)] });
+          }}
+          confirmDisabled={temporaryClosingTimeStep === 0}
           confirmText="영업 일시중지"
           title="영업 일시중지">
           <div className="flex flex-col items-start pb-5 gap-6 w-full">
@@ -121,13 +132,7 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime, bakeryId }
             {temporaryClosingTimeStep !== 0 && (
               <div className="flex justify-center items-center p-3 gap-[6px] w-full bg-primaryLight1 rounded-lg text-title-content-xs text-primary">
                 <span>일시중지</span>
-                <span className="font-normal min-w-[100px]">
-                  {`${
-                    temporaryClosingTimeStep === 1440
-                      ? getFormattingDate(new Date()).split(' ').slice(0, 2).join(' ') + ` ${closingTime}`
-                      : getFormattingDate(new Date(), temporaryClosingTimeStep)
-                  }까지`}
-                </span>
+                <span className="font-normal min-w-[100px]">{`${temporaryClosingTime}까지`}</span>
               </div>
             )}
           </div>

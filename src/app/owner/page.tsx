@@ -34,6 +34,7 @@ const OperatingSection = ({
       </section>
       <section className="w-full bg-white rounded-[0.625rem]">
         <OperatingStatusCard
+          name={name}
           operatingStatus={operatingInfo.operatingStatus}
           opentime={operatingInfo.openTime}
           bakeryId={bakeryId}

@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import useBaseBottomSheet from './useBaseBottomSheet';
+import { saveTemporaryData } from '@/utils/localStorage';
 
-const useManageOperatingStatusBottomSheet = () => {
+const useManageOperatingStatusBottomSheet = (bakeryId: number, name: string) => {
   const { isOpen, dispatch } = useBaseBottomSheet();
   const [temporaryClosingTimeStep, setTemporaryClosingTimeStep] = useState<number>(0);
-  const [temporaryClosingTime, setTemporaryClosingTime] = useState<string>('');
+  const saveTemporaryClosingTime = (temporaryClosingTime: string) => {
+    saveTemporaryData(`${bakeryId}-${name}`, JSON.stringify({ temporaryClosingTime }));
+  };
 
   return {
     isOpen,
@@ -12,8 +15,7 @@ const useManageOperatingStatusBottomSheet = () => {
     close: dispatch.close,
     temporaryClosingTimeStep,
     setTemporaryClosingTimeStep,
-    temporaryClosingTime,
-    setTemporaryClosingTime,
+    saveTemporaryClosingTime,
   };
 };
 

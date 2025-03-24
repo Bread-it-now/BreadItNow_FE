@@ -10,11 +10,14 @@ import { ComponentProps, ForwardedRef, forwardRef, Fragment, SetStateAction, use
 import useProductStockBottomSheet from '@/hooks/useProductStockBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import Reset from '@/assets/icons/reset.svg';
+import QuantityChip from '../common/chips/quantitychip/quantityChip';
 
 interface ProductStockCardProps extends Product {
   isEditProductActive?: boolean;
   handleProductActiveChange?: React.Dispatch<SetStateAction<number[]>>;
 }
+
+const quantityOptions: number[] = [-10, -5, -1, 1, 5, 10];
 
 const ProductStockCard = ({
   image,
@@ -106,13 +109,22 @@ const ProductStockCard = ({
             closeProductStockBottomSheet();
           }}>
           <div className="flex flex-col items-start justify-center pb-5 gap-6 w-full">
-            <AmountInput
+            <QuantityInput
               name="재고 수량 결정"
               value={productStockInput}
               placeholder="수량 입력"
               onChange={(e) => setProductStockInput(e.target.value)}
               onReset={() => setProductStockInput('')}
             />
+            <div className="flex items-start justify-evenly w-full h-[36px] ">
+              {quantityOptions.map((quantity) => (
+                <QuantityChip
+                  key={quantity}
+                  quantity={quantity}
+                  onClick={() => setProductStockInput(String(Number(productStockInput) + quantity))}
+                />
+              ))}
+            </div>
           </div>
         </BottomSheet>
       )}
@@ -120,7 +132,7 @@ const ProductStockCard = ({
   );
 };
 
-interface AmountInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface QuantityInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -128,7 +140,7 @@ interface AmountInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onReset?: () => void;
 }
 
-const AmountInput = forwardRef<HTMLInputElement, ComponentProps<'input'> & AmountInputProps>(
+const QuantityInput = forwardRef<HTMLInputElement, ComponentProps<'input'> & QuantityInputProps>(
   (
     { name = '재고 수량', placeholder = '수량 입력', onChange, value, onReset },
     ref: ForwardedRef<HTMLInputElement>,
@@ -164,6 +176,6 @@ const AmountInput = forwardRef<HTMLInputElement, ComponentProps<'input'> & Amoun
   },
 );
 
-AmountInput.displayName = 'AmountInput';
+QuantityInput.displayName = 'QuantityInput';
 
 export default ProductStockCard;

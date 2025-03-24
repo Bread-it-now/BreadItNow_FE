@@ -28,7 +28,7 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
           <p className="text-title-content-xs text-gray500 font-normal">
             {type === 'GENERAL'
               ? '매장 운영 시작, 종료시 설정해주세요.'
-              : '설정한 영업 중지 시간이 경과하면, 자동으로 영업이재개됩니다.'}
+              : '설정한 영업 중지 시간이 경과하면, 자동으로 영업이 재개됩니다.'}
           </p>
         </div>
 
@@ -45,10 +45,22 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
       </div>
       {(type !== 'TEMPORARY' || operatingStatus === 'TEMPORARY_CLOSED') && (
         <div
-          className={`flex justify-center items-center p-3 gap-[6px] w-full rounded-lg text-title-content-xs ${operatingStatus === 'OPEN' ? 'text-secondary bg-[#DFFAF3]' : operatingStatus === 'CLOSED' || (operatingStatus === 'TEMPORARY_CLOSED' && type === 'GENERAL') ? 'text-gray500 bg-gray50' : 'text-primary bg-[#FFF0EC]'}`}>
-          {type === 'GENERAL' && operatingStatus === 'TEMPORARY_CLOSED'
-            ? OPERATING_STATUS['CLOSED']
-            : OPERATING_STATUS[operatingStatus]}
+          className={`flex justify-center items-center p-3 gap-[6px] w-full rounded-lg text-title-content-xs ${
+            type === 'GENERAL'
+              ? isCurTimeBetweenOpeningTimeAndClosingTime(openingTime, closingTime) &&
+                (operatingStatus === 'OPEN' || operatingStatus === 'TEMPORARY_CLOSED')
+                ? 'text-secondary bg-[#DFFAF3]'
+                : 'text-gray500 bg-gray50'
+              : operatingStatus === 'TEMPORARY_CLOSED'
+                ? 'text-primary bg-[#FFF0EC]'
+                : 'text-gray500 bg-gray50'
+          }`}>
+          {type === 'GENERAL'
+            ? isCurTimeBetweenOpeningTimeAndClosingTime(openingTime, closingTime) &&
+              (operatingStatus === 'OPEN' || operatingStatus === 'TEMPORARY_CLOSED')
+              ? OPERATING_STATUS['OPEN']
+              : OPERATING_STATUS['CLOSED']
+            : operatingStatus === 'TEMPORARY_CLOSED' && OPERATING_STATUS['TEMPORARY_CLOSED']}
         </div>
       )}
     </div>

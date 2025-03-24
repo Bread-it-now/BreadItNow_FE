@@ -77,3 +77,16 @@ export const isCurTimeBetweenOpeningTimeAndClosingTime = (openingTime: string, c
     return curTimeTotalMinutes >= openingTimeTotalMinutes || curTimeTotalMinutes <= closingTimeTotalMinutes;
   }
 };
+
+export const getFormattingDate = (date: Date, addedMinutes: number = 0): string => {
+  const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+  const newDate = new Date(date);
+  newDate.setMinutes(newDate.getMinutes() + addedMinutes);
+
+  const month = months[newDate.getMonth()];
+  const day = newDate.getDate();
+  const hours = newDate.getHours().toString().padStart(2, '0');
+  const minutes = newDate.getMinutes().toString().padStart(2, '0');
+
+  return `${month} ${day}일 ${hours}:${minutes}`;
+};

@@ -2,7 +2,7 @@
 
 import { OPERATING_STATUS } from '@/types/bakery';
 import ToggleSwitch from '../common/toggleswitch/ToggleSwitch';
-import { isCurTimeBetweenOpeningTimeAndClosingTime } from '@/utils/date';
+import { getFormattingDate, isCurTimeBetweenOpeningTimeAndClosingTime } from '@/utils/date';
 import BottomSheet from '../bottomsheet/Bottomsheet';
 import useManageOperatingStatusBottomSheet from '@/hooks/useManageOperatingStatusBottomSheet';
 import TimeStepChip from '../common/chips/timestepchip/TimeStepChip';
@@ -106,6 +106,18 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
                 />
               ))}
             </div>
+            {temporaryClosingTimeStep !== 0 && (
+              <div className="flex justify-center items-center p-3 gap-[6px] w-full bg-primaryLight1 rounded-lg text-title-content-xs text-primary">
+                <span>일시중지</span>
+                <span className="font-normal min-w-[100px]">
+                  {`${
+                    temporaryClosingTimeStep === 1440
+                      ? getFormattingDate(new Date()).split(' ').slice(0, 2).join(' ') + ` ${closingTime}`
+                      : getFormattingDate(new Date(), temporaryClosingTimeStep)
+                  }까지`}
+                </span>
+              </div>
+            )}
           </div>
         </BottomSheet>
       )}

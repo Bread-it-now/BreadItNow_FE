@@ -71,11 +71,11 @@ export const mockBakeryInfos: Bakery[] = [
     name: '맛있는 빵집',
     address: '서울시 강남구 테헤란로 123',
     phone: '02-1234-5678',
-    openTime: '09:00-23:00',
+    openTime: '09:00-24:00',
     introduction: '최고의 빵을 제공합니다.',
     profileImage: 'default.png',
     additionalImages: ['bakery1.png', 'bakery2.png'],
-    operatingStatus: 'TEMPORARY_CLOSED',
+    operatingStatus: 'OPEN',
   },
   {
     bakeryId: 2,

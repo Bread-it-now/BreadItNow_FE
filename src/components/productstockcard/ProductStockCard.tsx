@@ -152,7 +152,7 @@ const QuantityInput = forwardRef<HTMLInputElement, ComponentProps<'input'> & Qua
             <input
               type="number"
               placeholder={placeholder}
-              className={`h-[34px] w-full text-[24px] outline-none caret-primary placeholder:font-bold font-bold leading-[34px] tracking-[-0.01em] ${value === '' ? 'text-center' : 'text-right w-[20%]'}`}
+              className={`h-[34px] w-[140px] text-[24px] outline-none caret-primary placeholder:font-bold font-bold leading-[34px] tracking-[-0.01em] ${value === '' ? 'text-center' : 'text-right w-[20%]'}`}
               onChange={onChange}
               value={value}
               ref={ref}

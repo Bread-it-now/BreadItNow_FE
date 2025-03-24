@@ -2,6 +2,7 @@ import { changeStockQuantity } from '@/lib/api/bakery';
 import useBaseBottomSheet from './useBaseBottomSheet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 
 const useProductStockBottomSheet = ({
   initStock,
@@ -21,7 +22,7 @@ const useProductStockBottomSheet = ({
     changeStockQuantity(bakeryId, productId, stock);
     dispatch.close();
     // 삥집 메뉴 api 호출
-    queryClient.invalidateQueries({ queryKey: ['bakery', bakeryId, 'products'] });
+    queryClient.invalidateQueries({ queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCTS(bakeryId)] });
   };
 
   return {

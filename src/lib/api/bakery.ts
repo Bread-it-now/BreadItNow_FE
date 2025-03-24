@@ -1,4 +1,5 @@
 import { API_END_POINT } from '@/constants/api';
+import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 import { Bakery, BakeryProducts } from '@/types/bakery';
 import { useQuery } from '@tanstack/react-query';
 
@@ -15,7 +16,7 @@ export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }>
 
 export const useBakeryInfo = (bakeryId: number) =>
   useQuery({
-    queryKey: ['bakery', bakeryId],
+    queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)],
     queryFn: () => getBakeryInfo(bakeryId),
     select: (data: { data: Bakery }) => data?.data,
   });
@@ -33,7 +34,7 @@ export const getBakeryProducts = async (bakeryId: number): Promise<{ data: Baker
 
 export const useBakeryProducts = (bakeryId: number) =>
   useQuery({
-    queryKey: ['bakery', bakeryId, 'products'],
+    queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCTS(bakeryId)],
     queryFn: () => getBakeryProducts(bakeryId),
     select: (data: { data: BakeryProducts }) => data?.data,
   });

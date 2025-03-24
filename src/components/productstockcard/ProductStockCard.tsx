@@ -102,7 +102,7 @@ const ProductStockCard = ({
           onClose={closeProductStockBottomSheet}
           title={name}
           confirmText="변경"
-          confirmDisabled
+          confirmDisabled={productStockInput === '' || productStockInput === String(stock)}
           onConfirm={() => {
             // 재고 수량 변경 API 호출
             changeStockMutate();

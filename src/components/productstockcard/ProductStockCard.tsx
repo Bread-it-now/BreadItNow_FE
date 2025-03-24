@@ -99,7 +99,10 @@ const ProductStockCard = ({
       {isProductStockBottomSheetOpen && (
         <BottomSheet
           isOpen={isProductStockBottomSheetOpen}
-          onClose={closeProductStockBottomSheet}
+          onClose={() => {
+            setProductStockInput(String(stock));
+            closeProductStockBottomSheet();
+          }}
           title={name}
           confirmText="변경"
           confirmDisabled={productStockInput === '' || productStockInput === String(stock)}

@@ -28,6 +28,7 @@ const OperatingSection = ({
           name={name}
           operatingStatus={operatingInfo.operatingStatus}
           opentime={operatingInfo.openTime}
+          bakeryId={bakeryId}
           type="GENERAL"
         />
       </section>
@@ -35,6 +36,7 @@ const OperatingSection = ({
         <OperatingStatusCard
           operatingStatus={operatingInfo.operatingStatus}
           opentime={operatingInfo.openTime}
+          bakeryId={bakeryId}
           type="TEMPORARY"
         />
       </section>

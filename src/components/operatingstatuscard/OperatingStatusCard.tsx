@@ -3,17 +3,28 @@
 import { OPERATING_STATUS } from '@/types/bakery';
 import ToggleSwitch from '../common/toggleswitch/ToggleSwitch';
 import { isCurTimeBetweenOpeningTimeAndClosingTime } from '@/utils/date';
+import BottomSheet from '../bottomsheet/Bottomsheet';
+import useManageOperatingStatusBottomSheet from '@/hooks/useManageOperatingStatusBottomSheet';
+import TimeStepChip from '../common/chips/timestepchip/TimeStepChip';
 
 export interface OperatingStatusCardProps {
   name?: string;
   operatingStatus: keyof typeof OPERATING_STATUS;
   opentime: string;
+  bakeryId: number;
   /** 운영 상태 유형 */
   type: 'GENERAL' | 'TEMPORARY';
 }
 
 const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: OperatingStatusCardProps) => {
   const [openingTime, closingTime] = opentime.split('-');
+  const {
+    isOpen: isManageOperatingStatusBottomSheetOpen,
+    open: openManageOperatingStatusBottomSheet,
+    close: closeManageOperatingStatusBottomSheet,
+    isTemporaryClosed,
+    setIsTemporaryClosed,
+  } = useManageOperatingStatusBottomSheet(operatingStatus);
 
   return (
     <div className="flex flex-col justfiy-center items-start px-6 pt-5 pb-[1.875rem] gap-6 w-full bg-white rounded-[0.625rem]">
@@ -38,7 +49,15 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
               type === 'GENERAL'
                 ? isCurTimeBetweenOpeningTimeAndClosingTime(openingTime, closingTime) &&
                   (operatingStatus === 'OPEN' || operatingStatus === 'TEMPORARY_CLOSED')
-                : operatingStatus === 'TEMPORARY_CLOSED'
+                : operatingStatus === 'TEMPORARY_CLOSED' && isTemporaryClosed
+            }
+            toggleMutate={
+              type === 'TEMPORARY'
+                ? () => {
+                    openManageOperatingStatusBottomSheet();
+                    setIsTemporaryClosed((prev) => !prev);
+                  }
+                : undefined
             }
           />
         }
@@ -62,6 +81,23 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime }: Operatin
               : OPERATING_STATUS['CLOSED']
             : operatingStatus === 'TEMPORARY_CLOSED' && OPERATING_STATUS['TEMPORARY_CLOSED']}
         </div>
+      )}
+      {type === 'TEMPORARY' && isTemporaryClosed && isManageOperatingStatusBottomSheetOpen && (
+        <BottomSheet
+          isOpen={isManageOperatingStatusBottomSheetOpen}
+          onClose={closeManageOperatingStatusBottomSheet}
+          onConfirm={() => {}}
+          confirmText="영업 일시중지"
+          title="영업 일시중지">
+          <div className="flex flex-col items-start pb-5 gap-6 w-full">
+            <div className="flex flex-wrap items-center content-center gap-2 w-full">
+              <TimeStepChip step={10} onClick={() => {}} className="w-[163px]" />
+              <TimeStepChip step={60} onClick={() => {}} className="w-[163px]" />
+              <TimeStepChip step={120} onClick={() => {}} className="w-[163px]" />
+              <TimeStepChip step={1440} onClick={() => {}} className="w-[163px]" />
+            </div>
+          </div>
+        </BottomSheet>
       )}
     </div>
   );

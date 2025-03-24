@@ -5,7 +5,7 @@ import React, { ChangeEvent, useState } from 'react';
 
 export interface ToggleSwitchProps {
   /** 토글 시 실행할 로직이 포함된 mutate 함수 */
-  toggleMutate?: ({ params, active }: { params: object; active: boolean }) => void;
+  toggleMutate?: () => void;
 
   /** toggle시 mutate함수에 전달한 params */
   /** 추후에 parmas 타입 재정의 */
@@ -22,7 +22,7 @@ export interface ToggleSwitchProps {
 }
 
 const ToggleSwitch = React.forwardRef<boolean, ToggleSwitchProps>(
-  ({ disabled = false, toggleMutate, params = {}, checked = false, className }, ref) => {
+  ({ disabled = false, toggleMutate, checked = false, className }, ref) => {
     const [clicked, setClicked] = useState(checked);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       setClicked(e.target.checked);
@@ -30,7 +30,7 @@ const ToggleSwitch = React.forwardRef<boolean, ToggleSwitchProps>(
         ref.current = null;
       }
       /** 토글 시 mutate 수행 */
-      if (toggleMutate) toggleMutate({ params, active: !e.target.checked });
+      if (toggleMutate) toggleMutate();
     };
 
     return (

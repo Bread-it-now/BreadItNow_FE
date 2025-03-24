@@ -75,7 +75,7 @@ export const mockBakeryInfos: Bakery[] = [
     introduction: '최고의 빵을 제공합니다.',
     profileImage: 'default.png',
     additionalImages: ['bakery1.png', 'bakery2.png'],
-    operatingStatus: 'OPEN',
+    operatingStatus: 'TEMPORARY_CLOSED',
   },
   {
     bakeryId: 2,

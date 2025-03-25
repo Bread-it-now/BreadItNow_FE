@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { comma } from '@/utils/comma';
 import { Product } from '@/types/product';
-interface BreadReserveCardProps extends Product {
+interface ProductReserveCardProps extends Product {
   isChecked?: boolean;
   setIsChecked?: (value: string) => void;
   existReserveTime?: boolean;
@@ -11,7 +11,7 @@ interface BreadReserveCardProps extends Product {
   moreInfoComponent?: React.ReactNode;
   showCount?: boolean;
 }
-function BreadReserveCard({
+function ProductReserveCardProps({
   name,
   price,
   stock,
@@ -22,7 +22,7 @@ function BreadReserveCard({
   moreInfoComponent = null,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showCount = false,
-}: BreadReserveCardProps) {
+}: ProductReserveCardProps) {
   return (
     <div className="flex gap-4 border-b py-5 relative">
       <div className="min-w-[90px] w-[90px] h-[90px] relative shrink-0">
@@ -41,4 +41,4 @@ function BreadReserveCard({
   );
 }
 
-export default BreadReserveCard;
+export default ProductReserveCardProps;

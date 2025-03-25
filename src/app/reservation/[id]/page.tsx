@@ -5,7 +5,7 @@ import Image from 'next/image';
 import BreadSuccess from '@/assets/icons/reserve-success.svg';
 import BreadFail from '@/assets/icons/reserve-fail.svg';
 import type { Product } from '@/types/product';
-import BreadReserveCard from '@/components/breadStoreInfo/BreadReserveCard';
+import ProductReserveCard from '@/components/bakeryInfo/ProductReserveCard';
 import Button from '@/components/button/Button';
 
 const breadList: Product[] = [
@@ -108,7 +108,7 @@ function ReservationSuccess() {
         <div className="w-full border-box px-5 py-6 overflow-hidden text-black bg-white">
           <div className="text-title-content-m">예약 상품</div>
           {breadList.map((product) => {
-            return <BreadReserveCard key={product.productId} {...product} />;
+            return <ProductReserveCard key={product.productId} {...product} />;
           })}
           <div className="mt-[30px] bg-gray-50 font-semibold">
             <div className="px-5 py-[23px] flex justify-between items-center text-black">

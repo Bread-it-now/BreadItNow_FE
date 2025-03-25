@@ -31,7 +31,7 @@ const Button = ({
   const variants = {
     default: cn('bg-white border border-gray200', 'hover:bg-[#F8F9FB] active:bg-gray50 disabled:bg-inherit'),
     primary: cn('bg-primary', 'hover:bg-[#F36A45] active:bg-[#ED6541] disabled:bg-gray100'),
-    secondary: cn('bg-primaryLight1', 'hover:bg-[#FFE4DC] active:bg-[#FFD6CB] disabled:bg-gray100'),
+    secondary: cn('bg-primaryLight', 'hover:bg-[#FFE4DC] active:bg-[#FFD6CB] disabled:bg-gray100'),
   };
 
   const contentStyles = cn(

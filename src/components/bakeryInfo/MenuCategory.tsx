@@ -1,5 +1,5 @@
 import RoundTab from '../common/tabs/RoundTab';
-import MenuList from '@/components/breadStoreInfo/MenuList';
+import MenuList from '@/components/bakeryInfo/MenuList';
 import { useState, memo } from 'react';
 import { Product } from '@/types/product';
 interface MenuCategoryProps {

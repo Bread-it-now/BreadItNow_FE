@@ -3,7 +3,7 @@
 import React from 'react';
 
 interface ResendButtonProps {
-  disabled: boolean;
+  disabled?: boolean;
   onClick: () => void;
   className?: string;
   children?: React.ReactNode;

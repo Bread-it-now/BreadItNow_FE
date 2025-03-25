@@ -52,7 +52,6 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
                   className="flex-grow"
                 />
                 <ResendButton
-                  disabled={!address}
                   //eslint-disable-next-line
                   onClick={() => console.log('우편번호 찾기 클릭')}
                   message="우편번호"
@@ -107,13 +106,13 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
             <button className="flex items-center justify-center gap-2 w-full py-3 bg-primaryLight1 font-medium text-red-400 rounded-md">
               <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="1.5" y="1" width="18" height="18" rx="9" fill="#FF7651" />
-                <path d="M10.5 7V13" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M10.5 7V13" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 <path
                   d="M7.5 10L13.5 10"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <span className="text-sm">빵집 이미지 등록 0/8</span>

@@ -34,7 +34,7 @@ export default function Page() {
         />
       </section>
 
-      <section className="flex flex-col justify-center items-start gap-[0.625rem] px-5 pt-6 pb-[50px] w-full">
+      <section className="flex flex-col justify-center items-start gap-[0.625rem] px-5 pt-6 pb-[50px] w-full bg-gray50">
         {selectedReservationCards.map((reservation) => (
           <OwnerReservationCard key={reservation.reservationId} {...reservation} />
         ))}

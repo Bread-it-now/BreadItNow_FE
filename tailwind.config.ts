@@ -20,7 +20,7 @@ export default {
         gray100: '#e8eaec',
         gray50: '#f2f4f6',
         primary: '#ff7651',
-        primaryLight1: '#FFF0EC',
+        primaryLight:'#FFF0EC',
         secondary: '#26cf9f',
         secondaryLight1: '#6BFFD5',
         secondaryLight3: '#DFFAF3',
@@ -137,5 +137,6 @@ export default {
       },
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require('tailwind-scrollbar-hide')],
 } satisfies Config;

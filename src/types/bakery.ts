@@ -39,3 +39,26 @@ export interface Bread {
   releaseTimes: string[];
   isActive: boolean;
 }
+
+export type ProductType = 'BREAD' | 'OTHER';
+
+export interface Product {
+  productId: number;
+  bakeryId: number;
+  productType: ProductType;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  releaseTimes?: string[];
+  stock: number;
+  isActive: boolean;
+  breadCategories: { categoryId: number; categoryName: string }[];
+  displayOrder?: number;
+}
+
+export interface BakeryProducts {
+  totalCount: number;
+  breadProducts: Product[];
+  otherProducts: Product[];
+}

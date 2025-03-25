@@ -41,7 +41,7 @@ export default function Page() {
               중요한 소식을 앱 실행 없이 실시간으로 알 수 있어요.
             </p>
           </div>
-          {<ToggleSwitch type="APP_NOTIFICATION" disabled={!isNotificationOn} />}
+          {<ToggleSwitch disabled={!isNotificationOn} />}
         </div>
       </section>
       <section className="px-5 py-[1.875rem] rounded-2xl w-full bg-white">
@@ -50,13 +50,13 @@ export default function Page() {
             <div className={'flex flex-col items-start gap-[0.625rem] w-full'}>
               <p className="text-title-content-m text-gray900 w-full">빵 알림</p>
             </div>
-            {<ToggleSwitch type="APP_NOTIFICATION" disabled={!isNotificationOn} />}
+            {<ToggleSwitch disabled={!isNotificationOn} />}
           </div>
           <div className={cn('flex items-center gap-5 w-full bg-white', isNotificationOn ? '' : 'opacity-50')}>
             <div className={'flex flex-col items-start gap-[0.625rem] w-full'}>
               <p className="text-title-content-m text-gray900">예약</p>
             </div>
-            {<ToggleSwitch type="APP_NOTIFICATION" disabled={!isNotificationOn} />}
+            {<ToggleSwitch disabled={!isNotificationOn} />}
           </div>
         </Stack>
       </section>

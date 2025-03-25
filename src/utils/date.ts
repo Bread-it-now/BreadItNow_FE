@@ -61,3 +61,32 @@ export const getElapsedTime = (createdAt: string): string => {
 };
 
 export const getDateFormat = (date: string) => getDate(date) + `(${getDay(date)}) ` + getTime(date);
+
+const timeToMinutes = (time: string) => {
+  const [hour, minute] = time.split(':').map((x) => +x);
+  return 60 * hour + minute;
+};
+
+export const isCurTimeBetweenOpeningTimeAndClosingTime = (openingTime: string, closingTime: string) => {
+  const curTimeTotalMinutes = timeToMinutes(new Date().toTimeString().slice(0, 5));
+  const openingTimeTotalMinutes = timeToMinutes(openingTime);
+  const closingTimeTotalMinutes = timeToMinutes(closingTime);
+  if (closingTimeTotalMinutes >= openingTimeTotalMinutes) {
+    return curTimeTotalMinutes >= openingTimeTotalMinutes && curTimeTotalMinutes <= closingTimeTotalMinutes;
+  } else {
+    return curTimeTotalMinutes >= openingTimeTotalMinutes || curTimeTotalMinutes <= closingTimeTotalMinutes;
+  }
+};
+
+export const getFormattingDate = (date: Date, addedMinutes: number = 0): string => {
+  const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+  const newDate = new Date(date);
+  newDate.setMinutes(newDate.getMinutes() + addedMinutes);
+
+  const month = months[newDate.getMonth()];
+  const day = newDate.getDate();
+  const hours = newDate.getHours().toString().padStart(2, '0');
+  const minutes = newDate.getMinutes().toString().padStart(2, '0');
+
+  return `${month} ${day}일 ${hours}:${minutes}`;
+};

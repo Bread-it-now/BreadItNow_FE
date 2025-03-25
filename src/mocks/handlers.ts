@@ -1,21 +1,4 @@
-import { http, HttpResponse } from "msw";
+import authHandler from './handlers/auth';
+import ownerHandler from './handlers/owner';
 
-interface LoginRequestBody {
-  email: string;
-  password: string;
-}
-
-export const handlers = [
-  http.post("/api/login", async ({ request }) => {
-    const { email, password } = (await request.json()) as LoginRequestBody;
-
-    if (email === "test@example.com" && password === "password123") {
-      return HttpResponse.json({
-        message: "Login successful",
-        token: "mock-token",
-      });
-    }
-
-    return new HttpResponse("Invalid credentials", { status: 401 });
-  }),
-];
+export const handlers = [...authHandler, ...ownerHandler];

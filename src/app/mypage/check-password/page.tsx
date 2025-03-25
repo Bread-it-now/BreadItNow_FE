@@ -8,6 +8,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import KakaoIcon from '@/assets/images/kakao.png';
+import NaverIcon from '@/assets/icons/naver.svg';
+import GoogleIcon from '@/assets/icons/google.svg';
 function Page() {
   const router = useRouter();
   const [password, setPassword] = useState<string>('');
@@ -72,6 +74,18 @@ function Page() {
           <div className="flex items-center gap-2">
             <Image src={KakaoIcon} width={20} height={20} alt="카카오" />
             카카오로 확인하기
+          </div>
+        </Button>
+        <Button fullWidth onClick={() => {}} className="mt-[30px]" variant="default">
+          <div className="flex items-center gap-2">
+            <Image src={NaverIcon} width={20} height={20} alt="네이버" />
+            네이버로 확인하기
+          </div>
+        </Button>
+        <Button fullWidth onClick={() => {}} className="mt-[30px]" variant="default">
+          <div className="flex items-center gap-2">
+            <Image src={GoogleIcon} width={20} height={20} alt="구글" />
+            구글로 확인하기
           </div>
         </Button>
       </div>

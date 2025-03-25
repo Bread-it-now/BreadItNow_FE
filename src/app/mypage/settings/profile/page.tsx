@@ -20,9 +20,9 @@ function EditableInput({ title, value, onChange, buttonMode, onButtonClick, butt
   return (
     <>
       <div className="text-body-s">{title}</div>
-      <div className="mt-2 flex items-center align gap-2">
+      <div className="mt-2 flex items-center gap-2">
         <Input
-          className="border border-gray-200 bg-gray-white rounded-lg"
+          className="border h-[48px] box-border border-gray-200 bg-gray-white rounded-lg"
           value={value}
           disabled={!buttonMode}
           onChange={onChange}

@@ -1,13 +1,13 @@
 const API_SUFFIX = 'api';
-const API_VERSION_PREFIX = 'api/v1';
+export const API_VERSION_PREFIX = 'api/v1';
 
-const MODULE = {
+export const MODULE = {
   AUTH: `auth-${API_SUFFIX}`,
   CUSTOMER: `customer-${API_SUFFIX}`,
   OWNER: `owner-${API_SUFFIX}`,
 };
 
-const CONTROLLER = {
+export const CONTROLLER = {
   AUTH: {
     AUTH: 'auth',
     TOKEN: 'token',
@@ -42,5 +42,11 @@ export const API_END_POINT = {
 
   /** OWNER */
   // BAKERY
-  BAKERY: (bakeryId: number) => `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
+  BAKERY_INFO: (bakeryId: number) => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
+  BAKERY_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}`,
+  CHANGE_STOCK_QUANTITY: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}/product/${productId}/stock`,
+  CHANGE_OPERATING_STATUS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}/operating-status`,
 };

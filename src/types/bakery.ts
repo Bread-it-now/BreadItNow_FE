@@ -23,7 +23,7 @@ export interface OperatingInfo {
 /** 빵집 이미지 정보 */
 export interface ImageInfo {
   profileImage: string;
-  bakeryIamges: string[];
+  additionalImages: string[];
 }
 
 export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}
@@ -38,4 +38,27 @@ export interface Bread {
   stock: number;
   releaseTimes: string[];
   isActive: boolean;
+}
+
+export type ProductType = 'BREAD' | 'OTHER';
+
+export interface Product {
+  productId: number;
+  bakeryId: number;
+  productType: ProductType;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  releaseTimes?: string[];
+  stock: number;
+  isActive: boolean;
+  breadCategories: { categoryId: number; categoryName: string }[];
+  displayOrder?: number;
+}
+
+export interface BakeryProducts {
+  totalCount: number;
+  breadProducts: Product[];
+  otherProducts: Product[];
 }

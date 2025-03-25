@@ -44,7 +44,7 @@ const BreadNotificationSettingCard = ({
             ))}
           </div>
         </div>
-        {<ToggleSwitch className={`${isEdit && 'invisible'} `} type="BREAD_NOTIFICATION" checked={isNotificationOn} />}
+        {<ToggleSwitch className={`${isEdit && 'invisible'} `} checked={isNotificationOn} />}
       </div>
     </div>
   );

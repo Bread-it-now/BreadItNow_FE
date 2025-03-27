@@ -1,10 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import Image from 'next/image';
 import Button from '@/components/button/Button';
 import VerificationInput from '@/components/common/Input/VerificationInput';
 import Topbar from '@/components/topbar/Topbar';
 import ResendButton from '../button/ResendButton';
+import DaumPostcode from 'react-daum-postcode';
+import { useRef, useState } from 'react';
+import closeIcon from '@/assets/icons/close.svg';
 
 interface OwnerFirstLoginFlowProps {
   onComplete: () => void;
@@ -18,6 +21,44 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
   const [phoneNumber, setPhoneNumber] = useState('');
   const [businessHours, setBusinessHours] = useState('');
   const [description, setDescription] = useState('');
+  const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    const newFiles = Array.from(files).slice(0, 8 - images.length);
+    setImages((prev) => [...prev, ...newFiles]);
+  };
+
+  const handleImageDelete = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  type PostcodeData = {
+    address: string;
+    addressType: 'R' | 'J';
+    bname: string;
+    buildingName: string;
+    zonecode: string;
+  };
+
+  const handleComplete = (data: PostcodeData) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') extraAddress += data.bname;
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    setZipcode(data.zonecode);
+    setAddress(fullAddress);
+    setIsPostcodeOpen(false);
+  };
 
   return (
     <div className="flex flex-col h-full bg-gray50">
@@ -30,7 +71,6 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
       </div>
 
       <div className="p-5 space-y-6 bg-white rounded-xl">
-        {/* 빵집 기본 정보 */}
         <div>
           <h2 className="text-lg font-semibold text-gray900">빵집 기본 정보</h2>
           <div className="mt-3 space-y-3">
@@ -51,11 +91,7 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
                   placeholder="우편번호"
                   className="flex-grow"
                 />
-                <ResendButton
-                  //eslint-disable-next-line
-                  onClick={() => console.log('우편번호 찾기 클릭')}
-                  message="우편번호"
-                />
+                <ResendButton onClick={() => setIsPostcodeOpen(true)} message="우편번호" />
               </div>
             </div>
             <VerificationInput
@@ -69,6 +105,7 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
               onChange={(e) => setDetailAddress(e.target.value)}
               placeholder="상세주소"
             />
+
             <div className="mt-6 space-y-2">
               <div className="mt-6 justify-start text-gray900 text-xs font-medium">빵집 전화번호</div>
               <VerificationInput
@@ -102,22 +139,59 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
         <h2 className="text-lg font-semibold text-gray-900">추가 정보</h2>
         <div className="mt-3 space-y-3">
           <div className="mt-6 space-y-2">
-            <div className="mt-6 justify-start text-gray900 text-xs font-medium">빵집 이미지</div>
-            <button className="flex items-center justify-center gap-2 w-full py-3 bg-primaryLight1 font-medium text-red-400 rounded-md">
-              <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1.5" y="1" width="18" height="18" rx="9" fill="#FF7651" />
-                <path d="M10.5 7V13" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path
-                  d="M7.5 10L13.5 10"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-sm">빵집 이미지 등록 0/8</span>
-            </button>
+            <div className="justify-start text-gray900 text-xs font-medium">빵집 이미지</div>
+
+            <div className="flex overflow-x-auto gap-3 no-scrollbar">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className="relative w-[180px] h-[120px] min-w-[180px] rounded-lg overflow-hidden flex-shrink-0">
+                  <Image
+                    src={URL.createObjectURL(image)}
+                    alt="bakery"
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                  <button
+                    onClick={() => handleImageDelete(index)}
+                    className="absolute top-1.5 right-1.5 bg-black/60 rounded-full p-1">
+                    <Image src={closeIcon} alt="삭제 버튼" width={16} height={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {images.length < 8 && (
+              <>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center justify-center gap-2 w-full py-3 bg-primaryLight1 font-medium text-red-400 rounded-md">
+                  <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1.5" y="1" width="18" height="18" rx="9" fill="#FF7651" />
+                    <path
+                      d="M10.5 7V13"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M7.5 10L13.5 10"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span className="text-sm">빵집 이미지 등록 {images.length}/8</span>
+                </button>
+
+                <input type="file" accept="image/*" multiple hidden ref={fileInputRef} onChange={handleImageUpload} />
+              </>
+            )}
           </div>
+
           <p className="text-xs text-gray-500">*3:2 비율로 이미지가 크롭되어 보여집니다.</p>
           <div className="mt-6 space-y-2">
             <div className="text-gray900 text-xs font-medium">빵집 소개글</div>
@@ -146,6 +220,18 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
           완료
         </Button>
       </div>
+      {isPostcodeOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative w-[90%] max-w-[375px] bg-white rounded-md shadow-lg p-4">
+            <button
+              onClick={() => setIsPostcodeOpen(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl">
+              ✕
+            </button>
+            <DaumPostcode onComplete={handleComplete} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

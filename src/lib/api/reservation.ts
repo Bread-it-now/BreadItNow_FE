@@ -2,8 +2,10 @@ import { API_END_POINT } from '@/constants/api';
 import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
 import {
   CustomerReservationDetail,
-  CustomerReservationsResponse,
+  CustomerReservations,
   CustomerReservationStatus,
+  OwnerReservations,
+  OwnerReservationStatusQuery,
 } from '@/types/reservation';
 import { useQuery } from '@tanstack/react-query';
 
@@ -11,7 +13,7 @@ export const getCustomerReservations = async (
   reservationStatus: CustomerReservationStatus | 'ALL',
   page: number = 0,
   size = 10,
-): Promise<{ data: CustomerReservationsResponse }> => {
+): Promise<{ data: CustomerReservations }> => {
   const response = await fetch(`/${API_END_POINT.CUSTOMER_RESERVATIONS(reservationStatus, page, size)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
@@ -35,7 +37,7 @@ export const useCustomerReservations = ({
   useQuery({
     queryKey: [...RESERVATION_QUERY_KEY.CUSTOMER_RESERVATION(reservationStatus)],
     queryFn: () => getCustomerReservations(reservationStatus, page, size),
-    select: (data: { data: CustomerReservationsResponse }) => data?.data,
+    select: (data: { data: CustomerReservations }) => data?.data,
   });
 
 export const getCustomerReservationDetail = async (
@@ -71,3 +73,34 @@ export const cancelCustomerReservation = async (
 
   return response.json();
 };
+
+export const getOwnerReservations = async (
+  reservationStatus: OwnerReservationStatusQuery,
+  page: number = 0,
+  size = 10,
+): Promise<{ data: OwnerReservations }> => {
+  const response = await fetch(`/${API_END_POINT.OWNER_RESERVATIONS(reservationStatus, page, size)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+/** 추후에 무한스크롤로 수정 */
+export const useOwnerReservations = ({
+  reservationStatus,
+  page,
+  size,
+}: {
+  reservationStatus: OwnerReservationStatusQuery;
+  page: number;
+  size: number;
+}) =>
+  useQuery({
+    queryKey: [...RESERVATION_QUERY_KEY.OWNER_RESERVATION(reservationStatus)],
+    queryFn: () => getOwnerReservations(reservationStatus, page, size),
+    select: (data: { data: OwnerReservations }) => data?.data,
+  });

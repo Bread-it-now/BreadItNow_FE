@@ -1,4 +1,9 @@
-import { CustomerReservation, CustomerReservationDetail, ReservationProduct } from '@/types/reservation';
+import {
+  CustomerReservation,
+  CustomerReservationDetail,
+  OwnerReservation,
+  ReservationProduct,
+} from '@/types/reservation';
 import bread from '@/assets/images/bread.png';
 import bakery from '@/assets/images/bakery.png';
 
@@ -275,5 +280,81 @@ export const customerReservationDetails: CustomerReservationDetail[] = [
       totalPrice: 70000,
       reservationItems: [...reservationItems],
     },
+  },
+];
+
+export const OwnerReservations: OwnerReservation[] = [
+  {
+    reservationId: 500,
+    reservationDate: '2025-02-01T10:00:00Z',
+    status: 'WAITING',
+    totalPrice: 10000,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    consumerNickname: '브레드잇나우',
+  },
+  {
+    reservationId: 501,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'M191CD',
+    status: 'APPROVED',
+    totalPrice: 20000,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    pickupDeadline: '2025-02-01T10:30:00Z',
+    consumerNickname: '브레드잇나우',
+    approveDate: '2025-02-01T10:00:00Z',
+  },
+  {
+    reservationId: 502,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'M191CD',
+    status: 'PARTIAL_APPROVED',
+    totalPrice: 30000,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    consumerNickname: '브레드잇나우',
+    pickupDeadline: '2025-02-01T10:30:00Z',
+    approveDate: '2025-02-01T10:00:00Z',
+  },
+  {
+    reservationId: 503,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'M191CD',
+    status: 'OWNER_REJECTED',
+    totalPrice: 40000,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    consumerNickname: '브레드잇나우',
+  },
+  {
+    reservationId: 504,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'M191CD',
+    status: 'OWNER_REJECTED',
+    totalPrice: 50000,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    consumerNickname: '브레드잇나우',
+  },
+  {
+    reservationId: 505,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'M191CD',
+    status: 'CUSTOMER_CANCELED',
+    totalPrice: 60000,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    consumerNickname: '브레드잇나우',
+  },
+  {
+    reservationId: 506,
+    reservationDate: '2025-02-01T10:00:00Z',
+    reservationNumber: 'M191CD',
+    status: 'PAYMENT_COMPLETED',
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    totalPrice: 70000,
+    consumerNickname: '브레드잇나우',
   },
 ];

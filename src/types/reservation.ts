@@ -3,6 +3,7 @@ import { Bakery } from './bakery';
 export type ReservationStatus = 'WAITING' | 'APPROVED' | 'PARTIAL_APPROVED' | 'PAYMENT_COMPLETED';
 export type CustomerReservationStatus = ReservationStatus | 'CANCELED';
 export type OwnerReservationStatus = ReservationStatus | 'OWNER_REJECTED' | 'CUSTOMER_CANCELED';
+export type OwnerReservationStatusQuery = Exclude<ReservationStatus, 'PARTIAL_APPROVED'> | 'CANCELED';
 
 export interface Reservation {
   /** 예약 신청 Id */
@@ -33,6 +34,8 @@ export interface OwnerReservation extends Reservation {
   /** 예약 상태 */
   status: OwnerReservationStatus;
   consumerNickname: string;
+  cancelDetail?: string;
+  approveDate?: string;
 }
 
 export interface ReservationProduct {
@@ -51,12 +54,19 @@ export interface CustomerReservationDetail {
   };
 }
 
-export interface CustomerReservationsResponse {
+export interface PageInfo {
+  totalElements: number;
+  totalPages: number;
+  currPage: number;
+  isLast: boolean;
+}
+
+export interface CustomerReservations {
   reservations: CustomerReservation[];
-  pageInfo: {
-    totalElements: number;
-    totalPages: number;
-    currPage: number;
-    isLast: boolean;
-  };
+  pageInfo: PageInfo;
+}
+
+export interface OwnerReservations {
+  reservations: OwnerReservation[];
+  pageInfo: PageInfo;
 }

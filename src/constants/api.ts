@@ -1,4 +1,4 @@
-import { CustomerReservationStatus, OwnerReservationStatus } from '@/types/reservation';
+import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
 const API_SUFFIX = 'api';
 export const API_VERSION_PREFIX = 'api/v1';
@@ -62,7 +62,7 @@ export const API_END_POINT = {
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}/operating-status`,
 
   // RESERVATION
-  OWNER_RESERVATIONS: (reservationStatus: OwnerReservationStatus, page: number, size: number) =>
+  OWNER_RESERVATIONS: (reservationStatus: OwnerReservationStatusQuery, page: number, size: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}?status=${reservationStatus}&page=${page}&size=${size}`,
   OWNER_RESERVATION_DETAIL: (reservationId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}`,

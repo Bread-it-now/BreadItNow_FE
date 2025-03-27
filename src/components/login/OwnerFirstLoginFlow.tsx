@@ -7,7 +7,7 @@ import Topbar from '@/components/topbar/Topbar';
 import ResendButton from '../button/ResendButton';
 import DaumPostcode from 'react-daum-postcode';
 import { useRef, useState } from 'react';
-import closeIcon from '@/assets/icons/close.svg';
+import CloseIcon from '@/components/common/Icons/CloseIcon';
 
 interface OwnerFirstLoginFlowProps {
   onComplete: () => void;
@@ -141,7 +141,7 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
           <div className="mt-6 space-y-2">
             <div className="justify-start text-gray900 text-xs font-medium">빵집 이미지</div>
 
-            <div className="flex overflow-x-auto gap-3 no-scrollbar">
+            <div className={`flex overflow-x-auto gap-3 no-scrollbar ${images.length === 1 ? 'justify-center' : ''}`}>
               {images.map((image, index) => (
                 <div
                   key={index}
@@ -155,8 +155,8 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
                   />
                   <button
                     onClick={() => handleImageDelete(index)}
-                    className="absolute top-1.5 right-1.5 bg-black/60 rounded-full p-1">
-                    <Image src={closeIcon} alt="삭제 버튼" width={16} height={16} />
+                    className="absolute top-1.5 right-1.5 bg-black/60 rounded-full max-w-[20px] max-h-[20px] p-1.5 flex items-center justify-center">
+                    <CloseIcon color="#fff" />
                   </button>
                 </div>
               ))}

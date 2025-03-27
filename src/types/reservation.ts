@@ -1,6 +1,6 @@
 import { Bakery } from './bakery';
 
-export type ReservationStatus = 'WAITING' | 'APPROVED' | 'PARTIAL_APPROVED' | 'PAYMENT_COMPLETED';
+export type ReservationStatus = 'ALL' | 'WAITING' | 'APPROVED' | 'PARTIAL_APPROVED' | 'PAYMENT_COMPLETED';
 export type CustomerReservationStatus = ReservationStatus | 'CANCELED';
 export type OwnerReservationStatus = ReservationStatus | 'OWNER_REJECTED' | 'CUSTOMER_CANCELED';
 
@@ -48,5 +48,15 @@ export interface CustomerReservationDetail {
   bakery: Pick<Bakery, 'name' | 'address' | 'phone'> & { bakeryId: number; profileImage: string };
   reservation: Omit<CustomerReservation, 'bakeryId' | 'bakeryName' | 'profileImage'> & {
     reservationItems: ReservationProduct[];
+  };
+}
+
+export interface CustomerReservationsResponse {
+  reservations: CustomerReservation[];
+  pageInfo: {
+    totalElements: number;
+    totalPages: number;
+    currPage: number;
+    isLast: boolean;
   };
 }

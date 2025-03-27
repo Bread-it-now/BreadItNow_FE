@@ -1,5 +1,7 @@
 import { API_END_POINT } from '@/constants/api';
-import { CustomerReservationStatus } from '@/types/reservation';
+import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
+import { CustomerReservationsResponse, CustomerReservationStatus } from '@/types/reservation';
+import { useQuery } from '@tanstack/react-query';
 
 export const getCustomerReservations = async (
   reservationStatus: CustomerReservationStatus,
@@ -11,7 +13,23 @@ export const getCustomerReservations = async (
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch bakeryInfo');
+  if (!response.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
+
+/** 추후에 무한스크롤로 수정 */
+export const useCustomerReservations = ({
+  reservationStatus,
+  page,
+  size,
+}: {
+  reservationStatus: CustomerReservationStatus;
+  page: number;
+  size: number;
+}) =>
+  useQuery({
+    queryKey: [...RESERVATION_QUERY_KEY.CUSTOMER_RESERVATION_QUERY_KEY(reservationStatus)],
+    queryFn: () => getCustomerReservations(reservationStatus, page, size),
+    select: (data: { data: CustomerReservationsResponse }) => data?.data,
+  });

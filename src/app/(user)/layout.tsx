@@ -18,17 +18,19 @@ const UserNavElements: NavElement[] = [
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const hideNavbarPaths = ['/login', '/signup'];
+  const hideNavbarPaths = ['/login', '/signup', '/mypage/'];
+  const myPageSubSectionPathRegex = /^\/mypage\/.*$/;
   const shouldHideNavbar = hideNavbarPaths.includes(pathname);
+  const isMyPageSubSection = myPageSubSectionPathRegex.test(pathname);
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-100">
       <div
         className={`relative w-full max-w-[375px] max-h-[812px] bg-white border-1 mx-auto pt-[44px] h-lvh overflow-scroll 
-          ${!shouldHideNavbar ? 'pb-[58px]' : ''}`}>
+          ${!shouldHideNavbar && !isMyPageSubSection ? 'pb-[58px]' : ''}`}>
         <div id="bottomsheet-root" />
         {children}
-        {!shouldHideNavbar && (
+        {!shouldHideNavbar && !isMyPageSubSection && (
           <div className="absolute bottom-0 left-0 w-full">
             <BottomNavbar NavList={[...UserNavElements]} />
           </div>

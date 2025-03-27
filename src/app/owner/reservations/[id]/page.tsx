@@ -1,7 +1,6 @@
 'use client';
 
 import { getDateFormat } from '@/utils/date';
-import { useParams } from 'next/navigation';
 import { useOwnerReservationDetail } from '@/lib/api/reservation';
 import { OWNER_RESERVATION_STATUS } from '@/components/reservation/ownerReservationCard/OwnerReservationCard';
 
@@ -57,7 +56,41 @@ export default function Page() {
                   />
                 )}
               </div>
-              <div></div>
+              {reservationDetail.status !== 'PAYMENT_COMPLETED' && (
+                <div className="flex flex-col items-start gap-[10px] p-3 w-full bg-gray50 rounded-lg">
+                  <div className="flex justify-center gap-[6px] w-full text-title-content-xs text-gray500">
+                    <p>
+                      {reservationDetail.status === 'WAITING'
+                        ? '예약일시'
+                        : reservationDetail.status === 'APPROVED' || reservationDetail.status === 'PARTIAL_APPROVED'
+                          ? '접수일시'
+                          : reservationDetail.status === 'CUSTOMER_CANCELED'
+                            ? '고객'
+                            : '판매자'}
+                    </p>
+                    <p className="font-normal">
+                      {reservationDetail.status === 'WAITING'
+                        ? getDateFormat(reservationDetail.reservationDate, { showDay: false })
+                        : reservationDetail.status === 'APPROVED' || reservationDetail.status === 'PARTIAL_APPROVED'
+                          ? getDateFormat(reservationDetail.approveDate || '', { showDay: false })
+                          : reservationDetail.status === 'CUSTOMER_CANCELED'
+                            ? '픽업 기간 내 미수령으로 예약 취소'
+                            : '사정으로 예약 취소'}
+                    </p>
+                  </div>
+                  {reservationDetail.status === 'OWNER_REJECTED' && (
+                    <>
+                      <div className="w-full border bg-100" />
+                      <div className="flex justify-center w-full text-title-content-xs text-gray500 bg-gray50 rounded-lg">
+                        <p>사유</p>
+                        {reservationDetail.cancelDetail && (
+                          <p className="font-normal">{reservationDetail.cancelDetail}</p>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </section>
         </>

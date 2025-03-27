@@ -36,7 +36,6 @@ export interface OwnerReservation extends Reservation {
   consumerNickname: string;
   cancelDetail?: string;
   approveDate?: string;
-  consumerPhone: string;
 }
 
 export interface ReservationProduct {
@@ -58,6 +57,7 @@ export interface CustomerReservationDetail {
 export interface OwnerReservationDetail extends OwnerReservation {
   reservationItems: ReservationProduct[];
   paymentDate?: string;
+  consumerPhone: string;
 }
 
 export interface PageInfo {

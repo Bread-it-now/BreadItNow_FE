@@ -411,6 +411,7 @@ export const OwnerReservationDetails: OwnerReservationDetail[] = [
     reservationItems: [...reservationItems],
     approveDate: '2025-02-01T10:00:00Z',
     consumerPhone: '010-1234-5678',
+    cancelDetail: '재고 부족',
   },
   {
     reservationId: 504,
@@ -424,6 +425,7 @@ export const OwnerReservationDetails: OwnerReservationDetail[] = [
     approveDate: '2025-02-01T10:00:00Z',
     reservationItems: [...reservationItems],
     consumerPhone: '010-1234-5678',
+    cancelDetail: '재고 부족',
   },
   {
     reservationId: 505,

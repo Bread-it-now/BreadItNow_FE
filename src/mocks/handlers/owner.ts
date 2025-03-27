@@ -4,7 +4,7 @@ import { mockBakeryInfos } from '../data/bakery';
 import { mockProducts } from '../data/product';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { OwnerReservationStatusQuery } from '@/types/reservation';
-import { OwnerReservations } from '../data/reservation';
+import { OwnerReservationDetails, OwnerReservations } from '../data/reservation';
 
 const getBakeryInfo = http.get(
   `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/:bakeryId`,
@@ -116,4 +116,34 @@ const getOwnerReservations = http.get(
   },
 );
 
-export default [getBakeryInfo, getBakeryProoducts, changeStockQuantity, changeOperatingStatus, getOwnerReservations];
+const getOwnerReservationDetail = http.get(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/:reservationId`,
+  async ({ params }) => {
+    const reservationId: number = Number(params?.reservationId);
+
+    const reservationDetail = OwnerReservationDetails.filter(
+      (reservationDetail) => reservationDetail.reservationId === reservationId,
+    )[0];
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          ...reservationDetail,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export default [
+  getBakeryInfo,
+  getBakeryProoducts,
+  changeStockQuantity,
+  changeOperatingStatus,
+  getOwnerReservations,
+  getOwnerReservationDetail,
+];

@@ -4,6 +4,7 @@ import {
   CustomerReservationDetail,
   CustomerReservations,
   CustomerReservationStatus,
+  OwnerReservationDetail,
   OwnerReservations,
   OwnerReservationStatusQuery,
 } from '@/types/reservation';
@@ -103,4 +104,22 @@ export const useOwnerReservations = ({
     queryKey: [...RESERVATION_QUERY_KEY.OWNER_RESERVATION(reservationStatus)],
     queryFn: () => getOwnerReservations(reservationStatus, page, size),
     select: (data: { data: OwnerReservations }) => data?.data,
+  });
+
+export const getOwnerReservationDetail = async (reservationId: number): Promise<{ data: OwnerReservationDetail }> => {
+  const response = await fetch(`/${API_END_POINT.OWNER_RESERVATION_DETAIL(reservationId)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useOwnerReservationDetail = (reservationId: number) =>
+  useQuery({
+    queryKey: [...RESERVATION_QUERY_KEY.OWNER_RESERVATION_DETAIL(reservationId)],
+    queryFn: () => getOwnerReservationDetail(reservationId),
+    select: (data: { data: OwnerReservationDetail }) => data?.data,
   });

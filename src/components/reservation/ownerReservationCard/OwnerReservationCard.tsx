@@ -10,7 +10,7 @@ export const OWNER_RESERVATION_STATUS: Record<OwnerReservationStatus, string> = 
   WAITING: '승인 대기',
   APPROVED: '접수 완료',
   PARTIAL_APPROVED: '접수 부분 완료',
-  CUSTOMER_CANCELED: '고객 예약 취소',
+  CUSTOMER_CANCELED: '예약 취소',
   OWNER_REJECTED: '예약 취소',
   PAYMENT_COMPLETED: '결제 완료',
 };

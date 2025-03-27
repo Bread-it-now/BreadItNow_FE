@@ -36,6 +36,7 @@ export interface OwnerReservation extends Reservation {
   consumerNickname: string;
   cancelDetail?: string;
   approveDate?: string;
+  consumerPhone: string;
 }
 
 export interface ReservationProduct {
@@ -52,6 +53,11 @@ export interface CustomerReservationDetail {
   reservation: Omit<CustomerReservation, 'bakeryId' | 'bakeryName' | 'profileImage'> & {
     reservationItems: ReservationProduct[];
   };
+}
+
+export interface OwnerReservationDetail extends OwnerReservation {
+  reservationItems: ReservationProduct[];
+  paymentDate?: string;
 }
 
 export interface PageInfo {

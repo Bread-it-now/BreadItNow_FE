@@ -60,7 +60,10 @@ export const getElapsedTime = (createdAt: string): string => {
   return `${Math.floor(diffSec / TIME_FACTORS.DAY)}일 전`;
 };
 
-export const getDateFormat = (date: string) => getDate(date) + `(${getDay(date)}) ` + getTime(date);
+export const getDateFormat = (date: string, options?: { showDate?: boolean; showDay?: boolean; showTime?: boolean }) =>
+  (options?.showDate !== false ? getDate(date) : '') +
+  (options?.showDay !== false ? `(${getDay(date)})` : '') +
+  (options?.showTime !== false ? ` ${getTime(date)}` : '');
 
 const timeToMinutes = (time: string) => {
   const [hour, minute] = time.split(':').map((x) => +x);

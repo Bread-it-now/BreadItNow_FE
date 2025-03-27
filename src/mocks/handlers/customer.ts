@@ -53,4 +53,31 @@ const getCustomerReservationDetail = http.get(
   },
 );
 
-export default [getCustomerReservations, getCustomerReservationDetail];
+const cancelCustomerReservation = http.patch(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/:reservationId/cancel`,
+  async ({ params }) => {
+    const reservationId: number = Number(params?.reservationId);
+
+    const cancelResponseData: {
+      reservationId: number;
+      status: CustomerReservationStatus;
+    } = {
+      reservationId: reservationId,
+      status: 'CANCELED',
+    };
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          ...cancelResponseData,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export default [getCustomerReservations, getCustomerReservationDetail, cancelCustomerReservation];

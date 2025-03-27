@@ -10,10 +10,13 @@ import ReservationProduct from '@/components/reservation/reservationproduct/Rese
 import Stack from '@/components/common/stack/Stack';
 import { comma } from '@/utils/comma';
 import Button from '@/components/button/Button';
-import { useCustomerReservationDetail } from '@/lib/api/reservation';
+import { cancelCustomerReservation, useCustomerReservationDetail } from '@/lib/api/reservation';
+import { useQueryClient } from '@tanstack/react-query';
+import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
 
 export default function Page() {
   const { id = 1 } = useParams();
+  const queryClient = useQueryClient();
 
   const { data: reservationDetail } = useCustomerReservationDetail(Number(id));
 
@@ -104,7 +107,18 @@ export default function Page() {
           </section>
           {reservationDetail.reservation.status !== 'CANCELED' && (
             <section className="p-5 w-full h-[92px] bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)] z-10">
-              <Button variant="default" scale="large" fullWidth onClick={() => {}}>
+              <Button
+                variant="default"
+                scale="large"
+                fullWidth
+                onClick={() => {
+                  cancelCustomerReservation(reservationDetail.reservation.reservationId);
+                  queryClient.invalidateQueries({
+                    queryKey: [
+                      ...RESERVATION_QUERY_KEY.CUSTOMER_RESERVATION_DETAIL(reservationDetail.reservation.reservationId),
+                    ],
+                  });
+                }}>
                 예약취소
               </Button>
             </section>

@@ -57,3 +57,17 @@ export const useCustomerReservationDetail = (reservationId: number) =>
     queryFn: () => getCustomerReservationDetail(reservationId),
     select: (data: { data: CustomerReservationDetail }) => data?.data,
   });
+
+export const cancelCustomerReservation = async (
+  reservationId: number,
+): Promise<{ data: CustomerReservationDetail }> => {
+  const response = await fetch(`/${API_END_POINT.CUSTOMER_RESERVATION_CANCEL(reservationId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ reason: '개인 사정으로 인한 취소' }),
+  });
+
+  if (!response.ok) throw new Error('Failed to patch');
+
+  return response.json();
+};

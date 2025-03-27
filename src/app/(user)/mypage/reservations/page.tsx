@@ -5,6 +5,8 @@ import { CustomerReservationStatus } from '@/types/reservation';
 import { useState } from 'react';
 import CustomerReservationCard from '@/components/reservation/customerReservationCard/CustomerReservationCard';
 import { useCustomerReservations } from '@/lib/api/reservation';
+import Empty from '@/assets/icons/empty.svg';
+import Image from 'next/image';
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<CustomerReservationStatus>('ALL');
@@ -32,13 +34,26 @@ export default function Page() {
         <p className="flex justify-start w-full text-title-content-s font-normal text-gray900">
           총&nbsp;<span className="text-primary"> {reservations ? reservations.length : 0}</span>개
         </p>
-        <div className="flex flex-col items-start gap-[0.625rem] w-full min-h-[240px]">
-          {reservations &&
+        <div
+          className={`flex flex-col items-start gap-[0.625rem] w-full min-h-[240px] ${(!reservations || reservations.length === 0) && 'justify-center'}`}>
+          {/* 무한스크롤로 수정 필요 */}
+          {reservations && reservations.length !== 0 ? (
             reservations.map((reservation) => (
               <CustomerReservationCard key={reservation.reservationId} {...reservation} />
-            ))}
+            ))
+          ) : (
+            /* no-data */
+            <div className="flex flex-col justify-center items-center gap-4 w-full h-full">
+              <Image src={Empty} width={70} height={70} alt="empty" />
+              <div className="flex flex-col items-center gap-[6px] w-full h-full text-gray500">
+                <p className="text-title-content-s font-medium">예약 내역이 없습니다.</p>
+                <p className="text-title-content-2xs">원하는 빵을 미리 예약해 보세요.</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </>
   );
 }
+/* Frame 1103 */

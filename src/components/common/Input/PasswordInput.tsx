@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { InputProps } from './Input';
+import { InputProps } from '../common/Input/Input';
 import PWSHOWICON from '@/assets/icons/pw_show.svg';
 import PWHIDEICON from '@/assets/icons/pw_hide.svg';
 import Image from 'next/image';

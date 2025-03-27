@@ -4,6 +4,8 @@ import { useImageSlider } from '@/hooks/useSlideEvent';
 interface ImageSliderProps {
   images?: string[];
   startIndex?: number;
+  showPagination?: boolean;
+  floatingButton?: React.ReactNode;
 }
 
 function TagPagination({ currentPage, lastPage }: { currentPage: number; lastPage: number }) {
@@ -19,6 +21,8 @@ function TagPagination({ currentPage, lastPage }: { currentPage: number; lastPag
 const ImageSlider = ({
   images = ['https://placehold.co/300x400', 'https://placehold.co/600x400', 'https://placehold.co/800x1000'],
   startIndex = 0,
+  showPagination = true,
+  floatingButton,
 }: ImageSliderProps) => {
   const {
     currentIndex,
@@ -60,13 +64,14 @@ const ImageSlider = ({
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}>
         {images.map((image, index) => (
-          <div key={`slider-${index}`} className="min-w-full h-full">
+          <div key={`slider-${index}`} className="min-w-full h-full relative">
             <div className="w-full h-full bg-center bg-cover" style={{ backgroundImage: `url(${image})` }} />
+            {floatingButton}
           </div>
         ))}
       </div>
 
-      <TagPagination currentPage={currentIndex} lastPage={images.length} />
+      {showPagination && <TagPagination currentPage={currentIndex} lastPage={images.length} />}
     </div>
   );
 };

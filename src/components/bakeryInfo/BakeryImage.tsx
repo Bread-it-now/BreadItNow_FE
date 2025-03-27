@@ -8,6 +8,11 @@ function BakeryImages({ images }: { images: string[] }) {
   const moveImageViewPage = () => {
     router.push(`/store/image_view/${params.id}`);
   };
+  if (images.length === 0) {
+    return (
+      <div className="w-full font-normal text-[13px] text-gray-500 py-5 text-center">등록된 이미지가 없습니다.</div>
+    );
+  }
   return (
     <div className="flex gap-[10px] h-[105px] mt-5">
       {images.slice(0, 3).map((image, index) => (

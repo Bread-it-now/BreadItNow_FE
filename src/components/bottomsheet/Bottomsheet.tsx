@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 
-interface BottomSheetProps {
+export interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -65,7 +65,7 @@ const BottomSheet = ({
   return (
     <>
       {createPortal(
-        <div className={cn('absolute bottom-0 w-full h-full z-10')}>
+        <div className={cn('absolute bottom-0 w-full h-full z-20')}>
           {/* Backdrop */}
           {!fullHeight && (
             <div
@@ -105,7 +105,7 @@ const BottomSheet = ({
                 {(cancelText || confirmText) && (
                   <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
                     {cancelText && (
-                      <Button onClick={onClose} scale="large">
+                      <Button fullWidth onClick={onClose} scale="large">
                         {cancelText}
                       </Button>
                     )}

@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import lock from '@/assets/images/lock.png';
 import CloseIcon from '@/components/common/Icons/CloseIcon';
-import PasswordInput from '@/components/inputs/PasswordInput';
+import PasswordInput from '@/components/common/Input/PasswordInput';
 import Button from '@/components/button/Button';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';

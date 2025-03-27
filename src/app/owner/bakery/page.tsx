@@ -1,10 +1,13 @@
 'use client';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import ImageSlider from '@/components/common/slider/ImageSlider';
-import { useState } from 'react';
+import { useState, lazy } from 'react';
 import EditIcon from '@/assets/icons/edit.svg';
 import IconButton from '@/components/button/IconButton';
 import BakeryImages from '@/components/bakeryInfo/BakeryImage';
+import BottomSheet, { BottomSheetProps } from '@/components/bottomsheet/Bottomsheet';
+import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
+
 const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },
   { key: 'bakeryProducts', label: '빵집 메뉴' },
@@ -16,6 +19,41 @@ const images = [
 ];
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('bakeryInfo');
+  const { isOpen, open, close } = useReservationBottomSheet();
+  // const [bottomSheetContent, setBottomSheetContent] = useState<React.ReactNode>(null);
+  const [bototmSheetProps, setBottomSheetProps] = useState<BottomSheetProps>();
+  const LazyEditBakeryImage = lazy(() => import('@/components/bakeryInfo/EditBakeryImage'));
+  const EditBakeryNameAndIntroduction = lazy(() => import('@/components/bakeryInfo/EditBakeryNameAndIntroduction'));
+  const setBottomSheetContent = (tab: string) => {
+    switch (tab) {
+      case 'image':
+        // setBottomSheetContent(<LazyEditBakeryImage images={images} />);
+        setBottomSheetProps({
+          isOpen: true,
+          title: '빵집 이미지 수정',
+          cancelText: '취소',
+          confirmText: '저장',
+          onClose: close,
+          onConfirm: () => {},
+          children: <LazyEditBakeryImage images={images} />,
+        });
+        break;
+      case 'store':
+        setBottomSheetProps({
+          isOpen: true,
+          title: '빵집 이름/소개글 수정',
+          cancelText: '취소',
+          confirmText: '저장',
+          onClose: close,
+          onConfirm: () => {},
+          children: <EditBakeryNameAndIntroduction />,
+        });
+        break;
+      default:
+        break;
+    }
+    open();
+  };
 
   return (
     <div className="bg-gray-100 flex flex-col gap-[10px]">
@@ -40,7 +78,7 @@ export default function Page() {
             icon={EditIcon}
             iconWidth={20}
             iconHeight={20}
-            onClick={() => {}}
+            onClick={() => setBottomSheetContent('store')}
           />
         </div>
         <div className="text-xs mt-5 font-normal text-gray-500">빵집 주소</div>
@@ -68,10 +106,10 @@ export default function Page() {
             icon={EditIcon}
             iconWidth={20}
             iconHeight={20}
-            onClick={() => {}}
+            onClick={() => setBottomSheetContent('image')}
           />
         </div>
-        <BakeryImages images={images} />
+        <BakeryImages images={[]} />
       </div>
       <div className="bg-white rounded-2xl px-5 py-[30px] text-black">
         <div className="flex justify-between items-center">
@@ -104,6 +142,16 @@ export default function Page() {
           />
         </div>
       </div>
+      <BottomSheet
+        isOpen={isOpen}
+        onClose={close}
+        onConfirm={bototmSheetProps?.onConfirm}
+        title={bototmSheetProps?.title}
+        cancelText={bototmSheetProps?.cancelText}
+        confirmText={bototmSheetProps?.confirmText}
+        bgColor={bototmSheetProps?.bgColor}>
+        {bototmSheetProps?.children}
+      </BottomSheet>
     </div>
   );
 }

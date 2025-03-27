@@ -50,7 +50,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
         />
         <div id="bottomsheet-root" />
         <div className="flex-1 h-[calc(100%-58px)] pb-[108px] overflow-y-auto ">{children}</div>
-        <div className={`absolute bottom-0 left-0 w-full z-50`}>
+        <div className={`absolute bottom-0 left-0 w-full z-10`}>
           <BottomNavbar NavList={[...UserNavElements]} />
         </div>
       </div>

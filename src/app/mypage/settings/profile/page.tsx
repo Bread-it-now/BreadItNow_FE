@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import Profile from '@/assets/images/profile.png';
 import Button from '@/components/button/Button';
-import Input from '@/components/inputs/Input';
+import Input from '@/components/common/Input/Input';
 import { useState, useRef } from 'react';
-import PasswordInput from '@/components/inputs/PasswordInput';
+import PasswordInput from '@/components/common/Input/PasswordInput';
 import ConfirmModal from '@/components/modal/ConfirmModal';
 
 interface EditableInputProps {

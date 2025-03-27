@@ -9,7 +9,7 @@ import Empty from '@/assets/icons/empty.svg';
 import Image from 'next/image';
 
 export default function Page() {
-  const [selectedCategory, setSelectedCategory] = useState<CustomerReservationStatus>('ALL');
+  const [selectedCategory, setSelectedCategory] = useState<CustomerReservationStatus | 'ALL'>('ALL');
   const { data } = useCustomerReservations({ reservationStatus: selectedCategory, page: 0, size: 10 });
   const reservations = data?.reservations;
 
@@ -35,7 +35,7 @@ export default function Page() {
           총&nbsp;<span className="text-primary"> {reservations ? reservations.length : 0}</span>개
         </p>
         <div
-          className={`flex flex-col items-start gap-[0.625rem] w-full min-h-[240px] ${(!reservations || reservations.length === 0) && 'justify-center'}`}>
+          className={`flex flex-col items-start gap-[0.625rem] w-full min-h-[240px] ${(!reservations || reservations.length === 0) && 'center'}`}>
           {/* 무한스크롤로 수정 필요 */}
           {reservations && reservations.length !== 0 ? (
             reservations.map((reservation) => (

@@ -1,13 +1,15 @@
 import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservationStatus } from '@/types/reservation';
-import { CustomerReservations } from '../data/reservation';
+import { customerReservationDetails, CustomerReservations } from '../data/reservation';
 
 const getCustomerReservations = http.get(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
   async ({ request }) => {
     const url = new URL(request.url);
-    const status: CustomerReservationStatus | null = url.searchParams.get('status') as CustomerReservationStatus | null;
+    const status: CustomerReservationStatus | 'ALL' = url.searchParams.get('status') as
+      | CustomerReservationStatus
+      | 'ALL';
     const FilteredCustomerReservations =
       status !== 'ALL'
         ? CustomerReservations.filter((reservation) => reservation.status === status)
@@ -28,4 +30,27 @@ const getCustomerReservations = http.get(
   },
 );
 
-export default [getCustomerReservations];
+const getCustomerReservationDetail = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/:reservationId`,
+  async ({ params }) => {
+    const reservationId: number = Number(params?.reservationId);
+
+    const reservationDetail = customerReservationDetails.filter(
+      (reservationDetail) => reservationDetail.reservation.reservationId === reservationId,
+    )[0];
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          ...reservationDetail,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export default [getCustomerReservations, getCustomerReservationDetail];

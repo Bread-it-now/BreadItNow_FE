@@ -12,5 +12,6 @@ export const BAKERY_QUERY_KEY = {
 };
 
 export const RESERVATION_QUERY_KEY = {
-  CUSTOMER_RESERVATION_QUERY_KEY: (status: CustomerReservationStatus) => [BASE_KEY.CUSTOMER, 'RESERVATION', status],
+  CUSTOMER_RESERVATION: (status: CustomerReservationStatus | 'ALL') => [BASE_KEY.CUSTOMER, 'RESERVATION', status],
+  CUSTOMER_RESERVATION_DETAIL: (reservationId: number) => [BASE_KEY.CUSTOMER, 'RESERVATION', reservationId],
 };

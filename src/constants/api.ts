@@ -43,7 +43,7 @@ export const API_END_POINT = {
   /** CUSTOMER */
 
   // RESERVATION
-  CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus, page: number, size: number) =>
+  CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus | 'ALL', page: number, size: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}?status=${reservationStatus}&page=${page}&size=${size}`,
   CUSTOMER_RESERVATION_DETAIL: (reservationId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/${reservationId}`,

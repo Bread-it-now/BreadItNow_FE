@@ -1,6 +1,6 @@
 import { Bakery } from './bakery';
 
-export type ReservationStatus = 'ALL' | 'WAITING' | 'APPROVED' | 'PARTIAL_APPROVED' | 'PAYMENT_COMPLETED';
+export type ReservationStatus = 'WAITING' | 'APPROVED' | 'PARTIAL_APPROVED' | 'PAYMENT_COMPLETED';
 export type CustomerReservationStatus = ReservationStatus | 'CANCELED';
 export type OwnerReservationStatus = ReservationStatus | 'OWNER_REJECTED' | 'CUSTOMER_CANCELED';
 

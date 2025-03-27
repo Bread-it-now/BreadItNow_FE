@@ -1,14 +1,14 @@
 'use client';
 
 import RoundTab from '@/components/common/tabs/RoundTab';
-import { ReservationStatus } from '@/types/reservation';
-import ReservationCard from '@/components/reservation/ReservationCard';
+import { CustomerReservationStatus } from '@/types/reservation';
 import { useState } from 'react';
-import { ResservationInfo } from '@/mocks/data/reservation';
+import { CustomerReservations } from '@/mocks/data/reservation';
+import CustomerReservationCard from '@/components/reservation/customerReservationCard/CustomerReservationCard';
 
 export default function Page() {
-  const [selectedCategory, setSelectedCategory] = useState<ReservationStatus | 'ALL'>('ALL');
-  const selectedReservationCards = ResservationInfo.filter((reservation) => {
+  const [selectedCategory, setSelectedCategory] = useState<CustomerReservationStatus | 'ALL'>('ALL');
+  const selectedReservationCards = CustomerReservations.filter((reservation) => {
     if (selectedCategory === 'ALL') return true;
     return reservation.status === selectedCategory;
   });
@@ -36,7 +36,7 @@ export default function Page() {
         </p>
         <div className="flex flex-col items-start gap-[0.625rem] w-full">
           {selectedReservationCards.map((reservation) => (
-            <ReservationCard key={reservation.reservationId} {...reservation} />
+            <CustomerReservationCard key={reservation.reservationId} {...reservation} />
           ))}
         </div>
       </section>

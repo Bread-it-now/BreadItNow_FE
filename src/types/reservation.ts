@@ -10,15 +10,15 @@ export interface Reservation {
   /** 예약 신청 날짜 */
   reservationDate: string;
   /** 예약 접수 String */
-  reservationNumber: number;
+  reservationNumber?: string;
   /** 총 가격 */
   totalPrice: number;
   /** pickup 데드라인 */
   pickupDeadline?: string;
-  /** 전체 상품 종류 */
-  totalReservationProducts: 12;
+  /** 전체 상품 종류 수 */
+  totalReservationProducts?: number;
   /** 대표 상품 이름 */
-  mainReservationProductName: string;
+  mainReservationProductName?: string;
 }
 
 export interface CustomerReservation extends Reservation {
@@ -26,6 +26,8 @@ export interface CustomerReservation extends Reservation {
   status: CustomerReservationStatus;
   bakeryId: number;
   bakeryName: string;
+  profileImage: string;
+  cancelDetail?: string;
 }
 export interface OwnerReservation extends Reservation {
   /** 예약 상태 */
@@ -42,11 +44,9 @@ export interface ReservationProduct {
   breadImage: string;
 }
 
-export interface ReservationDetail {
+export interface CustomerReservationDetail {
   bakery: Pick<Bakery, 'name' | 'address' | 'phone'> & { bakeryId: number; profileImage: string };
-  reservation: Reservation & {
+  reservation: Omit<CustomerReservation, 'bakeryId' | 'bakeryName' | 'profileImage'> & {
     reservationItems: ReservationProduct[];
-    /** 취소 사유 */
-    cancelDetail?: string;
   };
 }

@@ -1,8 +1,8 @@
-import { ReservationItem as ReservationItemType } from '@/types/reservation';
+import { ReservationProduct as ReservationProductType } from '@/types/reservation';
 import { comma } from '@/utils/comma';
 import Image from 'next/image';
 
-const ReservationItem = ({ name, quantity, unitPrice, totalPrice, breadImage }: ReservationItemType) => {
+const ReservationProduct = ({ name, quantity, unitPrice, totalPrice, breadImage }: ReservationProductType) => {
   return (
     <div className="flex items-center gap-4 w-full h-[68px]">
       <div className="flex relative w-[6.125rem] h-[68px]">
@@ -20,4 +20,4 @@ const ReservationItem = ({ name, quantity, unitPrice, totalPrice, breadImage }: 
   );
 };
 
-export default ReservationItem;
+export default ReservationProduct;

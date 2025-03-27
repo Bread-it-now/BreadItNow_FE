@@ -1,10 +1,8 @@
-import { ReservationCardProps } from '@/components/reservation/ReservationCard';
-import { ReservationDetail, ReservationItem } from '@/types/reservation';
+import { CustomerReservation, CustomerReservationDetail, ReservationProduct } from '@/types/reservation';
 import bread from '@/assets/images/bread.png';
 import bakery from '@/assets/images/bakery.png';
-import { OwnerReservationCardProps } from '@/components/reservation/ownerReservationCard.tsx/OwnerReservationCard';
 
-export const ResservationInfo: ReservationCardProps[] = [
+export const CustomerReservations: CustomerReservation[] = [
   {
     reservationId: 500,
     reservationDate: '2025-02-01T10:00:00Z',
@@ -12,91 +10,86 @@ export const ResservationInfo: ReservationCardProps[] = [
     bakeryId: 1,
     bakeryName: '파리바게뜨',
     totalPrice: 10000,
-    reservationItemsNames: ['크루아상', '바게트'],
-    imgUrl: bakery,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    profileImage: bakery,
   },
   {
     reservationId: 501,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
+    reservationNumber: 'M191CD',
     status: 'APPROVED',
     bakeryId: 2,
     bakeryName: '파리바게뜨',
     totalPrice: 20000,
-    reservationItemsNames: [
-      '맛있고 달고 중독있고 보기 좋은 크루아상',
-      '바게트',
-      '단팥빵',
-      '소보로',
-      '왕밤빵',
-      '피자빵',
-      '마늘빵',
-    ],
-    imgUrl: bakery,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    profileImage: bakery,
     pickupDeadline: '2025-02-01T10:30:00Z',
   },
   {
     reservationId: 502,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
+    reservationNumber: 'M191CD',
     status: 'PARTIAL_APPROVED',
     bakeryId: 3,
     bakeryName: '파리바게뜨',
     totalPrice: 30000,
-    reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bakery,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    profileImage: bakery,
     pickupDeadline: '2025-02-01T10:30:00Z',
   },
   {
     reservationId: 503,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
+    reservationNumber: 'M191CD',
     status: 'CANCELED',
     bakeryId: 4,
     bakeryName: '파리바게뜨',
     totalPrice: 40000,
-    reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bakery,
+    profileImage: bakery,
     cancelDetail: '픽업 기한 내 미수령으로 예약 취소',
   },
   {
     reservationId: 504,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
+    reservationNumber: 'M191CD',
     status: 'CANCELED',
     bakeryId: 5,
     bakeryName: '파리바게뜨',
     totalPrice: 50000,
-    reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bakery,
+    profileImage: bakery,
     cancelDetail: '판매자 사정으로 예약 취소',
   },
   {
     reservationId: 505,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
+    reservationNumber: 'M191CD',
     status: 'CANCELED',
     bakeryId: 6,
     bakeryName: '파리바게뜨',
     totalPrice: 60000,
-    reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bakery,
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
+    profileImage: bakery,
     cancelDetail: '고객 요청으로 예약 취소',
   },
   {
     reservationId: 506,
     reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
+    reservationNumber: 'M191CD',
     status: 'PAYMENT_COMPLETED',
     bakeryId: 7,
     bakeryName: '파리바게뜨',
+    totalReservationProducts: 12,
+    mainReservationProductName: '소보로',
     totalPrice: 70000,
-    reservationItemsNames: ['크루아상', '바게트', '단팥빵', '소보로', '왕밤빵', '피자빵'],
-    imgUrl: bakery,
+    profileImage: bakery,
   },
 ];
 
-export const reservationItems: ReservationItem[] = [
+export const reservationItems: ReservationProduct[] = [
   {
     productId: 1,
     name: '크루아상크루아상크루아상크루아상크루아상',
@@ -155,7 +148,7 @@ export const reservationItems: ReservationItem[] = [
   },
 ];
 
-export const reservationDetails: ReservationDetail[] = [
+export const customerReservationDetails: CustomerReservationDetail[] = [
   {
     bakery: {
       name: '파리바게뜨',
@@ -183,7 +176,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 501,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 999,
+      reservationNumber: 'M191CD',
       status: 'APPROVED',
       totalPrice: 20000,
       reservationItems: [...reservationItems],
@@ -201,7 +194,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 502,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 999,
+      reservationNumber: 'M191CD',
       status: 'PARTIAL_APPROVED',
       totalPrice: 30000,
       reservationItems: [...reservationItems],
@@ -219,7 +212,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 503,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 999,
+      reservationNumber: 'M191CD',
       status: 'CANCELED',
       totalPrice: 40000,
       reservationItems: [...reservationItems],
@@ -237,7 +230,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 504,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 999,
+      reservationNumber: 'M191CD',
       status: 'CANCELED',
       totalPrice: 50000,
       reservationItems: [...reservationItems],
@@ -255,7 +248,7 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 505,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 999,
+      reservationNumber: 'M191CD',
       status: 'CANCELED',
       totalPrice: 60000,
       reservationItems: [...reservationItems],
@@ -273,95 +266,10 @@ export const reservationDetails: ReservationDetail[] = [
     reservation: {
       reservationId: 506,
       reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 999,
+      reservationNumber: 'M191CD',
       status: 'PAYMENT_COMPLETED',
       totalPrice: 70000,
       reservationItems: [...reservationItems],
     },
-  },
-];
-
-export const mockOwnerResservationCards: OwnerReservationCardProps[] = [
-  {
-    reservationId: 500,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'WAITING',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 501,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'WAITING',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 502,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'WAITING',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 503,
-    reservationDate: '2025-02-01T10:00:00Z',
-    approveDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'APPROVED',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 504,
-    reservationDate: '2025-02-01T10:00:00Z',
-    approveDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'PARTIAL_APPROVED',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 505,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'CUSTOMER_CANCELED',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 506,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'OWNER_REJECTED',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 507,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'PAYMENT_COMPLETED',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 508,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'PAYMENT_COMPLETED',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
-  },
-  {
-    reservationId: 509,
-    reservationDate: '2025-02-01T10:00:00Z',
-    reservationNumber: 999,
-    status: 'PAYMENT_COMPLETED',
-    totalPrice: 523000,
-    consumerNickname: '닉네임',
   },
 ];

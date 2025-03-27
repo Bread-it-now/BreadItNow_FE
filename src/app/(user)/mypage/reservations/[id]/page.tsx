@@ -1,20 +1,20 @@
 'use client';
 
-import { RESERVATION_STATUS } from '@/components/reservation/ReservationCard';
-import { reservationDetails } from '@/mocks/data/reservation';
+import { CUSTOMER_RESERVATION_STATUS } from '@/components/reservation/customerReservationCard/CustomerReservationCard';
+import { customerReservationDetails } from '@/mocks/data/reservation';
 import { getDate } from '@/utils/date';
 import { useParams, useRouter } from 'next/navigation';
 import arrowRight from '@/assets/icons/arrow-right.svg';
 import copy from '@/assets/icons/copy.svg';
 import Image from 'next/image';
-import ReservationItem from '@/components/reservation/ReservationItem';
+import ReservationProduct from '@/components/reservation/reservationproduct/ReservationProduct';
 import Stack from '@/components/common/stack/Stack';
 import { comma } from '@/utils/comma';
 import Button from '@/components/button/Button';
 
 export default function Page() {
   const { id = 1 } = useParams();
-  const reservationDetail = reservationDetails.filter((res) => res.reservation.reservationId === +id)[0];
+  const reservationDetail = customerReservationDetails.filter((res) => res.reservation.reservationId === +id)[0];
   const { reservation, bakery } = reservationDetail;
   const { reservationNumber, reservationDate, status, totalPrice, reservationItems, pickupDeadline, cancelDetail } =
     reservation;
@@ -24,7 +24,7 @@ export default function Page() {
   return (
     <>
       <section className="flex items-center p-5 gap-5 w-full">
-        <p className="w-full text-title-content-m text-gray900">{RESERVATION_STATUS[status]}</p>
+        <p className="w-full text-title-content-m text-gray900">{CUSTOMER_RESERVATION_STATUS[status]}</p>
         <div className="flex justify-end items-center gap-[0.375rem] w-full h-full text-title-content-xs font-normal text-gray500">
           {reservationNumber && <p className="w-full text-nowrap">예약번호 {reservationNumber} •</p>}
           <p>{getDate(reservationDate)}</p>
@@ -64,8 +64,8 @@ export default function Page() {
           <p className="w-full text-title-content-m text-gray900">예약 취소 상품</p>
           <div className="flex flex-col gap-[1.875rem] w-full">
             <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
-              {reservationItems.map((item) => (
-                <ReservationItem key={`${item.productId}-${item.name}`} {...item} />
+              {reservationItems.map((product) => (
+                <ReservationProduct key={`${product.productId}-${product.name}`} {...product} />
               ))}
             </Stack>
           </div>
@@ -75,8 +75,8 @@ export default function Page() {
         <p className="w-full text-title-content-m text-gray900">예약 상품</p>
         <div className="flex flex-col gap-[1.875rem] w-full">
           <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
-            {reservationItems.map((item) => (
-              <ReservationItem key={`${item.productId}-${item.name}`} {...item} />
+            {reservationItems.map((product) => (
+              <ReservationProduct key={`${product.productId}-${product.name}`} {...product} />
             ))}
           </Stack>
         </div>

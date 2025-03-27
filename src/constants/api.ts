@@ -41,8 +41,15 @@ export const API_END_POINT = {
   /** AUTH */
 
   /** CUSTOMER */
+
+  // RESERVATION
   CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus, page: number, size: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/?status=${reservationStatus}&page=${page}&size=${size}`,
+  CUSTOMER_RESERVATION_DETAIL: (reservationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/${reservationId}`,
+  CUSTOMER_RESERVATION_CANCEL: (reservationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/${reservationId}/cancel`,
+  CREATE_RESERVATION: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
 
   /** OWNER */
   // BAKERY
@@ -57,4 +64,8 @@ export const API_END_POINT = {
   // RESERVATION
   OWNER_RESERVATIONS: (reservationStatus: OwnerReservationStatus, page: number, size: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/?status=${reservationStatus}&page=${page}&size=${size}`,
+  OWNER_RESERVATION_DETAIL: (reservationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}`,
+  CHANGE_RESERVATION_STATUS: (reservationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}/status}`,
 };

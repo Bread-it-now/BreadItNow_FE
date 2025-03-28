@@ -21,6 +21,7 @@ interface BottomSheetProps {
   maxContentHeight?: number;
   bgColor?: string;
   className?: string;
+  cancelBtnFullWidth?: boolean;
 }
 
 const BottomSheet = ({
@@ -37,6 +38,7 @@ const BottomSheet = ({
   maxContentHeight = 630,
   bgColor = 'bg-white',
   className,
+  cancelBtnFullWidth = false,
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(null);
   const [isAnimating, setIsAnimating] = useState(isOpen);
@@ -108,7 +110,7 @@ const BottomSheet = ({
                 {(cancelText || confirmText) && (
                   <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
                     {cancelText && (
-                      <Button onClick={onClose} scale="large">
+                      <Button onClick={onClose} scale="large" fullWidth={cancelBtnFullWidth}>
                         {cancelText}
                       </Button>
                     )}

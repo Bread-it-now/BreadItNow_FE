@@ -12,6 +12,7 @@ import useReservationOptionBottomSheet from '@/hooks/useReservationOptionBottomS
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useQueryClient } from '@tanstack/react-query';
 import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
+import ProductQuantity from '@/components/productquantity/ProductQuantity';
 
 const ReservationInfo = ({ title, info }: { title: string; info: string }) => {
   return (
@@ -33,6 +34,8 @@ export default function Page() {
     close: closeReservationOptionBottomsheet,
     open: openReservationOptionBottomsheet,
     selectedReservationStatus,
+    handleReservationOptionStep,
+    handleSelectedReservationStatus,
   } = useReservationOptionBottomSheet();
 
   return (
@@ -176,21 +179,28 @@ export default function Page() {
           <BottomSheet
             title={
               reservationOptionStep === 'QUANTITY_STEP'
-                ? '부분 줍수할 상품과 수량 선택'
+                ? '부분 접수할 상품과 수량 선택'
                 : reservationOptionStep === 'REASON_STEP'
                   ? `${selectedReservationStatus === 'OWNER_REJECTED' ? '예약 취소' : '부분 접수'}사유`
                   : undefined
             }
             isOpen={isReservationOptionBottomsheetOpen}
-            onClose={closeReservationOptionBottomsheet}
-            confirmText={reservationOptionStep !== 'APPOVE_STEP' ? '' : undefined}
+            onClose={() => {
+              closeReservationOptionBottomsheet();
+              handleReservationOptionStep('APPOVE_STEP');
+              handleSelectedReservationStatus('APPROVED');
+            }}
+            onConfirm={reservationOptionStep === 'QUANTITY_STEP' ? () => {} : undefined}
+            cancelText={reservationOptionStep === 'QUANTITY_STEP' ? '취소' : undefined}
+            confirmText={reservationOptionStep === 'QUANTITY_STEP' ? '다음' : undefined}
+            cancelBtnFullWidth
             bgColor={reservationOptionStep === 'APPOVE_STEP' ? 'bg-gray50' : undefined}
-            className="mb-0 pb-5">
+            className={reservationOptionStep === 'APPOVE_STEP' ? 'mb-0 pb-5' : undefined}>
             <>
               {reservationOptionStep === 'APPOVE_STEP' && (
                 <div className="flex flex-col items-start gap-[10px] w-full">
                   <div
-                    className="flex p-5 w-full bg-white rounded-[10px] text-title-subtitle font-medium"
+                    className="flex p-5 w-full bg-white rounded-[10px] text-title-subtitle font-medium hover:cursor-pointer"
                     onClick={() => {
                       /** 예약 상태 변경 api 호출 */
                       changeReservationStatus({
@@ -203,7 +213,6 @@ export default function Page() {
                           })),
                         },
                       });
-
                       closeReservationOptionBottomsheet();
                       queryClient.invalidateQueries({
                         queryKey: [...RESERVATION_QUERY_KEY.OWNER_RESERVATION_DETAIL(reservationDetail.reservationId)],
@@ -211,10 +220,29 @@ export default function Page() {
                     }}>
                     접수
                   </div>
-                  <div className="flex p-5 w-full bg-white rounded-[10px] text-title-subtitle font-medium">
+                  <div
+                    className="flex p-5 w-full bg-white rounded-[10px] text-title-subtitle font-medium hover:cursor-pointer"
+                    onClick={() => {
+                      handleSelectedReservationStatus('PARTIAL_APPROVED');
+                      handleReservationOptionStep('QUANTITY_STEP');
+                      closeReservationOptionBottomsheet();
+                      openReservationOptionBottomsheet();
+                    }}>
                     부분 접수
                   </div>
                 </div>
+              )}
+              {selectedReservationStatus === 'PARTIAL_APPROVED' && reservationOptionStep === 'QUANTITY_STEP' && (
+                <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
+                  {reservationDetail.reservationItems.map((item) => (
+                    <ProductQuantity
+                      key={item.productId}
+                      id={item.productId}
+                      name={item.name}
+                      quantity={item.quantity}
+                    />
+                  ))}
+                </Stack>
               )}
             </>
           </BottomSheet>

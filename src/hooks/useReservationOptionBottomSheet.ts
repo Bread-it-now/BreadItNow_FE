@@ -13,7 +13,7 @@ const useReservationOptionBottomSheet = () => {
     open: dispatch.open,
     close: dispatch.close,
     reservationOptionStep,
-    handleReservationStep: setReservationOptionStep,
+    handleReservationOptionStep: setReservationOptionStep,
     selectedReservationStatus,
     handleSelectedReservationStatus: setSelectedReservationStatus,
   };

@@ -126,10 +126,13 @@ export const useOwnerReservationDetail = (reservationId: number) =>
     select: (data: { data: OwnerReservationDetail }) => data?.data,
   });
 
-export const changeReservationStatus = async (
-  reservationId: number,
-  changeReservationInfo: ApprovedReservationInfo | CancelReservationInfo,
-): Promise<{ data: { status: 'SUCCESS' } }> => {
+export const changeReservationStatus = async ({
+  reservationId,
+  changeReservationInfo,
+}: {
+  reservationId: number;
+  changeReservationInfo: ApprovedReservationInfo | CancelReservationInfo;
+}): Promise<{ data: { status: 'SUCCESS' } }> => {
   const response = await fetch(`/${API_END_POINT.CHANGE_OPERATING_STATUS(reservationId)}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },

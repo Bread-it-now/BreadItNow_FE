@@ -6,8 +6,12 @@ import ReservationProduct from '@/components/reservation/reservationproduct/Rese
 import Stack from '@/components/common/stack/Stack';
 import { comma } from '@/utils/comma';
 import Button from '@/components/button/Button';
-import { useOwnerReservationDetail } from '@/lib/api/reservation';
+import { changeReservationStatus, useOwnerReservationDetail } from '@/lib/api/reservation';
 import { OWNER_RESERVATION_STATUS } from '@/components/reservation/ownerReservationCard/OwnerReservationCard';
+import useReservationOptionBottomSheet from '@/hooks/useReservationOptionBottomSheet';
+import BottomSheet from '@/components/bottomsheet/Bottomsheet';
+import { useQueryClient } from '@tanstack/react-query';
+import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
 
 const ReservationInfo = ({ title, info }: { title: string; info: string }) => {
   return (
@@ -20,8 +24,16 @@ const ReservationInfo = ({ title, info }: { title: string; info: string }) => {
 
 export default function Page() {
   const { id = 1 } = useParams();
+  const queryClient = useQueryClient();
 
   const { data: reservationDetail } = useOwnerReservationDetail(Number(id));
+  const {
+    isOpen: isReservationOptionBottomsheetOpen,
+    reservationOptionStep,
+    close: closeReservationOptionBottomsheet,
+    open: openReservationOptionBottomsheet,
+    selectedReservationStatus,
+  } = useReservationOptionBottomSheet();
 
   return (
     <>
@@ -139,17 +151,73 @@ export default function Page() {
             </section>
           )}
           {(reservationDetail.status === 'WAITING' || reservationDetail.status === 'APPROVED') && (
-            <section className="flex items-start p-5 w-full gap-2 bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)] z-10">
-              <Button variant="default" onClick={() => {}} fullWidth className="font-semibold">
+            <section className="flex items-start p-5 w-full gap-2 bg-white shadow-[0px-1px-20px-[rgba(28,30,32,0.08)] z-9">
+              <Button
+                variant="default"
+                onClick={() => {
+                  openReservationOptionBottomsheet();
+                }}
+                fullWidth
+                className="font-semibold">
                 예약거부
               </Button>
               {reservationDetail.status === 'WAITING' && (
-                <Button variant="primary" onClick={() => {}} fullWidth>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    openReservationOptionBottomsheet();
+                  }}
+                  fullWidth>
                   접수
                 </Button>
               )}
             </section>
           )}
+          <BottomSheet
+            title={
+              reservationOptionStep === 'QUANTITY_STEP'
+                ? '부분 줍수할 상품과 수량 선택'
+                : reservationOptionStep === 'REASON_STEP'
+                  ? `${selectedReservationStatus === 'OWNER_REJECTED' ? '예약 취소' : '부분 접수'}사유`
+                  : undefined
+            }
+            isOpen={isReservationOptionBottomsheetOpen}
+            onClose={closeReservationOptionBottomsheet}
+            confirmText={reservationOptionStep !== 'APPOVE_STEP' ? '' : undefined}
+            bgColor={reservationOptionStep === 'APPOVE_STEP' ? 'bg-gray50' : undefined}
+            className="mb-0 pb-5">
+            <>
+              {reservationOptionStep === 'APPOVE_STEP' && (
+                <div className="flex flex-col items-start gap-[10px] w-full">
+                  <div
+                    className="flex p-5 w-full bg-white rounded-[10px] text-title-subtitle font-medium"
+                    onClick={() => {
+                      /** 예약 상태 변경 api 호출 */
+                      changeReservationStatus({
+                        reservationId: reservationDetail.reservationId,
+                        changeReservationInfo: {
+                          status: 'APPROVED',
+                          reservationItems: reservationDetail.reservationItems.map((product) => ({
+                            productId: product.productId,
+                            quantity: product.quantity,
+                          })),
+                        },
+                      });
+
+                      closeReservationOptionBottomsheet();
+                      queryClient.invalidateQueries({
+                        queryKey: [...RESERVATION_QUERY_KEY.OWNER_RESERVATION_DETAIL(reservationDetail.reservationId)],
+                      });
+                    }}>
+                    접수
+                  </div>
+                  <div className="flex p-5 w-full bg-white rounded-[10px] text-title-subtitle font-medium">
+                    부분 접수
+                  </div>
+                </div>
+              )}
+            </>
+          </BottomSheet>
         </>
       )}
     </>

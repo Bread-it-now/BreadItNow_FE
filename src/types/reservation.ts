@@ -86,3 +86,5 @@ export interface CancelReservationInfo {
   status: 'OWNER_REJECTED';
   reason: string;
 }
+
+export type ReservationOptionStep = 'APPOVE_STEP' | 'QUANTITY_STEP' | 'REASON_STEP';

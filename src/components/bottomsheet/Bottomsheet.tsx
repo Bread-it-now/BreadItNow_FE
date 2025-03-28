@@ -20,6 +20,7 @@ interface BottomSheetProps {
   maxHeight?: number;
   maxContentHeight?: number;
   bgColor?: string;
+  className?: string;
 }
 
 const BottomSheet = ({
@@ -35,6 +36,7 @@ const BottomSheet = ({
   maxHeight = 752,
   maxContentHeight = 630,
   bgColor = 'bg-white',
+  className,
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(null);
   const [isAnimating, setIsAnimating] = useState(isOpen);
@@ -97,6 +99,7 @@ const BottomSheet = ({
                   className={cn(
                     'flex flex-col',
                     `w-full overflow-y-auto h-full ${fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`}`,
+                    className,
                   )}>
                   {children}
                 </div>

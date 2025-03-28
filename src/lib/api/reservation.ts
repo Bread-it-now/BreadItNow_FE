@@ -1,6 +1,8 @@
 import { API_END_POINT } from '@/constants/api';
 import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
 import {
+  ApprovedReservationInfo,
+  CancelReservationInfo,
   CustomerReservationDetail,
   CustomerReservations,
   CustomerReservationStatus,
@@ -123,3 +125,18 @@ export const useOwnerReservationDetail = (reservationId: number) =>
     queryFn: () => getOwnerReservationDetail(reservationId),
     select: (data: { data: OwnerReservationDetail }) => data?.data,
   });
+
+export const changeReservationStatus = async (
+  reservationId: number,
+  changeReservationInfo: ApprovedReservationInfo | CancelReservationInfo,
+): Promise<{ data: { status: 'SUCCESS' } }> => {
+  const response = await fetch(`/${API_END_POINT.CHANGE_OPERATING_STATUS(reservationId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...changeReservationInfo }),
+  });
+
+  if (!response.ok) throw new Error('Failed to patch');
+
+  return response.json();
+};

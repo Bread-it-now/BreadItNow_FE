@@ -76,3 +76,13 @@ export interface OwnerReservations {
   reservations: OwnerReservation[];
   pageInfo: PageInfo;
 }
+
+export interface ApprovedReservationInfo {
+  status: 'APPROVED' | 'PARTIAL_APPROVED';
+  reservationItems: Pick<ReservationProduct, 'productId' | 'quantity'>[];
+}
+
+export interface CancelReservationInfo {
+  status: 'OWNER_REJECTED';
+  reason: string;
+}

@@ -139,6 +139,21 @@ const getOwnerReservationDetail = http.get(
   },
 );
 
+const changeReservationStatus = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/:reservationId/status`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        stauts: 'SUCCESS',
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -146,4 +161,5 @@ export default [
   changeOperatingStatus,
   getOwnerReservations,
   getOwnerReservationDetail,
+  changeReservationStatus,
 ];

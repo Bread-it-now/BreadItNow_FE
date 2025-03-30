@@ -44,6 +44,8 @@ export default function Page() {
   const LazyEditBakeryNameAndIntroduction = lazy(() => import('@/components/bakeryInfo/EditBakeryNameAndIntroduction'));
   const LazyEditOpenInfo = lazy(() => import('@/components/bakeryInfo/EditOpenInfo'));
   const LazyEditBakeryImage = lazy(() => import('@/components/bakeryInfo/EditBakeryImage'));
+  const LazyEditBakeryAddress = lazy(() => import('@/components/bakeryInfo/EditBakeryAddress'));
+  const LazyEditBakeryPhone = lazy(() => import('@/components/bakeryInfo/EditBakeryPhone'));
   const setBottomSheetContent = (tab: string) => {
     switch (tab) {
       case 'tumbnail':
@@ -88,6 +90,34 @@ export default function Page() {
           onClose: close,
           onConfirm: () => {},
           children: <LazyEditBakeryImage images={bakeryImages} setImages={(newImages) => setBakeryImages(newImages)} />,
+        });
+        break;
+      case 'address':
+        setBottomSheetProps({
+          isOpen: true,
+          title: '주소 수정',
+          cancelText: '취소',
+          confirmText: '저장',
+          onClose: close,
+          onConfirm: () => {},
+          children: (
+            <LazyEditBakeryAddress
+              zipCode="12345"
+              address="서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층"
+              detailAddress="101호"
+            />
+          ),
+        });
+        break;
+      case 'phone':
+        setBottomSheetProps({
+          isOpen: true,
+          title: '전화번호 수정',
+          cancelText: '취소',
+          confirmText: '저장',
+          onClose: close,
+          onConfirm: () => {},
+          children: <LazyEditBakeryPhone phone="010-1234-5678" />,
         });
         break;
       default:
@@ -166,7 +196,7 @@ export default function Page() {
             icon={EditIcon}
             iconWidth={20}
             iconHeight={20}
-            onClick={() => {}}
+            onClick={() => setBottomSheetContent('address')}
           />
         </div>
         <hr className="my-5" />
@@ -181,7 +211,7 @@ export default function Page() {
             icon={EditIcon}
             iconWidth={20}
             iconHeight={20}
-            onClick={() => {}}
+            onClick={() => setBottomSheetContent('phone')}
           />
         </div>
       </div>

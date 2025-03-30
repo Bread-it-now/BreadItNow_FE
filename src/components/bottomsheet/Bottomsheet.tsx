@@ -94,9 +94,14 @@ const BottomSheet = ({
                   </div>
                 )}
                 <div
+                  style={{
+                    maxHeight: fullHeight ? 'calc(100% - 142px)' : `${maxContentHeight}px`,
+                    marginBottom: fullHeight ? 0 : '92px',
+                  }}
                   className={cn(
                     'flex flex-col',
-                    `w-full overflow-y-auto h-full ${fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`}`,
+                    `w-full overflow-y-auto h-full`,
+                    fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`,
                   )}>
                   {children}
                 </div>

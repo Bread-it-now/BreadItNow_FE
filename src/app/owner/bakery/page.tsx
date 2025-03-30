@@ -1,7 +1,7 @@
 'use client';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import ImageSlider from '@/components/common/slider/ImageSlider';
-import { useState, lazy } from 'react';
+import { useState, lazy, useEffect } from 'react';
 import EditIcon from '@/assets/icons/edit.svg';
 import IconButton from '@/components/button/IconButton';
 import BakeryImages from '@/components/bakeryInfo/BakeryImage';
@@ -12,19 +12,38 @@ const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },
   { key: 'bakeryProducts', label: '빵집 메뉴' },
 ];
-const images = [
-  'https://placehold.co/300x400/png',
-  'https://placehold.co/600x400/png',
-  'https://placehold.co/600x1000/png',
-];
+
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('bakeryInfo');
   const { isOpen, open, close } = useReservationBottomSheet();
+  const [bakeryImages, setBakeryImages] = useState<string[]>([
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/600x1000/png',
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/600x1000/png',
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/600x1000/png',
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/600x1000/png',
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/600x1000/png',
+    'https://placehold.co/300x400/png',
+    'https://placehold.co/600x400/png',
+    'https://placehold.co/600x1000/png',
+  ]);
   // const [bottomSheetContent, setBottomSheetContent] = useState<React.ReactNode>(null);
   const [bototmSheetProps, setBottomSheetProps] = useState<BottomSheetProps>();
   const LazyEditBakeryTumbnail = lazy(() => import('@/components/bakeryInfo/EditBakeryTumbnail'));
   const LazyEditBakeryNameAndIntroduction = lazy(() => import('@/components/bakeryInfo/EditBakeryNameAndIntroduction'));
   const LazyEditOpenInfo = lazy(() => import('@/components/bakeryInfo/EditOpenInfo'));
+  const LazyEditBakeryImage = lazy(() => import('@/components/bakeryInfo/EditBakeryImage'));
   const setBottomSheetContent = (tab: string) => {
     switch (tab) {
       case 'tumbnail':
@@ -35,7 +54,7 @@ export default function Page() {
           confirmText: '저장',
           onClose: close,
           onConfirm: () => {},
-          children: <LazyEditBakeryTumbnail images={images} />,
+          children: <LazyEditBakeryTumbnail images={bakeryImages} />,
         });
         break;
       case 'store':
@@ -60,12 +79,25 @@ export default function Page() {
           children: <LazyEditOpenInfo defaultOpenInfo="평일 10:00 - 18:00, 주말 10:00 - 18:00" />,
         });
         break;
+      case 'image':
+        setBottomSheetProps({
+          isOpen: true,
+          title: '이미지 추가 삭제',
+          cancelText: '취소',
+          confirmText: '저장',
+          onClose: close,
+          onConfirm: () => {},
+          children: <LazyEditBakeryImage images={bakeryImages} setImages={(newImages) => setBakeryImages(newImages)} />,
+        });
+        break;
       default:
         break;
     }
     open();
   };
-
+  useEffect(() => {
+    setBottomSheetContent('image');
+  }, [bakeryImages]);
   return (
     <div className="bg-gray-100 flex flex-col gap-[10px]">
       <HotBreadTab tabs={HEADER_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -78,7 +110,7 @@ export default function Page() {
           iconHeight={20}
           onClick={() => setBottomSheetContent('tumbnail')}
         />
-        <ImageSlider images={images} />
+        <ImageSlider images={bakeryImages} />
       </div>
       <div className="bg-white rounded-2xl px-5 py-[30px] text-black">
         <div className="flex justify-between items-start">
@@ -160,6 +192,8 @@ export default function Page() {
         title={bototmSheetProps?.title}
         cancelText={bototmSheetProps?.cancelText}
         confirmText={bototmSheetProps?.confirmText}
+        maxContentHeight={500}
+        fullHeight={false}
         bgColor={bototmSheetProps?.bgColor}>
         {bototmSheetProps?.children}
       </BottomSheet>

@@ -22,12 +22,12 @@ export default function Page() {
   const { isOpen, open, close } = useReservationBottomSheet();
   // const [bottomSheetContent, setBottomSheetContent] = useState<React.ReactNode>(null);
   const [bototmSheetProps, setBottomSheetProps] = useState<BottomSheetProps>();
-  const LazyEditBakeryImage = lazy(() => import('@/components/bakeryInfo/EditBakeryImage'));
-  const EditBakeryNameAndIntroduction = lazy(() => import('@/components/bakeryInfo/EditBakeryNameAndIntroduction'));
+  const LazyEditBakeryTumbnail = lazy(() => import('@/components/bakeryInfo/EditBakeryTumbnail'));
+  const LazyEditBakeryNameAndIntroduction = lazy(() => import('@/components/bakeryInfo/EditBakeryNameAndIntroduction'));
+  const LazyEditOpenInfo = lazy(() => import('@/components/bakeryInfo/EditOpenInfo'));
   const setBottomSheetContent = (tab: string) => {
     switch (tab) {
-      case 'image':
-        // setBottomSheetContent(<LazyEditBakeryImage images={images} />);
+      case 'tumbnail':
         setBottomSheetProps({
           isOpen: true,
           title: '빵집 이미지 수정',
@@ -35,7 +35,7 @@ export default function Page() {
           confirmText: '저장',
           onClose: close,
           onConfirm: () => {},
-          children: <LazyEditBakeryImage images={images} />,
+          children: <LazyEditBakeryTumbnail images={images} />,
         });
         break;
       case 'store':
@@ -46,7 +46,18 @@ export default function Page() {
           confirmText: '저장',
           onClose: close,
           onConfirm: () => {},
-          children: <EditBakeryNameAndIntroduction />,
+          children: <LazyEditBakeryNameAndIntroduction />,
+        });
+        break;
+      case 'openInfo':
+        setBottomSheetProps({
+          isOpen: true,
+          title: '영업시간 수정',
+          cancelText: '취소',
+          confirmText: '저장',
+          onClose: close,
+          onConfirm: () => {},
+          children: <LazyEditOpenInfo defaultOpenInfo="평일 10:00 - 18:00, 주말 10:00 - 18:00" />,
         });
         break;
       default:
@@ -65,7 +76,7 @@ export default function Page() {
           icon={EditIcon}
           iconWidth={20}
           iconHeight={20}
-          onClick={() => {}}
+          onClick={() => setBottomSheetContent('tumbnail')}
         />
         <ImageSlider images={images} />
       </div>
@@ -92,7 +103,7 @@ export default function Page() {
             icon={EditIcon}
             iconWidth={20}
             iconHeight={20}
-            onClick={() => {}}
+            onClick={() => setBottomSheetContent('openInfo')}
           />
         </div>
         <div className="text-xs mt-5 font-normal text-gray-500">빵집 주소</div>

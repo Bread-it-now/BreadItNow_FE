@@ -10,7 +10,7 @@ export interface TextareaProps {
 
 function Textarea({ value, onChange, disabled, placeholder, maxLength = 100, id, rows = 4 }: TextareaProps) {
   return (
-    <div className="relative border-gray-200 border rounded-lg px-4 py-[14px] font-medium text-sm">
+    <div className="relative border-gray-200 border text-gray-900 rounded-lg px-4 py-[14px] font-medium text-sm">
       <textarea
         className="w-full h-full resize-none outline-none"
         rows={rows}
@@ -22,7 +22,8 @@ function Textarea({ value, onChange, disabled, placeholder, maxLength = 100, id,
         maxLength={maxLength}
       />
       <div className="absolute bottom-[14px] right-4 text-sm">
-        {value.length}/<span className="text-gray-400">{maxLength}</span>
+        {value.length}
+        <span className="text-gray-400">/{maxLength}</span>
       </div>
     </div>
   );

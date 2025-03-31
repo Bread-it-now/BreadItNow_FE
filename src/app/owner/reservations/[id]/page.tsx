@@ -8,7 +8,7 @@ import { comma } from '@/utils/comma';
 import Button from '@/components/button/Button';
 import { changeReservationStatus, useOwnerReservationDetail } from '@/lib/api/reservation';
 import { OWNER_RESERVATION_STATUS } from '@/components/reservation/ownerReservationCard/OwnerReservationCard';
-import useReservationOptionBottomSheet from '@/hooks/useReservationOptionBottomSheet';
+import useOwnerReservationBottomSheet from '@/hooks/useOwnerReservationBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useQueryClient } from '@tanstack/react-query';
 import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
@@ -44,7 +44,8 @@ export default function Page() {
     reservationReason,
     reasonDetail,
     handleReasonDetail,
-  } = useReservationOptionBottomSheet();
+    reset,
+  } = useOwnerReservationBottomSheet();
 
   return (
     <>
@@ -198,11 +199,7 @@ export default function Page() {
             onClose={() => {
               /** 초기화 */
               closeReservationOptionBottomsheet();
-              handleReservationOptionStep('APPOVE_STEP');
-              handleSelectedReservationStatus('APPROVED');
-              handleUpdatedReservationItems([]);
-              handleReservationReason('재고 부족');
-              handleReasonDetail('');
+              reset();
             }}
             onConfirm={
               reservationOptionStep === 'QUANTITY_STEP'
@@ -227,8 +224,24 @@ export default function Page() {
                             ...RESERVATION_QUERY_KEY.OWNER_RESERVATION_DETAIL(reservationDetail.reservationId),
                           ],
                         });
+                        reset();
                       }
-                    : () => {}
+                    : () => {
+                        changeReservationStatus({
+                          reservationId: reservationDetail.reservationId,
+                          changeReservationInfo: {
+                            status: 'PARTIAL_APPROVED',
+                            reservationItems: [...updatedReservationItems],
+                          },
+                        });
+                        closeReservationOptionBottomsheet();
+                        queryClient.invalidateQueries({
+                          queryKey: [
+                            ...RESERVATION_QUERY_KEY.OWNER_RESERVATION_DETAIL(reservationDetail.reservationId),
+                          ],
+                        });
+                        reset();
+                      }
                   : undefined
             }
             onCancel={

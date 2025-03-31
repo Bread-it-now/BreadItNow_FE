@@ -19,19 +19,27 @@ export interface SpinnerProps {
 
   /** label */
   label?: string;
+
+  onQuantityChange?: (quantity: number) => void;
 }
 
 const Spinner = forwardRef<HTMLInputElement, SpinnerProps>(
-  ({ minQuantity = 1, maxQuantity = 10, ininitialQuantity = 1, label }, ref) => {
+  ({ minQuantity = 1, maxQuantity = 10000, ininitialQuantity = 1, onQuantityChange, label }, ref) => {
     const inputId = useId();
     const [quantity, setQuantity] = useState<number>(ininitialQuantity);
 
     const increaseQuantity = () => {
-      if (maxQuantity > quantity) setQuantity((prev) => prev + 1);
+      if (maxQuantity > quantity) {
+        setQuantity((prev) => prev + 1);
+        if (onQuantityChange) onQuantityChange(quantity + 1);
+      }
     };
 
     const decreaseQuantity = () => {
-      if (minQuantity < quantity) setQuantity((prev) => prev - 1);
+      if (minQuantity < quantity) {
+        setQuantity((prev) => prev - 1);
+        if (onQuantityChange) onQuantityChange(quantity - 1);
+      }
     };
 
     const buttonBasestyle = cn('bg-white hover:bg-gray-100 active:bg-gray-200 transition duration-200 ease-in-out');

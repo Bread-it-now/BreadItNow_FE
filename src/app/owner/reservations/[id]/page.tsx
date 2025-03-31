@@ -36,6 +36,8 @@ export default function Page() {
     selectedReservationStatus,
     handleReservationOptionStep,
     handleSelectedReservationStatus,
+    handleSelectedUpdatedReservationItems,
+    updatedReservationItems,
   } = useReservationOptionBottomSheet();
 
   return (
@@ -239,7 +241,9 @@ export default function Page() {
                       key={item.productId}
                       id={item.productId}
                       name={item.name}
-                      quantity={item.quantity}
+                      initQuantity={item.quantity}
+                      handleUpdatedItems={handleSelectedUpdatedReservationItems}
+                      updatedReservationItems={updatedReservationItems}
                     />
                   ))}
                 </Stack>

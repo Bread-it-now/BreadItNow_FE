@@ -11,6 +11,7 @@ interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  onCancel?: () => void;
   onConfirm?: () => void;
   title?: string;
   fullHeight?: boolean;
@@ -28,6 +29,7 @@ const BottomSheet = ({
   isOpen,
   onClose,
   onConfirm,
+  onCancel,
   children,
   title,
   cancelText,
@@ -109,8 +111,8 @@ const BottomSheet = ({
               <div>
                 {(cancelText || confirmText) && (
                   <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
-                    {cancelText && (
-                      <Button onClick={onClose} scale="large" fullWidth={cancelBtnFullWidth}>
+                    {(cancelText || onCancel) && (
+                      <Button onClick={onCancel ? onCancel : onClose} scale="large" fullWidth={cancelBtnFullWidth}>
                         {cancelText}
                       </Button>
                     )}

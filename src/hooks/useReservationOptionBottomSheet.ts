@@ -7,6 +7,7 @@ const useReservationOptionBottomSheet = () => {
   const [reservationOptionStep, setReservationOptionStep] = useState<ReservationOptionStep>('APPOVE_STEP');
   const [selectedReservationStatus, setSelectedReservationStatus] =
     useState<Exclude<OwnerReservationStatus, 'WAITING' | 'PAYMENT_COMPLETED' | 'CUSTOMER_CANCELED'>>('APPROVED');
+  const [updatedReservationItems, setUpdatedReservationItems] = useState<{ productId: number; quantity: number }[]>([]);
 
   return {
     isOpen,
@@ -16,6 +17,8 @@ const useReservationOptionBottomSheet = () => {
     handleReservationOptionStep: setReservationOptionStep,
     selectedReservationStatus,
     handleSelectedReservationStatus: setSelectedReservationStatus,
+    handleSelectedUpdatedReservationItems: setUpdatedReservationItems,
+    updatedReservationItems,
   };
 };
 

@@ -193,8 +193,24 @@ export default function Page() {
               handleSelectedReservationStatus('APPROVED');
             }}
             onConfirm={reservationOptionStep === 'QUANTITY_STEP' ? () => {} : undefined}
-            cancelText={reservationOptionStep === 'QUANTITY_STEP' ? '취소' : undefined}
-            confirmText={reservationOptionStep === 'QUANTITY_STEP' ? '다음' : undefined}
+            cancelText={
+              reservationOptionStep === 'QUANTITY_STEP'
+                ? '취소'
+                : reservationOptionStep === 'REASON_STEP'
+                  ? selectedReservationStatus === 'PARTIAL_APPROVED'
+                    ? '이전'
+                    : '취소'
+                  : undefined
+            }
+            confirmText={
+              reservationOptionStep === 'QUANTITY_STEP'
+                ? '다음'
+                : reservationOptionStep === 'REASON_STEP'
+                  ? selectedReservationStatus === 'PARTIAL_APPROVED'
+                    ? '부분 접수'
+                    : '접수'
+                  : undefined
+            }
             cancelBtnFullWidth
             bgColor={reservationOptionStep === 'APPOVE_STEP' ? 'bg-gray50' : undefined}
             className={reservationOptionStep === 'APPOVE_STEP' ? 'mb-0 pb-5' : undefined}>
@@ -248,6 +264,8 @@ export default function Page() {
                   ))}
                 </Stack>
               )}
+              {(selectedReservationStatus === 'PARTIAL_APPROVED' || selectedReservationStatus === 'OWNER_REJECTED') &&
+                reservationOptionStep === 'REASON_STEP' && <div></div>}
             </>
           </BottomSheet>
         </>

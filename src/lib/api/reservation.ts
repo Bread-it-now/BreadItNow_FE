@@ -133,7 +133,7 @@ export const changeReservationStatus = async ({
   reservationId: number;
   changeReservationInfo: ApprovedReservationInfo | CancelReservationInfo;
 }): Promise<{ data: { status: 'SUCCESS' } }> => {
-  const response = await fetch(`/${API_END_POINT.CHANGE_OPERATING_STATUS(reservationId)}`, {
+  const response = await fetch(`/${API_END_POINT.CHANGE_RESERVATION_STATUS(reservationId)}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ...changeReservationInfo }),

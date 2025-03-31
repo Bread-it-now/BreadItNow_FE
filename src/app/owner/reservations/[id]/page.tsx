@@ -13,6 +13,8 @@ import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useQueryClient } from '@tanstack/react-query';
 import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
 import ProductQuantity from '@/components/productquantity/ProductQuantity';
+import Radio from '@/components/common/radio/Radio';
+import TextArea from '@/components/common/textarea/TextArea';
 
 const ReservationInfo = ({ title, info }: { title: string; info: string }) => {
   return (
@@ -36,8 +38,12 @@ export default function Page() {
     selectedReservationStatus,
     handleReservationOptionStep,
     handleSelectedReservationStatus,
-    handleSelectedUpdatedReservationItems,
+    handleUpdatedReservationItems,
     updatedReservationItems,
+    handleReservationReason,
+    reservationReason,
+    reasonDetail,
+    handleReasonDetail,
   } = useReservationOptionBottomSheet();
 
   return (
@@ -160,6 +166,8 @@ export default function Page() {
               <Button
                 variant="default"
                 onClick={() => {
+                  handleSelectedReservationStatus('OWNER_REJECTED');
+                  handleReservationOptionStep('REASON_STEP');
                   openReservationOptionBottomsheet();
                 }}
                 fullWidth
@@ -183,16 +191,57 @@ export default function Page() {
               reservationOptionStep === 'QUANTITY_STEP'
                 ? '부분 접수할 상품과 수량 선택'
                 : reservationOptionStep === 'REASON_STEP'
-                  ? `${selectedReservationStatus === 'OWNER_REJECTED' ? '예약 취소' : '부분 접수'}사유`
+                  ? `${selectedReservationStatus === 'OWNER_REJECTED' ? '예약 거부' : '부분 접수'} 사유`
                   : undefined
             }
             isOpen={isReservationOptionBottomsheetOpen}
             onClose={() => {
+              /** 초기화 */
               closeReservationOptionBottomsheet();
               handleReservationOptionStep('APPOVE_STEP');
               handleSelectedReservationStatus('APPROVED');
+              handleUpdatedReservationItems([]);
+              handleReservationReason('재고 부족');
+              handleReasonDetail('');
             }}
-            onConfirm={reservationOptionStep === 'QUANTITY_STEP' ? () => {} : undefined}
+            onConfirm={
+              reservationOptionStep === 'QUANTITY_STEP'
+                ? () => {
+                    handleReservationOptionStep('REASON_STEP');
+                    closeReservationOptionBottomsheet();
+                    openReservationOptionBottomsheet();
+                  }
+                : reservationOptionStep === 'REASON_STEP'
+                  ? selectedReservationStatus === 'OWNER_REJECTED'
+                    ? () => {
+                        changeReservationStatus({
+                          reservationId: reservationDetail.reservationId,
+                          changeReservationInfo: {
+                            status: 'OWNER_REJECTED',
+                            reason: reservationReason === '기타' ? reasonDetail : reservationReason,
+                          },
+                        });
+                        closeReservationOptionBottomsheet();
+                        queryClient.invalidateQueries({
+                          queryKey: [
+                            ...RESERVATION_QUERY_KEY.OWNER_RESERVATION_DETAIL(reservationDetail.reservationId),
+                          ],
+                        });
+                      }
+                    : () => {}
+                  : undefined
+            }
+            onCancel={
+              reservationOptionStep === 'REASON_STEP' && selectedReservationStatus === 'PARTIAL_APPROVED'
+                ? () => {
+                    handleReservationReason('재고 부족');
+                    handleReasonDetail('');
+                    closeReservationOptionBottomsheet();
+                    handleReservationOptionStep('QUANTITY_STEP');
+                    openReservationOptionBottomsheet();
+                  }
+                : undefined
+            }
             cancelText={
               reservationOptionStep === 'QUANTITY_STEP'
                 ? '취소'
@@ -258,14 +307,44 @@ export default function Page() {
                       id={item.productId}
                       name={item.name}
                       initQuantity={item.quantity}
-                      handleUpdatedItems={handleSelectedUpdatedReservationItems}
+                      handleUpdatedItems={handleUpdatedReservationItems}
                       updatedReservationItems={updatedReservationItems}
                     />
                   ))}
                 </Stack>
               )}
               {(selectedReservationStatus === 'PARTIAL_APPROVED' || selectedReservationStatus === 'OWNER_REJECTED') &&
-                reservationOptionStep === 'REASON_STEP' && <div></div>}
+                reservationOptionStep === 'REASON_STEP' && (
+                  <div className="flex flex-col items-start w-full gap-4">
+                    <Radio
+                      value={'재고 부족'}
+                      handleSelectedValue={() => handleReservationReason('재고 부족')}
+                      checked={reservationReason === '재고 부족'}
+                    />
+                    <Radio
+                      value={'매장 사정'}
+                      handleSelectedValue={() => handleReservationReason('매장 사정')}
+                      checked={reservationReason === '매장 사정'}
+                    />
+                    <div className="flex flex-col items-start w-full gap-3">
+                      <Radio
+                        value={'기타'}
+                        handleSelectedValue={() => handleReservationReason('기타')}
+                        checked={reservationReason === '기타'}
+                      />
+                      {reservationReason === '기타' && (
+                        <TextArea
+                          placeholder={
+                            selectedReservationStatus === 'OWNER_REJECTED' ? '예약 거부 사유' : '부분 예약 승인 사유'
+                          }
+                          maxLength={30}
+                          currentLength={reasonDetail.length}
+                          onChange={(e) => handleReasonDetail(e.target.value)}
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
             </>
           </BottomSheet>
         </>

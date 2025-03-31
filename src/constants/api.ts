@@ -67,5 +67,5 @@ export const API_END_POINT = {
   OWNER_RESERVATION_DETAIL: (reservationId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}`,
   CHANGE_RESERVATION_STATUS: (reservationId: number) =>
-    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}/status}`,
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}/status`,
 };

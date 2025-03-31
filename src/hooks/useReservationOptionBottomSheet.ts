@@ -8,6 +8,8 @@ const useReservationOptionBottomSheet = () => {
   const [selectedReservationStatus, setSelectedReservationStatus] =
     useState<Exclude<OwnerReservationStatus, 'WAITING' | 'PAYMENT_COMPLETED' | 'CUSTOMER_CANCELED'>>('APPROVED');
   const [updatedReservationItems, setUpdatedReservationItems] = useState<{ productId: number; quantity: number }[]>([]);
+  const [reservationReason, setReservationReason] = useState<'재고 부족' | '매장 사정' | '기타'>('재고 부족');
+  const [reasonDetail, setReasonDetail] = useState<string>('');
 
   return {
     isOpen,
@@ -17,8 +19,12 @@ const useReservationOptionBottomSheet = () => {
     handleReservationOptionStep: setReservationOptionStep,
     selectedReservationStatus,
     handleSelectedReservationStatus: setSelectedReservationStatus,
-    handleSelectedUpdatedReservationItems: setUpdatedReservationItems,
+    handleUpdatedReservationItems: setUpdatedReservationItems,
     updatedReservationItems,
+    handleReservationReason: setReservationReason,
+    handleReasonDetail: setReasonDetail,
+    reservationReason,
+    reasonDetail,
   };
 };
 

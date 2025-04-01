@@ -21,7 +21,7 @@ export const mockProducts: {
       breadCategories: [
         {
           categoryId: 1,
-          categoryName: '식빵',
+          categoryName: '식빵 카테고리',
         },
       ],
       displayOrder: 1,
@@ -40,7 +40,7 @@ export const mockProducts: {
       breadCategories: [
         {
           categoryId: 2,
-          categoryName: '꽈배기',
+          categoryName: '꽈배기 카테고리',
         },
       ],
       displayOrder: 2,
@@ -59,7 +59,7 @@ export const mockProducts: {
       breadCategories: [
         {
           categoryId: 3,
-          categoryName: '소보로',
+          categoryName: '소보로 카테고리',
         },
       ],
       displayOrder: 3,
@@ -78,7 +78,7 @@ export const mockProducts: {
       breadCategories: [
         {
           categoryId: 4,
-          categoryName: '도넛츠',
+          categoryName: '도넛츠 카테고리',
         },
       ],
       displayOrder: 4,
@@ -97,7 +97,7 @@ export const mockProducts: {
       breadCategories: [
         {
           categoryId: 5,
-          categoryName: '소금빵',
+          categoryName: '소금빵 카테고리',
         },
       ],
       displayOrder: 5,
@@ -116,7 +116,7 @@ export const mockProducts: {
       breadCategories: [
         {
           categoryId: 6,
-          categoryName: '피자빵',
+          categoryName: '피자빵 카테고리',
         },
       ],
       displayOrder: 6,
@@ -135,7 +135,7 @@ export const mockProducts: {
       breadCategories: [
         {
           categoryId: 7,
-          categoryName: '팥빵',
+          categoryName: '팥빵 카테고리',
         },
       ],
       displayOrder: 7,
@@ -152,12 +152,6 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
-      breadCategories: [
-        {
-          categoryId: 10,
-          categoryName: '커피',
-        },
-      ],
       displayOrder: 0,
     },
     {
@@ -170,12 +164,6 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
-      breadCategories: [
-        {
-          categoryId: 10,
-          categoryName: '커피',
-        },
-      ],
       displayOrder: 1,
     },
     {
@@ -188,12 +176,6 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
-      breadCategories: [
-        {
-          categoryId: 10,
-          categoryName: '커피',
-        },
-      ],
       displayOrder: 2,
     },
     {
@@ -206,12 +188,6 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
-      breadCategories: [
-        {
-          categoryId: 10,
-          categoryName: '커피',
-        },
-      ],
       displayOrder: 3,
     },
   ],

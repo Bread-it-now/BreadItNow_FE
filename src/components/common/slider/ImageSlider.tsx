@@ -32,18 +32,16 @@ const SlideItem = memo(
     currentIndex: number;
     floatingButton?: React.ReactNode;
   }) => (
-    <div className="min-w-full h-full flex-shrink-0">
-      <div className="relative w-full h-full">
-        <Image
-          src={image}
-          alt={`slider image ${index + 1}`}
-          priority={index === 0} // 현재 이미지와 다음 이미지만 priority
-          fill
-          className="object-cover"
-          draggable={false}
-        />
-        {floatingButton}
-      </div>
+    <div className="min-w-full h-full flex-shrink-0 relative">
+      <Image
+        src={image}
+        alt={`slider image ${index + 1}`}
+        priority={index === 0} // 현재 이미지와 다음 이미지만 priority
+        fill
+        objectFit="cover"
+        draggable={false}
+      />
+      {floatingButton}
     </div>
   ),
 );
@@ -51,7 +49,7 @@ const SlideItem = memo(
 SlideItem.displayName = 'SlideItem';
 
 const ImageSlider = ({
-  images = ['https://placehold.co/300x400', 'https://placehold.co/600x400', 'https://placehold.co/800x1000'],
+  images = ['https://placehold.co/400'],
   startIndex = 0,
   showPagination = true,
   floatingButton,

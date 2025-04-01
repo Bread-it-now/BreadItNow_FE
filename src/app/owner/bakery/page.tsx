@@ -1,232 +1,54 @@
 'use client';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
-import ImageSlider from '@/components/common/slider/ImageSlider';
-import { useState, lazy, useEffect } from 'react';
-import EditIcon from '@/assets/icons/edit.svg';
-import IconButton from '@/components/button/IconButton';
-import BakeryImages from '@/components/bakeryInfo/BakeryImage';
+import { useState } from 'react';
 import BottomSheet, { BottomSheetProps } from '@/components/bottomsheet/Bottomsheet';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
-
+import EditBakeryTab from '@/components/common/tabs/EditBakeryTab';
 const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },
   { key: 'bakeryProducts', label: '빵집 메뉴' },
 ];
 
+const BottomSheetContainer = ({
+  isOpen,
+  close,
+  bototmSheetProps,
+}: {
+  isOpen: boolean;
+  close: () => void;
+  bototmSheetProps: BottomSheetProps | undefined;
+}) => {
+  return (
+    <BottomSheet
+      isOpen={isOpen}
+      onClose={close}
+      onConfirm={bototmSheetProps?.onConfirm}
+      title={bototmSheetProps?.title}
+      cancelText={bototmSheetProps?.cancelText}
+      confirmText={bototmSheetProps?.confirmText}
+      maxContentHeight={500}
+      fullHeight={false}
+      bgColor={bototmSheetProps?.bgColor}>
+      {bototmSheetProps?.children}
+    </BottomSheet>
+  );
+};
+// BottomSheetContainer.displayName = 'BottomSheetContainer';
+
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('bakeryInfo');
   const { isOpen, open, close } = useReservationBottomSheet();
-  const [bakeryImages, setBakeryImages] = useState<string[]>([
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/600x1000/png',
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/600x1000/png',
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/600x1000/png',
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/600x1000/png',
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/600x1000/png',
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/600x1000/png',
-  ]);
-  // const [bottomSheetContent, setBottomSheetContent] = useState<React.ReactNode>(null);
   const [bototmSheetProps, setBottomSheetProps] = useState<BottomSheetProps>();
-  const LazyEditBakeryTumbnail = lazy(() => import('@/components/bakeryInfo/EditBakeryTumbnail'));
-  const LazyEditBakeryNameAndIntroduction = lazy(() => import('@/components/bakeryInfo/EditBakeryNameAndIntroduction'));
-  const LazyEditOpenInfo = lazy(() => import('@/components/bakeryInfo/EditOpenInfo'));
-  const LazyEditBakeryImage = lazy(() => import('@/components/bakeryInfo/EditBakeryImage'));
-  const LazyEditBakeryAddress = lazy(() => import('@/components/bakeryInfo/EditBakeryAddress'));
-  const LazyEditBakeryPhone = lazy(() => import('@/components/bakeryInfo/EditBakeryPhone'));
-  const setBottomSheetContent = (tab: string) => {
-    switch (tab) {
-      case 'tumbnail':
-        setBottomSheetProps({
-          isOpen: true,
-          title: '빵집 이미지 수정',
-          cancelText: '취소',
-          confirmText: '저장',
-          onClose: close,
-          onConfirm: () => {},
-          children: <LazyEditBakeryTumbnail images={bakeryImages} />,
-        });
-        break;
-      case 'store':
-        setBottomSheetProps({
-          isOpen: true,
-          title: '빵집 이름/소개글 수정',
-          cancelText: '취소',
-          confirmText: '저장',
-          onClose: close,
-          onConfirm: () => {},
-          children: <LazyEditBakeryNameAndIntroduction />,
-        });
-        break;
-      case 'openInfo':
-        setBottomSheetProps({
-          isOpen: true,
-          title: '영업시간 수정',
-          cancelText: '취소',
-          confirmText: '저장',
-          onClose: close,
-          onConfirm: () => {},
-          children: <LazyEditOpenInfo defaultOpenInfo="평일 10:00 - 18:00, 주말 10:00 - 18:00" />,
-        });
-        break;
-      case 'image':
-        setBottomSheetProps({
-          isOpen: true,
-          title: '이미지 추가 삭제',
-          cancelText: '취소',
-          confirmText: '저장',
-          onClose: close,
-          onConfirm: () => {},
-          children: <LazyEditBakeryImage images={bakeryImages} setImages={(newImages) => setBakeryImages(newImages)} />,
-        });
-        break;
-      case 'address':
-        setBottomSheetProps({
-          isOpen: true,
-          title: '주소 수정',
-          cancelText: '취소',
-          confirmText: '저장',
-          onClose: close,
-          onConfirm: () => {},
-          children: (
-            <LazyEditBakeryAddress
-              zipCode="12345"
-              address="서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층"
-              detailAddress="101호"
-            />
-          ),
-        });
-        break;
-      case 'phone':
-        setBottomSheetProps({
-          isOpen: true,
-          title: '전화번호 수정',
-          cancelText: '취소',
-          confirmText: '저장',
-          onClose: close,
-          onConfirm: () => {},
-          children: <LazyEditBakeryPhone phone="010-1234-5678" />,
-        });
-        break;
-      default:
-        break;
-    }
-    open();
-  };
-  useEffect(() => {
-    setBottomSheetContent('image');
-  }, [bakeryImages]);
+
   return (
-    <div className="bg-gray-100 flex flex-col gap-[10px]">
+    <div className="bg-gray-100 overflow-y-auto">
       <HotBreadTab tabs={HEADER_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="w-full h-[250px] rounded-b-2xl overflow-hidden relative">
-        <IconButton
-          buttonClass="absolute w-9 h-9 z-10 top-5 right-5 bg-white bg-opacity-80"
-          iconText="수정"
-          icon={EditIcon}
-          iconWidth={20}
-          iconHeight={20}
-          onClick={() => setBottomSheetContent('tumbnail')}
-        />
-        <ImageSlider images={bakeryImages} />
-      </div>
-      <div className="bg-white rounded-2xl px-5 py-[30px] text-black">
-        <div className="flex justify-between items-start">
-          <div className="grow text-[22px] font-semibold">빵집 이름</div>
-          <IconButton
-            buttonClass="border-none"
-            iconText="수정"
-            icon={EditIcon}
-            iconWidth={20}
-            iconHeight={20}
-            onClick={() => setBottomSheetContent('store')}
-          />
-        </div>
-        <div className="text-xs mt-5 font-normal text-gray-500">빵집 주소</div>
-      </div>
-      <div className="bg-white rounded-2xl px-5 py-[30px] text-black">
-        <div className="flex justify-between items-start">
-          <div className="grow text-[22px] font-semibold">영업 시간</div>
-          <IconButton
-            buttonClass="border-none"
-            iconText="수정"
-            icon={EditIcon}
-            iconWidth={20}
-            iconHeight={20}
-            onClick={() => setBottomSheetContent('openInfo')}
-          />
-        </div>
-        <div className="text-xs mt-5 font-normal text-gray-500">빵집 주소</div>
-      </div>
-      <div className="bg-white rounded-2xl px-5 py-[30px] text-black">
-        <div className="flex justify-between items-start">
-          <div className="grow text-[22px] font-semibold">이미지</div>
-          <IconButton
-            buttonClass="border-none"
-            iconText="수정"
-            icon={EditIcon}
-            iconWidth={20}
-            iconHeight={20}
-            onClick={() => setBottomSheetContent('image')}
-          />
-        </div>
-        <BakeryImages images={[]} />
-      </div>
-      <div className="bg-white rounded-2xl px-5 py-[30px] text-black">
-        <div className="flex justify-between items-center">
-          <div className="grow text-[15px] font-semibold">
-            <div>주소</div>
-            <div className="text-[13px] mt-1 font-normal text-gray-500">대전광역시 중구 대종로480번길 15 (은행동)</div>
-          </div>
-          <IconButton
-            buttonClass="border-none"
-            iconText="수정"
-            icon={EditIcon}
-            iconWidth={20}
-            iconHeight={20}
-            onClick={() => setBottomSheetContent('address')}
-          />
-        </div>
-        <hr className="my-5" />
-        <div className="flex justify-between items-center">
-          <div className="grow text-[15px] font-semibold">
-            <div>전화번호</div>
-            <div className="text-[13px] mt-1 font-normal text-gray-500">010-1234-5678</div>
-          </div>
-          <IconButton
-            buttonClass="border-none"
-            iconText="수정"
-            icon={EditIcon}
-            iconWidth={20}
-            iconHeight={20}
-            onClick={() => setBottomSheetContent('phone')}
-          />
-        </div>
-      </div>
-      <BottomSheet
-        isOpen={isOpen}
-        onClose={close}
-        onConfirm={bototmSheetProps?.onConfirm}
-        title={bototmSheetProps?.title}
-        cancelText={bototmSheetProps?.cancelText}
-        confirmText={bototmSheetProps?.confirmText}
-        maxContentHeight={500}
-        fullHeight={false}
-        bgColor={bototmSheetProps?.bgColor}>
-        {bototmSheetProps?.children}
-      </BottomSheet>
+      {activeTab === 'bakeryInfo' ? (
+        <EditBakeryTab open={open} setBottomSheetProps={setBottomSheetProps} close={close} />
+      ) : (
+        <div>메뉴수정</div>
+      )}
+      <BottomSheetContainer isOpen={isOpen} close={close} bototmSheetProps={bototmSheetProps} />
     </div>
   );
 }

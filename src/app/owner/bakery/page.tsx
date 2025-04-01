@@ -15,6 +15,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import useDeleteProductsBottomSheet from '@/hooks/useDeleteProductsBottomSheet';
 
 const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },
@@ -37,6 +38,14 @@ export default function Page() {
     deleteProduct,
     moveEditPage,
   } = useEditProductBottomSheet(bakeryId);
+  const {
+    isOpen: isDeleteProductsBottomSheet,
+    open: openDeleteProductsBottomSheet,
+    close: closeDeleteProductsBottomSheet,
+    handleSelectedProductIds,
+    selectedProductIds,
+    deleteProducts,
+  } = useDeleteProductsBottomSheet(bakeryId);
   return (
     <div className={`bg-gray-100 flex flex-col ${activeTab === 'bakeryInfo' ? 'gap-[10px]' : ''}`}>
       <HotBreadTab tabs={HEADER_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -49,7 +58,7 @@ export default function Page() {
               <Button variant="default" onClick={() => {}} className="w-[77px] h-9">
                 순서변겅
               </Button>
-              <Button variant="default" onClick={() => {}} className="w-[77px] h-9">
+              <Button variant="default" onClick={() => openDeleteProductsBottomSheet()} className="w-[77px] h-9">
                 메뉴삭제
               </Button>
             </div>
@@ -145,6 +154,43 @@ export default function Page() {
                   <Image src={Delete} width={24} height={24} alt="delete" />
                 </div>
               </div>
+            </BottomSheet>
+          )}
+          {1 && (
+            <BottomSheet
+              isOpen={isDeleteProductsBottomSheet}
+              onClose={closeDeleteProductsBottomSheet}
+              fullHeight
+              title="메뉴 삭제"
+              confirmText="삭제"
+              onConfirm={() => {
+                deleteProducts();
+                closeDeleteProductsBottomSheet();
+                queryClient.invalidateQueries({
+                  queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCTS(bakeryId)],
+                });
+              }}
+              confirmDisabled={selectedProductIds.length === 0}>
+              {productsInfo && (
+                <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
+                  {productsInfo.breadProducts.map((product: Product) => (
+                    <ProductCard
+                      key={`${product.productId}-${product.name}`}
+                      {...product}
+                      checked={selectedProductIds.includes(product.productId)}
+                      handleChecked={handleSelectedProductIds}
+                    />
+                  ))}
+                  {productsInfo.otherProducts.map((product: Product) => (
+                    <ProductCard
+                      key={`${product.productId}-${product.name}`}
+                      {...product}
+                      checked={selectedProductIds.includes(product.productId)}
+                      handleChecked={handleSelectedProductIds}
+                    />
+                  ))}
+                </Stack>
+              )}
             </BottomSheet>
           )}
         </div>

@@ -80,3 +80,18 @@ export const deleteProduct = async (bakeryId: number, productId: number): Promis
 
   return response.json();
 };
+
+export const deleteProducts = async (
+  bakeryId: number,
+  productIds: number[],
+): Promise<{ data: { deletedCount: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_PRODUCTS(bakeryId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ productIds }),
+  });
+
+  if (!response.ok) throw new Error('Failed to change operating Status');
+
+  return response.json();
+};

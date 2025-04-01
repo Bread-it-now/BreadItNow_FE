@@ -172,6 +172,25 @@ const deleteProduct = http.delete(
   },
 );
 
+const deleteProducts = http.delete(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/products`,
+  async ({ request }) => {
+    const body = (await request.json()) as { productIds: number[] };
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          deletedCount: body.productIds.length,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -181,4 +200,5 @@ export default [
   getOwnerReservationDetail,
   changeReservationStatus,
   deleteProduct,
+  deleteProducts,
 ];

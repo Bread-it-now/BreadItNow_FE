@@ -15,6 +15,8 @@ import QuantityChip from '../common/chips/quantitychip/quantityChip';
 interface ProductCardProps extends Product {
   isEditProductActive?: boolean;
   handleProductActiveChange?: React.Dispatch<SetStateAction<number[]>>;
+  handleChecked?: React.Dispatch<SetStateAction<number[]>>;
+  checked?: boolean;
   isStockVisible?: boolean;
   isDescriptionVisible?: boolean;
   isReleaseTimesVisible?: boolean;
@@ -36,6 +38,8 @@ const ProductCard = ({
   productId,
   isEditProductActive,
   handleProductActiveChange,
+  handleChecked,
+  checked = false,
   bakeryId,
   releaseTimes,
   description,
@@ -58,9 +62,18 @@ const ProductCard = ({
     stockQuantityInput,
   } = useProductStockBottomSheet({ initStock: stock, bakeryId, productId });
 
-  const handleActiveChange = () => {
+  const handleCheckboxChange = () => {
     if (handleProductActiveChange) {
       handleProductActiveChange((prevIds) => {
+        if (prevIds.includes(productId)) {
+          return prevIds.filter((id) => id !== productId);
+        }
+        return [...prevIds, productId];
+      });
+    }
+
+    if (handleChecked) {
+      handleChecked((prevIds) => {
         if (prevIds.includes(productId)) {
           return prevIds.filter((id) => id !== productId);
         }
@@ -86,9 +99,13 @@ const ProductCard = ({
               height={profileSize === 'default' ? 68 : 90}
               className={cn(isSoldOut ? 'opacity-70' : 'opacity-100', 'rounded-lg')}
             />
-            {isEditProductActive && (
+            {(isEditProductActive || handleChecked) && (
               <div className="absolute top-1 left-1 z-1">
-                <Checkbox id={String(productId)} checked={!isActive} onChange={handleActiveChange} />
+                <Checkbox
+                  id={String(productId)}
+                  checked={isEditProductActive ? !isActive : checked}
+                  onChange={handleCheckboxChange}
+                />
               </div>
             )}
           </>

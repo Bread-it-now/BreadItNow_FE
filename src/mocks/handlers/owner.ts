@@ -28,7 +28,7 @@ const getBakeryInfo = http.get(
 );
 
 const getBakeryProoducts = http.get(
-  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/:bakeryId`,
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId`,
   async () => {
     return new HttpResponse(
       JSON.stringify({
@@ -47,7 +47,7 @@ const getBakeryProoducts = http.get(
 );
 
 const changeStockQuantity = http.patch(
-  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/:bakeryId/product/:productId/stock`,
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId/stock`,
   async ({ request }) => {
     const body = (await request.json()) as { stock: number };
     const stock: number = Number(body.stock);

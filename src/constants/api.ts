@@ -54,12 +54,28 @@ export const API_END_POINT = {
   /** OWNER */
   // BAKERY
   BAKERY_INFO: (bakeryId: number) => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
-  BAKERY_PRODUCTS: (bakeryId: number) =>
-    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}`,
-  CHANGE_STOCK_QUANTITY: (bakeryId: number, productId: number) =>
-    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}/product/${productId}/stock`,
   CHANGE_OPERATING_STATUS: (bakeryId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}/operating-status`,
+
+  // BAKERY_PRODUCT
+  CREATE_PRODUCT: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}`,
+  EDIT_PRODUCT: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
+  DELETE_PRODUCT: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
+  DELETE_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/products`,
+  HIDE_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/hide`,
+  BAKERY_PRODUCT: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
+  BAKERY_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}`,
+  CHANGE_PRODUCT_ORDER: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/order`,
+  CHANGE_STOCK_QUANTITY: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}/stock`,
 
   // RESERVATION
   OWNER_RESERVATIONS: (reservationStatus: OwnerReservationStatusQuery, page: number, size: number) =>

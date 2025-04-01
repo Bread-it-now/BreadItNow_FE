@@ -17,13 +17,16 @@ const UserNavElements: NavElement[] = [
 ];
 
 const reservationDetailPathRegex = /^\/owner\/reservations\/\d+$/;
+const bakeryProductEditPathRegex = /^\/owner\/bakery\/add-menu\/\d+$/;
 
 const getPageRoute = (path: string): keyof typeof OWNER_PAGE_TITLE | keyof typeof OWNER_BAKERY_TITLE => {
   const pageEntry = Object.entries(ROUTES.OWNER).find(
     ([key, value]) => value === path || (key === 'RESERVATION_DETAIL' && reservationDetailPathRegex.test(path)),
   );
 
-  const bakeryPageEntry = Object.entries(ROUTES.OWNER.BAKERY).find(([, value]) => value === path);
+  const bakeryPageEntry = Object.entries(ROUTES.OWNER.BAKERY).find(
+    ([key, value]) => value === path || (key === 'EDIT_MENU' && bakeryProductEditPathRegex.test(path)),
+  );
 
   return pageEntry
     ? (pageEntry[0] as keyof typeof OWNER_PAGE_TITLE)

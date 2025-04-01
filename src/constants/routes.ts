@@ -35,6 +35,7 @@ export const ROUTES = {
       DELETE_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/delete-menu`,
       REORDER_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/reorder-menu`,
       ADD_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/add-menu`,
+      EDIT_MENU: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/add-menu/[id]`,
       SETTING_HOME: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/settings`,
       EDIT_PROFILE: `/${OWNER_PREFIX}/${BAKERY_PREFIX}/settings/edit-profile`,
     },
@@ -66,6 +67,7 @@ export const OWNER_BAKERY_TITLE: Record<keyof typeof ROUTES.OWNER.BAKERY, string
   DELETE_MENU: '메뉴 삭제',
   REORDER_MENU: '메뉴 순서 변경',
   ADD_MENU: '메뉴 등록',
+  EDIT_MENU: '메뉴 등록',
   SETTING_HOME: '설정',
   EDIT_PROFILE: '내 정보 수정',
 };

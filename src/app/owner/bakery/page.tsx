@@ -32,7 +32,8 @@ export default function Page() {
     close: closeEditProductBottomSheet,
     handleEditProductId,
     deleteProduct,
-  } = useEditProductBottomSheet();
+    moveEditPage,
+  } = useEditProductBottomSheet(bakeryId);
   return (
     <div className={`bg-gray-100 flex flex-col ${activeTab === 'bakeryInfo' ? 'gap-[10px]' : ''}`}>
       <HotBreadTab tabs={HEADER_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -121,14 +122,14 @@ export default function Page() {
               <div className="flex flex-col items-start gap-[10px] w-full ">
                 <div
                   className="flex justify-between p-5 w-full h-[[64px] bg-white rounded-[10px] text-title-subtitle font-medium hover:cursor-pointer hover:opacity-70"
-                  onClick={() => {}}>
+                  onClick={() => moveEditPage()}>
                   <span>수정</span>
                   <Image src={Edit} width={24} height={24} alt="edit" />
                 </div>
                 <div
                   className="flex justify-between p-5 w-full h-[[64px] bg-white rounded-[10px] text-title-subtitle font-medium hover:cursor-pointer hover:opacity-70"
                   onClick={() => {
-                    deleteProduct(bakeryId);
+                    deleteProduct();
                     closeEditProductBottomSheet();
                     queryClient.invalidateQueries({
                       queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCTS(bakeryId)],

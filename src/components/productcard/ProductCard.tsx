@@ -90,7 +90,7 @@ const ProductCard = ({
         )}
         {isSoldOut && (
           <p
-            className={`absolute flex text-center top-[${profileSize === 'default' ? '14px' : '25px'}] left-[${profileSize === 'default' ? '16px' : '30px'}] h-[40px] w-[40px] text-title-content-s text-white`}>
+            className={`absolute flex text-center ${profileSize === 'default' ? 'top-[14px] left-[16px]' : 'top-[25px] left-[30px]'} h-[40px] w-[40px] text-title-content-s text-white`}>
             SOLD
             <br />
             OUT

@@ -1,6 +1,7 @@
 'use client';
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { useImageSlider } from '@/hooks/useSlideEvent';
+import Image from 'next/image';
 interface ImageSliderProps {
   images?: string[];
   startIndex?: number;
@@ -8,7 +9,7 @@ interface ImageSliderProps {
   floatingButton?: React.ReactNode;
 }
 
-function TagPagination({ currentPage, lastPage }: { currentPage: number; lastPage: number }) {
+const TagPagination = ({ currentPage, lastPage }: { currentPage: number; lastPage: number }) => {
   return (
     <div className="absolute bg-gray-900 backdrop-blur-[20px] bg-opacity-40 bottom-5 right-5 py-1 px-[14px] font-semibold rounded-2xl text-[11px]">
       {currentPage + 1}
@@ -16,7 +17,38 @@ function TagPagination({ currentPage, lastPage }: { currentPage: number; lastPag
       {lastPage}
     </div>
   );
-}
+};
+TagPagination.displayName = 'TagPagination';
+
+// 개별 슬라이드 컴포넌트 분리 및 메모이제이션
+const SlideItem = memo(
+  ({
+    image,
+    index,
+    floatingButton,
+  }: {
+    image: string;
+    index: number;
+    currentIndex: number;
+    floatingButton?: React.ReactNode;
+  }) => (
+    <div className="min-w-full h-full flex-shrink-0">
+      <div className="relative w-full h-full">
+        <Image
+          src={image}
+          alt={`slider image ${index + 1}`}
+          priority={index === 0} // 현재 이미지와 다음 이미지만 priority
+          fill
+          className="object-cover"
+          draggable={false}
+        />
+        {floatingButton}
+      </div>
+    </div>
+  ),
+);
+
+SlideItem.displayName = 'SlideItem';
 
 const ImageSlider = ({
   images = ['https://placehold.co/300x400', 'https://placehold.co/600x400', 'https://placehold.co/800x1000'],
@@ -64,10 +96,13 @@ const ImageSlider = ({
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}>
         {images.map((image, index) => (
-          <div key={`slider-${index}`} className="min-w-full h-full relative">
-            <div className="w-full h-full bg-center bg-cover" style={{ backgroundImage: `url(${image})` }} />
-            {floatingButton}
-          </div>
+          <SlideItem
+            key={`slider-${index}`}
+            image={image}
+            index={index}
+            currentIndex={currentIndex}
+            floatingButton={floatingButton}
+          />
         ))}
       </div>
 

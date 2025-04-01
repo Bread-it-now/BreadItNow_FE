@@ -121,7 +121,6 @@ const OperatingStatusCard = ({ name, operatingStatus, type, opentime, bakeryId }
             closeManageOperatingStatusBottomSheet();
             changeOperatingStatus(bakeryId, 'TEMPORARY_CLOSED');
             queryClient.invalidateQueries({ queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)] });
-            queryClient.invalidateQueries({ queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)] });
           }}
           confirmDisabled={temporaryClosingTimeStep === 0}
           confirmText="영업 일시중지"

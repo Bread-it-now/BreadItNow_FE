@@ -154,6 +154,24 @@ const changeReservationStatus = http.patch(
   },
 );
 
+const deleteProduct = http.delete(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId`,
+  async ({ params }) => {
+    const productId: number = Number(params?.productId);
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          productId,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -162,4 +180,5 @@ export default [
   getOwnerReservations,
   getOwnerReservationDetail,
   changeReservationStatus,
+  deleteProduct,
 ];

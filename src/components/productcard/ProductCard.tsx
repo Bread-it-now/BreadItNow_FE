@@ -22,6 +22,7 @@ interface ProductCardProps extends Product {
   className?: string;
   profileSize?: 'large' | 'default';
   isProductInfoAlignStart?: boolean;
+  onClick?: () => void;
 }
 
 const quantityOptions: number[] = [-10, -5, -1, 1, 5, 10];
@@ -45,6 +46,8 @@ const ProductCard = ({
   isCategoryVisible,
   profileSize = 'default',
   isProductInfoAlignStart = false,
+  onClick,
+  className,
 }: ProductCardProps) => {
   const {
     handleChangeProductStock,
@@ -69,7 +72,9 @@ const ProductCard = ({
   const isSoldOut = stock === 0;
 
   return (
-    <div className={`flex ${isProductInfoAlignStart ? 'items-start' : 'items-center'} gap-4 w-full`}>
+    <div
+      onClick={onClick}
+      className={cn(`flex ${isProductInfoAlignStart ? 'items-start' : 'items-center'} gap-4 w-full`, className)}>
       <div
         className={`flex relative w-[${profileSize === 'default' ? 68 : 90}px] min-w-[${profileSize === 'default' ? 68 : 90}px] h-[${profileSize === 'default' ? 68 : 90}px]`}>
         {image && (
@@ -122,7 +127,7 @@ const ProductCard = ({
             </div>
           )}
         </div>
-        {!isEditProductActive && (
+        {!isEditProductActive && isStockVisible && (
           <Button
             variant="secondary"
             scale="xsmall"

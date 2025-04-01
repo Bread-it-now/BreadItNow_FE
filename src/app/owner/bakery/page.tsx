@@ -6,6 +6,13 @@ import { useState } from 'react';
 import Stack from '@/components/common/stack/Stack';
 import { Product } from '@/types/bakery';
 import ProductCard from '@/components/productcard/ProductCard';
+import useEditProductBottomSheet from '@/hooks/useEditProductBottomSheet';
+import BottomSheet from '@/components/bottomsheet/Bottomsheet';
+import Edit from '@/assets/icons/edit.svg';
+import Delete from '@/assets/icons/delete.svg';
+import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
+import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 
 const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },
@@ -16,7 +23,16 @@ const bakeryId = 1;
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('bakeryProducts');
+  const queryClient = useQueryClient();
   const { data: productsInfo } = useBakeryProducts(bakeryId);
+
+  const {
+    isOpen: isEditProductBottomSheetOpen,
+    open: openEditProductBottomSheet,
+    close: closeEditProductBottomSheet,
+    handleEditProductId,
+    deleteProduct,
+  } = useEditProductBottomSheet();
   return (
     <div className={`bg-gray-100 flex flex-col ${activeTab === 'bakeryInfo' ? 'gap-[10px]' : ''}`}>
       <HotBreadTab tabs={HEADER_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -59,6 +75,11 @@ export default function Page() {
                         isReleaseTimesVisible
                         isProductInfoAlignStart
                         profileSize="large"
+                        className="hover:cursor-pointer"
+                        onClick={() => {
+                          openEditProductBottomSheet();
+                          handleEditProductId(product.productId);
+                        }}
                       />
                     ))}
                   </Stack>
@@ -79,6 +100,11 @@ export default function Page() {
                         isReleaseTimesVisible
                         isProductInfoAlignStart
                         profileSize="large"
+                        onClick={() => {
+                          openEditProductBottomSheet();
+                          handleEditProductId(product.productId);
+                        }}
+                        className="hover:cursor-pointer"
                       />
                     ))}
                   </Stack>
@@ -86,6 +112,34 @@ export default function Page() {
               </div>
             </div>
           </section>
+          {isEditProductBottomSheetOpen && (
+            <BottomSheet
+              isOpen={isEditProductBottomSheetOpen}
+              onClose={closeEditProductBottomSheet}
+              bgColor="bg-gray50"
+              className="mb-0 pb-5">
+              <div className="flex flex-col items-start gap-[10px] w-full ">
+                <div
+                  className="flex justify-between p-5 w-full h-[[64px] bg-white rounded-[10px] text-title-subtitle font-medium hover:cursor-pointer hover:opacity-70"
+                  onClick={() => {}}>
+                  <span>수정</span>
+                  <Image src={Edit} width={24} height={24} alt="edit" />
+                </div>
+                <div
+                  className="flex justify-between p-5 w-full h-[[64px] bg-white rounded-[10px] text-title-subtitle font-medium hover:cursor-pointer hover:opacity-70"
+                  onClick={() => {
+                    deleteProduct(bakeryId);
+                    closeEditProductBottomSheet();
+                    queryClient.invalidateQueries({
+                      queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCTS(bakeryId)],
+                    });
+                  }}>
+                  <span>삭제</span>
+                  <Image src={Delete} width={24} height={24} alt="delete" />
+                </div>
+              </div>
+            </BottomSheet>
+          )}
         </div>
       )}
     </div>

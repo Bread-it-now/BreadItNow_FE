@@ -13,6 +13,8 @@ import Delete from '@/assets/icons/delete.svg';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 
 const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },
@@ -24,6 +26,7 @@ const bakeryId = 1;
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('bakeryProducts');
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { data: productsInfo } = useBakeryProducts(bakeryId);
 
   const {
@@ -51,7 +54,10 @@ export default function Page() {
               </Button>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="primary" onClick={() => {}} className="w-[100px] h-9">
+              <Button
+                variant="primary"
+                onClick={() => router.push(ROUTES.OWNER.BAKERY.ADD_MENU)}
+                className="w-[100px] h-9">
                 + 메뉴 추가
               </Button>
             </div>

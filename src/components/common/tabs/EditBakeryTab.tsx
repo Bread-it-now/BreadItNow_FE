@@ -2,7 +2,7 @@ import EditIcon from '@/assets/icons/edit.svg';
 import IconButton from '@/components/button/IconButton';
 import BakeryImages from '@/components/bakeryInfo/BakeryImage';
 import ImageSlider from '@/components/common/slider/ImageSlider';
-import { useState, lazy, memo } from 'react';
+import { useState, lazy, memo, useEffect } from 'react';
 import { BottomSheetProps } from '@/components/bottomsheet/Bottomsheet';
 
 interface EditBakeryTabProps {
@@ -61,7 +61,7 @@ const BakeryInfoContainer = memo(
 BakeryInfoContainer.displayName = 'BakeryInfoContainer';
 
 function EditBakeryTab({ open, setBottomSheetProps, close }: EditBakeryTabProps) {
-  const [bakeryImages, setBakeryImages] = useState<string[]>(images);
+  const [bakeryImages, setBakeryImages] = useState<string[]>([...images]);
 
   const setBottomSheetContent = (tab: string) => {
     switch (tab) {
@@ -130,6 +130,10 @@ function EditBakeryTab({ open, setBottomSheetProps, close }: EditBakeryTabProps)
     }
     open();
   };
+
+  useEffect(() => {
+    setBottomSheetContent('image');
+  }, [bakeryImages]);
   return (
     <>
       <div className="w-full h-[250px] rounded-b-2xl overflow-hidden relative">

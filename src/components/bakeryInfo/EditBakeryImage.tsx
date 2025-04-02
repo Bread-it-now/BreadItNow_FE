@@ -60,7 +60,7 @@ const EditBakeryImage = memo(({ images, setImages }: EditBakeryImageProps) => {
       const newImages = images.filter((_, i) => i !== index);
       setImages(newImages);
     },
-    [setImages],
+    [images],
   );
 
   const totalImageLength = useMemo(() => {

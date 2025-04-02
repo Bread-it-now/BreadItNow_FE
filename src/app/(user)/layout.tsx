@@ -18,7 +18,7 @@ const UserNavElements: NavElement[] = [
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const hideNavbarPaths = ['/login', '/signup', '/mypage/'];
+  const hideNavbarPaths = ['/login', '/signup', '/mypage/', '/reservation/result'];
   const myPageSubSectionPathRegex = /^\/mypage\/.*$/;
   const shouldHideNavbar = hideNavbarPaths.includes(pathname);
   const isMyPageSubSection = myPageSubSectionPathRegex.test(pathname);

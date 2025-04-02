@@ -39,7 +39,7 @@ export default function Page() {
     moveEditPage,
   } = useEditProductBottomSheet(bakeryId);
   const {
-    isOpen: isDeleteProductsBottomSheet,
+    isOpen: isDeleteProductsBottomSheetOpen,
     open: openDeleteProductsBottomSheet,
     close: closeDeleteProductsBottomSheet,
     handleSelectedProductIds,
@@ -156,9 +156,9 @@ export default function Page() {
               </div>
             </BottomSheet>
           )}
-          {1 && (
+          {isDeleteProductsBottomSheetOpen && (
             <BottomSheet
-              isOpen={isDeleteProductsBottomSheet}
+              isOpen={isDeleteProductsBottomSheetOpen}
               onClose={closeDeleteProductsBottomSheet}
               fullHeight
               title="메뉴 삭제"

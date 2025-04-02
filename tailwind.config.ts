@@ -20,7 +20,7 @@ export default {
         gray100: '#e8eaec',
         gray50: '#f2f4f6',
         primary: '#ff7651',
-        primaryLight:'#FFF0EC',
+        primaryLight: '#FFF0EC',
         secondary: '#26cf9f',
         secondaryLight1: '#6BFFD5',
         secondaryLight3: '#DFFAF3',
@@ -110,6 +110,14 @@ export default {
             lineHeight: '19px',
             letterSpacing: '-0.01em',
             fontWeight: '600',
+          },
+        ],
+        'title-content-2xs': [
+          '12px',
+          {
+            lineHeight: '17px',
+            letterSpacing: '-0.01em',
+            fontWeight: '400',
           },
         ],
       },

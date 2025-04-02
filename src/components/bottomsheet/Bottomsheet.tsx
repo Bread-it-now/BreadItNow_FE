@@ -11,6 +11,7 @@ export interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  onCancel?: () => void;
   onConfirm?: () => void;
   title?: string;
   fullHeight?: boolean;
@@ -20,12 +21,15 @@ export interface BottomSheetProps {
   maxHeight?: number;
   maxContentHeight?: number;
   bgColor?: string;
+  className?: string;
+  cancelBtnFullWidth?: boolean;
 }
 
 const BottomSheet = ({
   isOpen,
   onClose,
   onConfirm,
+  onCancel,
   children,
   title,
   cancelText,
@@ -35,6 +39,8 @@ const BottomSheet = ({
   maxHeight = 752,
   maxContentHeight = 630,
   bgColor = 'bg-white',
+  className,
+  cancelBtnFullWidth = false,
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(null);
   const [isAnimating, setIsAnimating] = useState(isOpen);
@@ -100,8 +106,8 @@ const BottomSheet = ({
                   }}
                   className={cn(
                     'flex flex-col',
-                    `w-full overflow-y-auto h-full`,
-                    fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`,
+                    `w-full overflow-y-auto h-full ${fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`}`,
+                    className,
                   )}>
                   {children}
                 </div>
@@ -109,8 +115,8 @@ const BottomSheet = ({
               <div>
                 {(cancelText || confirmText) && (
                   <div className="absolute bottom-0 flex gap-[0.5rem] w-full p-[1.25rem] bg-white">
-                    {cancelText && (
-                      <Button fullWidth onClick={onClose} scale="large">
+                    {(cancelText || onCancel) && (
+                      <Button onClick={onCancel ? onCancel : onClose} scale="large" fullWidth={cancelBtnFullWidth}>
                         {cancelText}
                       </Button>
                     )}

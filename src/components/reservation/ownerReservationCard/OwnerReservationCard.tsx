@@ -1,6 +1,6 @@
 'use client';
 
-import { Reservation, OwnerReservationStatus } from '@/types/reservation';
+import { OwnerReservationStatus, OwnerReservation } from '@/types/reservation';
 import { comma } from '@/utils/comma';
 import { getDateFormat } from '@/utils/date';
 import Link from 'next/link';
@@ -15,22 +15,15 @@ export const OWNER_RESERVATION_STATUS: Record<OwnerReservationStatus, string> = 
   PAYMENT_COMPLETED: '결제 완료',
 };
 
-export interface OwnerReservationCardProps
-  extends Omit<Reservation, 'bakeryId' | 'bakeryName' | 'status' | 'pickupDeadline'> {
-  status: OwnerReservationStatus;
-  consumerNickname: string;
-  approveDate?: string;
-}
-
 const OwnerReservationCard = ({
   reservationId,
   reservationDate,
-  approveDate,
   reservationNumber,
   status,
   consumerNickname,
   totalPrice,
-}: OwnerReservationCardProps) => {
+  approveDate,
+}: OwnerReservation) => {
   return (
     <Link
       href={`${ROUTES.OWNER.RESERVATIONS}/${reservationId}`}
@@ -38,11 +31,9 @@ const OwnerReservationCard = ({
       <div className="flex items-center w-full h-[22px]">
         <p className="text-title-content-m text-gray900 w-full text-nowrap">{OWNER_RESERVATION_STATUS[status]}</p>
         <div className="flex justify-start items-center gap-[0.375rem] w-full h-full text-title-content-xs font-normal text-gray500">
-          {status !== 'WAITING' && (
-            <p className="flex justify-end w-full text-nowrap">
-              예약번호 {reservationNumber} • {consumerNickname}
-            </p>
-          )}
+          <p className="flex justify-end w-full text-nowrap">
+            예약번호 {reservationNumber} • {consumerNickname}
+          </p>
         </div>
       </div>
       <div className="flex flex-col items-start gap-3 w-full">
@@ -62,7 +53,7 @@ const OwnerReservationCard = ({
                     ? '고객'
                     : ''}
             </span>
-            <span>
+            <span className="text-gray500">
               {status === 'WAITING'
                 ? getDateFormat(reservationDate)
                 : status === 'APPROVED' || status === 'PARTIAL_APPROVED'

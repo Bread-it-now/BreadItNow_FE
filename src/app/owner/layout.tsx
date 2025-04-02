@@ -36,6 +36,8 @@ const getPageRoute = (path: string): keyof typeof OWNER_PAGE_TITLE | keyof typeo
 export default function OwnerLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const pageRoute = getPageRoute(pathname);
+  const ReservationDetailPagePathRegex = /^\/owner\/reservations\/([a-zA-Z0-9_-]+)$/;
+  const isReservationDetailPagePathRegex = ReservationDetailPagePathRegex.test(pathname);
 
   return (
     <div className="min-h-screen flex justify-center bg-gray100">
@@ -50,9 +52,11 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
         />
         <div id="bottomsheet-root" />
         <div className="flex-1 h-[calc(100%-58px)] pb-[108px] overflow-y-auto ">{children}</div>
-        <div className={`absolute bottom-0 left-0 w-full z-10`}>
-          <BottomNavbar NavList={[...UserNavElements]} />
-        </div>
+        {!isReservationDetailPagePathRegex && (
+          <div className={`absolute bottom-0 left-0 w-full`}>
+            <BottomNavbar NavList={[...UserNavElements]} />
+          </div>
+        )}
       </div>
     </div>
   );

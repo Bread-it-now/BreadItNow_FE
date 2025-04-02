@@ -3,6 +3,8 @@ import { Bakery } from '@/types/bakery';
 import { mockBakeryInfos } from '../data/bakery';
 import { mockProducts } from '../data/product';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
+import { OwnerReservationStatusQuery } from '@/types/reservation';
+import { OwnerReservationDetails, OwnerReservations } from '../data/reservation';
 
 const getBakeryInfo = http.get(
   `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/:bakeryId`,
@@ -83,4 +85,81 @@ const changeOperatingStatus = http.patch(
   },
 );
 
-export default [getBakeryInfo, getBakeryProoducts, changeStockQuantity, changeOperatingStatus];
+const getOwnerReservations = http.get(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const status: OwnerReservationStatusQuery = url.searchParams.get('status') as OwnerReservationStatusQuery;
+    const FilteredCustomerReservations =
+      status === 'APPROVED'
+        ? OwnerReservations.filter(
+            (reservation) => reservation.status === 'APPROVED' || reservation.status === 'PARTIAL_APPROVED',
+          )
+        : status === 'CANCELED'
+          ? OwnerReservations.filter(
+              (reservation) => reservation.status === 'CUSTOMER_CANCELED' || reservation.status === 'OWNER_REJECTED',
+            )
+          : OwnerReservations.filter((reservation) => reservation.status === status);
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          reservations: FilteredCustomerReservations,
+          pageInfo: { totalElements: 20, totalPages: 2, currPage: 1, isLast: false },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const getOwnerReservationDetail = http.get(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/:reservationId`,
+  async ({ params }) => {
+    const reservationId: number = Number(params?.reservationId);
+
+    const reservationDetail = OwnerReservationDetails.filter(
+      (reservationDetail) => reservationDetail.reservationId === reservationId,
+    )[0];
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          ...reservationDetail,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const changeReservationStatus = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/:reservationId/status`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        stauts: 'SUCCESS',
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export default [
+  getBakeryInfo,
+  getBakeryProoducts,
+  changeStockQuantity,
+  changeOperatingStatus,
+  getOwnerReservations,
+  getOwnerReservationDetail,
+  changeReservationStatus,
+];

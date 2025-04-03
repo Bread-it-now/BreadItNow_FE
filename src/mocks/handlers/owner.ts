@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
-import { Bakery } from '@/types/bakery';
+import { Bakery, Product } from '@/types/bakery';
 import { mockBakeryInfos } from '../data/bakery';
-import { mockProducts } from '../data/product';
+import { mockProducts, mockProductsList } from '../data/product';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { OwnerReservationStatusQuery } from '@/types/reservation';
 import { OwnerReservationDetails, OwnerReservations } from '../data/reservation';
@@ -206,6 +206,23 @@ const reorderProducts = http.patch(
   },
 );
 
+const getBakeryProoduct = http.get(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId`,
+  async ({ params }) => {
+    const productId: number = Number(params?.productId);
+    const product = mockProductsList.filter((product: Product) => product.productId === productId)[0];
+    return new HttpResponse(
+      JSON.stringify({
+        data: product,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -217,4 +234,5 @@ export default [
   deleteProduct,
   deleteProducts,
   reorderProducts,
+  getBakeryProoduct,
 ];

@@ -1,6 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
-import { Bakery, BakeryProducts, OPERATING_STATUS, ProductOrder } from '@/types/bakery';
+import { Bakery, BakeryProducts, OPERATING_STATUS, Product, ProductOrder } from '@/types/bakery';
 import { useQuery } from '@tanstack/react-query';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
@@ -107,3 +107,21 @@ export const reorderProducts = async (bakeryId: number, productOrders: ProductOr
 
   return response.json();
 };
+
+export const getBakeryProduct = async (bakeryId: number, productId: number): Promise<{ data: Product }> => {
+  const response = await fetch(`/${API_END_POINT.BAKERY_PRODUCT(bakeryId, productId)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch bakery products');
+
+  return response.json();
+};
+
+export const useBakeryProduct = (bakeryId: number, productId: number) =>
+  useQuery({
+    queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCT(bakeryId, productId)],
+    queryFn: () => getBakeryProduct(bakeryId, productId),
+    select: (data: { data: Product }) => data?.data,
+  });

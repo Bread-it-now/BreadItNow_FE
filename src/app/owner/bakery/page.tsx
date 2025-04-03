@@ -315,6 +315,7 @@ const ReorderProductsBottomSheet = ({
   const [reorderedBreadProducts, setReorderedBreadProducts] = useState<ProductOrder[]>([]);
   const [reorderedOtherProducts, setReorderedOtherProducts] = useState<ProductOrder[]>([]);
   const { breadProducts, otherProducts } = productsInfo;
+  const queryClient = useQueryClient();
 
   return (
     <BottomSheet
@@ -323,7 +324,13 @@ const ReorderProductsBottomSheet = ({
       fullHeight
       title="메뉴 순서 변경"
       confirmText="적용"
-      onConfirm={() => reorderProducts([...reorderedBreadProducts, ...reorderedOtherProducts])}
+      onConfirm={() => {
+        reorderProducts([...reorderedBreadProducts, ...reorderedOtherProducts]);
+        close();
+        queryClient.invalidateQueries({
+          queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCTS(bakeryId)],
+        });
+      }}
       confirmDisabled={reorderedBreadProducts.length === 0 && reorderedOtherProducts.length === 0}>
       <div className="flex flex-col itmes-center gap-[30px] w-full bg-white">
         <>

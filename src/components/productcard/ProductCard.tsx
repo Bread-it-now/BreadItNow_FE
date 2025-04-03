@@ -10,6 +10,7 @@ import { ComponentProps, ForwardedRef, forwardRef, SetStateAction } from 'react'
 import useProductStockBottomSheet from '@/hooks/useProductStockBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import Reset from '@/assets/icons/reset.svg';
+import Drag from '@/assets/icons/drag.svg';
 import QuantityChip from '../common/chips/quantitychip/quantityChip';
 
 interface ProductCardProps extends Product {
@@ -21,6 +22,7 @@ interface ProductCardProps extends Product {
   isDescriptionVisible?: boolean;
   isReleaseTimesVisible?: boolean;
   isCategoryVisible?: boolean;
+  isDraggable?: boolean;
   className?: string;
   profileSize?: 'large' | 'default';
   isProductInfoAlignStart?: boolean;
@@ -48,6 +50,7 @@ const ProductCard = ({
   isDescriptionVisible,
   isReleaseTimesVisible,
   isCategoryVisible,
+  isDraggable,
   profileSize = 'default',
   isProductInfoAlignStart = false,
   onClick,
@@ -152,6 +155,11 @@ const ProductCard = ({
             className="w-[77px] min-w-[77px]">
             재고 변경
           </Button>
+        )}
+        {isDraggable && (
+          <div className="flex justify-center items-center w-9 h-9 min-w-9 min-h-9 border border-gray100 rounded-full">
+            <Image src={Drag} width={20} height={20} alt="drag" />
+          </div>
         )}
       </div>
       {isProductStockBottomSheetOpen && (

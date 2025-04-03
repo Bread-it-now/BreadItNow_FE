@@ -4,7 +4,7 @@ import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import { useBakeryProducts } from '@/lib/api/bakery';
 import { useState } from 'react';
 import Stack from '@/components/common/stack/Stack';
-import { Product } from '@/types/bakery';
+import { BakeryProducts, Product } from '@/types/bakery';
 import ProductCard from '@/components/productcard/ProductCard';
 import useEditProductBottomSheet from '@/hooks/useEditProductBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
@@ -16,6 +16,11 @@ import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import useDeleteProductsBottomSheet from '@/hooks/useDeleteProductsBottomSheet';
+import useReorderProductsBottomSheet from '@/hooks/useReorderProductsBottomSheet';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },
@@ -23,6 +28,90 @@ const HEADER_TABS = [
 ];
 
 const bakeryId = 1;
+
+const SortableProduct = ({ product }: { product: Product }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: product.productId });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      className="w-full"
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}>
+      <ProductCard
+        key={`${product.productId}-${product.name}`}
+        {...product}
+        isDraggable
+        className="hover:cursor-pointer"
+      />
+    </div>
+  );
+};
+
+interface SortedProductsSectionProps {
+  productsInfo: BakeryProducts;
+}
+
+const SortedProductsSection = ({ productsInfo }: SortedProductsSectionProps) => {
+  const [products, setProducts] = useState<Product[]>(productsInfo.breadProducts);
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id === over?.id) return;
+
+    const prevIdx = products.findIndex((product: Product) => product.productId === active.id);
+    const newIdx = products.findIndex((product: Product) => product.productId === over?.id);
+
+    if (prevIdx === -1 || newIdx === -1) return;
+
+    setProducts(arrayMove(products, prevIdx, newIdx));
+  };
+
+  return (
+    <DndContext onDragEnd={handleDragEnd}>
+      {/* 빵류 제품 */}
+      <div className="flex flex-col gap-6 w-full rounded-2xl bg-white">
+        <p className="text-title-content-l font-semibold">빵류</p>
+        <div className="flex flex-col justify-center items-start gap-4 w-full h-full min-[133px]">
+          {productsInfo && (
+            <SortableContext
+              items={products.map((product) => product.productId)}
+              strategy={verticalListSortingStrategy}>
+              <Stack divider={<div className="w-full h-[1px] bg-gray-100"></div>}>
+                {products.map((product: Product) => (
+                  <SortableProduct key={`${product.productId}-${product.name}`} product={product} />
+                ))}
+              </Stack>
+            </SortableContext>
+          )}
+        </div>
+      </div>
+
+      {/* 기타 제품 */}
+      <div className="flex flex-col items-center gap-6 w-full rounded-2xl bg-white">
+        <p className="text-title-content-l font-semibold">기타</p>
+        <div className="flex flex-col justify-center items-start gap-4 w-full h-full min-[133px]">
+          {productsInfo && (
+            <Stack divider={<div className="w-full h-[1px] bg-gray-100"></div>}>
+              {productsInfo.otherProducts.map((product: Product) => (
+                <ProductCard
+                  key={`${product.productId}-${product.name}`}
+                  {...product}
+                  isDraggable
+                  className="hover:cursor-pointer"
+                />
+              ))}
+            </Stack>
+          )}
+        </div>
+      </div>
+    </DndContext>
+  );
+};
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('bakeryProducts');
@@ -46,6 +135,12 @@ export default function Page() {
     selectedProductIds,
     deleteProducts,
   } = useDeleteProductsBottomSheet(bakeryId);
+  const {
+    isOpen: isReorderProductsBottomSheetOpen,
+    open: openReorderProductsBottomSheet,
+    close: closeReorderProductsBottomSheet,
+  } = useReorderProductsBottomSheet();
+
   return (
     <div className={`bg-gray-100 flex flex-col ${activeTab === 'bakeryInfo' ? 'gap-[10px]' : ''}`}>
       <HotBreadTab tabs={HEADER_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -55,7 +150,7 @@ export default function Page() {
         <div className="flex flex-col bg-gray-50 w-full">
           <section className="flex items-center justify-between pt-6 px-5 pb-[30px] gap-5 rounded-b-2xl bg-white">
             <div className="flex items-center gap-2">
-              <Button variant="default" onClick={() => {}} className="w-[77px] h-9">
+              <Button variant="default" onClick={() => openReorderProductsBottomSheet()} className="w-[77px] h-9">
                 순서변겅
               </Button>
               <Button variant="default" onClick={() => openDeleteProductsBottomSheet()} className="w-[77px] h-9">
@@ -191,6 +286,19 @@ export default function Page() {
                   ))}
                 </Stack>
               )}
+            </BottomSheet>
+          )}
+          {isReorderProductsBottomSheetOpen && (
+            <BottomSheet
+              isOpen={isReorderProductsBottomSheetOpen}
+              onClose={closeReorderProductsBottomSheet}
+              fullHeight
+              title="메뉴 순서 변경"
+              confirmText="적용"
+              onConfirm={() => {}}>
+              <div className="flex flex-col itmes-center gap-[30px] w-full bg-white">
+                {productsInfo && <SortedProductsSection bakeryId={bakeryId} productsInfo={productsInfo} />}
+              </div>
             </BottomSheet>
           )}
         </div>

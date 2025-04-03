@@ -1,6 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
-import { Bakery, BakeryProducts, OPERATING_STATUS } from '@/types/bakery';
+import { Bakery, BakeryProducts, OPERATING_STATUS, ProductOrder } from '@/types/bakery';
 import { useQuery } from '@tanstack/react-query';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
@@ -89,6 +89,18 @@ export const deleteProducts = async (
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ productIds }),
+  });
+
+  if (!response.ok) throw new Error('Failed to change operating Status');
+
+  return response.json();
+};
+
+export const reorderProducts = async (bakeryId: number, productOrders: ProductOrder[]): Promise<{ data: null }> => {
+  const response = await fetch(`/${API_END_POINT.REORDER_PRODUCTS(bakeryId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ productOrders }),
   });
 
   if (!response.ok) throw new Error('Failed to change operating Status');

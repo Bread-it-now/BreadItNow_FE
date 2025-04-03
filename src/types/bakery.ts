@@ -63,3 +63,8 @@ export interface BakeryProducts {
   breadProducts: Product[];
   otherProducts: Product[];
 }
+
+export interface ProductOrder {
+  productId: number;
+  order: number;
+}

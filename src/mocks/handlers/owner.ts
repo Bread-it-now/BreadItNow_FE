@@ -191,6 +191,21 @@ const deleteProducts = http.delete(
   },
 );
 
+const reorderProducts = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/order`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -201,4 +216,5 @@ export default [
   changeReservationStatus,
   deleteProduct,
   deleteProducts,
+  reorderProducts,
 ];

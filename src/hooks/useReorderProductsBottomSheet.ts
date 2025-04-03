@@ -5,8 +5,6 @@ import { reorderProducts } from '@/lib/api/bakery';
 const useReorderProductsBottomSheet = (bakeryId: number) => {
   const { isOpen, dispatch } = useBaseBottomSheet();
 
-  const getReorderedProducts = () => {};
-
   const reorder = (productOrders: ProductOrder[]) => {
     reorderProducts(bakeryId, productOrders);
   };
@@ -16,7 +14,6 @@ const useReorderProductsBottomSheet = (bakeryId: number) => {
     open: dispatch.open,
     close: dispatch.close,
     reorderProducts: reorder,
-    getReorderedProducts,
   };
 };
 

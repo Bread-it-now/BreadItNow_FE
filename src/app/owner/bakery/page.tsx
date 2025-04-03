@@ -323,7 +323,8 @@ const ReorderProductsBottomSheet = ({
       fullHeight
       title="메뉴 순서 변경"
       confirmText="적용"
-      onConfirm={() => reorderProducts([...reorderedBreadProducts, ...reorderedOtherProducts])}>
+      onConfirm={() => reorderProducts([...reorderedBreadProducts, ...reorderedOtherProducts])}
+      confirmDisabled={reorderedBreadProducts.length === 0 && reorderedOtherProducts.length === 0}>
       <div className="flex flex-col itmes-center gap-[30px] w-full bg-white">
         <>
           <SortedProductsList

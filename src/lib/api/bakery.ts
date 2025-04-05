@@ -125,3 +125,25 @@ export const useBakeryProduct = (bakeryId: number, productId: number) =>
     queryFn: () => getBakeryProduct(bakeryId, productId),
     select: (data: { data: Product }) => data?.data,
   });
+
+export const createProduct = async (bakeryId: number): Promise<{ data: { productId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.CREATE_PRODUCT(bakeryId)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to create product');
+
+  return response.json();
+};
+
+export const editProduct = async (bakeryId: number, productId: number): Promise<{ data: Product }> => {
+  const response = await fetch(`/${API_END_POINT.EDIT_PRODUCT(bakeryId, productId)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to edit product');
+
+  return response.json();
+};

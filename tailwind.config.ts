@@ -22,8 +22,8 @@ export default {
         primary: '#ff7651',
         primaryLight: '#FFF0EC',
         secondary: '#26cf9f',
-        secondaryLight1: '#6BFFD5',
-        secondaryLight3: '#DFFAF3',
+        secondaryLight1: '#DFFAF3',
+        secondaryLight3: '#6BFFD5',
         white: '#ffffff',
         error: '#FF3B30',
       },
@@ -45,7 +45,7 @@ export default {
           {
             lineHeight: '21px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-page': [
@@ -61,7 +61,7 @@ export default {
           {
             lineHeight: '32px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-content-xl': [
@@ -69,7 +69,7 @@ export default {
           {
             lineHeight: '28px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-content-l': [
@@ -77,7 +77,7 @@ export default {
           {
             lineHeight: '26px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-content-m': [
@@ -85,7 +85,7 @@ export default {
           {
             lineHeight: '22px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-subtitle': [
@@ -93,7 +93,7 @@ export default {
           {
             lineHeight: '21px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-content-s': [
@@ -101,7 +101,7 @@ export default {
           {
             lineHeight: '20px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-content-xs': [
@@ -109,13 +109,21 @@ export default {
           {
             lineHeight: '19px',
             letterSpacing: '-0.01em',
-            fontWeight: '600',
+            fontWeight: '500',
           },
         ],
         'title-content-2xs': [
           '12px',
           {
             lineHeight: '17px',
+            letterSpacing: '-0.01em',
+            fontWeight: '400',
+          },
+        ],
+        'title-content-3xs': [
+          '11px',
+          {
+            lineHeight: '15px',
             letterSpacing: '-0.01em',
             fontWeight: '400',
           },

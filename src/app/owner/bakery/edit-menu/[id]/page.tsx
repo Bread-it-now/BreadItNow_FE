@@ -24,7 +24,7 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
     handleSubmit,
     control,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ProductForm>({
     defaultValues: initValue || {},
   });
@@ -71,7 +71,7 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
           <Button variant="default" fullWidth onClick={() => router.push(ROUTES.OWNER.BAKERY.BAKERY_HOME)}>
             취소
           </Button>
-          <Button variant="primary" type="submit" fullWidth onClick={() => {}}>
+          <Button variant="primary" type="submit" disabled={!isDirty} fullWidth onClick={() => {}}>
             저장
           </Button>
         </div>

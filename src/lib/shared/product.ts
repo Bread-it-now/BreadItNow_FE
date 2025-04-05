@@ -1,4 +1,7 @@
 import { BreadCategory } from '@/types/bakery';
+export interface OriginalShared {
+  [key: number | string]: number | string;
+}
 
 export const BREAD_CATEGORY: BreadCategory[] = [
   { categoryId: 1, categoryName: '식빵' },

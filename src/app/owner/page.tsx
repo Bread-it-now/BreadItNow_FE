@@ -1,6 +1,6 @@
 'use client';
 import OperatingStatusCard from '@/components/operatingstatuscard/OperatingStatusCard';
-import ProductStockCard from '@/components/productstockcard/ProductStockCard';
+import ProductCard from '@/components/productcard/ProductCard';
 import Stack from '@/components/common/stack/Stack';
 import Button from '@/components/button/Button';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
@@ -78,17 +78,19 @@ export default function Page() {
             <div className="flex flex-col items-start w-full">
               <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
                 {productsInfo.breadProducts.map((product: Product) => (
-                  <ProductStockCard
+                  <ProductCard
                     key={`${product.productId}-${product.name}`}
                     {...product}
                     handleProductActiveChange={setActiveChangeProductIds}
+                    isStockVisible
                   />
                 ))}
                 {productsInfo.otherProducts.map((product: Product) => (
-                  <ProductStockCard
+                  <ProductCard
                     key={`${product.productId}-${product.name}`}
                     {...product}
                     handleProductActiveChange={setActiveChangeProductIds}
+                    isStockVisible
                   />
                 ))}
               </Stack>
@@ -108,7 +110,7 @@ export default function Page() {
             confirmDisabled={activeChangeProductIds.length === 0}>
             <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
               {productsInfo.breadProducts.map((product: Product) => (
-                <ProductStockCard
+                <ProductCard
                   key={`${product.productId}-${product.name}`}
                   {...product}
                   isEditProductActive
@@ -117,7 +119,7 @@ export default function Page() {
                 />
               ))}
               {productsInfo.otherProducts.map((product: Product) => (
-                <ProductStockCard
+                <ProductCard
                   key={`${product.productId}-${product.name}`}
                   {...product}
                   isEditProductActive

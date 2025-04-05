@@ -1,6 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
-import { Bakery, BakeryProducts, OPERATING_STATUS } from '@/types/bakery';
+import { Bakery, BakeryProducts, OPERATING_STATUS, Product, ProductOrder } from '@/types/bakery';
 import { useQuery } from '@tanstack/react-query';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
@@ -69,3 +69,59 @@ export const changeOperatingStatus = async (
 
   return response.json();
 };
+
+export const deleteProduct = async (bakeryId: number, productId: number): Promise<{ data: { productId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_PRODUCT(bakeryId, productId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to change operating Status');
+
+  return response.json();
+};
+
+export const deleteProducts = async (
+  bakeryId: number,
+  productIds: number[],
+): Promise<{ data: { deletedCount: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_PRODUCTS(bakeryId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ productIds }),
+  });
+
+  if (!response.ok) throw new Error('Failed to change operating Status');
+
+  return response.json();
+};
+
+export const reorderProducts = async (bakeryId: number, productOrders: ProductOrder[]): Promise<{ data: null }> => {
+  const response = await fetch(`/${API_END_POINT.REORDER_PRODUCTS(bakeryId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ productOrders }),
+  });
+
+  if (!response.ok) throw new Error('Failed to change operating Status');
+
+  return response.json();
+};
+
+export const getBakeryProduct = async (bakeryId: number, productId: number): Promise<{ data: Product }> => {
+  const response = await fetch(`/${API_END_POINT.BAKERY_PRODUCT(bakeryId, productId)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch bakery products');
+
+  return response.json();
+};
+
+export const useBakeryProduct = (bakeryId: number, productId: number) =>
+  useQuery({
+    queryKey: [...BAKERY_QUERY_KEY.BAKERY_PRODUCT(bakeryId, productId)],
+    queryFn: () => getBakeryProduct(bakeryId, productId),
+    select: (data: { data: Product }) => data?.data,
+  });

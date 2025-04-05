@@ -53,7 +53,8 @@ export interface Product {
   releaseTimes?: string[];
   stock: number;
   isActive: boolean;
-  breadCategories: { categoryId: number; categoryName: string }[];
+  isHidden: boolean;
+  breadCategories?: { categoryId: number; categoryName: string }[];
   displayOrder?: number;
 }
 
@@ -61,4 +62,9 @@ export interface BakeryProducts {
   totalCount: number;
   breadProducts: Product[];
   otherProducts: Product[];
+}
+
+export interface ProductOrder {
+  productId: number;
+  order: number;
 }

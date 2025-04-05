@@ -1,13 +1,15 @@
 'use client';
-import Button from '@/components/button/Button';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
-import { useBakeryProducts } from '@/lib/api/bakery';
 import { useState } from 'react';
+import BottomSheet, { BottomSheetProps } from '@/components/bottomsheet/Bottomsheet';
+import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
+import EditBakeryTab from '@/components/common/tabs/EditBakeryTab';
+import Button from '@/components/button/Button';
+import { useBakeryProducts } from '@/lib/api/bakery';
 import Stack from '@/components/common/stack/Stack';
 import { Product } from '@/types/bakery';
 import ProductCard from '@/components/productcard/ProductCard';
 import useEditProductBottomSheet from '@/hooks/useEditProductBottomSheet';
-import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import Edit from '@/assets/icons/edit.svg';
 import Delete from '@/assets/icons/delete.svg';
 import Image from 'next/image';
@@ -25,6 +27,31 @@ const HEADER_TABS = [
 ];
 
 const bakeryId = 1;
+
+const BottomSheetContainer = ({
+  isOpen,
+  close,
+  bototmSheetProps,
+}: {
+  isOpen: boolean;
+  close: () => void;
+  bototmSheetProps: BottomSheetProps | undefined;
+}) => {
+  return (
+    <BottomSheet
+      isOpen={isOpen}
+      onClose={close}
+      onConfirm={bototmSheetProps?.onConfirm}
+      title={bototmSheetProps?.title}
+      cancelText={bototmSheetProps?.cancelText}
+      confirmText={bototmSheetProps?.confirmText}
+      maxContentHeight={500}
+      fullHeight={false}
+      bgColor={bototmSheetProps?.bgColor}>
+      {bototmSheetProps?.children}
+    </BottomSheet>
+  );
+};
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('bakeryProducts');
@@ -56,11 +83,16 @@ export default function Page() {
     reorderProducts,
   } = useReorderProductsBottomSheet(bakeryId);
 
+  const { isOpen, open, close } = useReservationBottomSheet();
+  const [bototmSheetProps, setBottomSheetProps] = useState<BottomSheetProps>();
   return (
     <div className={`bg-gray-100 flex flex-col ${activeTab === 'bakeryInfo' ? 'gap-[10px]' : ''}`}>
       <HotBreadTab tabs={HEADER_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === 'bakeryInfo' ? (
-        <div></div>
+        <>
+          <BottomSheetContainer isOpen={isOpen} close={close} bototmSheetProps={bototmSheetProps} />
+          <EditBakeryTab open={open} setBottomSheetProps={setBottomSheetProps} close={close} />
+        </>
       ) : (
         <div className="flex flex-col bg-gray-50 w-full">
           <section className="flex items-center justify-between pt-6 px-5 pb-[30px] gap-5 rounded-b-2xl bg-white">

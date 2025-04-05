@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 
-interface BottomSheetProps {
+export interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -71,7 +71,7 @@ const BottomSheet = ({
   return (
     <>
       {createPortal(
-        <div className={cn('absolute bottom-0 w-full h-full z-10')}>
+        <div className={cn('absolute bottom-0 w-full h-full z-20')}>
           {/* Backdrop */}
           {!fullHeight && (
             <div
@@ -100,6 +100,10 @@ const BottomSheet = ({
                   </div>
                 )}
                 <div
+                  style={{
+                    maxHeight: fullHeight ? 'calc(100% - 142px)' : `${maxContentHeight}px`,
+                    marginBottom: fullHeight ? 0 : '92px',
+                  }}
                   className={cn(
                     'flex flex-col',
                     `w-full overflow-y-auto h-full ${fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`}`,

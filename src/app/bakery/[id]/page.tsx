@@ -4,7 +4,8 @@ import StoreInfo from '@/components/bakeryInfo/StoreInfo';
 import Tag from '@/components/common/Tag';
 import Image from 'next/image';
 import ArrowLeft from '@/assets/icons/arrow-left.svg';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import BakeryImages from '@/components/bakeryInfo/BakeryImage';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
 import Footer from '@/components/bakeryInfo/Footer';
@@ -34,31 +35,6 @@ const bakery: Bakery = {
   operatingStatus: 'OPEN',
   distance: 1.5,
 };
-
-function BakeryImages({ images }: { images: string[] }) {
-  const router = useRouter();
-  const params = useParams();
-  //TODO... 이미지 마지막 이미지를 클릭했을 때 어떤 로직이 필요한지..?
-  const moveImageViewPage = () => {
-    router.push(`/store/image_view/${params.id}`);
-  };
-  return (
-    <div className="flex gap-[10px] h-[105px] mt-5">
-      {images.slice(0, 3).map((image, index) => (
-        <div key={`image-${index}`} className="relative w-full h-[105px]" onClick={moveImageViewPage}>
-          <Image src={`${image}`} alt={`빵집 이미지 ${index + 1}`} fill className="object-cover" />
-          {images.length - 1 === index && (
-            <div className="absolute inset-0 z-10 bg-black bg-opacity-30 rounded-lg h-full ">
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-md">
-                {images.length - 3} +
-              </div>
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function BakeryOpenInfo({ openInfo }: { openInfo: string }) {
   return (

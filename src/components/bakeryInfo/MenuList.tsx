@@ -57,18 +57,21 @@ function TimeForBreadComeOut() {
 }
 function MenuList({ menuList, title }: ProductReserveCardProps) {
   return (
-    <article className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll h-[600px]">
-      <div className="f lex justify-between">
+    <article className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll min-h-[600px] text-black">
+      <div className="flex justify-between mb-6">
         <div className="font-semibold  text-md">{title}</div>
       </div>
       {menuList.map((menu, index) => (
-        <ProductReserveCard
-          ImageIconButton={<MenuImageIconButton bakeryId={menu.bakery_id} productId={menu.productId} />}
-          FloatingButton={<MenuFloatingButton bakeryId={menu.bakery_id} productId={menu.productId} />}
-          moreInfoComponent={<TimeForBreadComeOut />}
-          key={`menu-${index}`}
-          {...menu}
-        />
+        <>
+          <ProductReserveCard
+            ImageIconButton={<MenuImageIconButton bakeryId={menu.bakery_id} productId={menu.productId} />}
+            FloatingButton={<MenuFloatingButton bakeryId={menu.bakery_id} productId={menu.productId} />}
+            moreInfoComponent={<TimeForBreadComeOut />}
+            key={`menu-${index}`}
+            {...menu}
+          />
+          {index !== menuList.length - 1 && <hr className="border-gray-200 my-5" />}
+        </>
       ))}
     </article>
   );

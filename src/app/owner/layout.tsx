@@ -8,7 +8,8 @@ import NotificationIcon from '@/components/common/Icons/NotificationIcon';
 import BakeryIcon from '@/components/common/Icons/BakeryIcon';
 import Topbar from '@/components/topbar/Topbar';
 import { usePathname } from 'next/navigation';
-
+import Image from 'next/image';
+import SettingIcon from '@/assets/icons/setting.svg';
 const UserNavElements: NavElement[] = [
   { name: '관리', navPathname: 'home', route: ROUTES.OWNER.HOME, icon: ManagementIcon },
   { name: '예약', navPathname: 'reservations', route: ROUTES.OWNER.RESERVATIONS, icon: ReservationIcon },
@@ -50,6 +51,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
               ? OWNER_PAGE_TITLE[pageRoute as keyof typeof OWNER_PAGE_TITLE]
               : OWNER_BAKERY_TITLE[pageRoute as keyof typeof OWNER_BAKERY_TITLE]
           }
+          rightItems={<Image width={24} height={24} src={SettingIcon} alt="setting" />}
         />
         <div id="bottomsheet-root" />
         <div className="flex-1 h-[calc(100%-58px)] pb-[108px] overflow-y-auto ">{children}</div>

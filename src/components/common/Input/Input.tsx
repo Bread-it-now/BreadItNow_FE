@@ -7,6 +7,7 @@ export interface InputProps {
   className?: string;
   maxLength?: number | undefined;
   id?: string;
+  readonly?: boolean;
 }
 
 function Input({
@@ -17,6 +18,7 @@ function Input({
   className = '',
   maxLength = undefined,
   id,
+  readonly = false,
 }: InputProps) {
   return (
     <input
@@ -27,6 +29,7 @@ function Input({
       disabled={disabled}
       placeholder={placeholder}
       maxLength={maxLength}
+      readOnly={readonly}
     />
   );
 }

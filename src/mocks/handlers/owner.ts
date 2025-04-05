@@ -223,6 +223,39 @@ const getBakeryProoduct = http.get(
   },
 );
 
+const createProduct = http.post(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId`,
+
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: { productId: mockProductsList.length + 1 },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const editProduct = http.put(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId`,
+
+  async ({ params }) => {
+    const productId: number = Number(params?.productId);
+    return new HttpResponse(
+      JSON.stringify({
+        data: mockProductsList.filter((product: Product) => product.productId === productId)[0],
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -235,4 +268,6 @@ export default [
   deleteProducts,
   reorderProducts,
   getBakeryProoduct,
+  createProduct,
+  editProduct,
 ];

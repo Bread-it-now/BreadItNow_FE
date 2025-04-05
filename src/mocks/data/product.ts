@@ -328,7 +328,7 @@ export const mockProductsList: Product[] = [
     displayOrder: 7,
   },
   {
-    productId: 10,
+    productId: 8,
     bakeryId: 1,
     productType: 'OTHER',
     name: '커피-1',
@@ -340,7 +340,7 @@ export const mockProductsList: Product[] = [
     displayOrder: 0,
   },
   {
-    productId: 11,
+    productId: 9,
     bakeryId: 1,
     productType: 'OTHER',
     name: '커피-2',
@@ -352,7 +352,7 @@ export const mockProductsList: Product[] = [
     displayOrder: 1,
   },
   {
-    productId: 12,
+    productId: 10,
     bakeryId: 1,
     productType: 'OTHER',
     name: '커피-3',
@@ -364,7 +364,7 @@ export const mockProductsList: Product[] = [
     displayOrder: 2,
   },
   {
-    productId: 14,
+    productId: 11,
     bakeryId: 1,
     productType: 'OTHER',
     name: '커피-4',

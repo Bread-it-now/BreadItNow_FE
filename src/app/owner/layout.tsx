@@ -17,7 +17,7 @@ const UserNavElements: NavElement[] = [
 ];
 
 const reservationDetailPathRegex = /^\/owner\/reservations\/\d+$/;
-const bakeryProductEditPathRegex = /^\/owner\/bakery\/add-menu\/\d+$/;
+const bakeryProductEditPathRegex = /^\/owner\/bakery\/edit-menu\/\d+$/;
 
 const getPageRoute = (path: string): keyof typeof OWNER_PAGE_TITLE | keyof typeof OWNER_BAKERY_TITLE => {
   const pageEntry = Object.entries(ROUTES.OWNER).find(

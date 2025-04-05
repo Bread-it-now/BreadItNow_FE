@@ -1,6 +1,6 @@
-const OWNER_PREFIX = 'owner';
-const MYPAGE_PREFIX = 'mypage';
-const BAKERY_PREFIX = 'bakery';
+export const OWNER_PREFIX = 'owner';
+export const MYPAGE_PREFIX = 'mypage';
+export const BAKERY_PREFIX = 'bakery';
 
 export const ROUTES = {
   HOME: {

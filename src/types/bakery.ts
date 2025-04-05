@@ -72,3 +72,12 @@ export interface ProductOrder {
   productId: number;
   order: number;
 }
+
+export interface ProductForm {
+  productType: ProductType;
+  breadCategoryIds: number[];
+  name: string;
+  price: number;
+  description: string;
+  releaseTimes: string[];
+}

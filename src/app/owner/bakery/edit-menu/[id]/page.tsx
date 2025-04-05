@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useParams, useRouter } from 'next/navigation';
 import Button from '@/components/button/Button';
 import { ROUTES } from '@/constants/routes';
+import { LabelForm } from '@/components/common/labelform/LabelForm';
 
 const bakeryId = 1;
 
@@ -24,9 +25,14 @@ const Layout = ({ initValue }: LayoutProps) => {
   });
 
   return (
-    <div className="flex flex-col items-start px-5 pt-6 pb-[30px]">
-      <form className="relative flex flex-col items-start gap-[30px] w-full" onSubmit={handleSubmit(() => {})}>
-        <div className="absolute flex py-5 gap-2 w-full">
+    <div className="flex flex-col items-start w-full h-full bg-gray50">
+      <form
+        className="flex flex-col items-start gap-[30px] px-5 pt-6 pb-[30px] w-full bg-white"
+        onSubmit={handleSubmit(() => {})}>
+        <LabelForm name="productType" label="메뉴 타입" isRequired>
+          <div>12</div>
+        </LabelForm>
+        <div className="absolute bottom-0 left-0 flex p-5 gap-2 w-full shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)] bg-white">
           <Button variant="default" fullWidth onClick={() => router.push(ROUTES.OWNER.BAKERY.BAKERY_HOME)}>
             취소
           </Button>

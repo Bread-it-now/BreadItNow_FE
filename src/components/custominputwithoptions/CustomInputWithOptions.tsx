@@ -4,8 +4,6 @@ import { Option } from '@/lib/shared/product';
 import Search from '@/assets/icons/search.svg';
 import Image from 'next/image';
 
-// Option 타입 정의
-
 export type CustomInputWithOptionsProps = {
   /** 옵션 리스트에 들어갈 배열 */
   options?: Option[];
@@ -24,21 +22,19 @@ export type CustomInputWithOptionsProps = {
 
   /** 옵션 선택 */
   selectOption: (option: Option) => void;
-
-  onChange?: (value: string) => void;
 };
 
 interface DropdownOptionProps {
   option: Option;
   checked?: boolean;
-  onClick: (option: Option) => void;
+  handleOption: (option: Option) => void;
 }
 
-const DropdownOption = ({ option, checked, onClick }: DropdownOptionProps) => {
+const DropdownOption = ({ option, checked, handleOption }: DropdownOptionProps) => {
   return (
     <div
-      className={`flex px-4 py-2 text-title-content-s font-normal text-gray900 w-full hover:bg-gray50 hover:cursor-pointer ${checked ? 'bg-primaryLight text-primary' : 'bg-white'}`}
-      onClick={() => onClick(option)}>
+      className={`flex px-4 py-2 text-title-content-s font-normal text-gray900 w-full hover:bg-gray50 cursor-pointer ${checked ? 'bg-primaryLight text-primary' : 'bg-white'}`}
+      onClick={() => handleOption(option)}>
       <label className="flex w-full">{option.label}</label>
     </div>
   );
@@ -46,13 +42,14 @@ const DropdownOption = ({ option, checked, onClick }: DropdownOptionProps) => {
 
 const CustomInputWithOptions = forwardRef<HTMLInputElement, CustomInputWithOptionsProps>(
   ({ options, label, placeholder, defaultValue = '', isDisabled = false, selectOption }, ref) => {
-    const [optionFilter, setoptionFilter] = useState<string>(defaultValue);
+    const [optionFilter, setOptionFilter] = useState<string>(defaultValue);
+
     const filteredOptions = options?.filter(
       (option: Option) =>
         typeof option.label === 'string' && option.label.toLowerCase().includes(optionFilter.toLowerCase()),
     );
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setoptionFilter(e.target.value);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setOptionFilter(e.target.value);
     return (
       <div className="flex flex-col items-start gap-1 w-full">
         <div className="relative flex items-center gap-[10px] h-[48px] px-4 py-[13px] w-full bg-white border border-gray200 rounded-lg">
@@ -70,7 +67,7 @@ const CustomInputWithOptions = forwardRef<HTMLInputElement, CustomInputWithOptio
         </div>
         {optionFilter !== '' && (
           <div
-            className={`flex flex-col ${filteredOptions?.length === 0 ? 'items-center justify-center' : 'items-start'} gap-2 py-2 border border-gray200 rounded-lg w-full bg-white h-[160px] overflow-y-auto`}>
+            className={`flex flex-col ${filteredOptions?.length === 0 ? 'items-center justify-center' : 'items-start hover:cursor-pointer'} gap-2 py-2 border border-gray200 rounded-lg w-full bg-white h-[160px] overflow-y-auto`}>
             {filteredOptions?.length === 0 ? (
               <p className="text-title-content-s">
                 <span className="text-primary">{`\'${optionFilter}\'`}</span>
@@ -79,10 +76,13 @@ const CustomInputWithOptions = forwardRef<HTMLInputElement, CustomInputWithOptio
             ) : (
               filteredOptions?.map((option: Option) => (
                 <DropdownOption
-                  key={option.value}
+                  key={option.label}
                   option={option}
-                  checked={defaultValue === option.value}
-                  onClick={(option) => selectOption(option)}
+                  checked={defaultValue === option.label}
+                  handleOption={(option) => {
+                    selectOption(option);
+                    setOptionFilter('');
+                  }}
                 />
               ))
             )}

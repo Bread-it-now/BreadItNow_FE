@@ -8,9 +8,10 @@ import Button from '@/components/button/Button';
 import { ROUTES } from '@/constants/routes';
 import { LabelForm } from '@/components/common/labelform/LabelForm';
 import SelectedItem from '@/components/selecteditem/SelectItem';
-import { generateSharedObjectByCustomKey } from '@/utils/mappingUtils';
-import { BREAD_CATEGORY } from '@/lib/shared/product';
+import { generateSharedObjectByCustomKey, mapCategoryIdsToIdLabel } from '@/utils/mappingUtils';
+import { BREAD_CATEGORY, Option } from '@/lib/shared/product';
 import CustomInputWithOptions from '@/components/custominputwithoptions/CustomInputWithOptions';
+import ProductCategory from '@/components/productcategory/ProductCategory';
 
 const bakeryId = 1;
 
@@ -22,7 +23,7 @@ export interface LayoutProps {
 }
 export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
   const router = useRouter();
-  const generateSelectOption = generateSharedObjectByCustomKey('value', 'label');
+  const generateSelectOption = generateSharedObjectByCustomKey('id', 'label');
 
   const {
     handleSubmit,
@@ -76,19 +77,34 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
             control={control}
             name="breadCategoryIds"
             rules={{ required: '빵 카테고리를 선택해주세요.' }}
-            render={({ field }) => (
-              <div className="flex flex-col items-start gap-2 w-full">
-                <div className="flex flex-col gap-1"></div>
-                <CustomInputWithOptions
-                  selectOption={() => {}}
-                  placeholder="카테고리 검색"
-                  options={generateSelectOption(BREAD_CATEGORY)}
-                />
-                <div>
-                  <span onClick={() => field.onChange(() => {})}></span>
+            render={({ field }) => {
+              const breadCategories: Option[] =
+                field.value && field.value.length !== 0 ? mapCategoryIdsToIdLabel(field.value) : [];
+
+              return (
+                <div className="flex flex-col items-start gap-1 w-full">
+                  <div className="flex flex-col gap-1 w-full">
+                    {breadCategories.map((category) => (
+                      <ProductCategory
+                        key={category.label}
+                        category={category}
+                        handleDelete={() => {
+                          field.onChange(() => {
+                            const newCategories = field.value.filter((id: number) => id !== category.id);
+                            return newCategories;
+                          });
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <CustomInputWithOptions
+                    selectOption={() => {}}
+                    placeholder="카테고리 검색"
+                    options={generateSelectOption(BREAD_CATEGORY)}
+                  />
                 </div>
-              </div>
-            )}
+              );
+            }}
           />
         </LabelForm>
 

@@ -1,4 +1,5 @@
 import { OriginalShared } from '@/lib/shared/product';
+import { breadCategories } from '@/lib/shared/product';
 
 export type TCustomLabelKey = 'label' | 'name';
 export type TCustomValueKey = 'value' | 'id';
@@ -25,3 +26,12 @@ export const generateSharedObjectByCustomKey =
       .filter((item): item is CustomObject<T, U> => item !== undefined);
 
 export type CustomObjectType = ReturnType<typeof generateSharedObjectByCustomKey>;
+
+export const mapCategoryIdsToIdLabel = (breadCategoryIds: number[]): { id: number; label: string }[] => {
+  return breadCategoryIds
+    .map((id: number) => {
+      const category = breadCategories.find((bread) => bread.categoryId === id);
+      return category ? { id: category.categoryId, label: category.categoryName } : null;
+    })
+    .filter((category): category is { id: number; label: string } => category !== null);
+};

@@ -4,9 +4,20 @@ export interface OriginalShared {
 }
 
 export interface Option {
-  value: string | number;
+  id: string | number;
   label: string | number;
 }
+
+export const basicBreadCategories: BreadCategory[] = [
+  { categoryId: 1, categoryName: '식빵' },
+  { categoryId: 18, categoryName: '크루아상' },
+  { categoryId: 4, categoryName: '소금빵' },
+  { categoryId: 6, categoryName: '단팥빵' },
+  { categoryId: 5, categoryName: '크림빵' },
+  { categoryId: 8, categoryName: '바게트' },
+  { categoryId: 10, categoryName: '데니쉬' },
+  { categoryId: 13, categoryName: '베이글' },
+];
 
 export const breadCategories: BreadCategory[] = [
   { categoryId: 1, categoryName: '식빵' },

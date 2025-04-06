@@ -8,6 +8,9 @@ import Button from '@/components/button/Button';
 import { ROUTES } from '@/constants/routes';
 import { LabelForm } from '@/components/common/labelform/LabelForm';
 import SelectedItem from '@/components/selecteditem/SelectItem';
+import CustomSelect from '@/components/customselect/CustomSelect';
+import { generateSharedObjectByCustomKey } from '@/utils/mappingUtils';
+import { BREAD_CATEGORY } from '@/lib/shared/product';
 
 const bakeryId = 1;
 
@@ -19,7 +22,8 @@ export interface LayoutProps {
 }
 export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
   const router = useRouter();
-
+  const generateSelectOption = generateSharedObjectByCustomKey('value', 'label');
+  generateSelectOption(BREAD_CATEGORY);
   const {
     handleSubmit,
     control,
@@ -65,6 +69,21 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
               *기타에는 크림치즈, 생크림등 빵 관련 부가적인 메뉴를 등록합니다.
             </p>
           </div>
+        </LabelForm>
+        <LabelForm name="breadCategoryIds" label="빵 카테고리" isRequired errors={errors} className="w-full">
+          <Controller
+            control={control}
+            name="breadCategoryIds"
+            rules={{ required: '빵 카테고리를 선택해주세요.' }}
+            render={({ field }) => (
+              <CustomSelect
+                placeholder="카테고리 검색"
+                defaultValue={generateSelectOption({ breadCategoryIds: BREAD_CATEGORY['breadCategoryIds'] })}
+                values={generateSelectOption(BREAD_CATEGORY)}
+                {...field}
+              />
+            )}
+          />
         </LabelForm>
 
         <div className="absolute bottom-0 left-0 flex p-5 gap-2 w-full shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)] bg-white">

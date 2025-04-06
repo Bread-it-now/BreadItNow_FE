@@ -3,7 +3,12 @@ export interface OriginalShared {
   [key: number | string]: number | string;
 }
 
-export const BREAD_CATEGORY: BreadCategory[] = [
+export interface Option {
+  value: string | number;
+  label: string | number;
+}
+
+export const breadCategories: BreadCategory[] = [
   { categoryId: 1, categoryName: '식빵' },
   { categoryId: 2, categoryName: '통밀빵' },
   { categoryId: 3, categoryName: '호밀빵' },
@@ -75,3 +80,9 @@ export const BREAD_CATEGORY: BreadCategory[] = [
   { categoryId: 69, categoryName: '와플' },
   { categoryId: 70, categoryName: '번' },
 ];
+
+export const BREAD_CATEGORY: OriginalShared = breadCategories
+  .map((category) => ({
+    [category.categoryId]: category.categoryName,
+  }))
+  .reduce((acc, cur) => ({ ...acc, ...cur }), {}) as OriginalShared;

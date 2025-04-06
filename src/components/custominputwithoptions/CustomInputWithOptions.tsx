@@ -1,5 +1,5 @@
 'use client';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { Option } from '@/lib/shared/product';
 import Search from '@/assets/icons/search.svg';
 import Image from 'next/image';
@@ -46,6 +46,13 @@ const DropdownOption = ({ option, checked, onClick }: DropdownOptionProps) => {
 
 const CustomInputWithOptions = forwardRef<HTMLInputElement, CustomInputWithOptionsProps>(
   ({ options, label, placeholder, defaultValue = '', isDisabled = false, selectOption }, ref) => {
+    const [optionFilter, setoptionFilter] = useState<string>(defaultValue);
+    const filteredOptions = options?.filter(
+      (option: Option) =>
+        typeof option.label === 'string' && option.label.toLowerCase().includes(optionFilter.toLowerCase()),
+    );
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setoptionFilter(e.target.value);
     return (
       <div className="flex flex-col items-start gap-1 w-full">
         <div className="relative flex items-center gap-[10px] h-[48px] px-4 py-[13px] w-full bg-white border border-gray200 rounded-lg">
@@ -55,22 +62,32 @@ const CustomInputWithOptions = forwardRef<HTMLInputElement, CustomInputWithOptio
             type="text"
             defaultValue={defaultValue}
             placeholder={placeholder || 'Search...'}
-            onChange={() => {}}
+            onChange={handleChange}
             disabled={isDisabled}
             className="w-full placeholder:text-title-content-s placeholder:text-gray400 focus:outline-none focus:border-transparent disabled:cursor-not-allowed :foucs0"
           />
           <Image src={Search} width={22} height={22} alt="search" className="hover:cursor-pointer" />
         </div>
-        <div className="flex flex-col gap-2 py-2 border border-gray200 rounded-lg w-full bg-white max-h-[160px] overflow-y-auto">
-          {options?.map((option: Option) => (
-            <DropdownOption
-              key={option.value}
-              option={option}
-              checked={defaultValue === option.value}
-              onClick={(option) => selectOption(option)}
-            />
-          ))}
-        </div>
+        {optionFilter !== '' && (
+          <div
+            className={`flex flex-col ${filteredOptions?.length === 0 ? 'items-center justify-center' : 'items-start'} gap-2 py-2 border border-gray200 rounded-lg w-full bg-white h-[160px] overflow-y-auto`}>
+            {filteredOptions?.length === 0 ? (
+              <p className="text-title-content-s">
+                <span className="text-primary">{`\'${optionFilter}\'`}</span>
+                <span className="font-normal">을 찾을 수 없습니다.</span>
+              </p>
+            ) : (
+              filteredOptions?.map((option: Option) => (
+                <DropdownOption
+                  key={option.value}
+                  option={option}
+                  checked={defaultValue === option.value}
+                  onClick={(option) => selectOption(option)}
+                />
+              ))
+            )}
+          </div>
+        )}
       </div>
     );
   },

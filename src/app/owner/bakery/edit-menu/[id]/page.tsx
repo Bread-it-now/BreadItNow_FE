@@ -8,9 +8,9 @@ import Button from '@/components/button/Button';
 import { ROUTES } from '@/constants/routes';
 import { LabelForm } from '@/components/common/labelform/LabelForm';
 import SelectedItem from '@/components/selecteditem/SelectItem';
-import CustomSelect from '@/components/customselect/CustomSelect';
 import { generateSharedObjectByCustomKey } from '@/utils/mappingUtils';
 import { BREAD_CATEGORY } from '@/lib/shared/product';
+import CustomInputWithOptions from '@/components/custominputwithoptions/CustomInputWithOptions';
 
 const bakeryId = 1;
 
@@ -23,7 +23,7 @@ export interface LayoutProps {
 export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
   const router = useRouter();
   const generateSelectOption = generateSharedObjectByCustomKey('value', 'label');
-  generateSelectOption(BREAD_CATEGORY);
+
   const {
     handleSubmit,
     control,
@@ -70,18 +70,24 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
             </p>
           </div>
         </LabelForm>
+
         <LabelForm name="breadCategoryIds" label="빵 카테고리" isRequired errors={errors} className="w-full">
           <Controller
             control={control}
             name="breadCategoryIds"
             rules={{ required: '빵 카테고리를 선택해주세요.' }}
             render={({ field }) => (
-              <CustomSelect
-                placeholder="카테고리 검색"
-                defaultValue={generateSelectOption({ breadCategoryIds: BREAD_CATEGORY['breadCategoryIds'] })}
-                values={generateSelectOption(BREAD_CATEGORY)}
-                {...field}
-              />
+              <div className="flex flex-col items-start gap-2 w-full">
+                <div className="flex flex-col gap-1"></div>
+                <CustomInputWithOptions
+                  selectOption={() => {}}
+                  placeholder="카테고리 검색"
+                  options={generateSelectOption(BREAD_CATEGORY)}
+                />
+                <div>
+                  <span onClick={() => field.onChange(() => {})}></span>
+                </div>
+              </div>
             )}
           />
         </LabelForm>

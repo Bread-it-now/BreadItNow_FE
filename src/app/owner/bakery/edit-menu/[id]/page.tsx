@@ -9,9 +9,10 @@ import { ROUTES } from '@/constants/routes';
 import { LabelForm } from '@/components/common/labelform/LabelForm';
 import SelectedItem from '@/components/selecteditem/SelectItem';
 import { generateSharedObjectByCustomKey, mapCategoryIdsToIdLabel } from '@/utils/mappingUtils';
-import { BREAD_CATEGORY, Option } from '@/lib/shared/product';
+import { BREAD_CATEGORY, MAIN_BREAD_CATEGORY, Option } from '@/lib/shared/product';
 import CustomInputWithOptions from '@/components/custominputwithoptions/CustomInputWithOptions';
 import ProductCategory from '@/components/productcategory/ProductCategory';
+import CategoryChip from '@/components/common/chips/categorychip/CategoryChip';
 
 const bakeryId = 1;
 
@@ -87,20 +88,38 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
                     {breadCategories.map((category) => (
                       <ProductCategory
                         key={category.label}
-                        category={category}
+                        category={{ ...category, id: Number(category.id) }}
                         handleDelete={() => field.onChange(field.value.filter((id: number) => id !== category.id))}
                       />
                     ))}
                   </div>
-                  <CustomInputWithOptions
-                    selectOption={({ id }: Option) => {
-                      if (!field.value.includes(Number(id))) {
-                        field.onChange([...field.value, Number(id)]);
-                      }
-                    }}
-                    placeholder="카테고리 검색"
-                    options={generateSelectOption(BREAD_CATEGORY)}
-                  />
+                  <div className="flex flex-col gap-2 w-full">
+                    <CustomInputWithOptions
+                      selectOption={({ id }: Option) => {
+                        if (!field.value.includes(Number(id))) {
+                          field.onChange([...field.value, Number(id)]);
+                        }
+                      }}
+                      placeholder="카테고리 검색"
+                      options={generateSelectOption(BREAD_CATEGORY)}
+                    />
+                    <div className="flex flex-wrap items-start content-center gap-[6px] w-full">
+                      {generateSelectOption(MAIN_BREAD_CATEGORY).map((category) => (
+                        <CategoryChip
+                          key={category.label}
+                          category={{ id: Number(category.id), label: String(category.label) }}
+                          checked={field.value.includes(Number(category.id))}
+                          handleChecked={() => {
+                            if (field.value.includes(Number(category.id))) {
+                              field.onChange(field.value.filter((id: number) => id !== Number(category.id)));
+                            } else {
+                              field.onChange([...field.value, Number(category.id)]);
+                            }
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               );
             }}

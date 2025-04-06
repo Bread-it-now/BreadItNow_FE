@@ -8,7 +8,7 @@ export interface Option {
   label: string | number;
 }
 
-export const basicBreadCategories: BreadCategory[] = [
+export const mainBreadCategories: BreadCategory[] = [
   { categoryId: 1, categoryName: '식빵' },
   { categoryId: 18, categoryName: '크루아상' },
   { categoryId: 4, categoryName: '소금빵' },
@@ -93,6 +93,12 @@ export const breadCategories: BreadCategory[] = [
 ];
 
 export const BREAD_CATEGORY: OriginalShared = breadCategories
+  .map((category) => ({
+    [category.categoryId]: category.categoryName,
+  }))
+  .reduce((acc, cur) => ({ ...acc, ...cur }), {}) as OriginalShared;
+
+export const MAIN_BREAD_CATEGORY: OriginalShared = mainBreadCategories
   .map((category) => ({
     [category.categoryId]: category.categoryName,
   }))

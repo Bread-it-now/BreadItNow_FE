@@ -6,20 +6,32 @@ import Button from '../button/Button';
 import { comma } from '@/utils/comma';
 import { cn } from '@/utils/cn';
 import Checkbox from '../common/checkbox/Checkbox';
-import { ComponentProps, ForwardedRef, forwardRef, Fragment, SetStateAction } from 'react';
+import { ComponentProps, ForwardedRef, forwardRef, SetStateAction } from 'react';
 import useProductStockBottomSheet from '@/hooks/useProductStockBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import Reset from '@/assets/icons/reset.svg';
+import Drag from '@/assets/icons/drag.svg';
 import QuantityChip from '../common/chips/quantitychip/quantityChip';
 
-interface ProductStockCardProps extends Product {
+interface ProductCardProps extends Product {
   isEditProductActive?: boolean;
   handleProductActiveChange?: React.Dispatch<SetStateAction<number[]>>;
+  handleChecked?: React.Dispatch<SetStateAction<number[]>>;
+  checked?: boolean;
+  isStockVisible?: boolean;
+  isDescriptionVisible?: boolean;
+  isReleaseTimesVisible?: boolean;
+  isCategoryVisible?: boolean;
+  isDraggable?: boolean;
+  className?: string;
+  profileSize?: 'large' | 'default';
+  isProductInfoAlignStart?: boolean;
+  onClick?: () => void;
 }
 
 const quantityOptions: number[] = [-10, -5, -1, 1, 5, 10];
 
-const ProductStockCard = ({
+const ProductCard = ({
   image,
   stock,
   name,
@@ -28,8 +40,22 @@ const ProductStockCard = ({
   productId,
   isEditProductActive,
   handleProductActiveChange,
+  handleChecked,
+  checked = false,
   bakeryId,
-}: ProductStockCardProps) => {
+  releaseTimes,
+  description,
+  breadCategories,
+  isStockVisible,
+  isDescriptionVisible,
+  isReleaseTimesVisible,
+  isCategoryVisible,
+  isDraggable,
+  profileSize = 'default',
+  isProductInfoAlignStart = false,
+  onClick,
+  className,
+}: ProductCardProps) => {
   const {
     handleChangeProductStock,
     isOpen: isProductStockBottomSheetOpen,
@@ -39,9 +65,18 @@ const ProductStockCard = ({
     stockQuantityInput,
   } = useProductStockBottomSheet({ initStock: stock, bakeryId, productId });
 
-  const handleActiveChange = () => {
+  const handleCheckboxChange = () => {
     if (handleProductActiveChange) {
       handleProductActiveChange((prevIds) => {
+        if (prevIds.includes(productId)) {
+          return prevIds.filter((id) => id !== productId);
+        }
+        return [...prevIds, productId];
+      });
+    }
+
+    if (handleChecked) {
+      handleChecked((prevIds) => {
         if (prevIds.includes(productId)) {
           return prevIds.filter((id) => id !== productId);
         }
@@ -53,26 +88,34 @@ const ProductStockCard = ({
   const isSoldOut = stock === 0;
 
   return (
-    <div className="flex items-center gap-4 w-full">
-      <div className="flex relative w-[68px] min-w-[68px] h-[68px]">
+    <div
+      onClick={onClick}
+      className={cn(`flex ${isProductInfoAlignStart ? 'items-start' : 'items-center'} gap-4 w-full`, className)}>
+      <div
+        className={`flex relative w-[${profileSize === 'default' ? 68 : 90}px] min-w-[${profileSize === 'default' ? 68 : 90}px] h-[${profileSize === 'default' ? 68 : 90}px]`}>
         {image && (
           <>
             <Image
               src={image}
               alt="product"
-              width={68}
-              height={68}
+              width={profileSize === 'default' ? 68 : 90}
+              height={profileSize === 'default' ? 68 : 90}
               className={cn(isSoldOut ? 'opacity-70' : 'opacity-100', 'rounded-lg')}
             />
-            {isEditProductActive && (
+            {(isEditProductActive || handleChecked) && (
               <div className="absolute top-1 left-1 z-1">
-                <Checkbox id={String(productId)} checked={!isActive} onChange={handleActiveChange} />
+                <Checkbox
+                  id={String(productId)}
+                  checked={isEditProductActive ? !isActive : checked}
+                  onChange={handleCheckboxChange}
+                />
               </div>
             )}
           </>
         )}
         {isSoldOut && (
-          <p className="absolute flex text-center top-[15px] left-[16px] text-title-content-s text-white">
+          <p
+            className={`absolute flex text-center ${profileSize === 'default' ? 'top-[14px] left-[16px]' : 'top-[25px] left-[30px]'} h-[40px] w-[40px] text-title-content-s text-white`}>
             SOLD
             <br />
             OUT
@@ -81,13 +124,30 @@ const ProductStockCard = ({
       </div>
       <div className="flex items-center gap-5 w-full max-w-[251px]">
         <div className="flex flex-col items-start gap-1 w-full">
-          <p className="w-full text-title-content-s text-gray900">{name}</p>
-          {!isEditProductActive && (
+          {breadCategories && isCategoryVisible && (
+            <p className="w-full text-title-content-xs text-gray700 font-normal ">{breadCategories[0].categoryName}</p>
+          )}
+          <p className="w-full text-title-content-s text-gray900 font-semibold">{name}</p>
+          {description && isDescriptionVisible && (
+            <p className="w-full text-title-content-xs text-gray500 font-normal">{description}</p>
+          )}
+          {!isEditProductActive && isStockVisible && (
             <p className="w-full text-title-content-xs text-gray700 font-normal">{stock}개 남음</p>
           )}
           <p className="w-full text-title-content-s text-gray900 font-normal">{comma(price)}원</p>
+          {releaseTimes && isReleaseTimesVisible && (
+            <div className="flex items-start gap-[2px] w-full">
+              {releaseTimes.map((releaseTime: string, index: number) => (
+                <p
+                  key={`${releaseTime}-${index}`}
+                  className="flex justify-center items-center px-[6px] w-[40px] h-[18px] text-title-content-3xs font-medium rounded-[9px] bg-secondaryLight1 text-secondary">
+                  {releaseTime}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
-        {!isEditProductActive && (
+        {!isEditProductActive && isStockVisible && (
           <Button
             variant="secondary"
             scale="xsmall"
@@ -95,6 +155,11 @@ const ProductStockCard = ({
             className="w-[77px] min-w-[77px]">
             재고 변경
           </Button>
+        )}
+        {isDraggable && (
+          <div className="flex justify-center items-center w-9 h-9 min-w-9 min-h-9 border border-gray100 rounded-full">
+            <Image src={Drag} width={20} height={20} alt="drag" />
+          </div>
         )}
       </div>
       {isProductStockBottomSheetOpen && (
@@ -178,4 +243,4 @@ const QuantityInput = forwardRef<HTMLInputElement, ComponentProps<'input'> & Qua
 
 QuantityInput.displayName = 'QuantityInput';
 
-export default ProductStockCard;
+export default ProductCard;

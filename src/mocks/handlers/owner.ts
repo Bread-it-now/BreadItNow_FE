@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
-import { Bakery } from '@/types/bakery';
+import { Bakery, Product } from '@/types/bakery';
 import { mockBakeryInfos } from '../data/bakery';
-import { mockProducts } from '../data/product';
+import { mockProducts, mockProductsList } from '../data/product';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { OwnerReservationStatusQuery } from '@/types/reservation';
 import { OwnerReservationDetails, OwnerReservations } from '../data/reservation';
@@ -28,7 +28,7 @@ const getBakeryInfo = http.get(
 );
 
 const getBakeryProoducts = http.get(
-  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/:bakeryId`,
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId`,
   async () => {
     return new HttpResponse(
       JSON.stringify({
@@ -47,7 +47,7 @@ const getBakeryProoducts = http.get(
 );
 
 const changeStockQuantity = http.patch(
-  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/:bakeryId/product/:productId/stock`,
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId/stock`,
   async ({ request }) => {
     const body = (await request.json()) as { stock: number };
     const stock: number = Number(body.stock);
@@ -154,6 +154,75 @@ const changeReservationStatus = http.patch(
   },
 );
 
+const deleteProduct = http.delete(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId`,
+  async ({ params }) => {
+    const productId: number = Number(params?.productId);
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          productId,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const deleteProducts = http.delete(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/products`,
+  async ({ request }) => {
+    const body = (await request.json()) as { productIds: number[] };
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          deletedCount: body.productIds.length,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const reorderProducts = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/order`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const getBakeryProoduct = http.get(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId`,
+  async ({ params }) => {
+    const productId: number = Number(params?.productId);
+    const product = mockProductsList.filter((product: Product) => product.productId === productId)[0];
+    return new HttpResponse(
+      JSON.stringify({
+        data: product,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -162,4 +231,8 @@ export default [
   getOwnerReservations,
   getOwnerReservationDetail,
   changeReservationStatus,
+  deleteProduct,
+  deleteProducts,
+  reorderProducts,
+  getBakeryProoduct,
 ];

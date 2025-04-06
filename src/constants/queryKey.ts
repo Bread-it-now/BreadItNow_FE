@@ -9,6 +9,7 @@ export const BASE_KEY = {
 export const BAKERY_QUERY_KEY = {
   BAKERY_INFO: (bakeryId: number) => [BASE_KEY.OWNER, 'BAKERY', bakeryId],
   BAKERY_PRODUCTS: (bakeryId: number) => [BASE_KEY.OWNER, 'BAKERY', bakeryId, 'PRODUCT'],
+  BAKERY_PRODUCT: (bakeryId: number, productId: number) => [BASE_KEY.OWNER, 'BAKERY', bakeryId, 'PRODUCT', productId],
 };
 
 export const RESERVATION_QUERY_KEY = {

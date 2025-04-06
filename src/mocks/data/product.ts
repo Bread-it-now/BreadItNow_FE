@@ -208,8 +208,10 @@ export const mockProductsList: Product[] = [
     breadCategories: [
       {
         categoryId: 1,
-        categoryName: '식빵 카테고리',
+        categoryName: '식빵',
       },
+      { categoryId: 2, categoryName: '통밀빵' },
+      { categoryId: 3, categoryName: '호밀빵' },
     ],
     displayOrder: 1,
   },
@@ -224,12 +226,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
-    breadCategories: [
-      {
-        categoryId: 2,
-        categoryName: '꽈배기 카테고리',
-      },
-    ],
+    breadCategories: [{ categoryId: 2, categoryName: '통밀빵' }],
     displayOrder: 2,
   },
   {
@@ -243,12 +240,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: false,
-    breadCategories: [
-      {
-        categoryId: 3,
-        categoryName: '소보로 카테고리',
-      },
-    ],
+    breadCategories: [{ categoryId: 3, categoryName: '호밀빵' }],
     displayOrder: 3,
   },
   {
@@ -262,12 +254,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
-    breadCategories: [
-      {
-        categoryId: 4,
-        categoryName: '도넛츠 카테고리',
-      },
-    ],
+    breadCategories: [{ categoryId: 4, categoryName: '소금빵' }],
     displayOrder: 4,
   },
   {
@@ -281,12 +268,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
-    breadCategories: [
-      {
-        categoryId: 5,
-        categoryName: '소금빵 카테고리',
-      },
-    ],
+    breadCategories: [{ categoryId: 5, categoryName: '크림빵' }],
     displayOrder: 5,
   },
   {
@@ -300,12 +282,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
-    breadCategories: [
-      {
-        categoryId: 6,
-        categoryName: '피자빵 카테고리',
-      },
-    ],
+    breadCategories: [{ categoryId: 6, categoryName: '단팥빵' }],
     displayOrder: 6,
   },
   {
@@ -319,12 +296,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
-    breadCategories: [
-      {
-        categoryId: 7,
-        categoryName: '팥빵 카테고리',
-      },
-    ],
+    breadCategories: [{ categoryId: 7, categoryName: '치아바타' }],
     displayOrder: 7,
   },
   {

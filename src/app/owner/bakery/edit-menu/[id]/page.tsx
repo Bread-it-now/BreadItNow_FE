@@ -88,17 +88,16 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
                       <ProductCategory
                         key={category.label}
                         category={category}
-                        handleDelete={() => {
-                          field.onChange(() => {
-                            const newCategories = field.value.filter((id: number) => id !== category.id);
-                            return newCategories;
-                          });
-                        }}
+                        handleDelete={() => field.onChange(field.value.filter((id: number) => id !== category.id))}
                       />
                     ))}
                   </div>
                   <CustomInputWithOptions
-                    selectOption={() => {}}
+                    selectOption={({ id }: Option) => {
+                      if (!field.value.includes(Number(id))) {
+                        field.onChange([...field.value, Number(id)]);
+                      }
+                    }}
                     placeholder="카테고리 검색"
                     options={generateSelectOption(BREAD_CATEGORY)}
                   />

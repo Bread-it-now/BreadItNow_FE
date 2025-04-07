@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Button from '@/components/button/Button';
 import CategoryButton from '@/components/button/CategoryButton';
 import Topbar from '../topbar/Topbar';
-import { API_END_POINT } from '@/constants/api';
+import { submitCategorySetting } from '@/utils/submitCategory';
 import Alert from '@/components/common/Alert';
 
 const categories = [
@@ -23,7 +23,6 @@ const categories = [
 export default function BreadCategorySelection({ nickname, onComplete }: { nickname: string; onComplete: () => void }) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-
   const [showAlert, setShowAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertSubtitle, setAlertSubtitle] = useState('');
@@ -35,36 +34,13 @@ export default function BreadCategorySelection({ nickname, onComplete }: { nickn
   };
 
   const handleSubmit = async (categories: string[]) => {
-    try {
-      setLoading(true);
-      const res = await fetch(`/${API_END_POINT.CUSTOMER_INIT}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nickname,
-          breadCategoryList: categories,
-        }),
-      });
+    setLoading(true);
+    const result = await submitCategorySetting({ nickname, categories });
 
-      if (!res.ok) {
-        setAlertTitle('설정 실패');
-        setAlertSubtitle('초기 설정에 실패했습니다. 다시 시도해주세요.');
-        setShowAlert(true);
-        return;
-      }
-
-      setAlertTitle('설정 완료!');
-      setAlertSubtitle('초기 설정을 완료했습니다.');
-      setShowAlert(true);
-    } catch {
-      setAlertTitle('오류 발생');
-      setAlertSubtitle('초기 설정 중 오류가 발생했습니다.');
-      setShowAlert(true);
-    } finally {
-      setLoading(false);
-    }
+    setAlertTitle(result.success ? '설정 완료!' : '설정 실패');
+    setAlertSubtitle(result.message);
+    setShowAlert(true);
+    setLoading(false);
   };
 
   return (

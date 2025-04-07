@@ -1,6 +1,6 @@
 'use client';
 
-import { API_END_POINT } from '@/constants/api';
+import { submitOwnerBakeryInfo } from '@/utils/submitOwnerBakeryInfo';
 import Image from 'next/image';
 import Alert from '@/components/common/Alert';
 import Button from '@/components/button/Button';
@@ -37,50 +37,20 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
   };
 
   const handleSubmit = async () => {
-    try {
-      const convertImageToBase64 = (file: File) => {
-        return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = (error) => reject(error);
-        });
-      };
+    const result = await submitOwnerBakeryInfo({
+      bakeryName,
+      address,
+      zipcode,
+      detailAddress,
+      phoneNumber,
+      businessHours,
+      description,
+      images,
+    });
 
-      const imageBase64List = await Promise.all(images.map(convertImageToBase64));
-
-      const res = await fetch(`/${API_END_POINT.OWNER_INIT}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          bakeryName,
-          address,
-          zipcode,
-          detailAddress,
-          phoneNumber,
-          businessHours,
-          description,
-          images: imageBase64List,
-        }),
-      });
-
-      if (!res.ok) {
-        setAlertTitle('설정 실패!');
-        setAlertSubtitle('빵집 정보 등록에 실패했습니다.');
-        setShowAlert(true);
-        return;
-      }
-
-      setAlertTitle('설정 완료!');
-      setAlertSubtitle('빵집 정보가 성공적으로 등록되었습니다.');
-      setShowAlert(true);
-    } catch {
-      setAlertTitle('설정 실패!');
-      setAlertSubtitle('빵집 정보 등록에 실패했습니다.');
-      setShowAlert(true);
-    }
+    setAlertTitle(result.success ? '설정 완료!' : '설정 실패!');
+    setAlertSubtitle(result.message);
+    setShowAlert(true);
   };
 
   const handleImageDelete = (index: number) => {

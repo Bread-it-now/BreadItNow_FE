@@ -9,7 +9,7 @@ import SignupOptions from '@/components/signup/SignupOptions';
 import EmailSignupForm from '@/components/signup/EmailSignupForm';
 import PasswordSetupForm from '@/components/signup/PasswordSetUpForm';
 import SignupComplete from '@/components/signup/SignupComplete';
-import { API_END_POINT } from '@/constants/api';
+import { submitSignup } from '@/utils/submitSignup';
 
 export default function SignupPage() {
   const [isPrivacyModalOpen, setPrivacyModalOpen] = useState(false);
@@ -22,34 +22,16 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = async () => {
-    try {
-      const res = await fetch(`/${API_END_POINT.AUTH.SIGN_UP}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password,
-          role: userType,
-        }),
-      });
+  const handleSignUp = () => {
+    if (!userType) return;
 
-      if (!res.ok) {
-        alert('회원가입 실패. 다시 시도해주세요.');
-        return;
-      }
-
-      const result = await res.json();
-
-      if (result.status !== 'SUCCESS') {
-        alert('회원가입 실패: ' + result.status);
-        return;
-      }
-
-      setSignupComplete(true);
-    } catch {
-      alert('회원가입 중 오류 발생');
-    }
+    submitSignup({
+      email,
+      password,
+      role: userType,
+      onSuccess: () => setSignupComplete(true),
+      onFail: (message) => alert(message),
+    });
   };
 
   return (

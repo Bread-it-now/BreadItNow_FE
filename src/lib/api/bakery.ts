@@ -1,6 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
-import { Bakery, BakeryProducts, OPERATING_STATUS, Product, ProductOrder } from '@/types/bakery';
+import { Bakery, BakeryProducts, OPERATING_STATUS, Product, ProductForm, ProductOrder } from '@/types/bakery';
 import { useQuery } from '@tanstack/react-query';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
@@ -125,3 +125,34 @@ export const useBakeryProduct = (bakeryId: number, productId: number) =>
     queryFn: () => getBakeryProduct(bakeryId, productId),
     select: (data: { data: Product }) => data?.data,
   });
+
+export const createProduct = async (
+  bakeryId: number,
+  productForm: ProductForm,
+): Promise<{ data: { productId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.CREATE_PRODUCT(bakeryId)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: { ...productForm }, productImage: 'bread.png' }),
+  });
+
+  if (!response.ok) throw new Error('Failed to create product');
+
+  return response.json();
+};
+
+export const editProduct = async (
+  bakeryId: number,
+  productId: number,
+  productForm: ProductForm,
+): Promise<{ data: Product }> => {
+  const response = await fetch(`/${API_END_POINT.EDIT_PRODUCT(bakeryId, productId)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: { ...productForm }, productImage: 'bread.png' }),
+  });
+
+  if (!response.ok) throw new Error('Failed to edit product');
+
+  return response.json();
+};

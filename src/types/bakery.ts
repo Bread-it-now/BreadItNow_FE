@@ -41,6 +41,10 @@ export interface Bread {
 }
 
 export type ProductType = 'BREAD' | 'OTHER';
+export interface BreadCategory {
+  categoryId: number;
+  categoryName: string;
+}
 
 export interface Product {
   productId: number;
@@ -54,7 +58,7 @@ export interface Product {
   stock: number;
   isActive: boolean;
   isHidden: boolean;
-  breadCategories?: { categoryId: number; categoryName: string }[];
+  breadCategories?: BreadCategory[];
   displayOrder?: number;
 }
 
@@ -67,4 +71,13 @@ export interface BakeryProducts {
 export interface ProductOrder {
   productId: number;
   order: number;
+}
+
+export interface ProductForm {
+  productType: ProductType;
+  breadCategoryIds: number[];
+  name: string;
+  price: number;
+  description: string;
+  releaseTimes: string[];
 }

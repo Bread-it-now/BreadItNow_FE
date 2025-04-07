@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useBaseBottomSheet from './useBaseBottomSheet';
 import { deleteProduct } from '@/lib/api/bakery';
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/constants/routes';
+import { BAKERY_PREFIX, OWNER_PREFIX } from '@/constants/routes';
 
 const useEditProductBottomSheet = (bakeryId: number) => {
   const { isOpen, dispatch } = useBaseBottomSheet();
@@ -17,7 +17,7 @@ const useEditProductBottomSheet = (bakeryId: number) => {
   };
 
   const moveEditPage = () => {
-    router.push(`${ROUTES.OWNER.BAKERY.ADD_MENU}/${editProductId}`);
+    router.push(`/${OWNER_PREFIX}/${BAKERY_PREFIX}/edit-menu/${editProductId}`);
     setEditProductId(null);
   };
 

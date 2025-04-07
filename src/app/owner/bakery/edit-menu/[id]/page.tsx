@@ -13,6 +13,8 @@ import { BREAD_CATEGORY, MAIN_BREAD_CATEGORY, Option } from '@/lib/shared/produc
 import CustomInputWithOptions from '@/components/custominputwithoptions/CustomInputWithOptions';
 import ProductCategory from '@/components/productcategory/ProductCategory';
 import CategoryChip from '@/components/common/chips/categorychip/CategoryChip';
+import InputText from '@/components/common/inputtext/InputText';
+import TextArea from '@/components/common/textarea/TextArea';
 
 const bakeryId = 1;
 
@@ -39,7 +41,7 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
   return (
     <div className="flex flex-col items-start w-full h-full bg-gray50">
       <form
-        className="flex flex-col items-start gap-[30px] px-5 pt-6 pb-[30px] w-full bg-white"
+        className="flex flex-col items-start gap-[30px] px-5 pt-6 pb-[102px] w-full bg-white"
         onSubmit={handleSubmit(() => {
           mutate({ ...data, productType: data.productType });
           router.push(ROUTES.OWNER.BAKERY.BAKERY_HOME);
@@ -125,7 +127,58 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
             }}
           />
         </LabelForm>
-
+        <LabelForm name="name" label="메뉴 이름" isRequired errors={errors} className="w-full">
+          <Controller
+            control={control}
+            name="name"
+            rules={{ required: '메뉴 이름을 입력해주세요.' }}
+            render={({ field }) => {
+              return (
+                <InputText
+                  defaultValue={field.value}
+                  placeholder="메뉴 이름"
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+              );
+            }}
+          />
+        </LabelForm>
+        <LabelForm name="price" label="메뉴 가격" isRequired errors={errors} className="w-full">
+          <Controller
+            control={control}
+            name="price"
+            rules={{ required: '메뉴 가격을 입력해주세요.' }}
+            render={({ field }) => {
+              return (
+                <InputText
+                  defaultValue={String(field.value)}
+                  placeholder="메뉴 가격"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  inputType="number"
+                  unit="원"
+                />
+              );
+            }}
+          />
+        </LabelForm>
+        <LabelForm name="description" label="메뉴 설명" isRequired errors={errors} className="w-full">
+          <Controller
+            control={control}
+            name="description"
+            rules={{ required: '메뉴 설명을 입력해주세요.' }}
+            render={({ field }) => {
+              return (
+                <TextArea
+                  defaultValue={field.value}
+                  placeholder="메뉴의 특징, 중량 또는 주요 재료 정보를 작성해주세요."
+                  onChange={(e) => field.onChange(e.target.value)}
+                  currentLength={field.value.length}
+                  maxLength={50}
+                />
+              );
+            }}
+          />
+        </LabelForm>
         <div className="absolute bottom-0 left-0 flex p-5 gap-2 w-full shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)] bg-white">
           <Button variant="default" fullWidth onClick={() => router.push(ROUTES.OWNER.BAKERY.BAKERY_HOME)}>
             취소

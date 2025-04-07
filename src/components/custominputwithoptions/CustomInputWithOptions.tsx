@@ -61,7 +61,7 @@ const CustomInputWithOptions = forwardRef<HTMLInputElement, CustomInputWithOptio
             placeholder={placeholder || 'Search...'}
             onChange={handleChange}
             disabled={isDisabled}
-            className="w-full placeholder:text-title-content-s placeholder:text-gray400 focus:outline-none focus:border-transparent disabled:cursor-not-allowed :foucs0"
+            className="w-full placeholder:text-title-content-s placeholder:text-gray400 focus:outline-none focus:border-transparent disabled:cursor-not-allowed"
           />
           <Image src={Search} width={22} height={22} alt="search" className="hover:cursor-pointer" />
         </div>

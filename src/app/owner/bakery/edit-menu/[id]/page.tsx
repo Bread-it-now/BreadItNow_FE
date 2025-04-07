@@ -33,6 +33,7 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
     control,
     watch,
     formState: { errors, isDirty },
+    register,
   } = useForm<ProductForm>({
     defaultValues: initValue || {},
   });
@@ -50,8 +51,9 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
           <div className="flex flex-col items-start gap-1 w-full">
             <div className="flex w-full gap-2">
               <Controller
-                name="productType"
                 control={control}
+                rules={{ required: '메뉴 타입을 선택해주세요.' }}
+                {...register('productType')}
                 render={({ field }) => (
                   <div className="flex w-full gap-2">
                     <SelectedItem
@@ -66,7 +68,6 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
                     />
                   </div>
                 )}
-                rules={{ required: '메뉴 타입을 선택해주세요.' }}
               />
             </div>
             <p className="text-title-content-2xs text-gray500">
@@ -78,8 +79,8 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
         <LabelForm name="breadCategoryIds" label="빵 카테고리" isRequired errors={errors} className="w-full">
           <Controller
             control={control}
-            name="breadCategoryIds"
             rules={{ required: '빵 카테고리를 선택해주세요.' }}
+            {...register('breadCategoryIds')}
             render={({ field }) => {
               const breadCategories: Option[] =
                 field.value && field.value.length !== 0 ? mapCategoryIdsToIdLabel(field.value) : [];
@@ -130,8 +131,8 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
         <LabelForm name="name" label="메뉴 이름" isRequired errors={errors} className="w-full">
           <Controller
             control={control}
-            name="name"
             rules={{ required: '메뉴 이름을 입력해주세요.' }}
+            {...register('name')}
             render={({ field }) => {
               return (
                 <InputText
@@ -146,8 +147,8 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
         <LabelForm name="price" label="메뉴 가격" isRequired errors={errors} className="w-full">
           <Controller
             control={control}
-            name="price"
             rules={{ required: '메뉴 가격을 입력해주세요.' }}
+            {...register('price')}
             render={({ field }) => {
               return (
                 <InputText
@@ -164,8 +165,8 @@ export const ProductFormLayout = ({ initValue, mutate }: LayoutProps) => {
         <LabelForm name="description" label="메뉴 설명" isRequired errors={errors} className="w-full">
           <Controller
             control={control}
-            name="description"
             rules={{ required: '메뉴 설명을 입력해주세요.' }}
+            {...register('description')}
             render={({ field }) => {
               return (
                 <TextArea

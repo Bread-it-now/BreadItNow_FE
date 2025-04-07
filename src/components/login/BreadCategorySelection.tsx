@@ -5,6 +5,7 @@ import Button from '@/components/button/Button';
 import CategoryButton from '@/components/button/CategoryButton';
 import Topbar from '../topbar/Topbar';
 import { API_END_POINT } from '@/constants/api';
+import Alert from '@/components/common/Alert';
 
 const categories = [
   '식빵',
@@ -22,6 +23,10 @@ const categories = [
 export default function BreadCategorySelection({ nickname, onComplete }: { nickname: string; onComplete: () => void }) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertSubtitle, setAlertSubtitle] = useState('');
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -44,13 +49,19 @@ export default function BreadCategorySelection({ nickname, onComplete }: { nickn
       });
 
       if (!res.ok) {
-        alert('초기 설정 실패');
+        setAlertTitle('설정 실패');
+        setAlertSubtitle('초기 설정에 실패했습니다. 다시 시도해주세요.');
+        setShowAlert(true);
         return;
       }
 
-      onComplete();
+      setAlertTitle('설정 완료!');
+      setAlertSubtitle('초기 설정을 완료했습니다.');
+      setShowAlert(true);
     } catch {
-      alert('오류 발생');
+      setAlertTitle('오류 발생');
+      setAlertSubtitle('초기 설정 중 오류가 발생했습니다.');
+      setShowAlert(true);
     } finally {
       setLoading(false);
     }
@@ -94,6 +105,22 @@ export default function BreadCategorySelection({ nickname, onComplete }: { nickn
           완료
         </Button>
       </div>
+
+      {showAlert && (
+        <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-40">
+          <Alert
+            title={alertTitle}
+            subtitle={alertSubtitle}
+            buttonLabel="확인"
+            onClose={() => {
+              setShowAlert(false);
+              if (alertTitle === '설정 완료!') {
+                onComplete();
+              }
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

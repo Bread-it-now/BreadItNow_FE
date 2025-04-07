@@ -23,12 +23,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
-  const [isFirstLogin, setIsFirstLogin] = useState(false);
+  const [isFirstLoginPending, setIsFirstLoginPending] = useState(false);
+  const [isFirstLoginConfirmed, setIsFirstLoginConfirmed] = useState(false);
+
   const [showAlert, setShowAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertSubtitle, setAlertSubtitle] = useState('');
 
-  //TODO: 추후 로그인 API 연동하고 가져오기
   const handleLogin = async () => {
     try {
       const res = await fetch(`/${API_END_POINT.AUTH.SIGN_IN}`, {
@@ -50,9 +51,11 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (data.data?.isNewUser) {
-        setIsFirstLogin(true);
+        setIsFirstLoginPending(true);
+        setAlertTitle('로그인에 성공했습니다!');
+        setAlertSubtitle('추가 정보를 입력해주세요.');
+        setShowAlert(true);
       } else {
-        setIsFirstLogin(false);
         setAlertTitle('로그인에 성공했습니다!');
         setAlertSubtitle('메인 화면으로 이동합니다.');
         setShowAlert(true);
@@ -80,7 +83,7 @@ export default function LoginPage() {
     }
   };
 
-  if (isFirstLogin) {
+  if (isFirstLoginConfirmed) {
     return activeTab === 'personal' ? (
       <FirstLoginFlow onComplete={() => router.push('/')} />
     ) : (
@@ -173,7 +176,17 @@ export default function LoginPage() {
 
       {showAlert && (
         <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <Alert title={alertTitle} subtitle={alertSubtitle} buttonLabel="확인" onClose={() => setShowAlert(false)} />
+          <Alert
+            title={alertTitle}
+            subtitle={alertSubtitle}
+            buttonLabel="확인"
+            onClose={() => {
+              setShowAlert(false);
+              if (isFirstLoginPending) {
+                setIsFirstLoginConfirmed(true);
+              }
+            }}
+          />
         </div>
       )}
     </div>

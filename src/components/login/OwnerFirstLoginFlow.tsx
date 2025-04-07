@@ -2,6 +2,7 @@
 
 import { API_END_POINT } from '@/constants/api';
 import Image from 'next/image';
+import Alert from '@/components/common/Alert';
 import Button from '@/components/button/Button';
 import VerificationInput from '@/components/common/Input/VerificationInput';
 import Topbar from '@/components/topbar/Topbar';
@@ -16,6 +17,9 @@ interface OwnerFirstLoginFlowProps {
 
 export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowProps) {
   const [bakeryName, setBakeryName] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertSubtitle, setAlertSubtitle] = useState('');
   const [address, setAddress] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -63,13 +67,19 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
       });
 
       if (!res.ok) {
-        alert('빵집 생성에 실패했습니다.');
+        setAlertTitle('설정 실패!');
+        setAlertSubtitle('빵집 정보 등록에 실패했습니다.');
+        setShowAlert(true);
         return;
       }
 
-      onComplete();
+      setAlertTitle('설정 완료!');
+      setAlertSubtitle('빵집 정보가 성공적으로 등록되었습니다.');
+      setShowAlert(true);
     } catch {
-      alert('오류 발생. 다시 시도해주세요.');
+      setAlertTitle('설정 실패!');
+      setAlertSubtitle('빵집 정보 등록에 실패했습니다.');
+      setShowAlert(true);
     }
   };
 
@@ -272,6 +282,19 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
             </button>
             <DaumPostcode onComplete={handleComplete} />
           </div>
+        </div>
+      )}
+      {showAlert && (
+        <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-40">
+          <Alert
+            title={alertTitle}
+            subtitle={alertSubtitle}
+            buttonLabel="확인"
+            onClose={() => {
+              setShowAlert(false);
+              onComplete();
+            }}
+          />
         </div>
       )}
     </div>

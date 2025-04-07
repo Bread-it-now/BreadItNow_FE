@@ -16,7 +16,7 @@ import WheelTimePicker from '../wheeltimepicker/WheelTimePicker';
 import BottomSheet from '../bottomsheet/Bottomsheet';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
 import TimeChip from '../common/chips/timechip/TimeChip';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getReleaseTime } from '@/utils/date';
 import add from '@/assets/icons/add.svg';
 import Image from 'next/image';
@@ -36,6 +36,17 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
     minutes: 30,
     ampm: 'AM',
   });
+  useEffect(() => {
+    if (isWheelTimePickerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isWheelTimePickerOpen]);
 
   const {
     handleSubmit,

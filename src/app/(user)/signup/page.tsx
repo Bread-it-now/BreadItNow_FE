@@ -7,7 +7,6 @@ import PrivacyModal from '@/components/login/PrivacyModal';
 import UserTypeSelection from '@/components/signup/UserTypeSelection';
 import SignupOptions from '@/components/signup/SignupOptions';
 import EmailSignupForm from '@/components/signup/EmailSignupForm';
-import EmailVerificationForm from '@/components/signup/EmailVerificationForm';
 import PasswordSetupForm from '@/components/signup/PasswordSetUpForm';
 import SignupComplete from '@/components/signup/SignupComplete';
 
@@ -16,9 +15,36 @@ export default function SignupPage() {
   const [isTermsModalOpen, setTermsModalOpen] = useState(false);
   const [userType, setUserType] = useState<'CUSTOMER' | 'OWNER' | null>(null);
   const [showEmailForm, setShowEmailForm] = useState(false);
-  const [showVerificationForm, setShowVerificationForm] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSignupComplete, setSignupComplete] = useState(false);
+
+  // 회원가입 정보 상태
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // 회원가입 API
+  const handleSignUp = async () => {
+    try {
+      const res = await fetch('/api/auth/sign-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          role: userType,
+        }),
+      });
+
+      if (!res.ok) {
+        alert('회원가입 실패. 다시 시도해주세요.');
+        return;
+      }
+
+      setSignupComplete(true);
+    } catch {
+      alert('회원가입 중 오류 발생');
+    }
+  };
 
   return (
     <div className="flex flex-col h-[100%] bg-white relative">
@@ -37,11 +63,13 @@ export default function SignupPage() {
       {isSignupComplete ? (
         <SignupComplete />
       ) : showPasswordForm ? (
-        <PasswordSetupForm onComplete={() => setSignupComplete(true)} />
-      ) : showVerificationForm ? (
-        <EmailVerificationForm onVerify={() => setShowPasswordForm(true)} />
+        <PasswordSetupForm password={password} setPassword={setPassword} onComplete={handleSignUp} />
       ) : showEmailForm ? (
-        <EmailSignupForm onNext={() => setShowVerificationForm(true)} />
+        <EmailSignupForm
+          email={email}
+          setEmail={setEmail}
+          onNext={() => setShowPasswordForm(true)} // 바로 Password 단계로 이동
+        />
       ) : userType ? (
         <SignupOptions onSelectEmail={() => setShowEmailForm(true)} />
       ) : (

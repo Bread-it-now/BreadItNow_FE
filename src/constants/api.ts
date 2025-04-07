@@ -39,7 +39,10 @@ export const CONTROLLER = {
 /** Module + API Version Prefix + Contorller + End-Point */
 export const API_END_POINT = {
   /** AUTH */
-
+  AUTH: {
+    SIGN_IN: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-in`,
+    SIGN_UP: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-up`,
+  },
   /** CUSTOMER */
 
   // RESERVATION

@@ -13,11 +13,13 @@ import naverIcon from '@/assets/icons/naver.svg';
 import googleIcon from '@/assets/icons/google.svg';
 import Alert from '@/components/common/Alert';
 import FirstLoginFlow from '@/components/login/FirstLoginFlow';
+import OwnerFirstLoginFlow from '@/components/login/OwnerFirstLoginFlow';
+import { API_END_POINT } from '@/constants/api';
 import { signIn } from 'next-auth/react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('personal');
+  const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('bakery');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
@@ -29,12 +31,12 @@ export default function LoginPage() {
   //TODO: 추후 로그인 API 연동하고 가져오기
   const handleLogin = async () => {
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch(`/${API_END_POINT.AUTH.SIGN_IN}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: 'test@example.com',
-          password: 'password123',
+          email: email,
+          password: password,
         }),
       });
 
@@ -78,8 +80,11 @@ export default function LoginPage() {
   };
 
   if (isFirstLogin) {
-    // TODO: 첫 로그인 시 뜨는 화면 로직 구현
-    return <FirstLoginFlow onComplete={() => router.push('/')} />;
+    return activeTab === 'personal' ? (
+      <FirstLoginFlow onComplete={() => router.push('/')} />
+    ) : (
+      <OwnerFirstLoginFlow onComplete={() => router.push('/')} />
+    );
   }
 
   return (

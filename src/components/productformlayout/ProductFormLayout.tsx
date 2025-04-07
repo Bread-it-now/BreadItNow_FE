@@ -54,6 +54,7 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
     },
   });
   const data = watch();
+  const isBreadProduct = data.productType === 'BREAD';
 
   return (
     <div className="flex flex-col items-start w-full h-full bg-gray50">
@@ -92,58 +93,60 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
           </div>
         </LabelForm>
 
-        <LabelForm name="breadCategoryIds" label="빵 카테고리" isRequired errors={errors} className="w-full">
-          <Controller
-            control={control}
-            rules={{ required: '빵 카테고리를 선택해주세요.' }}
-            {...register('breadCategoryIds')}
-            render={({ field }) => {
-              const breadCategories: Option[] =
-                field.value && field.value.length !== 0 ? mapCategoryIdsToIdLabel(field.value) : [];
+        {isBreadProduct && (
+          <LabelForm name="breadCategoryIds" label="빵 카테고리" isRequired errors={errors} className="w-full">
+            <Controller
+              control={control}
+              rules={{ required: '빵 카테고리를 선택해주세요.' }}
+              {...register('breadCategoryIds')}
+              render={({ field }) => {
+                const breadCategories: Option[] =
+                  field.value && field.value.length !== 0 ? mapCategoryIdsToIdLabel(field.value) : [];
 
-              return (
-                <div className="flex flex-col items-start gap-1 w-full">
-                  <div className="flex flex-col gap-1 w-full">
-                    {breadCategories.map((category) => (
-                      <ProductCategory
-                        key={category.label}
-                        category={{ ...category, id: Number(category.id) }}
-                        handleDelete={() => field.onChange(field.value.filter((id: number) => id !== category.id))}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex flex-col gap-2 w-full">
-                    <CustomInputWithOptions
-                      selectOption={({ id }: Option) => {
-                        if (!field.value.includes(Number(id))) {
-                          field.onChange([...field.value, Number(id)]);
-                        }
-                      }}
-                      placeholder="카테고리 검색"
-                      options={generateSelectOption(BREAD_CATEGORY)}
-                    />
-                    <div className="flex flex-wrap items-start content-center gap-[6px] w-full">
-                      {generateSelectOption(MAIN_BREAD_CATEGORY).map((category) => (
-                        <CategoryChip
+                return (
+                  <div className="flex flex-col items-start gap-1 w-full">
+                    <div className="flex flex-col gap-1 w-full">
+                      {breadCategories.map((category) => (
+                        <ProductCategory
                           key={category.label}
-                          category={{ id: Number(category.id), label: String(category.label) }}
-                          checked={field.value.includes(Number(category.id))}
-                          handleChecked={() => {
-                            if (field.value.includes(Number(category.id))) {
-                              field.onChange(field.value.filter((id: number) => id !== Number(category.id)));
-                            } else {
-                              field.onChange([...field.value, Number(category.id)]);
-                            }
-                          }}
+                          category={{ ...category, id: Number(category.id) }}
+                          handleDelete={() => field.onChange(field.value.filter((id: number) => id !== category.id))}
                         />
                       ))}
                     </div>
+                    <div className="flex flex-col gap-2 w-full">
+                      <CustomInputWithOptions
+                        selectOption={({ id }: Option) => {
+                          if (!field.value.includes(Number(id))) {
+                            field.onChange([...field.value, Number(id)]);
+                          }
+                        }}
+                        placeholder="카테고리 검색"
+                        options={generateSelectOption(BREAD_CATEGORY)}
+                      />
+                      <div className="flex flex-wrap items-start content-center gap-[6px] w-full">
+                        {generateSelectOption(MAIN_BREAD_CATEGORY).map((category) => (
+                          <CategoryChip
+                            key={category.label}
+                            category={{ id: Number(category.id), label: String(category.label) }}
+                            checked={field.value.includes(Number(category.id))}
+                            handleChecked={() => {
+                              if (field.value.includes(Number(category.id))) {
+                                field.onChange(field.value.filter((id: number) => id !== Number(category.id)));
+                              } else {
+                                field.onChange([...field.value, Number(category.id)]);
+                              }
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            }}
-          />
-        </LabelForm>
+                );
+              }}
+            />
+          </LabelForm>
+        )}
         <LabelForm name="name" label="메뉴 이름" isRequired errors={errors} className="w-full">
           <Controller
             control={control}
@@ -197,72 +200,76 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
           />
         </LabelForm>
 
-        <LabelForm name="releaseTimes" label="빵 나오는 시간" isRequired errors={errors} className="w-full">
-          <Controller
-            control={control}
-            rules={{ required: '빵 나오는 시간을 설정해주세요.' }}
-            {...register('releaseTimes')}
-            render={({ field }) => {
-              const releaseTimes = field.value || [];
-              return (
-                <div className="flex flex-col gap-3 w-full">
-                  <div className="flex flex-wrap gap-[6px]">
-                    {releaseTimes.map((releaseTime: string) => (
-                      <TimeChip
-                        key={releaseTime}
-                        time={releaseTime}
-                        handleDelete={() => field.onChange(field.value.filter((time: string) => time !== releaseTime))}
-                      />
-                    ))}
+        {isBreadProduct && (
+          <LabelForm name="releaseTimes" label="빵 나오는 시간" isRequired errors={errors} className="w-full">
+            <Controller
+              control={control}
+              rules={{ required: '빵 나오는 시간을 설정해주세요.' }}
+              {...register('releaseTimes')}
+              render={({ field }) => {
+                const releaseTimes = field.value || [];
+                return (
+                  <div className="flex flex-col gap-3 w-full">
+                    <div className="flex flex-wrap gap-[6px]">
+                      {releaseTimes.map((releaseTime: string) => (
+                        <TimeChip
+                          key={releaseTime}
+                          time={releaseTime}
+                          handleDelete={() =>
+                            field.onChange(field.value.filter((time: string) => time !== releaseTime))
+                          }
+                        />
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-1 w-full">
+                      <Button variant="secondary" onClick={() => dispatch.open()} fullWidth className="flex gap-[6px]">
+                        <Image src={add} width={20} height={20} alt="add" />
+                        <p>빵 나오는 시간 추가</p>
+                      </Button>
+                      <p className="text-title-content-2xs text-gray500">
+                        *빵이 나오는 시간을 등록해주세요. 여러 개 등록 가능합니다.
+                      </p>
+                    </div>
+                    {isWheelTimePickerOpen && (
+                      <BottomSheet
+                        isOpen={isWheelTimePickerOpen}
+                        onClose={() => {
+                          dispatch.close();
+                          setNewReleaseTime({
+                            hours: 9,
+                            minutes: 30,
+                            ampm: 'AM',
+                          });
+                        }}
+                        confirmText="추가"
+                        cancelText="취소"
+                        onConfirm={() => {
+                          dispatch.close();
+                          if (
+                            !field.value.includes(
+                              getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
+                            )
+                          ) {
+                            field.onChange([
+                              ...field.value,
+                              getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
+                            ]);
+                          }
+                          setNewReleaseTime({
+                            hours: 9,
+                            minutes: 30,
+                            ampm: 'AM',
+                          });
+                        }}>
+                        <WheelTimePicker handleSelectedTime={setNewReleaseTime} initTime={newReleaseTime} />
+                      </BottomSheet>
+                    )}
                   </div>
-                  <div className="flex flex-col gap-1 w-full">
-                    <Button variant="secondary" onClick={() => dispatch.open()} fullWidth className="flex gap-[6px]">
-                      <Image src={add} width={20} height={20} alt="add" />
-                      <p>빵 나오는 시간 추가</p>
-                    </Button>
-                    <p className="text-title-content-2xs text-gray500">
-                      *빵이 나오는 시간을 등록해주세요. 여러 개 등록 가능합니다.
-                    </p>
-                  </div>
-                  {isWheelTimePickerOpen && (
-                    <BottomSheet
-                      isOpen={isWheelTimePickerOpen}
-                      onClose={() => {
-                        dispatch.close();
-                        setNewReleaseTime({
-                          hours: 9,
-                          minutes: 30,
-                          ampm: 'AM',
-                        });
-                      }}
-                      confirmText="추가"
-                      cancelText="취소"
-                      onConfirm={() => {
-                        dispatch.close();
-                        if (
-                          !field.value.includes(
-                            getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
-                          )
-                        ) {
-                          field.onChange([
-                            ...field.value,
-                            getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
-                          ]);
-                        }
-                        setNewReleaseTime({
-                          hours: 9,
-                          minutes: 30,
-                          ampm: 'AM',
-                        });
-                      }}>
-                      <WheelTimePicker handleSelectedTime={setNewReleaseTime} initTime={newReleaseTime} />
-                    </BottomSheet>
-                  )}
-                </div>
-              );
-            }}
-          />
-        </LabelForm>
+                );
+              }}
+            />
+          </LabelForm>
+        )}
         <div className="absolute bottom-0 left-0 flex p-5 gap-2 w-full shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)] bg-white">
           <Button variant="default" fullWidth onClick={() => router.push(ROUTES.OWNER.BAKERY.BAKERY_HOME)}>
             취소

@@ -1,5 +1,6 @@
 'use client';
 
+import { API_END_POINT } from '@/constants/api';
 import Image from 'next/image';
 import Button from '@/components/button/Button';
 import VerificationInput from '@/components/common/Input/VerificationInput';
@@ -29,6 +30,47 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
     if (!files) return;
     const newFiles = Array.from(files).slice(0, 8 - images.length);
     setImages((prev) => [...prev, ...newFiles]);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const convertImageToBase64 = (file: File) => {
+        return new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (error) => reject(error);
+        });
+      };
+
+      const imageBase64List = await Promise.all(images.map(convertImageToBase64));
+
+      const res = await fetch(`/${API_END_POINT.OWNER_INIT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          bakeryName,
+          address,
+          zipcode,
+          detailAddress,
+          phoneNumber,
+          businessHours,
+          description,
+          images: imageBase64List,
+        }),
+      });
+
+      if (!res.ok) {
+        alert('빵집 생성에 실패했습니다.');
+        return;
+      }
+
+      onComplete();
+    } catch {
+      alert('오류 발생. 다시 시도해주세요.');
+    }
   };
 
   const handleImageDelete = (index: number) => {
@@ -213,7 +255,7 @@ export default function OwnerFirstLoginFlow({ onComplete }: OwnerFirstLoginFlowP
 
       <div className="w-full px-5 py-3 bg-white shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)]">
         <Button
-          onClick={onComplete}
+          onClick={handleSubmit}
           fullWidth
           variant="primary"
           disabled={!bakeryName || !address || !zipcode || !phoneNumber}>

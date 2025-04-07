@@ -12,6 +12,16 @@ interface InitCustomerRequestBody {
   breadCategoryList: string[];
 }
 
+interface InitOwnerRequestBody {
+  bakeryName: string;
+  address: string;
+  zipcode: string;
+  detailAddress: string;
+  phoneNumber: string;
+  businessHours: string;
+  description: string;
+}
+
 const login = http.post(`/${API_END_POINT.AUTH.SIGN_IN}`, async ({ request }) => {
   const { email, password } = (await request.json()) as LoginRequestBody;
 
@@ -80,4 +90,39 @@ const initCustomer = http.post('/customer-api/api/v1/customer/me/init', async ({
   });
 });
 
-export default [login, signup, initCustomer];
+const initOwner = http.post('/owner-api/api/v1/bakery', async ({ request }) => {
+  const body = (await request.json()) as InitOwnerRequestBody;
+
+  const requiredFields = [
+    body.bakeryName,
+    body.address,
+    body.zipcode,
+    body.detailAddress,
+    body.phoneNumber,
+    body.businessHours,
+    body.description,
+  ];
+
+  const hasEmptyField = requiredFields.some((field) => !field || field.trim() === '');
+
+  if (hasEmptyField) {
+    return HttpResponse.json(
+      {
+        status: 'FAIL',
+        message: '모든 필드를 입력해주세요.',
+      },
+      { status: 400 },
+    );
+  }
+
+  return HttpResponse.json({
+    status: 'SUCCESS',
+    message: '빵집 생성 완료',
+    data: {
+      bakeryId: 999,
+      ...body,
+    },
+  });
+});
+
+export default [login, signup, initCustomer, initOwner];

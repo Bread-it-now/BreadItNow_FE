@@ -12,10 +12,12 @@ const login = http.post(`/${API_END_POINT.AUTH.SIGN_IN}`, async ({ request }) =>
 
   if (email === 'test@example' && password === 'password123') {
     return HttpResponse.json({
-      accessToken: 'mocked-access-token',
+      status: 'SUCCESS',
+      message: '로그인 성공',
       data: {
+        accessToken: 'mocked-access-token',
         userId: 1,
-        isNewUser: false,
+        isNewUser: true,
         role: 'OWNER',
       },
     });

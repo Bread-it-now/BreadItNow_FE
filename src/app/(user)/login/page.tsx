@@ -49,9 +49,10 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      if (data.firstLogin) {
+      if (data.data?.isNewUser) {
         setIsFirstLogin(true);
       } else {
+        setIsFirstLogin(false);
         setAlertTitle('로그인에 성공했습니다!');
         setAlertSubtitle('메인 화면으로 이동합니다.');
         setShowAlert(true);

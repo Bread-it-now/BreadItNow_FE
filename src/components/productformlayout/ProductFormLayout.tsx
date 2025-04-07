@@ -30,7 +30,14 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
     formState: { errors, isDirty },
     register,
   } = useForm<ProductForm>({
-    defaultValues: initValue || {},
+    defaultValues: initValue || {
+      productType: undefined,
+      breadCategoryIds: [],
+      name: '',
+      price: undefined,
+      description: '',
+      releaseTimes: [],
+    },
   });
   const data = watch();
 

@@ -178,7 +178,10 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
           <Controller
             control={control}
             rules={{ required: '메뉴 가격을 입력해주세요.' }}
-            {...register('price', { valueAsNumber: true })}
+            {...register('price', {
+              valueAsNumber: true,
+              validate: (value) => value > 0 || '가격은 0보다 커야 합니다.',
+            })}
             render={({ field }) => {
               return (
                 <InputText

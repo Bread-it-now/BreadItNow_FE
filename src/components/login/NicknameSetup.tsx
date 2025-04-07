@@ -1,17 +1,16 @@
 'use client';
 
-import { useState } from 'react';
 import Button from '@/components/button/Button';
 import VerificationInput from '@/components/common/Input/VerificationInput';
 import Topbar from '../topbar/Topbar';
 
 interface NicknameSetupProps {
+  nickname: string;
+  setNickname: (nickname: string) => void;
   onNext: () => void;
 }
 
-export default function NicknameSetup({ onNext }: NicknameSetupProps) {
-  const [nickname, setNickname] = useState('');
-
+export default function NicknameSetup({ nickname, setNickname, onNext }: NicknameSetupProps) {
   return (
     <div className="flex flex-col h-screen">
       <Topbar hasBackBtn />
@@ -24,7 +23,8 @@ export default function NicknameSetup({ onNext }: NicknameSetupProps) {
         <label className="mt-5 mb-3 text-sm font-medium text-gray-700 block">닉네임</label>
         <VerificationInput value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="닉네임" />
       </div>
-      <div className="w-full px-5 py-3 bg-white shadow-[0px_-1px_20px_0px_rgba(28,30,32,0.08)]">
+
+      <div className="w-full px-5 py-3 bg-white shadow-[...]">
         <Button fullWidth variant="primary" disabled={!nickname} onClick={onNext}>
           인증하기
         </Button>

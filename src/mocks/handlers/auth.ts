@@ -7,6 +7,11 @@ interface LoginRequestBody {
   role?: string;
 }
 
+interface InitCustomerRequestBody {
+  nickname: string;
+  breadCategoryList: string[];
+}
+
 const login = http.post(`/${API_END_POINT.AUTH.SIGN_IN}`, async ({ request }) => {
   const { email, password } = (await request.json()) as LoginRequestBody;
 
@@ -23,14 +28,26 @@ const login = http.post(`/${API_END_POINT.AUTH.SIGN_IN}`, async ({ request }) =>
     });
   }
 
-  return new HttpResponse('Invalid credentials', { status: 401 });
+  return HttpResponse.json(
+    {
+      status: 'FAIL',
+      message: 'Invalid credentials',
+    },
+    { status: 401 },
+  );
 });
 
 const signup = http.post(`/${API_END_POINT.AUTH.SIGN_UP}`, async ({ request }) => {
   const { email, password, role } = (await request.json()) as LoginRequestBody;
 
   if (!email || !password || !role) {
-    return new HttpResponse('Missing required fields', { status: 400 });
+    return HttpResponse.json(
+      {
+        status: 'FAIL',
+        message: 'Missing required fields',
+      },
+      { status: 400 },
+    );
   }
 
   return HttpResponse.json({
@@ -41,4 +58,26 @@ const signup = http.post(`/${API_END_POINT.AUTH.SIGN_UP}`, async ({ request }) =
   });
 });
 
-export default [login, signup];
+const initCustomer = http.post('/customer-api/api/v1/customer/me/init', async ({ request }) => {
+  const { nickname, breadCategoryList } = (await request.json()) as InitCustomerRequestBody;
+
+  if (!nickname || !Array.isArray(breadCategoryList)) {
+    return HttpResponse.json(
+      {
+        status: 'FAIL',
+        message: 'Invalid nickname or breadCategoryList',
+      },
+      { status: 400 },
+    );
+  }
+
+  return HttpResponse.json({
+    status: 'SUCCESS',
+    data: {
+      nickname,
+      breadCategoryList,
+    },
+  });
+});
+
+export default [login, signup, initCustomer];

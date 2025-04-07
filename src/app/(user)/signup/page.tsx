@@ -9,6 +9,7 @@ import SignupOptions from '@/components/signup/SignupOptions';
 import EmailSignupForm from '@/components/signup/EmailSignupForm';
 import PasswordSetupForm from '@/components/signup/PasswordSetUpForm';
 import SignupComplete from '@/components/signup/SignupComplete';
+import { API_END_POINT } from '@/constants/api';
 
 export default function SignupPage() {
   const [isPrivacyModalOpen, setPrivacyModalOpen] = useState(false);
@@ -18,14 +19,12 @@ export default function SignupPage() {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSignupComplete, setSignupComplete] = useState(false);
 
-  // 회원가입 정보 상태
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // 회원가입 API
   const handleSignUp = async () => {
     try {
-      const res = await fetch('/api/auth/sign-up', {
+      const res = await fetch(`/${API_END_POINT.AUTH.SIGN_UP}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -37,6 +36,13 @@ export default function SignupPage() {
 
       if (!res.ok) {
         alert('회원가입 실패. 다시 시도해주세요.');
+        return;
+      }
+
+      const result = await res.json();
+
+      if (result.status !== 'SUCCESS') {
+        alert('회원가입 실패: ' + result.status);
         return;
       }
 
@@ -65,11 +71,7 @@ export default function SignupPage() {
       ) : showPasswordForm ? (
         <PasswordSetupForm password={password} setPassword={setPassword} onComplete={handleSignUp} />
       ) : showEmailForm ? (
-        <EmailSignupForm
-          email={email}
-          setEmail={setEmail}
-          onNext={() => setShowPasswordForm(true)} // 바로 Password 단계로 이동
-        />
+        <EmailSignupForm email={email} setEmail={setEmail} onNext={() => setShowPasswordForm(true)} />
       ) : userType ? (
         <SignupOptions onSelectEmail={() => setShowEmailForm(true)} />
       ) : (

@@ -93,3 +93,7 @@ export const getFormattingDate = (date: Date, addedMinutes: number = 0): string 
 
   return `${month} ${day}일 ${hours}:${minutes}`;
 };
+
+export const getReleaseTime = (hours: number, minutes: number, ampm: 'AM' | 'PM'): string => {
+  return `${ampm === 'AM' ? hours.toString().padStart(2, '0') : (hours + 12).toString().padStart(2, '0')}:${minutes}`;
+};

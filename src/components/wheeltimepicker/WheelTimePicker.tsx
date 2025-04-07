@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, SetStateAction, Dispatch } from 'react';
 
 interface WheelProps {
   items: (string | number)[];
@@ -123,7 +123,7 @@ const Wheel = ({
       className="relative h-[220px] w-16 overflow-y-scroll no-scrollbar cursor-pointer overflow-hidden"
       style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="flex flex-col items-center py-[88px]">
-        {displayedItems.map(({ item, offset, key }) => {
+        {displayedItems.map(({ item, offset, key }, index) => {
           if (item === null) return null;
 
           const opacity = isAMPM ? 1 : 1 - Math.abs(offset) * 0.2;
@@ -131,7 +131,7 @@ const Wheel = ({
 
           return (
             <div
-              key={key}
+              key={`${key}-${index}-${offset}`}
               className="h-[44px] flex items-center justify-center snap-center transition-all duration-200 ease-in-out"
               style={{
                 transform: `rotateX(${rotateX}deg) scale(1)`,
@@ -147,23 +147,33 @@ const Wheel = ({
   );
 };
 
-const WheelTimePicker = () => {
-  const [hour, setHour] = useState<number>(9);
-  const [minute, setMinute] = useState<number>(30);
-  const [ampm, setAmpm] = useState<'AM' | 'PM'>('AM');
-
-  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
+interface WheelTimePickerProps {
+  handleSelectedTime: Dispatch<SetStateAction<{ hours: number; minutes: number; ampm: 'AM' | 'PM' }>>;
+  initTime: { hours: number; minutes: number; ampm: 'AM' | 'PM' };
+}
+const WheelTimePicker = ({ handleSelectedTime, initTime }: WheelTimePickerProps) => {
+  const hours = Array.from({ length: 12 }, (_, i) => i);
   const minutes = Array.from({ length: 60 }, (_, i) => i);
   const ampmList = ['AM', 'PM'];
 
   return (
     <div className="flex justify-center items-center bg-gray50 w-full">
-      <Wheel items={hours} initialIndex={hour - 1} onChange={(v) => setHour(Number(v))} cyclic />
-      <Wheel items={minutes} initialIndex={minute} onChange={(v) => setMinute(Number(v))} cyclic />
+      <Wheel
+        items={hours}
+        initialIndex={initTime.hours}
+        onChange={(v) => handleSelectedTime((prev) => ({ ...prev, hours: Number(v) }))}
+        cyclic
+      />
+      <Wheel
+        items={minutes}
+        initialIndex={initTime.minutes}
+        onChange={(v) => handleSelectedTime((prev) => ({ ...prev, minutes: Number(v) }))}
+        cyclic
+      />
       <Wheel
         items={ampmList}
-        initialIndex={ampm === 'PM' ? 1 : 0}
-        onChange={(v) => setAmpm(v as 'AM' | 'PM')}
+        initialIndex={initTime.ampm === 'PM' ? 1 : 0}
+        onChange={(v) => handleSelectedTime((prev) => ({ ...prev, ampm: v as 'AM' | 'PM' }))}
         cyclic={false}
       />
     </div>

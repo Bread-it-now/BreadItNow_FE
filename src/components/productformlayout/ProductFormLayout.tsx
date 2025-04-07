@@ -12,6 +12,14 @@ import TextArea from '@/components/common/textarea/TextArea';
 import { useForm, Controller } from 'react-hook-form';
 import { ProductForm } from '@/types/bakery';
 import { useRouter } from 'next/navigation';
+import WheelTimePicker from '../wheeltimepicker/WheelTimePicker';
+import BottomSheet from '../bottomsheet/Bottomsheet';
+import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
+import TimeChip from '../common/chips/timechip/TimeChip';
+import { useState } from 'react';
+import { getReleaseTime } from '@/utils/date';
+import add from '@/assets/icons/add.svg';
+import Image from 'next/image';
 
 interface ProductFormLayoutProps {
   type: 'CREATE' | 'EDIT';
@@ -22,6 +30,12 @@ interface ProductFormLayoutProps {
 export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps) => {
   const router = useRouter();
   const generateSelectOption = generateSharedObjectByCustomKey('id', 'label');
+  const { isOpen: isWheelTimePickerOpen, dispatch } = useBaseBottomSheet();
+  const [newReleaseTime, setNewReleaseTime] = useState<{ hours: number; minutes: number; ampm: 'AM' | 'PM' }>({
+    hours: 9,
+    minutes: 30,
+    ampm: 'AM',
+  });
 
   const {
     handleSubmit,
@@ -178,6 +192,73 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
                   currentLength={field.value.length}
                   maxLength={50}
                 />
+              );
+            }}
+          />
+        </LabelForm>
+
+        <LabelForm name="releaseTimes" label="빵 나오는 시간" isRequired errors={errors} className="w-full">
+          <Controller
+            control={control}
+            rules={{ required: '빵 나오는 시간을 설정해주세요.' }}
+            {...register('releaseTimes')}
+            render={({ field }) => {
+              const releaseTimes = field.value || [];
+              return (
+                <div className="flex flex-col gap-3 w-full">
+                  <div className="flex flex-wrap gap-[6px]">
+                    {releaseTimes.map((releaseTime: string) => (
+                      <TimeChip
+                        key={releaseTime}
+                        time={releaseTime}
+                        handleDelete={() => field.onChange(field.value.filter((time: string) => time !== releaseTime))}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Button variant="secondary" onClick={() => dispatch.open()} fullWidth className="flex gap-[6px]">
+                      <Image src={add} width={20} height={20} alt="add" />
+                      <p>빵 나오는 시간 추가</p>
+                    </Button>
+                    <p className="text-title-content-2xs text-gray500">
+                      *빵이 나오는 시간을 등록해주세요. 여러 개 등록 가능합니다.
+                    </p>
+                  </div>
+                  {isWheelTimePickerOpen && (
+                    <BottomSheet
+                      isOpen={isWheelTimePickerOpen}
+                      onClose={() => {
+                        dispatch.close();
+                        setNewReleaseTime({
+                          hours: 9,
+                          minutes: 30,
+                          ampm: 'AM',
+                        });
+                      }}
+                      confirmText="추가"
+                      cancelText="취소"
+                      onConfirm={() => {
+                        dispatch.close();
+                        if (
+                          !field.value.includes(
+                            getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
+                          )
+                        ) {
+                          field.onChange([
+                            ...field.value,
+                            getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
+                          ]);
+                        }
+                        setNewReleaseTime({
+                          hours: 9,
+                          minutes: 30,
+                          ampm: 'AM',
+                        });
+                      }}>
+                      <WheelTimePicker handleSelectedTime={setNewReleaseTime} initTime={newReleaseTime} />
+                    </BottomSheet>
+                  )}
+                </div>
               );
             }}
           />

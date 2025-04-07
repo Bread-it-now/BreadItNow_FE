@@ -143,13 +143,13 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
           <Controller
             control={control}
             rules={{ required: '메뉴 가격을 입력해주세요.' }}
-            {...register('price')}
+            {...register('price', { valueAsNumber: true })}
             render={({ field }) => {
               return (
                 <InputText
                   defaultValue={String(field.value)}
                   placeholder="메뉴 가격"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) => field.onChange(e.target.value && Number(e.target.value))}
                   inputType="number"
                   unit="원"
                 />

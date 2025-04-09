@@ -20,9 +20,10 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
   const hideNavbarPaths = ['/login', '/signup', '/mypage/', '/reservation/result'];
   const myPageSubSectionPathRegex = /^\/mypage\/.*$/;
+  const customerBakeryPathRegex = /^\/bakery\/([a-zA-Z0-9]+)$/;
   const shouldHideNavbar = hideNavbarPaths.includes(pathname);
   const isMyPageSubSection = myPageSubSectionPathRegex.test(pathname);
-
+  const isCustomerBakery = customerBakeryPathRegex.test(pathname);
   return (
     <div className="min-h-screen flex justify-center bg-gray-100">
       <div
@@ -30,7 +31,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
           ${!shouldHideNavbar && !isMyPageSubSection ? 'pb-[58px]' : ''}`}>
         <div id="bottomsheet-root" />
         {children}
-        {!shouldHideNavbar && !isMyPageSubSection && (
+        {!shouldHideNavbar && !isMyPageSubSection && !isCustomerBakery && (
           <div className="absolute bottom-0 left-0 w-full">
             <BottomNavbar NavList={[...UserNavElements]} />
           </div>

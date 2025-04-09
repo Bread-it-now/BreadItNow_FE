@@ -24,6 +24,7 @@ export interface OperatingInfo {
 export interface ImageInfo {
   profileImage: string;
   bakeryImages: string[];
+  additionalImages?: string[];
 }
 
 export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}

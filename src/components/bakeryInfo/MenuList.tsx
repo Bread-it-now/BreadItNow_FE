@@ -1,6 +1,6 @@
 import ProductReserveCard from './ProductReserveCard';
 import { Product } from '@/types/bakery';
-import BellIcon from '@/assets/icons/bell.svg';
+import BellIcon from '@/assets/icons/bell_gray.svg';
 import BellPressedIcon from '@/assets/icons/bell_pressed.svg';
 import Bookmark from '@/assets/icons/bookmark.svg';
 import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
@@ -37,7 +37,7 @@ function MenuFloatingButton({ bakeryId, productId }: { bakeryId: number; product
   };
   return (
     <IconButton
-      buttonClass="absolute bottom-0 right-0 mb-5 "
+      buttonClass="absolute bottom-0 right-0 mb-5 border border-gray-100 border-[1px]"
       isChecked={alarmChecked}
       icon={alarmChecked ? BellPressedIcon : BellIcon}
       iconText=""

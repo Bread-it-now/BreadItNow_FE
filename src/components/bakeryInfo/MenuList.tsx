@@ -1,6 +1,6 @@
 import ProductReserveCard from './ProductReserveCard';
-import { Product } from '@/types/product';
-import BellIcon from '@/assets/icons/bell.svg';
+import { Product } from '@/types/bakery';
+import BellIcon from '@/assets/icons/bell_gray.svg';
 import BellPressedIcon from '@/assets/icons/bell_pressed.svg';
 import Bookmark from '@/assets/icons/bookmark.svg';
 import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
@@ -8,12 +8,12 @@ import Tag from '@/components/common/Tag';
 import IconButton from '@/components/button/IconButton';
 import { useState } from 'react';
 interface ProductReserveCardProps {
-  menuList: Product[];
+  menuList?: Product[];
   title: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function MenuImageIconButton({ bakeryId, productId }: { bakeryId: string; productId: string }) {
+function MenuImageIconButton({ bakeryId, productId }: { bakeryId: number; productId: number }) {
   const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(false);
   const onBookmarkClick = () => {
     setBookmarkChecked(!bookmarkChecked);
@@ -30,14 +30,14 @@ function MenuImageIconButton({ bakeryId, productId }: { bakeryId: string; produc
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function MenuFloatingButton({ bakeryId, productId }: { bakeryId: string; productId: string }) {
+function MenuFloatingButton({ bakeryId, productId }: { bakeryId: number; productId: number }) {
   const [alarmChecked, setAlarmChecked] = useState<boolean>(false);
   const onClickAlarmBtn = () => {
     setAlarmChecked(!alarmChecked);
   };
   return (
     <IconButton
-      buttonClass="absolute bottom-0 right-0 mb-5 "
+      buttonClass="absolute bottom-0 right-0 mb-5 border border-gray-100 border-[1px]"
       isChecked={alarmChecked}
       icon={alarmChecked ? BellPressedIcon : BellIcon}
       iconText=""
@@ -57,22 +57,25 @@ function TimeForBreadComeOut() {
 }
 function MenuList({ menuList, title }: ProductReserveCardProps) {
   return (
-    <article className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll min-h-[600px] text-black">
+    <article
+      key={title}
+      className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll min-h-[600px] text-black">
       <div className="flex justify-between mb-6">
         <div className="font-semibold  text-md">{title}</div>
       </div>
-      {menuList.map((menu, index) => (
-        <>
-          <ProductReserveCard
-            ImageIconButton={<MenuImageIconButton bakeryId={menu.bakery_id} productId={menu.productId} />}
-            FloatingButton={<MenuFloatingButton bakeryId={menu.bakery_id} productId={menu.productId} />}
-            moreInfoComponent={<TimeForBreadComeOut />}
-            key={`menu-${index}`}
-            {...menu}
-          />
-          {index !== menuList.length - 1 && <hr className="border-gray-200 my-5" />}
-        </>
-      ))}
+      {menuList &&
+        menuList.map((menu, index) => (
+          <>
+            <ProductReserveCard
+              ImageIconButton={<MenuImageIconButton bakeryId={menu.bakeryId} productId={menu.productId} />}
+              FloatingButton={<MenuFloatingButton bakeryId={menu.bakeryId} productId={menu.productId} />}
+              moreInfoComponent={<TimeForBreadComeOut />}
+              key={`${title}-menu-${index}`}
+              {...menu}
+            />
+            {index !== menuList.length - 1 && <hr className="border-gray-200 my-5" />}
+          </>
+        ))}
     </article>
   );
 }

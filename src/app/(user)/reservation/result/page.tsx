@@ -5,9 +5,9 @@ import Image from 'next/image';
 import BreadSuccess from '@/assets/icons/reserve-success.svg';
 import BreadFail from '@/assets/icons/reserve-fail.svg';
 import type { Product } from '@/types/product';
-import ProductReserveCard from '@/components/bakeryInfo/ProductReserveCard';
 import Button from '@/components/button/Button';
-
+import CompletedReservationCard from '@/components/bakeryInfo/CompletedReservationCard';
+import { useSearchParams } from 'next/navigation';
 const breadList: Product[] = [
   {
     productId: '1',
@@ -47,68 +47,71 @@ const breadList: Product[] = [
 function ReservationFail({ failReason }: { failReason: string }) {
   const router = useRouter();
   return (
-    <>
-      <div className="w-full h-full flex flex-col grow bg-white gap-[10px] pb-[92px]">
-        <div className="flex items-center gap-2 px-5 py-[13px] bg-white">
-          <button>
-            <Image src={BackIcon} alt="arrow-left" />
-          </button>
-          <span className="text-title-content-m text-black">예약 완료</span>
-        </div>
-        <div className="w-full px-5 py-6 flex overflow-hidden bg-white flex-col items-center mx-auto">
-          <Image src={BreadFail} alt="bread-success" width={70} height={70} />
-          <div className="mt-4 text-center">
-            <div className="font-semibold text-[22px] text-black">빵 예약을 실패했습니다.</div>
-            <div className="font-normal text-sm text-gray-500">{failReason}</div>
-          </div>
+    <div className="w-full h-full grow bg-white flex flex-col">
+      <div className="flex items-center gap-2 px-5 py-[13px] bg-white">
+        <button>
+          <Image src={BackIcon} alt="arrow-left" />
+        </button>
+        <span className="text-title-content-m text-black">예약 완료</span>
+      </div>
+      <div className="w-full grow px-5 py-6 flex overflow-hidden bg-white flex-col items-center mx-auto">
+        <Image src={BreadFail} alt="bread-success" width={70} height={70} />
+        <div className="mt-4 text-center">
+          <div className="font-semibold text-[22px] text-black">빵 예약을 실패했습니다.</div>
+          <div className="font-normal text-sm text-gray-500">{failReason}</div>
         </div>
       </div>
-      <div className="w-full border-box fixed z-10 bottom-0 bg-white p-5 flex gap-2">
+      <div className="w-full border-box bg-white p-5 flex gap-2 shadow-[0_-1px_20px_0_rgba(28,30,32,0.08)]">
         <Button onClick={() => router.push('/')} variant="primary" fullWidth>
           메인
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 
 function ReservationSuccess() {
   const router = useRouter();
   return (
-    <>
-      <div className="w-full h-full flex flex-col gap-[10px] pb-[92px]">
-        <div className="flex items-center gap-2 px-5 py-[13px] bg-white">
-          <button>
-            <Image src={BackIcon} alt="arrow-left" />
-          </button>
-          <span className="text-title-content-m text-black">예약 완료</span>
-        </div>
-        <div className="w-full px-5 py-6 flex overflow-hidden bg-white flex-col items-center mx-auto">
+    <div className="w-full h-full">
+      <div className="flex items-center gap-2 px-5 py-[13px] bg-white">
+        <button>
+          <Image src={BackIcon} alt="arrow-left" />
+        </button>
+        <span className="text-title-content-m text-black">예약 완료</span>
+      </div>
+      <div className="flex flex-col gap-[10px]">
+        <div className="w-full px-5 py-6 flex overflow-hidden bg-white flex-col items-center mx-auto rounded-b-xl">
           <Image src={BreadSuccess} alt="bread-success" width={70} height={70} />
-          <div className="mt-4 text-center">
-            <div className="font-semibold text-[22px] text-black">빵 예약 요청이 접수되었습니다.</div>
-            <div className="font-normal text-sm text-gray-500">판매바의 승인이 완료되면 예약이 확정됩니다.</div>
+          <div className="text-center">
+            <div className="font-semibold text-[22px] text-black mt-4">빵 예약 요청이 접수되었습니다.</div>
+            <div className="font-normal text-sm text-gray-500 mt-2">판매바의 승인이 완료되면 예약이 확정됩니다.</div>
           </div>
         </div>
 
-        <div className="w-full px-5 py-6 overflow-hidden text-black bg-white">
+        <div className="w-full px-5 py-6 overflow-hidden text-black bg-white rounded-xl">
           <div className="text-title-content-m">예약 정보</div>
           <div className="mt-5">
             <div className="flex justify-between">
               <div className="font-normal text-sm text-gray-500">예약 빵집</div>
               <div className="font-medium text-sm">소금 한 꼬집</div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-4">
               <div className="font-normal text-sm text-gray-500">예약 일시</div>
               <div className="text-sm font-medium">2025.03.01</div>
             </div>
           </div>
         </div>
 
-        <div className="w-full border-box px-5 py-6 overflow-hidden text-black bg-white">
-          <div className="text-title-content-m">예약 상품</div>
-          {breadList.map((product) => {
-            return <ProductReserveCard key={product.productId} {...product} />;
+        <div className="rounded-xl w-full border-box px-5 py-6 overflow-hidden text-black bg-white">
+          <div className="text-title-content-m mb-5">예약 상품</div>
+          {breadList.map((product, index) => {
+            return (
+              <>
+                <CompletedReservationCard key={`${product.productId}-${index}`} {...product} />
+                {index !== breadList.length - 1 && <hr className="w-full border-gray-200 my-5" />}
+              </>
+            );
           })}
           <div className="mt-[30px] bg-gray-50 font-semibold">
             <div className="px-5 py-[23px] flex justify-between items-center text-black">
@@ -120,7 +123,7 @@ function ReservationSuccess() {
           </div>
         </div>
       </div>
-      <div className="w-full border-box fixed z-10 bottom-0 bg-white p-5 flex gap-2">
+      <div className="w-full border-box sticky z-10 bottom-0 bg-white p-5 flex gap-2 mt-[50px]">
         <Button onClick={() => router.push('/')} variant="default" fullWidth>
           메인
         </Button>
@@ -128,13 +131,14 @@ function ReservationSuccess() {
           예약 상세
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 
 function Page() {
-  // const { id } = useParams();
-  const isSuccess = false;
+  const searchParams = useSearchParams();
+  const status = searchParams.get('status');
+  const isSuccess = status === 'success';
 
   return (
     <>

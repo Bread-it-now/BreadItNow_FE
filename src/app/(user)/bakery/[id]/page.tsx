@@ -1,6 +1,5 @@
 'use client';
 import ImageSlider from '@/components/common/slider/ImageSlider';
-import StoreInfo from '@/components/bakeryInfo/StoreInfo';
 import Tag from '@/components/common/Tag';
 import Image from 'next/image';
 import ArrowLeft from '@/assets/icons/arrow-left.svg';
@@ -12,29 +11,14 @@ import Footer from '@/components/bakeryInfo/Footer';
 import MenuCategory from '@/components/bakeryInfo/MenuCategory';
 import ReservationBottonSheet from '@/components/bakeryInfo/ReservationBottomSheet';
 import { useState } from 'react';
-import type { Bakery } from '@/types/bakery';
-import { Product } from '@/types/product';
+import { Product } from '@/types/bakery';
 import Accordion from '@/components/accordion/Accordion';
 import ArrowRight from '@/assets/icons/arrow-right.svg';
 import KakaoIcon from '@/assets/images/kakao.png';
 import NaverIcon from '@/assets/images/naver.png';
 import CopyIcon from '@/assets/icons/copy.svg';
-const bakery: Bakery = {
-  bakeryId: 1,
-  name: '빵집',
-  address: '서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층',
-  phone: '02-123-4567',
-  introduction: '빵집 소개',
-  profileImage: 'https://placehold.co/300x400/png',
-  bakeryImages: [
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/300x400/png',
-  ],
-  openTime: '07:00',
-  operatingStatus: 'OPEN',
-  distance: 1.5,
-};
+import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
+import { useParams } from 'next/navigation';
 
 function BakeryOpenInfo({ openInfo }: { openInfo: string }) {
   return (
@@ -79,6 +63,11 @@ function BakeryComesOutInfo({ comesOutInfo }: { comesOutInfo: { time: string; br
 }
 
 function Page() {
+  const params = useParams();
+  const bakeryId = params.id;
+  const { data: bakery } = useBakeryInfo(Number(bakeryId));
+  const { data: bakeryProducts } = useBakeryProducts(Number(bakeryId));
+  //API
   const { isOpen, open, close } = useReservationBottomSheet();
   const router = useRouter();
   const [reserveStep, setReserveStep] = useState<number>(1);
@@ -132,11 +121,6 @@ function Page() {
       breads: ['크루아상', '생크림식빵', '마늘바게트', '소보루빵'],
     },
   ];
-  const images = [
-    'https://placehold.co/300x400/png',
-    'https://placehold.co/600x400/png',
-    'https://placehold.co/600x1000/png',
-  ];
   const [checkedProducts, setCheckProducts] = useState<Product[]>([]);
 
   //주소 바텀 sheet
@@ -147,6 +131,8 @@ function Page() {
   const onCloseAddressBottomSheet = () => {
     setIsOpenAddressBottomSheet(false);
   };
+
+  if (!bakery) return <div>Loading...</div>;
   return (
     <div className="flex flex-col gap-[10px] overflow-y-scroll text-black">
       <div className="h-[250px] relative rounded-b-2xl overflow-hidden">
@@ -157,9 +143,9 @@ function Page() {
           alt="back"
         />
         {/* TODO 빵집 섬네일은 1개인데 슬라이더가 필요한가? */}
-        <ImageSlider images={images} />
+        <ImageSlider images={bakery?.bakeryImages} />
       </div>
-      <StoreInfo bakery={bakery} />
+      {/* <StoreInfo bakery={bakery} /> */}
       <Accordion title="영업 시간">
         <BakeryOpenInfo openInfo={bakery.openTime} />
       </Accordion>
@@ -169,14 +155,14 @@ function Page() {
       {/* TODO 마지막 이미지 클릭한 후 이동할 페이지 필요  */}
       {/* 이미지 어디서 가져오나? */}
       <Accordion title="이미지">
-        <BakeryImages images={images} />
+        <BakeryImages images={bakery.additionalImages ? bakery.additionalImages : []} />
       </Accordion>
 
       <div className="flex flex-col gap-[10px] px-5 py-[30px] bg-white rounded-2xl">
         <div className="flex gap-5">
           <div className="grow">
             <div className="text-title-subtitle">주소</div>
-            <div className="text-[13px] font-normal text-gray-500 mt-1">대전광역시 중구 대종로480번길 15 (은행동)</div>
+            <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.address}</div>
           </div>
           <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
         </div>
@@ -184,13 +170,13 @@ function Page() {
         <div className="flex gap-5">
           <div className="grow">
             <div className="text-title-subtitle">전화번호</div>
-            <div className="text-[13px] font-normal text-gray-500 mt-1">010-1234-5678</div>
+            <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.phone}</div>
           </div>
           <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
         </div>
       </div>
 
-      <MenuCategory />
+      <MenuCategory bakeryProducts={bakeryProducts} />
 
       <BottomSheet
         isOpen={isOpen}

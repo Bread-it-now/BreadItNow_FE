@@ -11,10 +11,10 @@ interface ImageSliderProps {
 
 const TagPagination = ({ currentPage, lastPage }: { currentPage: number; lastPage: number }) => {
   return (
-    <div className="absolute bg-gray-900 backdrop-blur-[20px] bg-opacity-40 bottom-5 right-5 py-1 px-[14px] font-semibold rounded-2xl text-[11px]">
-      {currentPage + 1}
-      <span className="px-1">&#183;</span>
-      {lastPage}
+    <div className="absolute text-white bg-gray-900/40 backdrop-blur-sm  bottom-5 right-5 py-1 px-[14px] font-semibold rounded-2xl text-[11px]">
+      <span className="">{currentPage + 1}</span>
+      <span className="mx-1 opacity-50">&#183;</span>
+      <span className="opacity-50">{lastPage}</span>
     </div>
   );
 };

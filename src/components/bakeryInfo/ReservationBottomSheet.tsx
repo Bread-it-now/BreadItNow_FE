@@ -2,51 +2,15 @@
 import { useMemo, useState } from 'react';
 import RoundTab from '../common/tabs/RoundTab';
 import ProductReserveCard from './ProductReserveCard';
-import { Product } from '@/types/product';
 import Spinner from '@/components/spinner/Spinner';
 import Checkbox from '@/components/common/checkbox/Checkbox';
 import { comma } from '@/utils/comma';
-
+import { BakeryProducts, Product } from '@/types/bakery';
 interface MenuCategoryProps {
   key: string;
   label: string;
 }
 
-const productList: Product[] = [
-  {
-    productId: '1',
-    bakery_id: '1',
-    type: 'BREAD',
-    name: '소금빵',
-    price: 1000,
-    stock: 10,
-    description: '소금빵 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-  },
-  {
-    productId: '2',
-    bakery_id: '1',
-    type: 'BREAD',
-    name: '휘낭시에',
-    price: 1000,
-    stock: 10,
-    description: '휘낭시에 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-  },
-  {
-    productId: '3',
-    bakery_id: '1',
-    type: 'BREAD',
-    name: '마들렌',
-    price: 1000,
-    stock: 10,
-    description: '마들렌 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-  },
-];
 const menuCategories: MenuCategoryProps[] = [
   {
     key: '1',
@@ -87,10 +51,12 @@ function ReservationBottonSheet({
   reserveStep,
   checkedProducts,
   setCheckProducts,
+  product,
 }: {
   reserveStep: number;
   checkedProducts: Product[];
   setCheckProducts: (item: Product[]) => void;
+  product?: BakeryProducts;
 }) {
   const [category, setCategory] = useState<string>(menuCategories[0].key);
   const onTabChange = (key: string) => {
@@ -114,28 +80,30 @@ function ReservationBottonSheet({
   }, [checkedProducts]);
 
   return (
-    <div className="h-[630px] flex flex-col pb-[56px]">
+    <div>
       {reserveStep === 1 ? (
         <>
-          <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
-          <div className="flex flex-col gap-2">
-            {category === '1' ? (
-              productList.map((product, index) => (
-                <ProductReserveCard
-                  ImageIconButton={
-                    <BreadCheckBox
-                      name={product.name}
-                      isChecked={checkedProducts.find((product) => product.name === product.name) ? true : false}
-                      onCheckboxChange={() => setCheckProductsisCheckedProduct(product)}
-                    />
-                  }
-                  key={`product-${index}`}
-                  {...product}
-                />
-              ))
-            ) : (
-              <div>기타</div>
-            )}
+          <div className="py-[10px]">
+            <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
+          </div>
+          <div className="flex flex-col gap-2 max-h-[559px] overflow-y-scroll">
+            {category === '1'
+              ? product?.breadProducts.map((product, index) => (
+                  <ProductReserveCard
+                    ImageIconButton={
+                      <BreadCheckBox
+                        name={product.name}
+                        isChecked={checkedProducts.find((product) => product.name === product.name) ? true : false}
+                        onCheckboxChange={() => setCheckProductsisCheckedProduct(product)}
+                      />
+                    }
+                    key={`product-${index}`}
+                    {...product}
+                  />
+                ))
+              : product?.otherProducts.map((product, index) => (
+                  <ProductReserveCard key={`product-${index}`} {...product} />
+                ))}
           </div>
         </>
       ) : (

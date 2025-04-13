@@ -71,7 +71,7 @@ const BottomSheet = ({
   return (
     <>
       {createPortal(
-        <div className={cn('absolute bottom-0 w-full h-full z-20')}>
+        <div className={cn('fixed max-w-[375px] bottom-0 w-full h-full z-20')}>
           {/* Backdrop */}
           {!fullHeight && (
             <div

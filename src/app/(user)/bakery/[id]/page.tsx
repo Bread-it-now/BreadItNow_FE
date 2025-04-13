@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import BakeryImages from '@/components/bakeryInfo/BakeryImage';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
-import Footer from '@/components/bakeryInfo/Footer';
 import MenuCategory from '@/components/bakeryInfo/MenuCategory';
 import ReservationBottonSheet from '@/components/bakeryInfo/ReservationBottomSheet';
 import { useState } from 'react';
@@ -19,6 +18,7 @@ import NaverIcon from '@/assets/images/naver.png';
 import CopyIcon from '@/assets/icons/copy.svg';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { useParams } from 'next/navigation';
+import Button from '@/components/button/Button';
 
 function BakeryOpenInfo({ openInfo }: { openInfo: string }) {
   return (
@@ -134,50 +134,54 @@ function Page() {
 
   if (!bakery) return <div>Loading...</div>;
   return (
-    <div className="flex flex-col gap-[10px] overflow-y-scroll text-black bg-gray-100">
-      <div className="h-[250px] relative rounded-b-2xl overflow-hidden">
-        <Image
-          onClick={() => router.back()}
-          src={ArrowLeft}
-          className="w-6 h-6 absolute left-5 top-[14px] z-10"
-          alt="back"
-        />
-        {/* TODO 빵집 섬네일은 1개인데 슬라이더가 필요한가? */}
-        <ImageSlider images={bakery?.bakeryImages} />
-      </div>
-      {/* <StoreInfo bakery={bakery} /> */}
-      <Accordion title="영업 시간">
-        <BakeryOpenInfo openInfo={bakery.openTime} />
-      </Accordion>
-      <Accordion title="예상 빵 나오는 시간">
-        <BakeryComesOutInfo comesOutInfo={obj} />
-      </Accordion>
-      {/* TODO 마지막 이미지 클릭한 후 이동할 페이지 필요  */}
-      {/* 이미지 어디서 가져오나? */}
-      <Accordion title="이미지">
-        <BakeryImages images={bakery.additionalImages ? bakery.additionalImages : []} />
-      </Accordion>
-
-      <div className="flex flex-col gap-[10px] px-5 py-[30px] bg-white rounded-2xl">
-        <div className="flex gap-5">
-          <div className="grow">
-            <div className="text-title-subtitle">주소</div>
-            <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.address}</div>
-          </div>
-          <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
+    <div>
+      <div className="flex flex-col gap-[10px] overflow-y-scroll text-black bg-gray-100">
+        <div className="h-[250px] relative rounded-b-2xl overflow-hidden">
+          <Image
+            onClick={() => router.back()}
+            src={ArrowLeft}
+            className="w-6 h-6 absolute left-5 top-[14px] z-10"
+            alt="back"
+          />
+          {/* TODO 빵집 섬네일은 1개인데 슬라이더가 필요한가? */}
+          <ImageSlider images={bakery?.bakeryImages} />
         </div>
-        <hr className="my-5" />
-        <div className="flex gap-5">
-          <div className="grow">
-            <div className="text-title-subtitle">전화번호</div>
-            <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.phone}</div>
+        {/* <StoreInfo bakery={bakery} /> */}
+        <Accordion title="영업 시간">
+          <BakeryOpenInfo openInfo={bakery.openTime} />
+        </Accordion>
+        <Accordion title="예상 빵 나오는 시간">
+          <BakeryComesOutInfo comesOutInfo={obj} />
+        </Accordion>
+        <Accordion title="이미지">
+          <BakeryImages images={bakery.additionalImages ? bakery.additionalImages : []} />
+        </Accordion>
+
+        <div className="flex flex-col gap-[10px] px-5 py-[30px] bg-white rounded-2xl">
+          <div className="flex gap-5">
+            <div className="grow">
+              <div className="text-title-subtitle">주소</div>
+              <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.address}</div>
+            </div>
+            <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
           </div>
-          <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
+          <hr className="my-5" />
+          <div className="flex gap-5">
+            <div className="grow">
+              <div className="text-title-subtitle">전화번호</div>
+              <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.phone}</div>
+            </div>
+            <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
+          </div>
+        </div>
+
+        <MenuCategory bakeryProducts={bakeryProducts} />
+        <div className="sticky bottom-0 z-10 w-full p-5 bg-white">
+          <Button onClick={open} fullWidth variant="primary" scale="large" className="">
+            <div>예약하기</div>
+          </Button>
         </div>
       </div>
-
-      <MenuCategory bakeryProducts={bakeryProducts} />
-      <Footer onClick={open} />
       <BottomSheet
         isOpen={isOpen}
         title="예약 상품 선택"
@@ -191,6 +195,7 @@ function Page() {
           reserveStep={reserveStep}
           checkedProducts={checkedProducts}
           setCheckProducts={setCheckProducts}
+          product={bakeryProducts}
         />
       </BottomSheet>
 

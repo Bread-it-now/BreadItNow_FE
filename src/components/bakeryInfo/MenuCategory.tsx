@@ -47,7 +47,7 @@ function MenuCategory({ bakeryProducts }: { bakeryProducts?: BakeryProducts }) {
     }
   };
   return (
-    <>
+    <div className="">
       <div className="px-5">
         <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
       </div>
@@ -56,7 +56,7 @@ function MenuCategory({ bakeryProducts }: { bakeryProducts?: BakeryProducts }) {
         breadMenu={bakeryProducts?.breadProducts}
         otherMenu={bakeryProducts?.otherProducts}
       />
-    </>
+    </div>
   );
 }
 

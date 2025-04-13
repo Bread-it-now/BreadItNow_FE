@@ -134,7 +134,7 @@ function Page() {
 
   if (!bakery) return <div>Loading...</div>;
   return (
-    <div className="flex flex-col gap-[10px] overflow-y-scroll text-black">
+    <div className="flex flex-col gap-[10px] overflow-y-scroll text-black bg-gray-100">
       <div className="h-[250px] relative rounded-b-2xl overflow-hidden">
         <Image
           onClick={() => router.back()}
@@ -177,7 +177,7 @@ function Page() {
       </div>
 
       <MenuCategory bakeryProducts={bakeryProducts} />
-
+      <Footer onClick={open} />
       <BottomSheet
         isOpen={isOpen}
         title="예약 상품 선택"
@@ -214,7 +214,6 @@ function Page() {
           </div>
         </div>
       </BottomSheet>
-      <Footer onClick={open} />
     </div>
   );
 }

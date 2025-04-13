@@ -28,7 +28,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen flex justify-center bg-gray-100">
       <div
         className={`relative w-full max-w-[375px] max-h-[812px] bg-white border-1 mx-auto pt-[44px] h-lvh overflow-scroll 
-          ${!shouldHideNavbar && !isMyPageSubSection ? 'pb-[58px]' : ''}`}>
+          ${!shouldHideNavbar && !isMyPageSubSection && !isCustomerBakery ? 'pb-[58px]' : ''}`}>
         <div id="bottomsheet-root" />
         {children}
         {!shouldHideNavbar && !isMyPageSubSection && !isCustomerBakery && (

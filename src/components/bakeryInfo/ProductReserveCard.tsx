@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { comma } from '@/utils/comma';
-import { Product } from '@/types/product';
+import { Product } from '@/types/bakery';
 interface ProductReserveCardProps extends Product {
   isChecked?: boolean;
   setIsChecked?: (value: string) => void;

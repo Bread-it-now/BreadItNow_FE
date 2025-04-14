@@ -11,6 +11,10 @@ interface MenuCategoryProps {
   label: string;
 }
 
+interface CheckedProduct extends Product {
+  quantity: number;
+}
+
 const menuCategories: MenuCategoryProps[] = [
   {
     key: '1',
@@ -26,23 +30,35 @@ function BreadCheckBox({
   name,
   isChecked,
   onCheckboxChange,
+  disabled,
 }: {
   name: string;
   isChecked: boolean;
   onCheckboxChange: () => void;
+  disabled: boolean;
 }) {
   return (
     <div className="absolute z-10 top-2 left-2 w-8 h-8">
-      <Checkbox id={name} checked={isChecked} onChange={onCheckboxChange} />
+      <Checkbox disabled={disabled} id={name} checked={isChecked} onChange={onCheckboxChange} />
     </div>
   );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function SpinnerInfoComponent({ name, price, stock }: { name: string; price: number; stock: number }) {
+function SpinnerInfoComponent({
+  name,
+  price,
+  stock,
+  onChange,
+}: {
+  name: string;
+  price: number;
+  stock: number;
+  onChange: (quantity: number) => void;
+}) {
   return (
     <div className="flex items-center w-full mt-4">
-      <Spinner minQuantity={0} maxQuantity={10} ininitialQuantity={1} />
+      <Spinner onQuantityChange={onChange} minQuantity={0} maxQuantity={stock} ininitialQuantity={0} />
       <div className="ml-auto">{comma(price)}원</div>
     </div>
   );
@@ -54,8 +70,8 @@ function ReservationBottonSheet({
   product,
 }: {
   reserveStep: number;
-  checkedProducts: Product[];
-  setCheckProducts: (item: Product[]) => void;
+  checkedProducts: CheckedProduct[];
+  setCheckProducts: (item: CheckedProduct[]) => void;
   product?: BakeryProducts;
 }) {
   const [category, setCategory] = useState<string>(menuCategories[0].key);
@@ -66,16 +82,22 @@ function ReservationBottonSheet({
     }
   };
 
-  const setCheckProductsisCheckedProduct = (item: Product): void => {
+  const isCheckedProduct = (item: Product): void => {
     if (checkedProducts.find((product) => product.name === item.name)) {
       setCheckProducts(checkedProducts.filter((product) => product.name !== item.name));
     } else {
-      setCheckProducts([...checkedProducts, item]);
+      setCheckProducts([...checkedProducts, { ...item, quantity: 0 }]);
     }
   };
 
+  const onProductQuantityChange = (index: number, quantity: number): void => {
+    const newCheckedProducts = [...checkedProducts];
+    newCheckedProducts[index].quantity = quantity;
+    setCheckProducts(newCheckedProducts);
+  };
+
   const totalPrice = useMemo<string>(() => {
-    const totalPrice = checkedProducts.reduce((acc, product) => acc + product.price, 0);
+    const totalPrice = checkedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0);
     return `${comma(totalPrice)}원`;
   }, [checkedProducts]);
 
@@ -87,22 +109,44 @@ function ReservationBottonSheet({
             <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
           </div>
           <div className="flex flex-col gap-2 max-h-[559px] overflow-y-scroll">
-            {category === '1'
-              ? product?.breadProducts.map((product, index) => (
-                  <ProductReserveCard
-                    ImageIconButton={
-                      <BreadCheckBox
-                        name={product.name}
-                        isChecked={checkedProducts.find((product) => product.name === product.name) ? true : false}
-                        onCheckboxChange={() => setCheckProductsisCheckedProduct(product)}
-                      />
-                    }
-                    key={`product-${index}`}
-                    {...product}
-                  />
+            {category === '1' && product?.breadProducts.length
+              ? product?.breadProducts.map((p, index) => (
+                  <>
+                    <ProductReserveCard
+                      ImageIconButton={
+                        <BreadCheckBox
+                          name={p.name}
+                          disabled={p.stock === 0}
+                          isChecked={
+                            checkedProducts.find((checkedPropduct) => checkedPropduct.name === p.name) ? true : false
+                          }
+                          onCheckboxChange={() => isCheckedProduct(p)}
+                        />
+                      }
+                      key={`product-${index}`}
+                      {...p}
+                    />
+                    {index !== product?.breadProducts.length - 1 && <hr className="w-full my-5" />}
+                  </>
                 ))
-              : product?.otherProducts.map((product, index) => (
-                  <ProductReserveCard key={`product-${index}`} {...product} />
+              : product?.otherProducts.map((p, index) => (
+                  <>
+                    <ProductReserveCard
+                      ImageIconButton={
+                        <BreadCheckBox
+                          name={p.name}
+                          disabled={p.stock === 0}
+                          isChecked={
+                            checkedProducts.find((checkedPropduct) => checkedPropduct.name === p.name) ? true : false
+                          }
+                          onCheckboxChange={() => isCheckedProduct(p)}
+                        />
+                      }
+                      key={`product-${index}`}
+                      {...p}
+                    />
+                    {index !== product?.otherProducts.length - 1 && <hr className="w-full my-5" />}
+                  </>
                 ))}
           </div>
         </>
@@ -111,13 +155,21 @@ function ReservationBottonSheet({
           <div className="bg-white  overflow-y-scroll">
             {checkedProducts.map((product, index) => {
               return (
-                <ProductReserveCard
-                  moreInfoComponent={
-                    <SpinnerInfoComponent name={product.name} price={product.price} stock={product.stock} />
-                  }
-                  {...product}
-                  key={`bread-${index}`}
-                />
+                <>
+                  <ProductReserveCard
+                    moreInfoComponent={
+                      <SpinnerInfoComponent
+                        onChange={(quantity: number) => onProductQuantityChange(index, quantity)}
+                        name={product.name}
+                        price={product.price}
+                        stock={product.stock}
+                      />
+                    }
+                    {...product}
+                    key={`bread-${index}`}
+                  />
+                  {index !== checkedProducts.length - 1 && <hr className="w-full my-5" />}
+                </>
               );
             })}
             <div className="mt-[30px] mb-[56px] bg-gray-50 font-semibold">

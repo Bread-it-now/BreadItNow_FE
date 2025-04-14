@@ -20,6 +20,10 @@ import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { useParams } from 'next/navigation';
 import Button from '@/components/button/Button';
 
+interface CheckedProduct extends Product {
+  quantity: number;
+}
+
 function BakeryOpenInfo({ openInfo }: { openInfo: string }) {
   return (
     <div className="text-[13px] font-light mt-5 text-gray-700">
@@ -121,7 +125,7 @@ function Page() {
       breads: ['크루아상', '생크림식빵', '마늘바게트', '소보루빵'],
     },
   ];
-  const [checkedProducts, setCheckProducts] = useState<Product[]>([]);
+  const [checkedProducts, setCheckProducts] = useState<CheckedProduct[]>([]);
 
   //주소 바텀 sheet
   const [isOpenAddressBottomSheet, setIsOpenAddressBottomSheet] = useState(false);

@@ -7,6 +7,7 @@ import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Tag from '@/components/common/Tag';
 import IconButton from '@/components/button/IconButton';
 import { useState } from 'react';
+import { addBookmarkProduct, removeBookmarkProduct, addAlertProduct, removeAlertProduct } from '@/lib/api/bakery';
 interface ProductReserveCardProps {
   menuList?: Product[];
   title: string;
@@ -15,8 +16,18 @@ interface ProductReserveCardProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function MenuImageIconButton({ bakeryId, productId }: { bakeryId: number; productId: number }) {
   const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(false);
-  const onBookmarkClick = () => {
-    setBookmarkChecked(!bookmarkChecked);
+  const onBookmarkClick = async () => {
+    try {
+      if (bookmarkChecked) {
+        await removeBookmarkProduct(productId);
+      } else {
+        await addBookmarkProduct(productId);
+      }
+      setBookmarkChecked(!bookmarkChecked);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to add or remove favorite product', error);
+    }
   };
   return (
     <IconButton
@@ -32,8 +43,18 @@ function MenuImageIconButton({ bakeryId, productId }: { bakeryId: number; produc
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function MenuFloatingButton({ bakeryId, productId }: { bakeryId: number; productId: number }) {
   const [alarmChecked, setAlarmChecked] = useState<boolean>(false);
-  const onClickAlarmBtn = () => {
-    setAlarmChecked(!alarmChecked);
+  const onClickAlarmBtn = async () => {
+    try {
+      if (alarmChecked) {
+        await removeAlertProduct(productId);
+      } else {
+        await addAlertProduct(productId);
+      }
+      setAlarmChecked(!alarmChecked);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to add or remove favorite product', error);
+    }
   };
   return (
     <IconButton

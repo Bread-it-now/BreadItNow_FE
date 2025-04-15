@@ -27,6 +27,7 @@ export const CONTROLLER = {
     SEARCH: 'search',
     BAKERY: 'bakery',
     PRODUCT: 'product',
+    FAVORITE: 'favorite',
   },
   OWNER: {
     OWNER: 'owner',
@@ -88,6 +89,17 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/${notificationId}/read`,
   DELETE_CUSTOMER_NOTIFICATION: (notificationId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/${notificationId}`,
+
+  /** ALERT */
+  ALERT_PRODUCT: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}`,
+  CANCEL_ALERT_PRODUCT: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}`,
+  /** FAVORITE */
+  BOOKMARK_PRODUCT: (productId: number) =>
+    `${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.FAVORITE}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}`,
+  CANCEL_BOOKMARK_PRODUCT: (productId: number) =>
+    `${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.FAVORITE}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}`,
 
   // RESERVATION
   CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus | 'ALL', page: number, size: number) =>

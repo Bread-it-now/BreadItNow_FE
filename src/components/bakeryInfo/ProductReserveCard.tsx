@@ -20,8 +20,6 @@ function ProductReserveCardProps({
   FloatingButton = null,
   ImageIconButton = null,
   moreInfoComponent = null,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  showCount = false,
 }: ProductReserveCardProps) {
   return (
     <div className="flex gap-4 relative">

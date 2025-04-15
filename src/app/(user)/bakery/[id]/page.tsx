@@ -5,7 +5,7 @@ import Image from 'next/image';
 import ArrowLeft from '@/assets/icons/arrow-left.svg';
 import { useRouter } from 'next/navigation';
 import BakeryImages from '@/components/bakeryInfo/BakeryImage';
-import BottomSheet, { BottomSheetProps } from '@/components/bottomsheet/Bottomsheet';
+import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
 import MenuCategory from '@/components/bakeryInfo/MenuCategory';
 import { lazy, useState } from 'react';
@@ -15,7 +15,7 @@ import ArrowRight from '@/assets/icons/arrow-right.svg';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { useParams } from 'next/navigation';
 import Button from '@/components/button/Button';
-
+import { createReservation } from '@/lib/api/bakery';
 const LazyReservationBottomSheet = lazy(() => import('@/components/bakeryInfo/ReservationBottomSheet'));
 const LazyBakeryAddressBottomSheet = lazy(() => import('@/components/bakeryInfo/BakeryAddressBottomSheet'));
 interface CheckedProduct extends Product {
@@ -69,23 +69,39 @@ function Page() {
   const bakeryId = params.id;
   const { data: bakery } = useBakeryInfo(Number(bakeryId));
   const { data: bakeryProducts } = useBakeryProducts(Number(bakeryId));
-  const [bottomSheetProps, setBottomSheetProps] = useState<BottomSheetProps>();
   //API
-  const { isOpen, open, close } = useReservationBottomSheet();
+  const { isOpen: isOpenReservation, open: openReservation, close: closeReservation } = useReservationBottomSheet();
+  const { isOpen: isOpenAddress, open: openAddress, close: closeAddress } = useReservationBottomSheet();
   const router = useRouter();
   const [reserveStep, setReserveStep] = useState<number>(1);
-  const onReservationStep = () => {
+  const onReservationStep = async () => {
     if (reserveStep === 1) {
       setReserveStep(2);
     } else {
+      if (checkedProducts.length === 0) return;
       //TODO...API 연결
-      // close();
+      try {
+        await createReservation({
+          bakeryId: Number(bakeryId),
+          reservationProducts: [
+            ...checkedProducts.map((product) => ({
+              productId: product.productId,
+              quantity: product.quantity,
+            })),
+          ],
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        // console.error(error);
+      } finally {
+        close();
+      }
     }
   };
 
   const onCloseStep = () => {
     if (reserveStep === 1) {
-      close();
+      closeReservation();
     } else {
       setReserveStep(1);
     }
@@ -126,38 +142,6 @@ function Page() {
   ];
   const [checkedProducts, setCheckProducts] = useState<CheckedProduct[]>([]);
 
-  const switchBottomSheetComponent = (type: 'reserve' | 'map') => {
-    if (type === 'reserve') {
-      setBottomSheetProps({
-        isOpen,
-        title: '예약 상품 선택',
-        cancelText: reserveStep === 1 ? '취소' : '이전',
-        confirmText:
-          reserveStep === 1 ? `총 ${checkedProducts.length}건 선택` : `총 ${checkedProducts.length}건 예약하기`,
-        onClose: onCloseStep,
-        onConfirm: onReservationStep,
-        children: (
-          <LazyReservationBottomSheet
-            reserveStep={reserveStep}
-            checkedProducts={checkedProducts}
-            setCheckProducts={setCheckProducts}
-            product={bakeryProducts}
-          />
-        ),
-      });
-    } else {
-      setBottomSheetProps({
-        isOpen,
-        onClose: close,
-        bgColor: '!bg-gray-50',
-        maxHeight: 256,
-        needMarginBottom: false,
-        children: <LazyBakeryAddressBottomSheet address={bakery?.address} />,
-      });
-    }
-    open();
-  };
-
   if (!bakery) return <div>Loading...</div>;
   return (
     <div>
@@ -184,7 +168,7 @@ function Page() {
         </Accordion>
 
         <div className="flex flex-col gap-[10px] px-5 py-[30px] bg-white rounded-2xl">
-          <div onClick={() => switchBottomSheetComponent('map')} className="flex gap-5">
+          <div onClick={openAddress} className="flex gap-5">
             <div className="grow">
               <div className="text-title-subtitle">주소</div>
               <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.address}</div>
@@ -197,39 +181,40 @@ function Page() {
               <div className="text-title-subtitle">전화번호</div>
               <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.phone}</div>
             </div>
-            <Image
-              onClick={() => switchBottomSheetComponent('map')}
-              src={ArrowRight}
-              alt="arrow"
-              width={20}
-              height={20}
-            />
+            <Image onClick={openAddress} src={ArrowRight} alt="arrow" width={20} height={20} />
           </div>
         </div>
 
         <MenuCategory bakeryProducts={bakeryProducts} />
         <div className="sticky bottom-0 z-10 w-full p-5 bg-white">
-          <Button
-            onClick={() => switchBottomSheetComponent('reserve')}
-            fullWidth
-            variant="primary"
-            scale="large"
-            className="">
+          <Button onClick={openReservation} fullWidth variant="primary" scale="large" className="">
             <div>예약하기</div>
           </Button>
         </div>
       </div>
       <BottomSheet
-        isOpen={isOpen}
-        title={bottomSheetProps?.title}
-        cancelText={bottomSheetProps?.cancelText}
-        confirmText={bottomSheetProps?.confirmText}
-        onClose={close}
-        bgColor={bottomSheetProps?.bgColor}
-        maxHeight={bottomSheetProps?.maxHeight}
-        needMarginBottom={bottomSheetProps?.needMarginBottom}
-        onConfirm={bottomSheetProps?.onConfirm}>
-        {bottomSheetProps?.children}
+        isOpen={isOpenReservation}
+        title="예약 상품 선택"
+        cancelText={reserveStep === 1 ? '취소' : '이전'}
+        confirmText={
+          reserveStep === 1 ? `총 ${checkedProducts.length}건 선택` : `총 ${checkedProducts.length}건 예약하기`
+        }
+        onClose={onCloseStep}
+        onConfirm={onReservationStep}>
+        <LazyReservationBottomSheet
+          reserveStep={reserveStep}
+          checkedProducts={checkedProducts}
+          setCheckProducts={setCheckProducts}
+          product={bakeryProducts}
+        />
+      </BottomSheet>
+      <BottomSheet
+        isOpen={isOpenAddress}
+        onClose={closeAddress}
+        bgColor="!bg-gray-50"
+        maxHeight={256}
+        needMarginBottom={false}>
+        <LazyBakeryAddressBottomSheet address={bakery?.address} />
       </BottomSheet>
     </div>
   );

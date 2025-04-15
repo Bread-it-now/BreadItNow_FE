@@ -302,3 +302,21 @@ export const deleteFavoriteProduct = async (productId: number): Promise<{ data: 
 
   return response.json();
 };
+
+export const createReservation = async (reservation: {
+  bakeryId: number;
+  reservationProducts: {
+    productId: number;
+    quantity: number;
+  }[];
+}): Promise<{ data: { reservationId: number; status: string; totalPrice: number; pickupDeadline: string } }> => {
+  const response = await fetch(`/${API_END_POINT.CREATE_RESERVATION()}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(reservation),
+  });
+
+  if (!response.ok) throw new Error('Failed to create reservation');
+
+  return response.json();
+};

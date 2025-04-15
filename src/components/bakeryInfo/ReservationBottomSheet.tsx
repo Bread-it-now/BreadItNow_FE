@@ -44,9 +44,7 @@ function BreadCheckBox({
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function SpinnerInfoComponent({
-  name,
   price,
   stock,
   onChange,
@@ -108,10 +106,10 @@ function ReservationBottonSheet({
           <div className="py-[10px]">
             <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
           </div>
-          <div className="flex flex-col gap-2 max-h-[559px] overflow-y-scroll">
+          <div key={'category-1'} className="flex flex-col gap-2 max-h-[559px] overflow-y-scroll">
             {category === '1' && product?.breadProducts.length
               ? product?.breadProducts.map((p, index) => (
-                  <>
+                  <div key={`${p.bakeryId}-${p.name}`}>
                     <ProductReserveCard
                       ImageIconButton={
                         <BreadCheckBox
@@ -123,14 +121,13 @@ function ReservationBottonSheet({
                           onCheckboxChange={() => isCheckedProduct(p)}
                         />
                       }
-                      key={`product-${index}`}
                       {...p}
                     />
                     {index !== product?.breadProducts.length - 1 && <hr className="w-full my-5" />}
-                  </>
+                  </div>
                 ))
               : product?.otherProducts.map((p, index) => (
-                  <>
+                  <div key={`${p.bakeryId}-${p.name}`}>
                     <ProductReserveCard
                       ImageIconButton={
                         <BreadCheckBox
@@ -142,11 +139,10 @@ function ReservationBottonSheet({
                           onCheckboxChange={() => isCheckedProduct(p)}
                         />
                       }
-                      key={`product-${index}`}
                       {...p}
                     />
                     {index !== product?.otherProducts.length - 1 && <hr className="w-full my-5" />}
-                  </>
+                  </div>
                 ))}
           </div>
         </>

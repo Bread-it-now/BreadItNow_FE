@@ -5,21 +5,19 @@ import Image from 'next/image';
 import ArrowLeft from '@/assets/icons/arrow-left.svg';
 import { useRouter } from 'next/navigation';
 import BakeryImages from '@/components/bakeryInfo/BakeryImage';
-import BottomSheet from '@/components/bottomsheet/Bottomsheet';
+import BottomSheet, { BottomSheetProps } from '@/components/bottomsheet/Bottomsheet';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
 import MenuCategory from '@/components/bakeryInfo/MenuCategory';
-import ReservationBottonSheet from '@/components/bakeryInfo/ReservationBottomSheet';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { Product } from '@/types/bakery';
 import Accordion from '@/components/accordion/Accordion';
 import ArrowRight from '@/assets/icons/arrow-right.svg';
-import KakaoIcon from '@/assets/images/kakao.png';
-import NaverIcon from '@/assets/images/naver.png';
-import CopyIcon from '@/assets/icons/copy.svg';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { useParams } from 'next/navigation';
 import Button from '@/components/button/Button';
 
+const LazyReservationBottomSheet = lazy(() => import('@/components/bakeryInfo/ReservationBottomSheet'));
+const LazyBakeryAddressBottomSheet = lazy(() => import('@/components/bakeryInfo/BakeryAddressBottomSheet'));
 interface CheckedProduct extends Product {
   quantity: number;
 }
@@ -71,6 +69,7 @@ function Page() {
   const bakeryId = params.id;
   const { data: bakery } = useBakeryInfo(Number(bakeryId));
   const { data: bakeryProducts } = useBakeryProducts(Number(bakeryId));
+  const [bottomSheetProps, setBottomSheetProps] = useState<BottomSheetProps>();
   //API
   const { isOpen, open, close } = useReservationBottomSheet();
   const router = useRouter();
@@ -127,13 +126,36 @@ function Page() {
   ];
   const [checkedProducts, setCheckProducts] = useState<CheckedProduct[]>([]);
 
-  //주소 바텀 sheet
-  const [isOpenAddressBottomSheet, setIsOpenAddressBottomSheet] = useState(false);
-  const onOpenAddressBottomSheet = () => {
-    setIsOpenAddressBottomSheet(true);
-  };
-  const onCloseAddressBottomSheet = () => {
-    setIsOpenAddressBottomSheet(false);
+  const switchBottomSheetComponent = (type: 'reserve' | 'map') => {
+    if (type === 'reserve') {
+      setBottomSheetProps({
+        isOpen,
+        title: '예약 상품 선택',
+        cancelText: reserveStep === 1 ? '취소' : '이전',
+        confirmText:
+          reserveStep === 1 ? `총 ${checkedProducts.length}건 선택` : `총 ${checkedProducts.length}건 예약하기`,
+        onClose: onCloseStep,
+        onConfirm: onReservationStep,
+        children: (
+          <LazyReservationBottomSheet
+            reserveStep={reserveStep}
+            checkedProducts={checkedProducts}
+            setCheckProducts={setCheckProducts}
+            product={bakeryProducts}
+          />
+        ),
+      });
+    } else {
+      setBottomSheetProps({
+        isOpen,
+        onClose: close,
+        bgColor: '!bg-gray-50',
+        maxHeight: 256,
+        needMarginBottom: false,
+        children: <LazyBakeryAddressBottomSheet address={bakery?.address} />,
+      });
+    }
+    open();
   };
 
   if (!bakery) return <div>Loading...</div>;
@@ -162,12 +184,12 @@ function Page() {
         </Accordion>
 
         <div className="flex flex-col gap-[10px] px-5 py-[30px] bg-white rounded-2xl">
-          <div className="flex gap-5">
+          <div onClick={() => switchBottomSheetComponent('map')} className="flex gap-5">
             <div className="grow">
               <div className="text-title-subtitle">주소</div>
               <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.address}</div>
             </div>
-            <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
+            <Image src={ArrowRight} alt="arrow" width={20} height={20} />
           </div>
           <hr className="my-5" />
           <div className="flex gap-5">
@@ -175,53 +197,39 @@ function Page() {
               <div className="text-title-subtitle">전화번호</div>
               <div className="text-[13px] font-normal text-gray-500 mt-1">{bakery.phone}</div>
             </div>
-            <Image onClick={onOpenAddressBottomSheet} src={ArrowRight} alt="arrow" width={20} height={20} />
+            <Image
+              onClick={() => switchBottomSheetComponent('map')}
+              src={ArrowRight}
+              alt="arrow"
+              width={20}
+              height={20}
+            />
           </div>
         </div>
 
         <MenuCategory bakeryProducts={bakeryProducts} />
         <div className="sticky bottom-0 z-10 w-full p-5 bg-white">
-          <Button onClick={open} fullWidth variant="primary" scale="large" className="">
+          <Button
+            onClick={() => switchBottomSheetComponent('reserve')}
+            fullWidth
+            variant="primary"
+            scale="large"
+            className="">
             <div>예약하기</div>
           </Button>
         </div>
       </div>
       <BottomSheet
         isOpen={isOpen}
-        title="예약 상품 선택"
-        cancelText={reserveStep === 1 ? '취소' : '이전'}
-        confirmText={
-          reserveStep === 1 ? `총 ${checkedProducts.length}건 선택` : `총 ${checkedProducts.length}건 예약하기`
-        }
-        onClose={onCloseStep}
-        onConfirm={onReservationStep}>
-        <ReservationBottonSheet
-          reserveStep={reserveStep}
-          checkedProducts={checkedProducts}
-          setCheckProducts={setCheckProducts}
-          product={bakeryProducts}
-        />
-      </BottomSheet>
-
-      <BottomSheet isOpen={isOpenAddressBottomSheet} onClose={onCloseAddressBottomSheet} bgColor="bg-gray-50">
-        <div className="bg-gray-50 w-full h-full">
-          <div className="px-5 py-[30px] text-gray-900 rounded-[10px]">
-            <div className="p-5 bg-white rounded-[10px]">
-              <div className="flex gap-5 items-center justify-between">
-                <div className="text-md font-medium grow">카카오맵</div>
-                <Image src={KakaoIcon} alt="kakao" width={20} height={20} />
-              </div>
-              <div className="flex gap-5 items-center justify-between mt-6">
-                <div className="text-md font-medium grow">네이버 지도</div>
-                <Image src={NaverIcon} alt="naver" width={20} height={20} />
-              </div>
-            </div>
-            <div className="mt-[10px] flex gap-5 items-center justify-between p-5 bg-white rounded-[10px]">
-              <div className="text-md font-medium grow">복사</div>
-              <Image src={CopyIcon} alt="copy" width={20} height={20} />
-            </div>
-          </div>
-        </div>
+        title={bottomSheetProps?.title}
+        cancelText={bottomSheetProps?.cancelText}
+        confirmText={bottomSheetProps?.confirmText}
+        onClose={close}
+        bgColor={bottomSheetProps?.bgColor}
+        maxHeight={bottomSheetProps?.maxHeight}
+        needMarginBottom={bottomSheetProps?.needMarginBottom}
+        onConfirm={bottomSheetProps?.onConfirm}>
+        {bottomSheetProps?.children}
       </BottomSheet>
     </div>
   );

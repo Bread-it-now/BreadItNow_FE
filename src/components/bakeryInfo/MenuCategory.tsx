@@ -48,7 +48,7 @@ function MenuCategory({ bakeryProducts }: { bakeryProducts?: BakeryProducts }) {
   };
   return (
     <div className="">
-      <div className="px-5">
+      <div className="my-[10px]">
         <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
       </div>
       <MemoizedMenuList

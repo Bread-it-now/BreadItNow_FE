@@ -23,6 +23,7 @@ export interface BottomSheetProps {
   bgColor?: string;
   className?: string;
   cancelBtnFullWidth?: boolean;
+  needMarginBottom?: boolean;
 }
 
 const BottomSheet = ({
@@ -41,6 +42,7 @@ const BottomSheet = ({
   bgColor = 'bg-white',
   className,
   cancelBtnFullWidth = false,
+  needMarginBottom = true,
 }: BottomSheetProps) => {
   const [bottomSheetRoot, setBottomSheetRoot] = useState<HTMLElement | null>(null);
   const [isAnimating, setIsAnimating] = useState(isOpen);
@@ -102,11 +104,11 @@ const BottomSheet = ({
                 <div
                   style={{
                     maxHeight: fullHeight ? 'calc(100% - 142px)' : `${maxContentHeight}px`,
-                    marginBottom: fullHeight ? 0 : '92px',
+                    marginBottom: needMarginBottom ? '92px' : 0,
                   }}
                   className={cn(
                     'flex flex-col',
-                    `w-full overflow-y-auto h-full ${fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px] mb-[92px]`}`,
+                    `w-full overflow-y-auto h-full ${fullHeight ? 'max-h-[calc(100%-142px)]' : `max-h-[${maxContentHeight}px]`}`,
                     className,
                   )}>
                   {children}

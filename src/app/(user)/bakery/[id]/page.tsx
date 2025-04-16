@@ -141,7 +141,11 @@ function Page() {
     },
   ];
   const [checkedProducts, setCheckProducts] = useState<CheckedProduct[]>([]);
-
+  const onCloseReservationBottomSheet = () => {
+    setCheckProducts([]);
+    setReserveStep(1);
+    closeReservation();
+  };
   if (!bakery) return <div>Loading...</div>;
   return (
     <div>
@@ -199,7 +203,8 @@ function Page() {
         confirmText={
           reserveStep === 1 ? `총 ${checkedProducts.length}건 선택` : `총 ${checkedProducts.length}건 예약하기`
         }
-        onClose={onCloseStep}
+        onClose={onCloseReservationBottomSheet}
+        onCancel={onCloseStep}
         onConfirm={onReservationStep}>
         <LazyReservationBottomSheet
           reserveStep={reserveStep}

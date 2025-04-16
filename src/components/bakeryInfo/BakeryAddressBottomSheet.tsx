@@ -6,8 +6,7 @@ import CopyIcon from '@/assets/icons/copy.svg';
 
 function BakeryAddressBottomSheet({ address = '' }: { address?: string }) {
   const openMap = (type: 'kakao' | 'naver') => {
-    const url =
-      type === 'kakao' ? `https://map.kakao.com/link/to/${address}` : `https://map.naver.com/p/search/${address}`;
+    const url = type === 'kakao' ? `https://map.kakao.com/?q=${address}` : `https://map.naver.com/p/search/${address}`;
     window.open(url, '_blank');
   };
 

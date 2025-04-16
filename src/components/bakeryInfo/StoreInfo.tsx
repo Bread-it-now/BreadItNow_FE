@@ -30,6 +30,7 @@ function StoreInfo({ bakery }: { bakery: Bakery }) {
             isChecked={bookmarkChecked}
             icon={bookmarkChecked ? BookmarkFill : Bookmark}
             iconText=""
+            buttonClass="!border-gray-100 w-8 h-8"
             onClick={onBookmarkClick}
           />
         </div>

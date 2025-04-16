@@ -3,6 +3,7 @@ import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
 import {
   Bakery,
   BakeryProducts,
+  BreadReleaseTime,
   FavoriteBakeryList,
   FavoriteProductList,
   FilterKey,
@@ -12,6 +13,21 @@ import {
   ProductOrder,
 } from '@/types/bakery';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { API_END_POINT } from '@/constants/api';
+export const getCustomerBakeryDetailInfo = async (
+  bakeryId: number,
+): Promise<{
+  data: { bakery: Bakery; releaseSchedules: BreadReleaseTime[]; breadProducts: Product[]; otherProducts: Product[] };
+}> => {
+  const response = await fetch(`/${API_END_POINT.CUSTOMER_BAKERY_DETAIL_INFO(bakeryId)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch bakeryInfo');
+
+  return response.json();
+};
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
   const response = await fetch(`/${API_END_POINT.BAKERY_INFO(bakeryId)}`, {
@@ -23,6 +39,20 @@ export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }>
 
   return response.json();
 };
+
+export const useCustomerBakeryDetailInfo = (bakeryId: number) =>
+  useQuery({
+    queryKey: [...BAKERY_QUERY_KEY.BAKERY_INFO(bakeryId)],
+    queryFn: () => getCustomerBakeryDetailInfo(bakeryId),
+    select: (data: {
+      data: {
+        bakery: Bakery;
+        releaseSchedules: BreadReleaseTime[];
+        breadProducts: Product[];
+        otherProducts: Product[];
+      };
+    }) => data?.data,
+  });
 
 export const useBakeryInfo = (bakeryId: number) =>
   useQuery({

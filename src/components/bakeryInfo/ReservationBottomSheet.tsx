@@ -5,7 +5,7 @@ import ProductReserveCard from './ProductReserveCard';
 import Spinner from '@/components/spinner/Spinner';
 import Checkbox from '@/components/common/checkbox/Checkbox';
 import { comma } from '@/utils/comma';
-import { BakeryProducts, Product } from '@/types/bakery';
+import { Product } from '@/types/bakery';
 interface MenuCategoryProps {
   key: string;
   label: string;
@@ -65,12 +65,14 @@ function ReservationBottonSheet({
   reserveStep,
   checkedProducts,
   setCheckProducts,
-  product,
+  breadMenu,
+  otherMenu,
 }: {
   reserveStep: number;
   checkedProducts: CheckedProduct[];
   setCheckProducts: (item: CheckedProduct[]) => void;
-  product?: BakeryProducts;
+  breadMenu: Product[];
+  otherMenu: Product[];
 }) {
   const [category, setCategory] = useState<string>(menuCategories[0].key);
   const onTabChange = (key: string) => {
@@ -107,8 +109,8 @@ function ReservationBottonSheet({
             <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
           </div>
           <div key={'category-1'} className="flex flex-col gap-2 max-h-[559px] overflow-y-scroll">
-            {category === '1' && product?.breadProducts.length
-              ? product?.breadProducts.map((p, index) => (
+            {category === '1' && breadMenu.length
+              ? breadMenu.map((p, index) => (
                   <div key={`${p.bakeryId}-${p.name}`}>
                     <ProductReserveCard
                       ImageIconButton={
@@ -123,10 +125,10 @@ function ReservationBottonSheet({
                       }
                       {...p}
                     />
-                    {index !== product?.breadProducts.length - 1 && <hr className="w-full my-5" />}
+                    {index !== breadMenu.length - 1 && <hr className="w-full my-5" />}
                   </div>
                 ))
-              : product?.otherProducts.map((p, index) => (
+              : otherMenu.map((p, index) => (
                   <div key={`${p.bakeryId}-${p.name}`}>
                     <ProductReserveCard
                       ImageIconButton={
@@ -141,7 +143,7 @@ function ReservationBottonSheet({
                       }
                       {...p}
                     />
-                    {index !== product?.otherProducts.length - 1 && <hr className="w-full my-5" />}
+                    {index !== otherMenu.length - 1 && <hr className="w-full my-5" />}
                   </div>
                 ))}
           </div>

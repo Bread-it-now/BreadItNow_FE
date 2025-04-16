@@ -27,6 +27,14 @@ export interface ImageInfo {
   additionalImages?: string[];
 }
 
+export interface BreadReleaseTime {
+  releaseTime: string;
+  scheduledProducts: {
+    productId: number;
+    name: string;
+  }[];
+}
+
 export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}
 export interface Bread {
   id: number;

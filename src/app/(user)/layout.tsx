@@ -21,17 +21,19 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   const hideNavbarPaths = ['/login', '/signup', '/mypage/', '/reservation/result'];
   const myPageSubSectionPathRegex = /^\/mypage\/.*$/;
   const customerBakeryPathRegex = /^\/bakery\/([a-zA-Z0-9]+)$/;
+  const bakeryImageViewPathRegex = /^\/bakery\/image_view\/([a-zA-Z0-9]+)$/;
   const shouldHideNavbar = hideNavbarPaths.includes(pathname);
   const isMyPageSubSection = myPageSubSectionPathRegex.test(pathname);
   const isCustomerBakery = customerBakeryPathRegex.test(pathname);
+  const isBakeryImageView = bakeryImageViewPathRegex.test(pathname);
   return (
     <div className="min-h-screen flex justify-center bg-gray-100">
       <div
         className={`relative w-full max-w-[375px] max-h-[812px] bg-white border-1 mx-auto pt-[44px] h-lvh overflow-scroll 
-          ${!shouldHideNavbar && !isMyPageSubSection && !isCustomerBakery ? 'pb-[58px]' : ''}`}>
+          ${!shouldHideNavbar && !isMyPageSubSection && !isCustomerBakery && !isBakeryImageView ? 'pb-[58px]' : ''}`}>
         <div id="bottomsheet-root" />
         {children}
-        {!shouldHideNavbar && !isMyPageSubSection && !isCustomerBakery && (
+        {!shouldHideNavbar && !isMyPageSubSection && !isCustomerBakery && !isBakeryImageView && (
           <div className="absolute bottom-0 left-0 w-full">
             <BottomNavbar NavList={[...UserNavElements]} />
           </div>

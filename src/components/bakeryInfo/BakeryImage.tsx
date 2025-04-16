@@ -6,7 +6,7 @@ function BakeryImages({ images }: { images: string[] }) {
   const params = useParams();
   //TODO... 이미지 마지막 이미지를 클릭했을 때 어떤 로직이 필요한지..?
   const moveImageViewPage = () => {
-    router.push(`/store/image_view/${params.id}`);
+    router.push(`/bakery/image_view/${params.id}`);
   };
   if (images.length === 0) {
     return (
@@ -18,10 +18,10 @@ function BakeryImages({ images }: { images: string[] }) {
       {images.length &&
         images.slice(0, 3).map((image, index) => (
           <div key={`image-${index}`} className="relative w-full h-[105px]" onClick={moveImageViewPage}>
-            <Image src={``} alt={`빵집 이미지 ${index + 1}`} fill className="object-cover" />
-            {images.length > 3 && images.length - 1 === index && (
+            <Image src={image} alt={`빵집 이미지 ${index + 1}`} fill className="object-cover" />
+            {images.length > 3 && index === 2 && (
               <div className="absolute inset-0 z-10 bg-black bg-opacity-30 rounded-lg h-full text-white">
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-md">
+                <div className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-md">
                   {images.length - 3} +
                 </div>
               </div>

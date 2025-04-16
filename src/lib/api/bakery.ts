@@ -320,3 +320,23 @@ export const createReservation = async (reservation: {
 
   return response.json();
 };
+
+export const addBakeryBookmark = async (bakeryId: number): Promise<{ data: { bakeryId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.BAKERY_BOOKMARK(bakeryId)}`, {
+    method: 'POST',
+  });
+
+  if (!response.ok) throw new Error('Failed to add bakery bookmark');
+
+  return response.json();
+};
+
+export const removeBakeryBookmark = async (bakeryId: number): Promise<{ data: { bakeryId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.BAKERY_CANCEL_BOOKMARK(bakeryId)}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) throw new Error('Failed to remove bakery bookmark');
+
+  return response.json();
+};

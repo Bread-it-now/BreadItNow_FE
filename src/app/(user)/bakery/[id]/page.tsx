@@ -16,6 +16,7 @@ import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { useParams } from 'next/navigation';
 import Button from '@/components/button/Button';
 import { createReservation } from '@/lib/api/bakery';
+import StoreInfo from '@/components/bakeryInfo/StoreInfo';
 const LazyReservationBottomSheet = lazy(() => import('@/components/bakeryInfo/ReservationBottomSheet'));
 const LazyBakeryAddressBottomSheet = lazy(() => import('@/components/bakeryInfo/BakeryAddressBottomSheet'));
 interface CheckedProduct extends Product {
@@ -160,7 +161,7 @@ function Page() {
           {/* TODO 빵집 섬네일은 1개인데 슬라이더가 필요한가? */}
           <ImageSlider images={bakery?.bakeryImages} />
         </div>
-        {/* <StoreInfo bakery={bakery} /> */}
+        <StoreInfo bakery={bakery} />
         <Accordion title="영업 시간">
           <BakeryOpenInfo openInfo={bakery.openTime} />
         </Accordion>

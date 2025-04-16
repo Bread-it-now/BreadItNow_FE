@@ -101,6 +101,11 @@ export const API_END_POINT = {
   CANCEL_BOOKMARK_PRODUCT: (productId: number) =>
     `${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.FAVORITE}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}`,
 
+  BAKERY_BOOKMARK: (bakeryId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.FAVORITE}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}`,
+  BAKERY_CANCEL_BOOKMARK: (bakeryId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.FAVORITE}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}`,
+
   // RESERVATION
   CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus | 'ALL', page: number, size: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}?status=${reservationStatus}&page=${page}&size=${size}`,

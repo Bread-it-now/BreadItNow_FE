@@ -3,7 +3,7 @@ import ImageSlider from '@/components/common/slider/ImageSlider';
 import Tag from '@/components/common/Tag';
 import Image from 'next/image';
 import ArrowLeft from '@/assets/icons/arrow-left.svg';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import BakeryImages from '@/components/bakeryInfo/BakeryImage';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
@@ -13,7 +13,6 @@ import { BreadReleaseTime, Product } from '@/types/bakery';
 import Accordion from '@/components/accordion/Accordion';
 import ArrowRight from '@/assets/icons/arrow-right.svg';
 import { useCustomerBakeryDetailInfo } from '@/lib/api/bakery';
-import { useParams } from 'next/navigation';
 import Button from '@/components/button/Button';
 import { createReservation } from '@/lib/api/bakery';
 import StoreInfo from '@/components/bakeryInfo/StoreInfo';
@@ -90,15 +89,16 @@ function Page() {
             })),
           ],
         });
+        router.push('/bakery/reservation/result');
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
+        router.push('/bakery/reservation/result/fail');
         // console.error(error);
       } finally {
         close();
       }
     }
   };
-
   const onCloseStep = () => {
     if (reserveStep === 1) {
       closeReservation();
@@ -159,7 +159,7 @@ function Page() {
         </div>
 
         <MenuCategory breadMenu={bakeryInfo.breadProducts} otherMenu={bakeryInfo.otherProducts} />
-        <div className="sticky bottom-0 z-10 w-full p-5 bg-white">
+        <div className="fixed w-[375px] bottom-0 z-10  p-5 bg-white">
           <Button onClick={openReservation} fullWidth variant="primary" scale="large" className="">
             <div>예약하기</div>
           </Button>

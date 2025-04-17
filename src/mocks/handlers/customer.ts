@@ -100,9 +100,27 @@ const getDoNotDisturbSetting = http.get(
   },
 );
 
+const onOffDoNotDisturbSetting = http.patch(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          active: false,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
   cancelCustomerReservation,
   getDoNotDisturbSetting,
+  onOffDoNotDisturbSetting,
 ];

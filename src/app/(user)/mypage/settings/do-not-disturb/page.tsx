@@ -7,28 +7,22 @@ import DayPicker from '@/components/daypicker/DayPicker';
 import { Day } from '@/types/date';
 import Button from '@/components/button/Button';
 import { useState } from 'react';
+import { DoNotDisturb } from '@/types/notification';
+import { useDoNotDisturbSetting, useOnOffDoNotDisturbSetting } from '@/lib/api/notification';
 
-export default function Page() {
+export interface DoNotDisturbFormProps {
+  initValue: DoNotDisturb;
+}
+
+const DoNotDisturbForm = () => {
   const { isOpen: isStartTimePickerOpen, dispatch: startTimePickerDispatch } = useBaseBottomSheet();
   const { isOpen: isEndTimePickerOpen, dispatch: endTimePickerDispatch } = useBaseBottomSheet();
   const initDays: Day[] = [2, 3, 4, 5, 6];
   const [isChangeDays, setIsChangeDays] = useState<boolean>(false);
   const handleChangeDays = (days: Day[]) =>
     setIsChangeDays(initDays.length === days.length && initDays.every((day: Day) => days.includes(day)));
-
   return (
     <>
-      <section>
-        <div className="flex items-center gap-5 px-5 py-[1.875rem] rounded-b-2xl w-full bg-white">
-          <div className={'flex flex-col items-start gap-[0.625rem] w-full'}>
-            <p className="text-title-content-m text-gray900">방해 금지 모드</p>
-            <p className="text-title-content-xs text-gray500 font-normal">
-              설정한 요일, 시간동안 모든 빵 알림이 오지 않습니다.
-            </p>
-          </div>
-          {<ToggleSwitch checked />}
-        </div>
-      </section>
       <section className="flex flex-col items-start px-5 py-[1.875rem] gap-5 w-full bg-white rounded-2xl">
         <p className="text-title-content-m text-gray900">시간 설정</p>
         <div className="flex flex-col items-start gap-[0.625rem] w-full">
@@ -78,6 +72,29 @@ export default function Page() {
         onConfirm={() => {}}>
         <div className="flex flex-col justify-end items-start py-5 gap-6 w-full h-[198px]"></div>
       </BottomSheet>
+    </>
+  );
+};
+
+export default function Page() {
+  const { data: doNotDisturb } = useDoNotDisturbSetting();
+  const onOffDoNotDisturbMutation = useOnOffDoNotDisturbSetting();
+  return (
+    <>
+      <section>
+        {doNotDisturb && (
+          <div className="flex items-center gap-5 px-5 py-[1.875rem] rounded-b-2xl w-full bg-white">
+            <div className={'flex flex-col items-start gap-[0.625rem] w-full'}>
+              <p className="text-title-content-m text-gray900">방해 금지 모드</p>
+              <p className="text-title-content-xs text-gray500 font-normal">
+                설정한 요일, 시간동안 모든 빵 알림이 오지 않습니다.
+              </p>
+            </div>
+            {<ToggleSwitch checked={doNotDisturb?.active} toggleMutate={() => onOffDoNotDisturbMutation.mutate()} />}
+          </div>
+        )}
+      </section>
+      {doNotDisturb && doNotDisturb?.active && <DoNotDisturbForm />}
     </>
   );
 }

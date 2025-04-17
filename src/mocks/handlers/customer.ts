@@ -168,6 +168,23 @@ const getProductNotificationSettings = http.get(
   },
 );
 
+const onOffProductNotificationbSetting = http.patch(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/:productId/toggle`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          active: false,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -176,4 +193,5 @@ export default [
   onOffDoNotDisturbSetting,
   editDoNotDisturbSetting,
   getProductNotificationSettings,
+  onOffProductNotificationbSetting,
 ];

@@ -90,14 +90,75 @@ export const getProductNotificationSettings = async ({
   return response.json();
 };
 
-export const useProductNotificationSettings = ({ page = 0, size = 10 }: { page?: number; size?: number }) => {
+export const useProductNotificationSettings = ({ size = 10 }: { page?: number; size?: number }) => {
   return useInfiniteQuery({
-    queryKey: [...NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(page, size)],
+    queryKey: [...NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(size)],
     queryFn: ({ pageParam = 0 }) => getProductNotificationSettings({ pageParam, size }),
     getNextPageParam: (lastPage) => {
       if (lastPage.data.pageInfo.isLast) return undefined;
       return lastPage.data.pageInfo.currPage + 1;
     },
     initialPageParam: 0,
+  });
+};
+
+export const onOffProductNotificaitonSetting = async (productId: number): Promise<{ data: { active: boolean } }> => {
+  const response = await fetch(`/${API_END_POINT.ONOFF_PRODUCT_NOTIFICATION_SETTING(productId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useOnOffProductNotificationSetting = ({ size = 10 }: { size?: number }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: onOffProductNotificaitonSetting,
+
+    onMutate: async (productId: number) => {
+      const queryKey = NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(size);
+      await queryClient.cancelQueries({
+        queryKey: queryKey,
+      });
+
+      const prevData = queryClient.getQueryData(queryKey);
+
+      queryClient.setQueryData(
+        queryKey,
+        (prev: { pages: { data: { alerts: NotificationSetting[] } }[] } | undefined) => {
+          if (!prev) return prev;
+
+          return {
+            ...prev,
+            pages: prev.pages.map((page: { data: { alerts: NotificationSetting[] } }) => ({
+              ...page,
+              data: {
+                ...page.data,
+                alerts: page.data.alerts.map((alert: NotificationSetting) =>
+                  alert.productId === productId ? { ...alert, alertActive: !alert.alertActive } : alert,
+                ),
+              },
+            })),
+          };
+        },
+      );
+
+      return { prevData };
+    },
+
+    onError: (err, productId, context) => {
+      if (context?.prevData) {
+        const queryKey = NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(size);
+        queryClient.setQueryData(queryKey, context.prevData);
+      }
+    },
+    // onSettled: () => {
+    //   const queryKey = NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(size);
+    //   queryClient.invalidateQueries({ queryKey });
+    // },
   });
 };

@@ -56,7 +56,6 @@ export default function Page() {
 
 const ProductNotificationSettingCardList = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useProductNotificationSettings({
-    page: 0,
     size: 10,
   });
 

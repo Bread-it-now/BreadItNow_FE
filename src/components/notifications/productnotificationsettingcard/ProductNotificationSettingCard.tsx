@@ -5,6 +5,7 @@ import ToggleSwitch from '@/components/common/toggleswitch/ToggleSwitch';
 import Checkbox from '@/components/common/checkbox/Checkbox';
 import { useId, useState } from 'react';
 import { NotificationSetting } from '@/types/notification';
+import { useOnOffProductNotificationSetting } from '@/lib/api/notification';
 
 export interface ProductNotificationSettingCardProps extends NotificationSetting {
   isEdit?: boolean;
@@ -12,6 +13,7 @@ export interface ProductNotificationSettingCardProps extends NotificationSetting
 
 const ProductNotificationSettingCard = ({
   isEdit,
+  productId,
   productName,
   productImage,
   releaseTime,
@@ -20,10 +22,13 @@ const ProductNotificationSettingCard = ({
 }: ProductNotificationSettingCardProps) => {
   const [checked, setChecked] = useState(false);
   const checkboxId = useId();
+  const onOffProductNotificationSettingMutation = useOnOffProductNotificationSetting({ size: 10 });
+
   return (
     <div className={cn('flex items-center gap-4 w-full h-[68px] bg-white')}>
       <div className={'relative w-[68px] h-full'}>
         <Image src={productImage} width={68} height={68} alt="bread" />
+
         {isEdit && (
           <div className="absolute top-1 left-1 z-1">
             <Checkbox id={String(checkboxId)} checked={checked} onChange={() => setChecked((prev) => !prev)} />
@@ -42,7 +47,13 @@ const ProductNotificationSettingCard = ({
             ))}
           </div>
         </div>
-        {<ToggleSwitch className={`${isEdit && 'invisible'} `} checked={alertActive} />}
+        {
+          <ToggleSwitch
+            className={`${isEdit && 'invisible'} `}
+            checked={alertActive}
+            toggleMutate={() => onOffProductNotificationSettingMutation.mutate(productId)}
+          />
+        }
       </div>
     </div>
   );

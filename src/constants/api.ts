@@ -45,9 +45,9 @@ export const API_END_POINT = {
   // ALERT
   ADD_NOTFICATION_SETTING: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/${productId}`,
-  DELETE_NOTFICATION_SETTING: (productId: number) =>
+  DELETE_PRODUCT_NOTFICATION_SETTING: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/${productId}`,
-  ONOFF_NOTIFICATION_SETTING: (productId: number) =>
+  ONOFF_PRODUCT_NOTIFICATION_SETTING: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/${productId}/toggle`,
   PRODUCT_NOTIFICATION_SETTINGS: (page: number, size: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product?page=${page}&size=${size}`,

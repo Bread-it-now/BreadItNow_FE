@@ -10,6 +10,7 @@ import { MYPAGE_TITLE, ROUTES } from '@/constants/routes';
 import NavLink from '@/components/navlink/NavLink';
 import bookmark from '@/assets/icons/bookmark-20.svg';
 import reservation from '@/assets/icons/reservation-20.svg';
+import inquiry from '@/assets/icons/inquiry.svg';
 import Stack from '@/components/common/stack/Stack';
 
 const notificationCnt: number = 8;
@@ -55,6 +56,9 @@ export default function Page() {
           <NavLink title={MYPAGE_TITLE.RESERVATIONS} icon={reservation} targetUrl={ROUTES.MYPAGE.RESERVATIONS} />
           <NavLink title={MYPAGE_TITLE.BOOKMARKS} icon={bookmark} targetUrl={ROUTES.MYPAGE.BOOKMARKS} />
         </Stack>
+      </section>
+      <section className="flex flex-col items-start px-5 py-[1.875rem] gap-5 w-full rounded-2xl bg-white">
+        <NavLink title={'빵잇나우팀에게 문의하기'} icon={inquiry} targetUrl={ROUTES.HOME.ROOT} />
       </section>
     </>
   );

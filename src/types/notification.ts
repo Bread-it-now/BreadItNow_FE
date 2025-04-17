@@ -12,22 +12,18 @@ export interface Notification {
   createAt: string;
 }
 
-// export interface CustomerNotification {
-//   notificationId: number;
-//   type: NotificationType;
-//   bakeryId: number;
-//   bakeryName: string;
-//   productName: string[];
-//   productSize?: number;
-//   remainingCount?: number;
-//   alertCount?: number;
-//   isRead: boolean;
-//   createAt: string;
-//   reservationStatus: CustomerReservationStatus;
-//   pickupDeadline?: string;
-// }
+export interface NotificationSetting {
+  alertId: number;
+  productId: number;
+  productName: string;
+  productImage: string;
+  releaseTime: string[];
+  bakeryId: number;
+  bakeryName: string;
+  alertActive: boolean;
+}
 
-export interface NotificationPageInfo {
+export interface PageInfo {
   totalElements: number;
   totalPages: number;
   isLast: boolean;

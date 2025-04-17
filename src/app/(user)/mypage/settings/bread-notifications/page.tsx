@@ -7,12 +7,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import Stack from '@/components/common/stack/Stack';
-import BreadNotificationSettingCard from '@/components/notifications/breadnotificationsettingcard/BreadNotificationSettingCard';
-import { breadNotificationCardMockData } from '@/mocks/data/bakery';
-import { SetStateAction, useState } from 'react';
-import { useDoNotDisturbSetting } from '@/lib/api/notification';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { useDoNotDisturbSetting, useProductNotificationSettings } from '@/lib/api/notification';
 import { ENG_TO_KOR_DAY } from '@/lib/shared/date';
 import { getFormattedStartEnd } from '@/utils/date';
+import { NotificationSetting } from '@/types/notification';
+import ProductNotificationSettingCard from '@/components/notifications/productnotificationsettingcard/ProductNotificationSettingCard';
 
 export default function Page() {
   const router = useRouter();
@@ -48,15 +48,55 @@ export default function Page() {
         )}
       </section>
       <section className={cn('flex flex-row items-start px-5 py-[1.875rem]', 'w-full min-h-[673px] bg-white')}>
-        <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
-          {breadNotificationCardMockData.map((data) => (
-            <BreadNotificationSettingCard key={data.id} {...data} isEdit={isEdit} />
-          ))}
-        </Stack>
+        <ProductNotificationSettingCardList />
       </section>
     </>
   );
 }
+
+const ProductNotificationSettingCardList = () => {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useProductNotificationSettings({
+    page: 0,
+    size: 10,
+  });
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  return (
+    <>
+      <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
+        {data?.pages.map((page) =>
+          page.data.alerts.map((notificationSetting: NotificationSetting) => (
+            <ProductNotificationSettingCard key={notificationSetting.alertId} {...notificationSetting} />
+          )),
+        )}
+        <div ref={observerRef} />
+        {isFetchingNextPage && <p>로딩중</p>}
+      </Stack>
+    </>
+  );
+};
 
 interface EditBtnProps {
   isEdit: boolean;

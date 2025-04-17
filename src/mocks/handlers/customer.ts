@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservationStatus } from '@/types/reservation';
 import { customerReservationDetails, CustomerReservations } from '../data/reservation';
+import { mockNotificationSettings } from '../data/bakery';
 
 const getCustomerReservations = http.get(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
@@ -132,6 +133,41 @@ const editDoNotDisturbSetting = http.put(
   },
 );
 
+const getProductNotificationSettings = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+
+    const start = page * size;
+    const end = start + size;
+
+    const alerts = mockNotificationSettings.slice(start, end);
+    const totalElements = mockNotificationSettings.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          alerts,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -139,4 +175,5 @@ export default [
   getDoNotDisturbSetting,
   onOffDoNotDisturbSetting,
   editDoNotDisturbSetting,
+  getProductNotificationSettings,
 ];

@@ -21,4 +21,11 @@ export const RESERVATION_QUERY_KEY = {
 
 export const NOTIFICATION_QUERY_KEY = {
   DO_NOT_DISTURB: () => [BASE_KEY.CUSTOMER, 'NOTIFICATION', 'DO-NOT_DISTURB'],
+  PRODUCT_NOTIFICATION_SETTINGS: (page: number, size: number) => [
+    BASE_KEY.CUSTOMER,
+    'NOTIFICATION',
+    'DO-NOT_DISTURB',
+    page,
+    size,
+  ],
 };

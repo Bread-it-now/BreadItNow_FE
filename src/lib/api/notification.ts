@@ -1,7 +1,7 @@
 import { API_END_POINT } from '@/constants/api';
 import { NOTIFICATION_QUERY_KEY } from '@/constants/queryKey';
-import { DoNotDisturb, DoNotDisturbForm } from '@/types/notification';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { DoNotDisturb, DoNotDisturbForm, NotificationSetting, PageInfo } from '@/types/notification';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const getDoNotDisturbSetting = async (): Promise<{ data: DoNotDisturb }> => {
   const response = await fetch(`/${API_END_POINT.DO_NOT_DISTURB_SETTING()}`, {
@@ -71,4 +71,33 @@ export const editDoNotDisturbSetting = async (doNotDisturbForm: DoNotDisturbForm
   if (!response.ok) throw new Error('Failed to edit do not distub setting');
 
   return response.json();
+};
+
+export const getProductNotificationSettings = async ({
+  pageParam = 0,
+  size = 10,
+}: {
+  pageParam?: number;
+  size?: number;
+}): Promise<{ data: { alerts: NotificationSetting[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(`/${API_END_POINT.PRODUCT_NOTIFICATION_SETTINGS(pageParam, size)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useProductNotificationSettings = ({ page = 0, size = 10 }: { page?: number; size?: number }) => {
+  return useInfiniteQuery({
+    queryKey: [...NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(page, size)],
+    queryFn: ({ pageParam = 0 }) => getProductNotificationSettings({ pageParam, size }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
 };

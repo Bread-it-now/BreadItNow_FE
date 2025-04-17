@@ -10,22 +10,42 @@ import Stack from '@/components/common/stack/Stack';
 import BreadNotificationSettingCard from '@/components/notifications/breadnotificationsettingcard/BreadNotificationSettingCard';
 import { breadNotificationCardMockData } from '@/mocks/data/bakery';
 import { SetStateAction, useState } from 'react';
+import { useDoNotDisturbSetting } from '@/lib/api/notification';
+import { DAY } from '@/lib/shared/date';
+import { getFormattedStartEnd } from '@/utils/date';
 
 export default function Page() {
   const router = useRouter();
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const { data: doNotDisturb } = useDoNotDisturbSetting();
 
   return (
     <>
       <EditBtn isEdit={isEdit} handleEdit={setIsEdit} />
-      <section className={cn('flex items-center px-5 pt-6 pb-[1.875rem] gap-5', 'w-full rounded-b-2xl bg-white')}>
-        <InfoField title="방해금지 모드" content="주중 • 오전 10:00 - 오후 06:00" />
-        <button
-          className={cn('flex items-center justify-end gap-1', 'w-[37px] h-full', 'hover:opacity-70')}
-          onClick={() => router.push(ROUTES.MYPAGE.DO_NOT_DISTURB)}>
-          <span className={cn('w-full text-body-m text-gray500')}>켬</span>
-          <Image src={arrowLeft} width={20} height={20} alt="방해금지 모드 페이지 이동 버튼" />
-        </button>
+      <section
+        className={cn(
+          'flex items-center px-5 pt-6 pb-[1.875rem] gap-5 min-h-[103px]',
+          'w-full rounded-b-2xl bg-white',
+        )}>
+        {doNotDisturb && (
+          <>
+            <InfoField
+              title="방해금지 모드"
+              content={
+                doNotDisturb.active
+                  ? `${doNotDisturb.days.map((day) => DAY[day]).join(', ')} • \n${getFormattedStartEnd(doNotDisturb.startTime, doNotDisturb.endTime)}`
+                  : undefined
+              }
+              className={doNotDisturb.active ? 'h-full items-start' : 'h-full items-center'}
+            />
+            <button
+              className={cn('flex items-center justify-end gap-1', 'w-[37px] h-full', 'hover:opacity-70')}
+              onClick={() => router.push(ROUTES.MYPAGE.DO_NOT_DISTURB)}>
+              <span className={cn('w-full text-body-m text-gray500')}>{doNotDisturb.active ? '켬' : '끔'}</span>
+              <Image src={arrowLeft} width={20} height={20} alt="방해금지 모드 페이지 이동 버튼" />
+            </button>
+          </>
+        )}
       </section>
       <section className={cn('flex flex-row items-start px-5 py-[1.875rem]', 'w-full min-h-[673px] bg-white')}>
         <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>

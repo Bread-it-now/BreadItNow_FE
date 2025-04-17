@@ -97,3 +97,35 @@ export const getFormattingDate = (date: Date, addedMinutes: number = 0): string 
 export const getReleaseTime = (hours: number, minutes: number, ampm: 'AM' | 'PM'): string => {
   return `${ampm === 'AM' ? hours.toString().padStart(2, '0') : (hours + 12).toString().padStart(2, '0')}:${minutes}`;
 };
+
+function getMinutes(time: string) {
+  const [hour, minute] = time.split(':');
+  return parseInt(hour, 10) * 60 + parseInt(minute, 10);
+}
+
+function formatTo12Hour(time: string) {
+  const [hourStr, minuteStr] = time.split(':');
+  let hour = parseInt(hourStr, 10);
+  const minute = minuteStr;
+
+  const meridiem = hour < 12 ? '오전' : '오후';
+
+  hour = hour % 12;
+  if (hour === 0) hour = 12;
+
+  const formattedHour = hour.toString().padStart(2, '0');
+
+  return `${meridiem} ${formattedHour}:${minute}`;
+}
+
+export function getFormattedStartEnd(startTime: string, endTime: string) {
+  const startMinutes = getMinutes(startTime);
+  const endMinutes = getMinutes(endTime);
+
+  const isNextDay = endMinutes <= startMinutes;
+
+  const formattedStart = formatTo12Hour(startTime);
+  const formattedEnd = (isNextDay ? ' 다음날 ' : '') + formatTo12Hour(endTime);
+
+  return `${formattedStart} - ${formattedEnd}`;
+}

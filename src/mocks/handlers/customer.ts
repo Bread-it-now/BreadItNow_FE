@@ -80,4 +80,29 @@ const cancelCustomerReservation = http.patch(
   },
 );
 
-export default [getCustomerReservations, getCustomerReservationDetail, cancelCustomerReservation];
+const getDoNotDisturbSetting = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          active: true,
+          days: ['MON', 'TUE', 'WED'],
+          startTime: '22:00',
+          endTime: '07:00',
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export default [
+  getCustomerReservations,
+  getCustomerReservationDetail,
+  cancelCustomerReservation,
+  getDoNotDisturbSetting,
+];

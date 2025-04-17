@@ -18,3 +18,7 @@ export const RESERVATION_QUERY_KEY = {
   OWNER_RESERVATION: (status: OwnerReservationStatusQuery) => [BASE_KEY.OWNER, 'RESERVATION', status],
   OWNER_RESERVATION_DETAIL: (reservationId: number) => [BASE_KEY.OWNER, 'RESERVATION', reservationId],
 };
+
+export const NOTIFICATION_QUERY_KEY = {
+  DO_NOT_DISTURB: () => [BAKERY_QUERY_KEY, 'NOTIFICATION', 'DO-NOT_DISTURB'],
+};

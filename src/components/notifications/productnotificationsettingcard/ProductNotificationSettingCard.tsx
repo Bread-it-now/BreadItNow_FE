@@ -7,7 +7,7 @@ import { useId, useState } from 'react';
 import { NotificationSetting } from '@/types/notification';
 
 export interface ProductNotificationSettingCardProps extends NotificationSetting {
-  isEdit: boolean;
+  isEdit?: boolean;
 }
 
 const ProductNotificationSettingCard = ({

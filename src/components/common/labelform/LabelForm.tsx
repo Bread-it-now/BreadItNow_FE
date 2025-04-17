@@ -20,6 +20,8 @@ export interface LabelFormProps<T extends FieldValues = FieldValues> {
   isRequired?: boolean;
 
   className?: string;
+
+  labelSize?: 'LARGE' | 'MEDIUM';
 }
 
 export const LabelForm = <T extends FieldValues = FieldValues>({
@@ -29,12 +31,15 @@ export const LabelForm = <T extends FieldValues = FieldValues>({
   errors,
   isRequired,
   className,
+  labelSize,
 }: LabelFormProps<T>) => {
   return (
     <div className={cn('relative flex flex-col gap-2', className)}>
       {label && (
         <div className="flex items-start gap-[2px]">
-          <span className="text-title-content-xs">{label}</span>
+          <span className={labelSize === 'LARGE' ? 'text-title-content-m text-gray900' : ' text-title-content-xs'}>
+            {label}
+          </span>
           {isRequired && (
             <div className="flex flex-col">
               <span className=" w-[3px] h-[3px] rounded-full bg-error" />

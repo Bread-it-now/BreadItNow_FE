@@ -11,7 +11,7 @@ import BreadNotificationSettingCard from '@/components/notifications/breadnotifi
 import { breadNotificationCardMockData } from '@/mocks/data/bakery';
 import { SetStateAction, useState } from 'react';
 import { useDoNotDisturbSetting } from '@/lib/api/notification';
-import { DAY } from '@/lib/shared/date';
+import { ENG_TO_KOR_DAY } from '@/lib/shared/date';
 import { getFormattedStartEnd } from '@/utils/date';
 
 export default function Page() {
@@ -33,7 +33,7 @@ export default function Page() {
               title="방해금지 모드"
               content={
                 doNotDisturb.active
-                  ? `${doNotDisturb.days.map((day) => DAY[day]).join(', ')} • \n${getFormattedStartEnd(doNotDisturb.startTime, doNotDisturb.endTime)}`
+                  ? `${doNotDisturb.days.map((day) => ENG_TO_KOR_DAY[day]).join(', ')} • \n${getFormattedStartEnd(doNotDisturb.startTime, doNotDisturb.endTime)}`
                   : undefined
               }
               className={doNotDisturb.active ? 'h-full items-start' : 'h-full items-center'}

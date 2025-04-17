@@ -1,6 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { NOTIFICATION_QUERY_KEY } from '@/constants/queryKey';
-import { DoNotDisturb } from '@/types/notification';
+import { DoNotDisturb, DoNotDisturbForm } from '@/types/notification';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const getDoNotDisturbSetting = async (): Promise<{ data: DoNotDisturb }> => {
@@ -59,4 +59,16 @@ export const useOnOffDoNotDisturbSetting = () => {
       }
     },
   });
+};
+
+export const editDoNotDisturbSetting = async (doNotDisturbForm: DoNotDisturbForm): Promise<{ data: null }> => {
+  const response = await fetch(`/${API_END_POINT.EDIT_DO_NOT_DISTURB_SETTING()}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...doNotDisturbForm }),
+  });
+
+  if (!response.ok) throw new Error('Failed to edit do not distub setting');
+
+  return response.json();
 };

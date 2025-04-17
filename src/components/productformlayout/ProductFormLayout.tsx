@@ -17,7 +17,7 @@ import BottomSheet from '../bottomsheet/Bottomsheet';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
 import TimeChip from '../common/chips/timechip/TimeChip';
 import { useEffect, useState } from 'react';
-import { getReleaseTime } from '@/utils/date';
+import { getFormattedTime } from '@/utils/date';
 import add from '@/assets/icons/add.svg';
 import Image from 'next/image';
 
@@ -261,12 +261,12 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
                           dispatch.close();
                           if (
                             !field.value.includes(
-                              getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
+                              getFormattedTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
                             )
                           ) {
                             field.onChange([
                               ...field.value,
-                              getReleaseTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
+                              getFormattedTime(newReleaseTime.hours, newReleaseTime.minutes, newReleaseTime.ampm),
                             ]);
                           }
                           setNewReleaseTime({

@@ -1,4 +1,4 @@
-import { DAY } from '@/lib/shared/date';
+import { ENG_DAY } from './date';
 
 export type NotificationType = 'ALERT' | 'RESERVATION';
 
@@ -36,7 +36,13 @@ export interface NotificationPageInfo {
 
 export interface DoNotDisturb {
   active: boolean;
-  days: (keyof typeof DAY)[];
+  days: ENG_DAY[];
+  startTime: string;
+  endTime: string;
+}
+
+export interface DoNotDisturbForm {
+  days: ENG_DAY[];
   startTime: string;
   endTime: string;
 }

@@ -156,9 +156,16 @@ export const useOnOffProductNotificationSetting = ({ size = 10 }: { size?: numbe
         queryClient.setQueryData(queryKey, context.prevData);
       }
     },
-    // onSettled: () => {
-    //   const queryKey = NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(size);
-    //   queryClient.invalidateQueries({ queryKey });
-    // },
   });
+};
+
+export const deleteProductNotificationSetting = async (productId: number): Promise<{ data: null }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_PRODUCT_NOTFICATION_SETTING(productId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
 };

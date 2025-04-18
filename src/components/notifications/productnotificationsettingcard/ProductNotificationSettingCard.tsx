@@ -3,12 +3,14 @@ import Image from 'next/image';
 import Tag from '@/components/common/Tag';
 import ToggleSwitch from '@/components/common/toggleswitch/ToggleSwitch';
 import Checkbox from '@/components/common/checkbox/Checkbox';
-import { useId, useState } from 'react';
+import { SetStateAction, useId } from 'react';
 import { NotificationSetting } from '@/types/notification';
 import { useOnOffProductNotificationSetting } from '@/lib/api/notification';
 
 export interface ProductNotificationSettingCardProps extends NotificationSetting {
   isEdit?: boolean;
+  checked: boolean;
+  handleChecked: React.Dispatch<SetStateAction<number | null>>;
 }
 
 const ProductNotificationSettingCard = ({
@@ -19,8 +21,9 @@ const ProductNotificationSettingCard = ({
   releaseTime,
   bakeryName,
   alertActive,
+  checked,
+  handleChecked,
 }: ProductNotificationSettingCardProps) => {
-  const [checked, setChecked] = useState(false);
   const checkboxId = useId();
   const onOffProductNotificationSettingMutation = useOnOffProductNotificationSetting({ size: 10 });
 
@@ -31,7 +34,16 @@ const ProductNotificationSettingCard = ({
 
         {isEdit && (
           <div className="absolute top-1 left-1 z-1">
-            <Checkbox id={String(checkboxId)} checked={checked} onChange={() => setChecked((prev) => !prev)} />
+            <Checkbox
+              id={String(checkboxId)}
+              checked={checked}
+              onChange={() => {
+                if (checked) handleChecked(null);
+                else {
+                  handleChecked(productId);
+                }
+              }}
+            />
           </div>
         )}
       </div>

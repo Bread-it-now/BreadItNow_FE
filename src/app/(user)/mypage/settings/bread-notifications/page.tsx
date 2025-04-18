@@ -8,20 +8,32 @@ import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import Stack from '@/components/common/stack/Stack';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
-import { useDoNotDisturbSetting, useProductNotificationSettings } from '@/lib/api/notification';
+import {
+  deleteProductNotificationSetting,
+  useDoNotDisturbSetting,
+  useProductNotificationSettings,
+} from '@/lib/api/notification';
 import { ENG_TO_KOR_DAY } from '@/lib/shared/date';
 import { getFormattedStartEnd } from '@/utils/date';
 import { NotificationSetting } from '@/types/notification';
 import ProductNotificationSettingCard from '@/components/notifications/productnotificationsettingcard/ProductNotificationSettingCard';
+import { useQueryClient } from '@tanstack/react-query';
+import { NOTIFICATION_QUERY_KEY } from '@/constants/queryKey';
 
 export default function Page() {
   const router = useRouter();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { data: doNotDisturb } = useDoNotDisturbSetting();
+  const [checkedProductId, setcheckedProductId] = useState<number | null>(null);
 
   return (
     <>
-      <EditBtn isEdit={isEdit} handleEdit={setIsEdit} />
+      <EditBtn
+        isEdit={isEdit}
+        handleEdit={setIsEdit}
+        checkedProductId={checkedProductId}
+        handleCheckedProductId={setcheckedProductId}
+      />
       <section
         className={cn(
           'flex items-center px-5 pt-6 pb-[1.875rem] gap-5 min-h-[103px]',
@@ -48,13 +60,25 @@ export default function Page() {
         )}
       </section>
       <section className={cn('flex flex-row items-start px-5 py-[1.875rem]', 'w-full min-h-[673px] bg-white')}>
-        <ProductNotificationSettingCardList />
+        <ProductNotificationSettingCardList
+          isEdit={isEdit}
+          checkedProductId={checkedProductId}
+          handleChecked={setcheckedProductId}
+        />
       </section>
     </>
   );
 }
 
-const ProductNotificationSettingCardList = () => {
+const ProductNotificationSettingCardList = ({
+  isEdit,
+  checkedProductId,
+  handleChecked,
+}: {
+  isEdit: boolean;
+  checkedProductId: number | null;
+  handleChecked: React.Dispatch<SetStateAction<number | null>>;
+}) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useProductNotificationSettings({
     size: 10,
   });
@@ -87,11 +111,17 @@ const ProductNotificationSettingCardList = () => {
       <Stack divider={<div className="w-full h-[1px] bg-gray100"></div>}>
         {data?.pages.map((page) =>
           page.data.alerts.map((notificationSetting: NotificationSetting) => (
-            <ProductNotificationSettingCard key={notificationSetting.alertId} {...notificationSetting} />
+            <ProductNotificationSettingCard
+              key={notificationSetting.alertId}
+              {...notificationSetting}
+              isEdit={isEdit}
+              checked={checkedProductId === notificationSetting.productId}
+              handleChecked={handleChecked}
+            />
           )),
         )}
         <div ref={observerRef} />
-        {isFetchingNextPage && <p>로딩중</p>}
+        {isFetchingNextPage && <p />}
       </Stack>
     </>
   );
@@ -100,13 +130,27 @@ const ProductNotificationSettingCardList = () => {
 interface EditBtnProps {
   isEdit: boolean;
   handleEdit: React.Dispatch<SetStateAction<boolean>>;
+  checkedProductId: number | null;
+  handleCheckedProductId: React.Dispatch<SetStateAction<number | null>>;
+  size?: number;
 }
 
-const EditBtn = ({ isEdit, handleEdit }: EditBtnProps) => {
+const EditBtn = ({ checkedProductId, isEdit, handleEdit, handleCheckedProductId, size = 10 }: EditBtnProps) => {
+  const queryClient = useQueryClient();
   return (
-    <button className="absolute right-5 top-[3.625rem]" onClick={() => handleEdit((prev) => !prev)}>
+    <button
+      className="absolute right-5 top-[3.625rem]"
+      onClick={() => {
+        if (checkedProductId === null) handleEdit((prev) => !prev);
+        else {
+          deleteProductNotificationSetting(checkedProductId);
+          handleCheckedProductId(null);
+          handleEdit(false);
+          queryClient.invalidateQueries({ queryKey: [...NOTIFICATION_QUERY_KEY.PRODUCT_NOTIFICATION_SETTINGS(size)] });
+        }
+      }}>
       <span className={cn('w-[1.625rem] h-full text-right', 'text-body-m font-medium text-primary hover:opacity-70')}>
-        {isEdit ? '삭제' : '편집'}
+        {isEdit ? (checkedProductId ? '삭제' : '취소') : '편집'}
       </span>
     </button>
   );

@@ -185,6 +185,21 @@ const onOffProductNotificationbSetting = http.patch(
   },
 );
 
+const deleteProductNotificationSetting = http.delete(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/:productId`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -194,4 +209,5 @@ export default [
   editDoNotDisturbSetting,
   getProductNotificationSettings,
   onOffProductNotificationbSetting,
+  deleteProductNotificationSetting,
 ];

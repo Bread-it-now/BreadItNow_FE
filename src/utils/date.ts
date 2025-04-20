@@ -94,6 +94,57 @@ export const getFormattingDate = (date: Date, addedMinutes: number = 0): string 
   return `${month} ${day}일 ${hours}:${minutes}`;
 };
 
-export const getReleaseTime = (hours: number, minutes: number, ampm: 'AM' | 'PM'): string => {
-  return `${ampm === 'AM' ? hours.toString().padStart(2, '0') : (hours + 12).toString().padStart(2, '0')}:${minutes}`;
+export const getFormattedTime = (hours: number, minutes: number, ampm: 'AM' | 'PM'): string => {
+  return `${ampm === 'AM' ? hours.toString().padStart(2, '0') : (hours + 12).toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 };
+
+export const getMinutes = (time: string) => {
+  const [hour, minute] = time.split(':');
+  return parseInt(hour, 10) * 60 + parseInt(minute, 10);
+};
+
+export const getHoursMinutesAMPM = (time: string) => {
+  const [hourStr, minuteStr] = time.split(':');
+  let hours = parseInt(hourStr, 10);
+  const minutes = parseInt(minuteStr, 10);
+
+  // AM/PM 구분
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  // 12시간 형식으로 변환
+  hours = hours % 12;
+  if (hours === 0) hours = 12;
+
+  return {
+    hours,
+    minutes,
+    ampm,
+  };
+};
+
+export const formatToHour = (time: string) => {
+  const [hourStr, minuteStr] = time.split(':');
+  let hour = parseInt(hourStr, 10);
+  const minute = minuteStr;
+
+  const meridiem = hour < 12 ? '오전' : '오후';
+
+  hour = hour % 12;
+  if (hour === 0) hour = 12;
+
+  const formattedHour = hour.toString().padStart(2, '0');
+
+  return `${meridiem} ${formattedHour}:${minute}`;
+};
+
+export function getFormattedStartEnd(startTime: string, endTime: string) {
+  const startMinutes = getMinutes(startTime);
+  const endMinutes = getMinutes(endTime);
+
+  const isNextDay = endMinutes <= startMinutes;
+
+  const formattedStart = formatToHour(startTime);
+  const formattedEnd = (isNextDay ? ' 다음날 ' : '') + formatToHour(endTime);
+
+  return `${formattedStart} - ${formattedEnd}`;
+}

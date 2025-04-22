@@ -315,6 +315,36 @@ const getFavoriteProductList = http.get(
   },
 );
 
+const addFavoriteProduct = http.post(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/:productId/favorite`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const deleteFavoriteProduct = http.delete(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/:productId/favorite`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -329,4 +359,6 @@ export default [
   addFavoriteBakery,
   deleteFavoriteBakery,
   getFavoriteProductList,
+  addFavoriteProduct,
+  deleteFavoriteProduct,
 ];

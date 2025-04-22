@@ -6,6 +6,8 @@ import bookmark from '@/assets/icons/bookmark.svg';
 import bookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Link from 'next/link';
 import { comma } from '@/utils/comma';
+import { addFavoriteProduct, deleteFavoriteProduct } from '@/lib/api/bakery';
+import { useState } from 'react';
 
 export interface BreadCardProps {
   id: number;
@@ -15,7 +17,7 @@ export interface BreadCardProps {
   price: number;
   size?: 'small' | 'normal';
   isBookmarked: boolean;
-  onToggleBookmark: () => void;
+  onToggleBookmark?: () => void;
 }
 
 const BreadCard = ({
@@ -28,6 +30,18 @@ const BreadCard = ({
   isBookmarked,
   onToggleBookmark,
 }: BreadCardProps) => {
+  const [checked, setChecked] = useState<boolean>(false);
+  const handleToggleBookmark = (productId: number) => {
+    const willBeBookmarked = !(isBookmarked === checked);
+
+    if (willBeBookmarked) {
+      addFavoriteProduct(productId);
+    } else {
+      deleteFavoriteProduct(productId);
+    }
+
+    setChecked(!checked);
+  };
   return (
     <Link
       href={`/bread/${id}`}
@@ -39,9 +53,12 @@ const BreadCard = ({
           aria-label="bookmark"
           onClick={(e) => {
             e.preventDefault();
-            onToggleBookmark();
+            if (onToggleBookmark) onToggleBookmark();
+            else {
+              handleToggleBookmark(id);
+            }
           }}>
-          <Image width={16} height={16} src={isBookmarked ? bookmarkFill : bookmark} alt="bookmark" />
+          <Image width={16} height={16} src={isBookmarked && !checked ? bookmarkFill : bookmark} alt="bookmark" />
         </button>
       </div>
       <div className="flex flex-col px-1 items-start gap-1 w-full">

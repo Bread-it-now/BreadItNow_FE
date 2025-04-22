@@ -165,7 +165,6 @@ const FavoriteProductList = ({
               description=""
               price={product.price}
               isBookmarked
-              onToggleBookmark={() => {}}
             />
           )),
         )

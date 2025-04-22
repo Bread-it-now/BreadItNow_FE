@@ -1,3 +1,4 @@
+import { FilterKey } from '@/types/bakery';
 import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
 const API_SUFFIX = 'api';
@@ -40,7 +41,21 @@ export const CONTROLLER = {
 export const API_END_POINT = {
   /** AUTH */
 
-  /** CUSTOMER */
+  /** CUSTMOMER - BAKERY */
+  FAVORITE_BAKERIES: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
+  ADD_FAVORITE_BAKERY: (bakeryId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}/favorite`,
+  DELETE_FAVORITE_BAKERY: (bakeryId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}/favorite`,
+
+  /** CUSTOMER - BAKERY */
+  FAVORITE_PRODUCTS: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
+  ADD_FAVORITE_PRODUCT: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}/favorite`,
+  DELETE_FAVORITE_PRODUCT: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${productId}/favorite`,
 
   // ALERT
   ADD_NOTFICATION_SETTING: (productId: number) =>

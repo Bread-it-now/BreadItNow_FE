@@ -82,3 +82,45 @@ export interface ProductForm {
   description: string;
   releaseTimes: string[];
 }
+
+export interface FavoriteBakery {
+  bakeryId: number;
+  name: string;
+  profileImage: string;
+  distance: number;
+  operatingStatus: keyof typeof OPERATING_STATUS;
+  isBakeryActive: boolean;
+}
+
+export interface FavoriteProduct {
+  productId: number;
+  bakeryId: number;
+  name: string;
+  image: string;
+  price: number;
+  releaseTimes: string[];
+  isBakeryActive: false;
+  isBreadActive: true;
+}
+
+export interface FavoriteBakeryList {
+  favorites: FavoriteBakery[];
+  pageInfo: {
+    totalElements: number;
+    totalPages: number;
+    isLast: boolean;
+    currPage: number;
+  };
+}
+
+export interface FavoriteProductList {
+  favorites: FavoriteProductList[];
+  pageInfo: {
+    totalElements: number;
+    totalPages: number;
+    isLast: boolean;
+    currPage: number;
+  };
+}
+
+export type FilterKey = 'latest' | 'popular' | 'distance';

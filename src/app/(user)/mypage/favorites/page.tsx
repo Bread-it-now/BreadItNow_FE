@@ -31,7 +31,7 @@ export default function Page() {
             <FilterDropdown handleSelectedFilter={setSelectedFilter} selectedFilter={selectedFilter} />
           </div>
           <div
-            className={`flex ${activeTab === 'bakery' ? 'flex-col gap-[30px]' : 'flex-row flex-wrap gap-x-[11px] gap-y-[30px]'} w-full`}>
+            className={`flex ${activeTab === 'bakery' || totalElementsCnt === 0 ? 'flex-col gap-[30px]' : 'flex-row flex-wrap gap-x-[11px] gap-y-[30px]'} w-full`}>
             {activeTab === 'bakery' ? (
               <FavoriteBakeryList sort={selectedFilter} handleTotalElementsCnt={setTotalElementsCnt} />
             ) : (

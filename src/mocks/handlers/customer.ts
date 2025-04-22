@@ -3,6 +3,7 @@ import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservationStatus } from '@/types/reservation';
 import { customerReservationDetails, CustomerReservations } from '../data/reservation';
 import { mockFavoriteBakeries, mockNotificationSettings } from '../data/bakery';
+import { FilterKey } from '@/types/bakery';
 
 const getCustomerReservations = http.get(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
@@ -206,12 +207,24 @@ const getFavoriteBakeryList = http.get(
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') as string);
     const size = parseInt(url.searchParams.get('size') as string);
+    const sort: FilterKey = url.searchParams.get('sort') as FilterKey;
+
+    const sortedFavorites = [...mockFavoriteBakeries];
+
+    switch (sort) {
+      case 'distance':
+        sortedFavorites.sort((a, b) => a.distance - b.distance);
+        break;
+
+      default:
+        break; // 정렬 없음
+    }
 
     const start = page * size;
     const end = start + size;
 
-    const favorites = mockFavoriteBakeries.slice(start, end);
-    const totalElements = mockFavoriteBakeries.length;
+    const favorites = sortedFavorites.slice(start, end);
+    const totalElements = sortedFavorites.length;
     const totalPages = Math.ceil(totalElements / size);
     const isLast = page + 1 >= totalPages;
 

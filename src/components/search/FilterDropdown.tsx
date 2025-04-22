@@ -12,12 +12,17 @@ const FILTER_OPTIONS = [
   { key: 'distance', label: '거리순' },
 ];
 
-export default function FilterDropdown() {
+const FilterDropdown = ({
+  selectedFilter,
+  handleSelectedFilter,
+}: {
+  selectedFilter: 'latest' | 'popular' | 'distance';
+  handleSelectedFilter: (key: FilterKey) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState<FilterKey>('popular');
 
   const handleSelect = (key: FilterKey) => {
-    setSelectedFilter(key);
+    handleSelectedFilter(key);
     setIsOpen(false);
   };
 
@@ -44,4 +49,6 @@ export default function FilterDropdown() {
       )}
     </div>
   );
-}
+};
+
+export default FilterDropdown;

@@ -11,6 +11,7 @@ import BakeryCard from '@/components/bakerycard/BakeryCard';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import EmptyState from '@/components/common/EmptyState';
 import { suggestions, bakeryList, breadList } from './searchData';
+import { FilterKey } from '@/types/bakery';
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -18,6 +19,7 @@ export default function SearchPage() {
   const [activeTab, setActiveTab] = useState<'빵집' | '빵'>('빵집');
   const [bookmarkedBreads, setBookmarkedBreads] = useState<number[]>([]);
   const [bookmarkedBakeries, setBookmarkedBakeries] = useState<number[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<FilterKey>('popular');
 
   const handleSearchEnter = (): void => {
     setIsSearchActive(true);
@@ -96,7 +98,7 @@ export default function SearchPage() {
                 </span>{' '}
                 개
               </span>
-              <FilterDropdown />
+              <FilterDropdown handleSelectedFilter={setSelectedFilter} selectedFilter={selectedFilter} />
             </div>
 
             {activeTab === '빵집' ? (

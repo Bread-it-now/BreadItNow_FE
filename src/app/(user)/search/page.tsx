@@ -105,7 +105,12 @@ export default function SearchPage() {
                   {filteredBakeryList.map((bakery) => (
                     <BakeryCard
                       key={bakery.id}
-                      {...bakery}
+                      bakeryId={bakery.id}
+                      profileImage={bakery.profileImgUrl}
+                      name={bakery.name}
+                      distance={bakery.distance}
+                      operatingStatus={bakery.operatingStatus}
+                      size="large"
                       isBookmarked={bookmarkedBakeries.includes(bakery.id)}
                       onToggleBookmark={() => toggleBakeryBookmark(bakery.id)}
                     />
@@ -120,6 +125,7 @@ export default function SearchPage() {
                   <BreadCard
                     key={bread.id}
                     {...bread}
+                    price={Number(bread.price)}
                     isBookmarked={bookmarkedBreads.includes(bread.id)}
                     onToggleBookmark={() => toggleBreadBookmark(bread.id)}
                   />

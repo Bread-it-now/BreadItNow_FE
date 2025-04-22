@@ -11,7 +11,7 @@ export interface BreadCardProps {
   profileImgUrl: string;
   name: string;
   description: string;
-  price: string;
+  price: number;
   size?: 'small' | 'normal';
   isBookmarked: boolean;
   onToggleBookmark: () => void;

@@ -1,7 +1,7 @@
 import { BakeryCardProps } from '@/components/bakerycard/BakeryCard';
 import bakery from '@/assets/images/bakery.png';
 import bread from '@/assets/images/bread.png';
-import { Bakery } from '@/types/bakery';
+import { Bakery, FavoriteBakery, OPERATING_STATUS } from '@/types/bakery';
 import { NotificationSetting } from '@/types/notification';
 
 export const bakeryCardMockData: BakeryCardProps = {
@@ -48,3 +48,12 @@ export const mockBakeryInfos: Bakery[] = [
     operatingStatus: 'OPEN',
   },
 ];
+
+export const mockFavoriteBakeries: FavoriteBakery[] = Array.from({ length: 30 }, (_, i) => ({
+  bakeryId: i + 1,
+  name: `Bakery ${i + 1}`,
+  profileImage: bakery,
+  distance: parseFloat((Math.random() * 10).toFixed(2)), // 0.00 ~ 10.00km
+  operatingStatus: (Object.keys(OPERATING_STATUS) as (keyof typeof OPERATING_STATUS)[])[Math.floor(Math.random() * 3)],
+  isBakeryActive: Math.random() > 0.2, // 80% 확률로 true
+}));

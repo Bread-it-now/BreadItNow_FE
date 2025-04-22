@@ -114,7 +114,7 @@ export interface FavoriteBakeryList {
 }
 
 export interface FavoriteProductList {
-  favorites: FavoriteProductList[];
+  favorites: FavoriteProduct[];
   pageInfo: {
     totalElements: number;
     totalPages: number;

@@ -6,7 +6,7 @@ import EmptyState from '@/components/common/EmptyState';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { FavoriteBakery, FavoriteProduct, FilterKey } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
-import { useFavoriteBakeryList } from '@/lib/api/bakery';
+import { useFavoriteBakeryList, useFavoriteProductList } from '@/lib/api/bakery';
 
 const HEADER_TABS = [
   { key: 'bakery', label: '빵집' },
@@ -30,25 +30,12 @@ export default function Page() {
             </span>
             <FilterDropdown handleSelectedFilter={setSelectedFilter} selectedFilter={selectedFilter} />
           </div>
-          <div className="flex flex-col gap-[30px] w-full">
+          <div
+            className={`flex ${activeTab === 'bakery' ? 'flex-col gap-[30px]' : 'flex-row flex-wrap gap-x-[11px] gap-y-[30px]'} w-full`}>
             {activeTab === 'bakery' ? (
-              <FavoritBakeryList sort={selectedFilter} handleTotalElementsCnt={setTotalElementsCnt} />
-            ) : filteredBreadList.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 p-4">
-                {filteredBreadList.map((bread) => (
-                  <BreadCard
-                    key={bread.productId}
-                    id={bread.productId}
-                    profileImgUrl={bread.image}
-                    description="Delicious bread"
-                    {...bread}
-                    isBookmarked
-                    onToggleBookmark={() => {}}
-                  />
-                ))}
-              </div>
+              <FavoriteBakeryList sort={selectedFilter} handleTotalElementsCnt={setTotalElementsCnt} />
             ) : (
-              <EmptyState title="즐겨찾기한 빵이 없습니다." message="자주 가는 빵을 추가해 보세요." />
+              <FavoriteProductList sort={selectedFilter} handleTotalElementsCnt={setTotalElementsCnt} />
             )}
           </div>
         </div>
@@ -57,9 +44,7 @@ export default function Page() {
   );
 }
 
-const filteredBreadList: FavoriteProduct[] = [];
-
-const FavoritBakeryList = ({
+const FavoriteBakeryList = ({
   sort,
   handleTotalElementsCnt,
 }: {
@@ -114,6 +99,73 @@ const FavoritBakeryList = ({
               operatingStatus={bakery.operatingStatus}
               size="large"
               isBookmarked
+            />
+          )),
+        )
+      ) : (
+        <EmptyState title="즐겨찾기한 빵집이 없습니다." message="자주 가는 빵집을 추가해 보세요." />
+      )}
+      <div ref={observerRef} />
+      {isFetchingNextPage && <p />}
+    </>
+  );
+};
+
+const FavoriteProductList = ({
+  sort,
+  handleTotalElementsCnt,
+}: {
+  sort: FilterKey;
+  handleTotalElementsCnt: (value: number) => void;
+}) => {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFavoriteProductList({
+    sort,
+    latitude: 10,
+    longitude: 10,
+  });
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+  const totalElements = data?.pages[0]?.data?.pageInfo?.totalElements || 0;
+
+  useEffect(() => {
+    handleTotalElementsCnt(totalElements);
+  }, [totalElements, handleTotalElementsCnt]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  return (
+    <>
+      {data?.pages[0].data.favorites.length !== 0 ? (
+        data?.pages.map((page) =>
+          page.data.favorites.map((product: FavoriteProduct) => (
+            <BreadCard
+              key={product.productId}
+              id={product.productId}
+              profileImgUrl={product.image}
+              name={product.name}
+              description=""
+              price={product.price}
+              isBookmarked
+              onToggleBookmark={() => {}}
             />
           )),
         )

@@ -12,6 +12,7 @@ export const BAKERY_QUERY_KEY = {
   BAKERY_PRODUCTS: (bakeryId: number) => [BASE_KEY.OWNER, 'BAKERY', bakeryId, 'PRODUCT'],
   BAKERY_PRODUCT: (bakeryId: number, productId: number) => [BASE_KEY.OWNER, 'BAKERY', bakeryId, 'PRODUCT', productId],
   FAVORITE_BAKERIES: (sort: FilterKey) => [BASE_KEY.CUSTOMER, 'BAKERY', 'FAVORITE', sort],
+  FAVORITE_PRODUCTS: (sort: FilterKey) => [BASE_KEY.CUSTOMER, 'BAKERY', 'FAVORITE', 'PRODUCT', sort],
 };
 
 export const RESERVATION_QUERY_KEY = {

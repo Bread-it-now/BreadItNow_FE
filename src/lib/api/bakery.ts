@@ -4,6 +4,7 @@ import {
   Bakery,
   BakeryProducts,
   FavoriteBakeryList,
+  FavoriteProductList,
   FilterKey,
   OPERATING_STATUS,
   Product,
@@ -212,7 +213,7 @@ export const useFavoriteBakeryList = ({
   });
 };
 
-export const addFavoriteBakery = async (bakeryId: number): Promise<{ data: { stock: number } }> => {
+export const addFavoriteBakery = async (bakeryId: number): Promise<{ data: null }> => {
   const response = await fetch(`/${API_END_POINT.ADD_FAVORITE_BAKERY(bakeryId)}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -223,8 +224,76 @@ export const addFavoriteBakery = async (bakeryId: number): Promise<{ data: { sto
   return response.json();
 };
 
-export const deleteFavoriteBakery = async (bakeryId: number): Promise<{ data: { stock: number } }> => {
+export const deleteFavoriteBakery = async (bakeryId: number): Promise<{ data: null }> => {
   const response = await fetch(`/${API_END_POINT.DELETE_FAVORITE_BAKERY(bakeryId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to delete favorite bakery');
+
+  return response.json();
+};
+
+export const getFavoriteProductList = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'popular',
+  latitude = 10,
+  longitude = 10,
+}: {
+  pageParam: number;
+  size: number;
+  sort: FilterKey;
+  latitude: number;
+  longitude: number;
+}): Promise<{ data: FavoriteProductList }> => {
+  const response = await fetch(`/${API_END_POINT.FAVORITE_PRODUCTS(pageParam, size, sort, latitude, longitude)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useFavoriteProductList = ({
+  size = 10,
+  latitude = 10,
+  longitude = 10,
+  sort = 'popular',
+}: {
+  page?: number;
+  size?: number;
+  sort: FilterKey;
+  latitude: number;
+  longitude: number;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...BAKERY_QUERY_KEY.FAVORITE_PRODUCTS(sort)],
+    queryFn: ({ pageParam = 0 }) => getFavoriteProductList({ pageParam, size, sort, latitude, longitude }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+
+export const addFavoriteProduct = async (productId: number): Promise<{ data: null }> => {
+  const response = await fetch(`/${API_END_POINT.ADD_FAVORITE_PRODUCT(productId)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to add favorite bakery');
+
+  return response.json();
+};
+
+export const deleteFavoriteProduct = async (productId: number): Promise<{ data: null }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_FAVORITE_PRODUCT(productId)}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   });

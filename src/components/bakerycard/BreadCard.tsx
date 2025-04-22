@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import bookmark from '@/assets/icons/bookmark.svg';
 import bookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Link from 'next/link';
+import { comma } from '@/utils/comma';
 
 export interface BreadCardProps {
   id: number;
@@ -48,7 +49,7 @@ const BreadCard = ({
           <div className="self-stretch text-gray700 text-[13px] font-normal leading-[19px]">{description}</div>
           <div className="self-stretch text-gray900 text-sm font-semibold leading-tight">{name}</div>
         </div>
-        <div className="text-gray900 text-sm font-medium leading-tight">{price}</div>
+        <div className="text-gray900 text-sm font-medium leading-tight">{`${comma(price)}원`}</div>
       </div>
     </Link>
   );

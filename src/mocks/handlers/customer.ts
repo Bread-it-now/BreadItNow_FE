@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservationStatus } from '@/types/reservation';
 import { customerReservationDetails, CustomerReservations } from '../data/reservation';
-import { mockFavoriteBakeries, mockNotificationSettings } from '../data/bakery';
+import { mockFavoriteBakeries, mockFavoriteProducts, mockNotificationSettings } from '../data/bakery';
 import { FilterKey } from '@/types/bakery';
 
 const getCustomerReservations = http.get(
@@ -278,6 +278,43 @@ const deleteFavoriteBakery = http.delete(
   },
 );
 
+const getFavoriteProductList = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/favorite`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+
+    const sortedFavoriteProducts = [...mockFavoriteProducts];
+
+    const start = page * size;
+    const end = start + size;
+
+    const favorites = sortedFavoriteProducts.slice(start, end);
+    const totalElements = sortedFavoriteProducts.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          favorites,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -291,4 +328,5 @@ export default [
   getFavoriteBakeryList,
   addFavoriteBakery,
   deleteFavoriteBakery,
+  getFavoriteProductList,
 ];

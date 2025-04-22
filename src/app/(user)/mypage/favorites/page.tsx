@@ -114,7 +114,6 @@ const FavoritBakeryList = ({
               operatingStatus={bakery.operatingStatus}
               size="large"
               isBookmarked
-              onToggleBookmark={() => {}}
             />
           )),
         )

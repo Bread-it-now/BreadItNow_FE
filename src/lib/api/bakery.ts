@@ -211,3 +211,25 @@ export const useFavoriteBakeryList = ({
     initialPageParam: 0,
   });
 };
+
+export const addFavoriteBakery = async (bakeryId: number): Promise<{ data: { stock: number } }> => {
+  const response = await fetch(`/${API_END_POINT.ADD_FAVORITE_BAKERY(bakeryId)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to add favorite bakery');
+
+  return response.json();
+};
+
+export const deleteFavoriteBakery = async (bakeryId: number): Promise<{ data: { stock: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_FAVORITE_BAKERY(bakeryId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to delete favorite bakery');
+
+  return response.json();
+};

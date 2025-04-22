@@ -248,6 +248,36 @@ const getFavoriteBakeryList = http.get(
   },
 );
 
+const addFavoriteBakery = http.post(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/:bakeryId/favorite`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const deleteFavoriteBakery = http.delete(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/:bakeryId/favorite`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -259,4 +289,6 @@ export default [
   onOffProductNotificationbSetting,
   deleteProductNotificationSetting,
   getFavoriteBakeryList,
+  addFavoriteBakery,
+  deleteFavoriteBakery,
 ];

@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
-import { CustomerReservationStatus } from '@/types/reservation';
-import { customerReservationDetails, CustomerReservations } from '../data/reservation';
+import { CustomerReservation, CustomerReservationStatus } from '@/types/reservation';
+import { customerReservationDetails, mockCustomerReservations } from '../data/reservation';
 import { mockFavoriteBakeries, mockFavoriteProducts, mockNotificationSettings } from '../data/bakery';
 import { FilterKey } from '@/types/bakery';
 
@@ -9,19 +9,35 @@ const getCustomerReservations = http.get(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
   async ({ request }) => {
     const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
     const status: CustomerReservationStatus | 'ALL' = url.searchParams.get('status') as
       | CustomerReservationStatus
       | 'ALL';
-    const FilteredCustomerReservations =
-      status !== 'ALL'
-        ? CustomerReservations.filter((reservation) => reservation.status === status)
-        : [...CustomerReservations];
+
+    const reservationsByStatus: CustomerReservation[] =
+      status === 'ALL'
+        ? [...mockCustomerReservations]
+        : mockCustomerReservations.filter((reservation) => reservation.status === status);
+
+    const start = page * size;
+    const end = start + size;
+
+    const reservations = reservationsByStatus.slice(start, end);
+    const totalElements = reservationsByStatus.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
 
     return new HttpResponse(
       JSON.stringify({
         data: {
-          reservations: FilteredCustomerReservations,
-          pageInfo: { totalElements: 20, totalPages: 2, currPage: 1, isLast: false },
+          reservations,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
         },
       }),
       {

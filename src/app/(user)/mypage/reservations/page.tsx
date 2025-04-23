@@ -1,17 +1,15 @@
 'use client';
 
 import RoundTab from '@/components/common/tabs/RoundTab';
-import { CustomerReservationStatus } from '@/types/reservation';
-import { useState } from 'react';
+import { CustomerReservation, CustomerReservationStatus } from '@/types/reservation';
+import { useEffect, useRef, useState } from 'react';
 import CustomerReservationCard from '@/components/reservation/customerReservationCard/CustomerReservationCard';
 import { useCustomerReservations } from '@/lib/api/reservation';
-import Empty from '@/assets/icons/empty.svg';
-import Image from 'next/image';
+import EmptyState from '@/components/common/EmptyState';
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<CustomerReservationStatus | 'ALL'>('ALL');
-  const { data } = useCustomerReservations({ reservationStatus: selectedCategory, page: 0, size: 10 });
-  const reservations = data?.reservations;
+  const [totalElementsCnt, setTotalElementsCnt] = useState<number>(0);
 
   return (
     <>
@@ -32,28 +30,83 @@ export default function Page() {
       </section>
       <section className="flex flex-col justify-center items-start gap-4 px-5 pt-6 pb-[50px] w-full">
         <p className="flex justify-start w-full text-title-content-s font-normal text-gray900">
-          총&nbsp;<span className="text-primary"> {reservations ? reservations.length : 0}</span>개
+          총&nbsp;<span className="text-primary"> {totalElementsCnt}</span>개
         </p>
         <div
-          className={`flex flex-col items-start gap-[0.625rem] w-full min-h-[240px] ${(!reservations || reservations.length === 0) && 'center'}`}>
-          {/* 무한스크롤로 수정 필요 */}
-          {reservations && reservations.length !== 0 ? (
-            reservations.map((reservation) => (
-              <CustomerReservationCard key={reservation.reservationId} {...reservation} />
-            ))
-          ) : (
-            /* no-data */
-            <div className="flex flex-col justify-center items-center gap-4 w-full h-full">
-              <Image src={Empty} width={70} height={70} alt="empty" />
-              <div className="flex flex-col items-center gap-[6px] w-full h-full text-gray500">
-                <p className="text-title-content-s font-medium">예약 내역이 없습니다.</p>
-                <p className="text-title-content-2xs">원하는 빵을 미리 예약해 보세요.</p>
-              </div>
-            </div>
-          )}
+          className={`flex flex-col items-start gap-[0.625rem] w-full min-h-[240px] ${totalElementsCnt === 0 && 'center'}`}>
+          <CustomerReservationList category={selectedCategory} handleTotalElementsCnt={setTotalElementsCnt} />
         </div>
       </section>
     </>
   );
 }
-/* Frame 1103 */
+
+const CustomerReservationList = ({
+  category,
+  handleTotalElementsCnt,
+}: {
+  category: CustomerReservationStatus | 'ALL';
+  handleTotalElementsCnt: (value: number) => void;
+}) => {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useCustomerReservations({
+    reservationStatus: category,
+    size: 10,
+  });
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+  const totalElements = data?.pages[0]?.data?.pageInfo?.totalElements || 0;
+
+  useEffect(() => {
+    handleTotalElementsCnt(totalElements);
+  }, [totalElements, handleTotalElementsCnt]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  return (
+    <>
+      {data?.pages[0].data.reservations.length !== 0 ? (
+        data?.pages?.flatMap((page: { data: { reservations: CustomerReservation[] } }) =>
+          page.data.reservations.map((reservation: CustomerReservation) => (
+            <CustomerReservationCard
+              key={reservation.reservationId}
+              status={reservation.status}
+              bakeryId={reservation.bakeryId}
+              bakeryName={reservation.bakeryName}
+              profileImage={reservation.profileImage}
+              reservationDate={reservation.reservationDate}
+              totalReservationProducts={reservation.totalReservationProducts}
+              totalPrice={reservation.totalPrice}
+              reservationId={reservation.reservationId}
+              reservationNumber={reservation.reservationNumber}
+              mainReservationProductName={reservation.mainReservationProductName}
+              pickupDeadline={reservation.pickupDeadline}
+            />
+          )),
+        )
+      ) : (
+        <EmptyState title="예약 내역이 없습니다." message="원하는 빵을 미리 예약해 보세요." />
+      )}
+      <div ref={observerRef} />
+      {isFetchingNextPage && <p />}
+    </>
+  );
+};

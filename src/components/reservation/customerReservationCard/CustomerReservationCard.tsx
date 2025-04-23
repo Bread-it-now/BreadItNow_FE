@@ -23,7 +23,6 @@ const CustomerReservationCard = ({
   bakeryName,
   totalPrice,
   pickupDeadline,
-  cancelDetail,
   profileImage,
   totalReservationProducts,
   mainReservationProductName,
@@ -58,7 +57,7 @@ const CustomerReservationCard = ({
             <span className="font-semibold text-primary">픽업일시</span>
           )}
           <span>
-            {status === 'CANCELED' ? cancelDetail : pickupDeadline !== undefined ? getDateFormat(pickupDeadline) : ''}
+            {status === 'CANCELED' ? '예약 취소' : pickupDeadline !== undefined ? getDateFormat(pickupDeadline) : ''}
           </span>
         </div>
       )}

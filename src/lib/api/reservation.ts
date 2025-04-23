@@ -3,21 +3,26 @@ import { RESERVATION_QUERY_KEY } from '@/constants/queryKey';
 import {
   ApprovedReservationInfo,
   CancelReservationInfo,
+  CustomerReservation,
   CustomerReservationDetail,
-  CustomerReservations,
   CustomerReservationStatus,
   OwnerReservationDetail,
   OwnerReservations,
   OwnerReservationStatusQuery,
+  PageInfo,
 } from '@/types/reservation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 
-export const getCustomerReservations = async (
-  reservationStatus: CustomerReservationStatus | 'ALL',
-  page: number = 0,
+export const getCustomerReservations = async ({
+  pageParam = 0,
   size = 10,
-): Promise<{ data: CustomerReservations }> => {
-  const response = await fetch(`/${API_END_POINT.CUSTOMER_RESERVATIONS(reservationStatus, page, size)}`, {
+  reservationStatus,
+}: {
+  pageParam?: number;
+  size?: number;
+  reservationStatus: CustomerReservationStatus | 'ALL';
+}): Promise<{ data: { reservations: CustomerReservation[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(`/${API_END_POINT.CUSTOMER_RESERVATIONS(reservationStatus, pageParam, size)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -30,18 +35,22 @@ export const getCustomerReservations = async (
 /** 추후에 무한스크롤로 수정 */
 export const useCustomerReservations = ({
   reservationStatus,
-  page,
-  size,
+  size = 10,
 }: {
   reservationStatus: CustomerReservationStatus | 'ALL';
-  page: number;
+  pageParam?: number;
   size: number;
-}) =>
-  useQuery({
+}) => {
+  return useInfiniteQuery({
     queryKey: [...RESERVATION_QUERY_KEY.CUSTOMER_RESERVATION(reservationStatus)],
-    queryFn: () => getCustomerReservations(reservationStatus, page, size),
-    select: (data: { data: CustomerReservations }) => data?.data,
+    queryFn: ({ pageParam = 0 }) => getCustomerReservations({ pageParam, size, reservationStatus }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
   });
+};
 
 export const getCustomerReservationDetail = async (
   reservationId: number,

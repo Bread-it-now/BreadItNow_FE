@@ -28,7 +28,6 @@ export interface CustomerReservation extends Reservation {
   bakeryId: number;
   bakeryName: string;
   profileImage: string;
-  cancelDetail?: string;
 }
 export interface OwnerReservation extends Reservation {
   /** 예약 상태 */
@@ -88,3 +87,10 @@ export interface CancelReservationInfo {
 }
 
 export type ReservationOptionStep = 'APPOVE_STEP' | 'QUANTITY_STEP' | 'REASON_STEP';
+
+export interface PageInfo {
+  totalElements: number;
+  totalPages: number;
+  isLast: boolean;
+  currPage: number;
+}

@@ -292,6 +292,25 @@ const getOwnerNotifications = http.get(
   },
 );
 
+const readOwnerNotification = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}/:notificationId/read`,
+  async ({ params }) => {
+    const notificationId: number = Number(params?.notificationId);
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          notificationId,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -307,4 +326,5 @@ export default [
   createProduct,
   editProduct,
   getOwnerNotifications,
+  readOwnerNotification,
 ];

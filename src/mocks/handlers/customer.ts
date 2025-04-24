@@ -422,6 +422,7 @@ const readCustomerNotification = http.patch(
     );
   },
 );
+
 const deleteCustomerNotification = http.patch(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/:notificationId`,
   async ({ params }) => {

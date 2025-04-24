@@ -263,3 +263,27 @@ export const useOwnerNotifications = ({ size = 10 }: { size?: number }) => {
     initialPageParam: 0,
   });
 };
+
+export const readOwnerNotification = async (notificationId: number): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.READ_OWNER_NOTIFICATION(notificationId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const deleteOwnerNotification = async (
+  notificationId: number,
+): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_OWNER_NOTIFICATION(notificationId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};

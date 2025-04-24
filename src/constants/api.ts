@@ -128,7 +128,7 @@ export const API_END_POINT = {
   /** OWNER - NOTIFICATION */
   OWNER_NOTIFICATIONS: (page: number, size: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}?page=${page}&size=${size}&sort=createdAt`,
-  READ_OWMER_NOTIFICATION: (notificationId: number) =>
+  READ_OWNER_NOTIFICATION: (notificationId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}/${notificationId}/read`,
   DELETE_OWNER_NOTIFICATION: (notificationId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}/${notificationId}`,

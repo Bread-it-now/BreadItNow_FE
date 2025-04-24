@@ -5,8 +5,10 @@ import reservation from '@/assets/icons/reservation.svg';
 import Image from 'next/image';
 import { getDateFormat, getElapsedTime } from '@/utils/date';
 import { useRouter } from 'next/navigation';
+import { readOwnerNotification } from '@/lib/api/notification';
 
 const OwnerNotificationCard = ({
+  notificationId,
   reservationId,
   nickname,
   status,
@@ -19,7 +21,8 @@ const OwnerNotificationCard = ({
     <div
       className="flex items-start p-5 gap-[0.375rem] w-full bg-white rounded-[0.625rem]"
       onClick={() => {
-        router.push(`/owner/reservations/${reservationId}`);
+        router.push(status === 'WAITING' ? '/owner/reservations' : `/owner/reservations/${reservationId}`);
+        readOwnerNotification(notificationId);
       }}>
       <div className="w-[18px]">
         <Image src={reservation} width={18} height={18} layout="intrinsic" alt="notification" className="w-full" />

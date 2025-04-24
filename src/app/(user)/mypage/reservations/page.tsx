@@ -33,7 +33,7 @@ export default function Page() {
           총&nbsp;<span className="text-primary"> {totalElementsCnt}</span>개
         </p>
         <div
-          className={`flex flex-col items-start gap-[0.625rem] w-full min-h-[240px] ${totalElementsCnt === 0 && 'center'}`}>
+          className={`flex flex-col items-start gap-[0.625rem] w-full min-h-[240px] ${totalElementsCnt === 0 && 'items-center'}`}>
           <CustomerReservationList category={selectedCategory} handleTotalElementsCnt={setTotalElementsCnt} />
         </div>
       </section>

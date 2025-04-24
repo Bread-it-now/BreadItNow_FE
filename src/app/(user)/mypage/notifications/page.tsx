@@ -1,21 +1,18 @@
 'use client';
 
 import RoundTab from '@/components/common/tabs/RoundTab';
-import { NotificationType } from '@/types/notification';
-import { useState } from 'react';
-import { notificatinoMockData } from '@/mocks/data/notification';
-import NotificationCard from '@/components/notifications/notificationcard/notificationCard';
+import { CustomerNotification, NotificationType } from '@/types/notification';
+import { useEffect, useRef, useState } from 'react';
+import CustomerNotificationCard from '@/components/notifications/customernotificationcard/CustomerNotificationCard';
 import setting from '@/assets/icons/setting.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { useCustomerNotifications } from '@/lib/api/notification';
+import EmptyState from '@/components/common/EmptyState';
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<NotificationType | 'ALL'>('ALL');
-  const notifications = notificatinoMockData.filter((notification) => {
-    if (selectedCategory === 'ALL') return true;
-    return notification.type === selectedCategory;
-  });
 
   const router = useRouter();
 
@@ -42,11 +39,54 @@ export default function Page() {
       </section>
       <section className="flex flex-col justify-center items-start gap-4 px-5 pt-6 pb-[50px] w-full">
         <div className="flex flex-col items-start gap-[0.625rem] w-full">
-          {notifications.map((notification) => (
-            <NotificationCard key={notification.notificationId} {...notification} />
-          ))}
+          <CustomerNotificationList type={selectedCategory} />
         </div>
       </section>
     </>
   );
 }
+
+const CustomerNotificationList = ({ type }: { type: NotificationType | 'ALL' }) => {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useCustomerNotifications({
+    type,
+  });
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  return (
+    <>
+      {data?.pages[0].data.notifications.length !== 0 ? (
+        data?.pages.map((page) =>
+          page.data.notifications.map((notification: CustomerNotification) => (
+            <CustomerNotificationCard {...notification} key={notification.notificationId} />
+          )),
+        )
+      ) : (
+        <EmptyState title="즐겨찾기한 빵집이 없습니다." message="자주 가는 빵집을 추가해 보세요." />
+      )}
+      <div ref={observerRef} />
+      {isFetchingNextPage && <p />}
+    </>
+  );
+};

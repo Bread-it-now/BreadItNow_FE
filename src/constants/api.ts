@@ -76,7 +76,7 @@ export const API_END_POINT = {
 
   /** CUSTOMER - NOTIFICATION */
   CUSTOMER_NOTIFICATIONS: (page: number, size: number, type: NotificationType | 'ALL') =>
-    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}?type=${type}&page=${page}&size=${size}&sort=createdAt}`,
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}?type=${type}&page=${page}&size=${size}&sort=createdAt`,
   READ_CUSTOMER_NOTIFICATION: (notificationId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/${notificationId}/read`,
   DELETE_CUSTOMER_NOTIFICATION: (notificationId: number) =>

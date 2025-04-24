@@ -1,6 +1,13 @@
 import { API_END_POINT } from '@/constants/api';
 import { NOTIFICATION_QUERY_KEY } from '@/constants/queryKey';
-import { DoNotDisturb, DoNotDisturbForm, NotificationSetting, PageInfo } from '@/types/notification';
+import {
+  CustomerNotification,
+  DoNotDisturb,
+  DoNotDisturbForm,
+  NotificationSetting,
+  NotificationType,
+  PageInfo,
+} from '@/types/notification';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const getDoNotDisturbSetting = async (): Promise<{ data: DoNotDisturb }> => {
@@ -168,4 +175,35 @@ export const deleteProductNotificationSetting = async (productId: number): Promi
   if (!response.ok) throw new Error('Failed to fetch');
 
   return response.json();
+};
+
+export const getCustomerNotifications = async ({
+  pageParam = 0,
+  size = 10,
+  type,
+}: {
+  pageParam?: number;
+  size?: number;
+  type: NotificationType | 'ALL';
+}): Promise<{ data: { notifications: CustomerNotification[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(`/${API_END_POINT.CUSTOMER_NOTIFICATIONS(pageParam, size, type)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useCustomerNotifications = ({ type, size = 10 }: { type: NotificationType | 'ALL'; size?: number }) => {
+  return useInfiniteQuery({
+    queryKey: [...NOTIFICATION_QUERY_KEY.CUSTOMER_NOTIFICATIONS(type)],
+    queryFn: ({ pageParam = 0 }) => getCustomerNotifications({ pageParam, size, type }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
 };

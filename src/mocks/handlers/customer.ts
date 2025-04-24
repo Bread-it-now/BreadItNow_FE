@@ -4,6 +4,8 @@ import { CustomerReservation, CustomerReservationStatus } from '@/types/reservat
 import { mockCustomerReservationDetailList, mockCustomerReservations } from '../data/reservation';
 import { mockFavoriteBakeries, mockFavoriteProducts, mockNotificationSettings } from '../data/bakery';
 import { FilterKey } from '@/types/bakery';
+import { NotificationType } from '@/types/notification';
+import { mockCustomerNotifications } from '../data/notification';
 
 const getCustomerReservations = http.get(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
@@ -361,6 +363,47 @@ const deleteFavoriteProduct = http.delete(
   },
 );
 
+const getCustomerNotifications = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const type = url.searchParams.get('type') as NotificationType | 'ALL';
+
+    const mockNotifications =
+      type === 'ALL'
+        ? mockCustomerNotifications
+        : mockCustomerNotifications.filter((notification) => notification.type === type);
+
+    const start = page * size;
+    const end = start + size;
+
+    const notifications = mockNotifications.slice(start, end);
+    const totalElements = mockNotifications.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          notifications,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -377,4 +420,5 @@ export default [
   getFavoriteProductList,
   addFavoriteProduct,
   deleteFavoriteProduct,
+  getCustomerNotifications,
 ];

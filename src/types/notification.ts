@@ -19,7 +19,7 @@ export interface CustomerNotification {
 
 export interface OwnerNotification {
   notificationId: number;
-  reservationId: number;
+  reservationId?: number;
   nickname: string;
   status: OwnerReservationStatus;
   isRead: boolean;

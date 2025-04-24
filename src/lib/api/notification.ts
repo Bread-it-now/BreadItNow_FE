@@ -6,6 +6,7 @@ import {
   DoNotDisturbForm,
   NotificationSetting,
   NotificationType,
+  OwnerNotification,
   PageInfo,
 } from '@/types/notification';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -232,4 +233,33 @@ export const deleteCustomerNotification = async (
   if (!response.ok) throw new Error('Failed to fetch');
 
   return response.json();
+};
+
+export const getOwnerNotifications = async ({
+  pageParam = 0,
+  size = 10,
+}: {
+  pageParam?: number;
+  size?: number;
+}): Promise<{ data: { notifications: OwnerNotification[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(`/${API_END_POINT.OWNER_NOTIFICATIONS(pageParam, size)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useOwnerNotifications = ({ size = 10 }: { size?: number }) => {
+  return useInfiniteQuery({
+    queryKey: [...NOTIFICATION_QUERY_KEY.OWNER_NOTIFICATIONS()],
+    queryFn: ({ pageParam = 0 }) => getOwnerNotifications({ pageParam, size }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
 };

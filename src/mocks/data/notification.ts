@@ -1,5 +1,5 @@
-import { CustomerNotification } from '@/types/notification';
-import { CustomerReservationStatus } from '@/types/reservation';
+import { CustomerNotification, OwnerNotification } from '@/types/notification';
+import { CustomerReservationStatus, OwnerReservationStatus } from '@/types/reservation';
 const getRandomTime = (): string => {
   const hour = Math.floor(Math.random() * 12) + 8; // 08~19시
   const minute = Math.floor(Math.random() * 60);
@@ -58,4 +58,35 @@ export const mockCustomerNotifications: CustomerNotification[] = Array.from({ le
       createdAt,
     };
   }
+});
+
+const ownerStatuses: OwnerReservationStatus[] = [
+  'WAITING',
+  'APPROVED',
+  'PARTIAL_APPROVED',
+  'PAYMENT_COMPLETED',
+  'OWNER_REJECTED',
+  'CUSTOMER_CANCELED',
+];
+
+const productNames = ['소보로', '크림빵', '앙버터', '단팥빵', '마카롱', '치즈바게트', '크루아상'];
+const nicknames = ['민수', '지영', '태현', '은지', '하준', '서윤', '도윤', '수아', '지원', '현우'];
+
+let currentReservationId = 500;
+
+export const mockOwnerNotifications: OwnerNotification[] = Array.from({ length: 30 }).map((_, i) => {
+  const status = ownerStatuses[Math.floor(Math.random() * ownerStatuses.length)];
+  const isWaiting = status === 'WAITING';
+
+  const notification: OwnerNotification = {
+    notificationId: i + 1,
+    nickname: nicknames[i % nicknames.length],
+    status,
+    isRead: Math.random() > 0.5,
+    productsName: productNames.slice(0, Math.floor(Math.random() * 3) + 1),
+    createdAt: getRandomTime(),
+    ...(isWaiting ? {} : { reservationId: currentReservationId++ }),
+  };
+
+  return notification;
 });

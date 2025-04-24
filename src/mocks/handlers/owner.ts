@@ -5,6 +5,7 @@ import { mockProducts, mockProductsList } from '../data/product';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { OwnerReservationStatusQuery } from '@/types/reservation';
 import { OwnerReservationDetails, OwnerReservations } from '../data/reservation';
+import { mockOwnerNotifications } from '../data/notification';
 
 const getBakeryInfo = http.get(
   `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/:bakeryId`,
@@ -256,6 +257,41 @@ const editProduct = http.put(
   },
 );
 
+const getOwnerNotifications = http.get(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+
+    const start = page * size;
+    const end = start + size;
+
+    const notifications = mockOwnerNotifications.slice(start, end);
+    const totalElements = mockOwnerNotifications.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          notifications,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -270,4 +306,5 @@ export default [
   getBakeryProoduct,
   createProduct,
   editProduct,
+  getOwnerNotifications,
 ];

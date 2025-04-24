@@ -83,7 +83,7 @@ const CustomerNotificationList = ({ type }: { type: NotificationType | 'ALL' }) 
           )),
         )
       ) : (
-        <EmptyState title="즐겨찾기한 빵집이 없습니다." message="자주 가는 빵집을 추가해 보세요." />
+        <EmptyState title="알림이 없습니다." message="알림 설정을 하세요." />
       )}
       <div ref={observerRef} />
       {isFetchingNextPage && <p />}

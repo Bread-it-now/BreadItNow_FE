@@ -207,3 +207,29 @@ export const useCustomerNotifications = ({ type, size = 10 }: { type: Notificati
     initialPageParam: 0,
   });
 };
+
+export const readCustomerNotification = async (
+  notificationId: number,
+): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.READ_CUSTOMER_NOTIFICATION(notificationId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const deleteCustomerNotification = async (
+  notificationId: number,
+): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_CUSTOMER_NOTIFICATION(notificationId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};

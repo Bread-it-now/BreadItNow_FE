@@ -5,6 +5,8 @@ import reservation from '@/assets/icons/reservation.svg';
 import bread from '@/assets/icons/bread.svg';
 import Image from 'next/image';
 import { getDateFormat, getElapsedTime } from '@/utils/date';
+import { useRouter } from 'next/navigation';
+import { readCustomerNotification } from '@/lib/api/notification';
 
 const CustomerNotificationCard = ({
   type,
@@ -16,9 +18,17 @@ const CustomerNotificationCard = ({
   alertCount,
   reservationStatus,
   pickupDeadline,
+  bakeryId,
+  notificationId,
 }: CustomerNotification) => {
+  const router = useRouter();
   return (
-    <div className="flex items-start p-5 gap-[0.375rem] w-full bg-white rounded-[0.625rem]">
+    <div
+      className="flex items-start p-5 gap-[0.375rem] w-full bg-white rounded-[0.625rem]"
+      onClick={() => {
+        router.push(type === 'ALERT' ? `/bakery/${bakeryId}` : '/mypage/reservations');
+        readCustomerNotification(notificationId);
+      }}>
       <div className="w-[18px]">
         <Image
           src={type === 'ALERT' ? bread : reservation}

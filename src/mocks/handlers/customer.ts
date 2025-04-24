@@ -404,6 +404,43 @@ const getCustomerNotifications = http.get(
   },
 );
 
+const readCustomerNotification = http.patch(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/:notificationId/read`,
+  async ({ params }) => {
+    const notificationId: number = Number(params?.notificationId);
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          notificationId,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+const deleteCustomerNotification = http.patch(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/:notificationId`,
+  async ({ params }) => {
+    const notificationId: number = Number(params?.notificationId);
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          notificationId,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -421,4 +458,6 @@ export default [
   addFavoriteProduct,
   deleteFavoriteProduct,
   getCustomerNotifications,
+  readCustomerNotification,
+  deleteCustomerNotification,
 ];

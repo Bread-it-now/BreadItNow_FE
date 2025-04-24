@@ -1,4 +1,5 @@
 import { FilterKey } from '@/types/bakery';
+import { NotificationType } from '@/types/notification';
 import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
 const API_SUFFIX = 'api';
@@ -49,7 +50,7 @@ export const API_END_POINT = {
   DELETE_FAVORITE_BAKERY: (bakeryId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}/favorite`,
 
-  /** CUSTOMER - BAKERY */
+  /** CUSTOMER - PRODUCT */
   FAVORITE_PRODUCTS: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
   ADD_FAVORITE_PRODUCT: (productId: number) =>
@@ -72,6 +73,14 @@ export const API_END_POINT = {
   ONOFF_DO_NOT_DISTURB_SETTING: () =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb/toggle`,
   TODAY_NOTIFCIATON_PRODUCT: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
+
+  /** CUSTOMER - NOTIFICATION */
+  CUSTOMER_NOTIFICATIONS: (page: number, size: number, type: NotificationType | 'ALL') =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}?type=${type}&page=${page}&size=${size}&sort=createdAt}`,
+  READ_CUSTOMER_NOTIFICATION: (notificationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/${notificationId}/read`,
+  DELETE_CUSTOMER_NOTIFICATION: (notificationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/${notificationId}`,
 
   // RESERVATION
   CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus | 'ALL', page: number, size: number) =>

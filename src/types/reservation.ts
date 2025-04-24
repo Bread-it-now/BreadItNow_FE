@@ -47,8 +47,14 @@ export interface ReservationProduct {
 }
 
 export interface CustomerReservationDetail {
-  bakery: Pick<Bakery, 'name' | 'address' | 'phone'> & { bakeryId: number; profileImage: string };
-  reservation: Omit<CustomerReservation, 'bakeryId' | 'bakeryName' | 'profileImage'> & {
+  bakery: Omit<Bakery, 'bakeryImages'>;
+  reservation: {
+    reservationId: number;
+    reservationNumber?: string;
+    reservationDate: string;
+    pickupDeadline?: string;
+    status: CustomerReservationStatus;
+    totalPrice: number;
     reservationItems: ReservationProduct[];
   };
 }

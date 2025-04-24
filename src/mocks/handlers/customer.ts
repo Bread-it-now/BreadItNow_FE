@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservation, CustomerReservationStatus } from '@/types/reservation';
-import { customerReservationDetails, mockCustomerReservations } from '../data/reservation';
+import { mockCustomerReservationDetailList, mockCustomerReservations } from '../data/reservation';
 import { mockFavoriteBakeries, mockFavoriteProducts, mockNotificationSettings } from '../data/bakery';
 import { FilterKey } from '@/types/bakery';
 
@@ -53,7 +53,7 @@ const getCustomerReservationDetail = http.get(
   async ({ params }) => {
     const reservationId: number = Number(params?.reservationId);
 
-    const reservationDetail = customerReservationDetails.filter(
+    const reservationDetail = mockCustomerReservationDetailList.filter(
       (reservationDetail) => reservationDetail.reservation.reservationId === reservationId,
     )[0];
 

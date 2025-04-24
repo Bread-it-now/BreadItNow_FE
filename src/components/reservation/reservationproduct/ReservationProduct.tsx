@@ -5,8 +5,8 @@ import Image from 'next/image';
 const ReservationProduct = ({ name, quantity, unitPrice, totalPrice, breadImage }: ReservationProductType) => {
   return (
     <div className="flex items-center gap-4 w-full h-[68px]">
-      <div className="flex relative w-[6.125rem] h-[68px]">
-        <Image src={breadImage} width={68} height={68} alt="product" />
+      <div className="flex relative w-[6.125rem] h-[68px] rounded-md">
+        <Image src={breadImage} width={68} height={68} alt="product" className="rounded-md" />
       </div>
       <div className="flex items-center gap-5 w-full h-full">
         <div className="flex flex-col items-start gap-[0.25rem] w-full max-w-[166px] h-full truncate">

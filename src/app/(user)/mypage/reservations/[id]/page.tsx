@@ -65,7 +65,7 @@ export default function Page() {
                   )}
                   <span>
                     {reservationDetail.reservation.status === 'CANCELED'
-                      ? reservationDetail.reservation.cancelDetail
+                      ? '예약 취소'
                       : reservationDetail.reservation.pickupDeadline !== undefined
                         ? getDate(reservationDetail.reservation.pickupDeadline)
                         : ''}

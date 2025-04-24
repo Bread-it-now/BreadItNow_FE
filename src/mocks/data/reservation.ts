@@ -434,131 +434,48 @@ export const reservationItems: ReservationProduct[] = [
   },
 ];
 
-export const customerReservationDetails: CustomerReservationDetail[] = [
-  {
-    bakery: {
-      name: '파리바게뜨',
-      bakeryId: 1,
-      address: '대전광역시 중구 대종로480번길 15 (은행동)',
-      phone: '010-0000-000',
-      profileImage: bakery,
-    },
-    reservation: {
-      reservationId: 500,
-      reservationDate: '2025-02-01T10:00:00Z',
-      status: 'WAITING',
-      totalPrice: 10000,
-      reservationItems: [...reservationItems],
-    },
+export const mockCustomerReservationDetailList: CustomerReservationDetail[] = mockCustomerReservations.map(
+  (reservation) => {
+    const bakeryInfo = {
+      bakeryId: reservation.bakeryId,
+      name: reservation.bakeryName,
+      address: `서울시 강남구 가상도로 ${reservation.bakeryId}번길`,
+      phone: '010-1234-5678',
+      introduction: '정성껏 빵을 굽는 동네 빵집입니다.',
+      openTime: '08:00',
+      operatingStatus: 'OPEN',
+      profileImage: reservation.profileImage,
+    };
+
+    const numberOfItems = Math.floor(Math.random() * 3) + 1; // 1~3개 제품
+    const reservationItems: ReservationProduct[] = Array.from({ length: numberOfItems }).map((_, idx) => {
+      const quantity = Math.floor(Math.random() * 5) + 1; // 1~5개
+      const unitPrice = Math.floor(Math.random() * 3000) + 2000; // 2000~5000원
+      const totalPrice = unitPrice * quantity;
+      return {
+        productId: idx + 1,
+        name: `${reservation.mainReservationProductName} ${idx + 1}`,
+        quantity,
+        unitPrice,
+        totalPrice,
+        breadImage: reservation.profileImage,
+      };
+    });
+
+    return {
+      bakery: bakeryInfo,
+      reservation: {
+        reservationId: reservation.reservationId,
+        reservationNumber: reservation.reservationNumber,
+        reservationDate: reservation.reservationDate,
+        pickupDeadline: reservation.pickupDeadline,
+        status: reservation.status,
+        totalPrice: reservationItems.reduce((acc, item) => acc + item.totalPrice, 0),
+        reservationItems,
+      },
+    };
   },
-  {
-    bakery: {
-      name: '파리바게뜨',
-      bakeryId: 2,
-      address: '대전광역시 중구 대종로480번길 15 (은행동)',
-      phone: '010-0000-000',
-      profileImage: bakery,
-    },
-    reservation: {
-      reservationId: 501,
-      reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'M191CD',
-      status: 'APPROVED',
-      totalPrice: 20000,
-      reservationItems: [...reservationItems],
-      pickupDeadline: '2025-02-01T10:30:00Z',
-    },
-  },
-  {
-    bakery: {
-      name: '파리바게뜨',
-      bakeryId: 3,
-      address: '대전광역시 중구 대종로480번길 15 (은행동)',
-      phone: '010-0000-000',
-      profileImage: bakery,
-    },
-    reservation: {
-      reservationId: 502,
-      reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'M191CD',
-      status: 'PARTIAL_APPROVED',
-      totalPrice: 30000,
-      reservationItems: [...reservationItems],
-      pickupDeadline: '2025-02-01T10:30:00Z',
-    },
-  },
-  {
-    bakery: {
-      name: '파리바게뜨',
-      bakeryId: 4,
-      address: '대전광역시 중구 대종로480번길 15 (은행동)',
-      phone: '010-0000-000',
-      profileImage: bakery,
-    },
-    reservation: {
-      reservationId: 503,
-      reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'M191CD',
-      status: 'CANCELED',
-      totalPrice: 40000,
-      reservationItems: [...reservationItems],
-      cancelDetail: '픽업 기한 내 미수령으로 예약 취소',
-    },
-  },
-  {
-    bakery: {
-      name: '파리바게뜨',
-      bakeryId: 5,
-      address: '대전광역시 중구 대종로480번길 15 (은행동)',
-      phone: '010-0000-000',
-      profileImage: bakery,
-    },
-    reservation: {
-      reservationId: 504,
-      reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'M191CD',
-      status: 'CANCELED',
-      totalPrice: 50000,
-      reservationItems: [...reservationItems],
-      cancelDetail: '판매자 사정으로 예약 취소',
-    },
-  },
-  {
-    bakery: {
-      name: '파리바게뜨',
-      bakeryId: 6,
-      address: '대전광역시 중구 대종로480번길 15 (은행동)',
-      phone: '010-0000-000',
-      profileImage: bakery,
-    },
-    reservation: {
-      reservationId: 505,
-      reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'M191CD',
-      status: 'CANCELED',
-      totalPrice: 60000,
-      reservationItems: [...reservationItems],
-      cancelDetail: '고객 요청으로 예약 취소',
-    },
-  },
-  {
-    bakery: {
-      name: '파리바게뜨',
-      bakeryId: 7,
-      address: '대전광역시 중구 대종로480번길 15 (은행동)',
-      phone: '010-0000-000',
-      profileImage: bakery,
-    },
-    reservation: {
-      reservationId: 506,
-      reservationDate: '2025-02-01T10:00:00Z',
-      reservationNumber: 'M191CD',
-      status: 'PAYMENT_COMPLETED',
-      totalPrice: 70000,
-      reservationItems: [...reservationItems],
-    },
-  },
-];
+);
 
 export const OwnerReservations: OwnerReservation[] = [
   {

@@ -1,5 +1,5 @@
 import { ENG_DAY } from './date';
-import { CustomerReservationStatus } from './reservation';
+import { CustomerReservationStatus, OwnerReservationStatus } from './reservation';
 
 export type NotificationType = 'ALERT' | 'RESERVATION';
 
@@ -14,6 +14,16 @@ export interface CustomerNotification {
   isRead: boolean;
   reservationStatus?: CustomerReservationStatus;
   pickupDeadline?: string;
+  createdAt: string;
+}
+
+export interface OwnerNotification {
+  notificationId: number;
+  reservationId: number;
+  nickname: string;
+  status: OwnerReservationStatus;
+  isRead: boolean;
+  productsName: string[];
   createdAt: string;
 }
 

@@ -1,7 +1,7 @@
 import RoundTab from '../common/tabs/RoundTab';
 import MenuList from '@/components/bakeryInfo/MenuList';
 import { useState, memo } from 'react';
-import { BakeryProducts, Product } from '@/types/bakery';
+import { Product } from '@/types/bakery';
 interface MenuCategoryProps {
   key: 'BREAD' | 'OTHER';
   label: string;
@@ -29,6 +29,7 @@ const MemoizedMenuList = memo(
   }) => {
     return (
       <MenuList
+        key={category}
         menuList={category === 'BREAD' ? breadMenu : otherMenu}
         title={category === 'BREAD' ? '빵류' : '기타'}
       />
@@ -38,7 +39,7 @@ const MemoizedMenuList = memo(
 
 MemoizedMenuList.displayName = 'MemoizedMenuList';
 
-function MenuCategory({ bakeryProducts }: { bakeryProducts?: BakeryProducts }) {
+function MenuCategory({ breadMenu, otherMenu }: { breadMenu: Product[]; otherMenu: Product[] }) {
   const [category, setCategory] = useState<'BREAD' | 'OTHER'>(menuCategories[0].key);
   const onTabChange = (key: string) => {
     const item = menuCategories.find((item) => item.key === key);
@@ -47,16 +48,12 @@ function MenuCategory({ bakeryProducts }: { bakeryProducts?: BakeryProducts }) {
     }
   };
   return (
-    <>
-      <div className="px-5">
+    <div className="">
+      <div className="my-[10px]">
         <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
       </div>
-      <MemoizedMenuList
-        category={category}
-        breadMenu={bakeryProducts?.breadProducts}
-        otherMenu={bakeryProducts?.otherProducts}
-      />
-    </>
+      <MemoizedMenuList key={category} category={category} breadMenu={breadMenu} otherMenu={otherMenu} />
+    </div>
   );
 }
 

@@ -4,43 +4,46 @@ import BackIcon from '@/assets/icons/back.svg';
 import Image from 'next/image';
 import BreadSuccess from '@/assets/icons/reserve-success.svg';
 import BreadFail from '@/assets/icons/reserve-fail.svg';
-import type { Product } from '@/types/product';
+import type { Product } from '@/types/bakery';
 import Button from '@/components/button/Button';
 import CompletedReservationCard from '@/components/bakeryInfo/CompletedReservationCard';
-import { useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 const breadList: Product[] = [
   {
-    productId: '1',
-    bakery_id: '1',
-    type: 'BREAD',
+    productId: 1,
+    bakeryId: 1,
+    productType: 'BREAD',
     name: '소금빵',
     price: 1000,
     stock: 10,
     description: '소금빵 소개',
     image: 'https://placehold.co/600x400/png',
     isActive: true,
+    isHidden: false,
   },
   {
-    productId: '2',
-    bakery_id: '1',
-    type: 'BREAD',
+    productId: 2,
+    bakeryId: 1,
+    productType: 'BREAD',
     name: '휘낭시에',
     price: 1000,
     stock: 10,
     description: '휘낭시에 소개',
     image: 'https://placehold.co/600x400/png',
     isActive: true,
+    isHidden: false,
   },
   {
-    productId: '3',
-    bakery_id: '1',
-    type: 'BREAD',
+    productId: 3,
+    bakeryId: 1,
+    productType: 'BREAD',
     name: '마들렌',
     price: 1000,
     stock: 10,
     description: '마들렌 소개',
     image: 'https://placehold.co/600x400/png',
     isActive: true,
+    isHidden: false,
   },
 ];
 
@@ -123,7 +126,7 @@ function ReservationSuccess() {
           </div>
         </div>
       </div>
-      <div className="w-full border-box sticky z-10 bottom-0 bg-white p-5 flex gap-2 mt-[50px]">
+      <div className="max-w-[375px] w-full border-box sticky z-10 bottom-0 bg-white p-5 flex gap-2">
         <Button onClick={() => router.push('/')} variant="default" fullWidth>
           메인
         </Button>
@@ -136,9 +139,12 @@ function ReservationSuccess() {
 }
 
 function Page() {
-  const searchParams = useSearchParams();
-  const status = searchParams.get('status');
-  const isSuccess = status === 'success';
+  const params = useParams();
+  const status = params.result;
+  if (!status || status.length === 0) {
+    return <div>예약 결과가 없습니다.</div>;
+  }
+  const isSuccess = status[1] === 'success';
 
   return (
     <>

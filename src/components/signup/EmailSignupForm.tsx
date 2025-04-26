@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import Button from '@/components/button/Button';
 import VerificationInput from '@/components/common/Input/VerificationInput';
+import Button from '@/components/button/Button';
 
-export default function EmailSignupForm({ onNext }: { onNext: () => void }) {
-  const [email, setEmail] = useState('');
+interface Props {
+  email: string;
+  setEmail: (value: string) => void;
+  onNext: () => void;
+}
 
+export default function EmailSignupForm({ email, setEmail, onNext }: Props) {
   return (
     <div className="flex flex-col h-[100%]">
       <div className="px-5 pt-6 flex-grow">

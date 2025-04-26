@@ -39,8 +39,12 @@ export const CONTROLLER = {
 /** Module + API Version Prefix + Contorller + End-Point */
 export const API_END_POINT = {
   /** AUTH */
-
+  AUTH: {
+    SIGN_IN: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-in`,
+    SIGN_UP: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-up`,
+  },
   /** CUSTOMER */
+  CUSTOMER_INIT: `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/init`,
 
   // ALERT
   ADD_NOTFICATION_SETTING: (productId: number) =>
@@ -57,7 +61,6 @@ export const API_END_POINT = {
   ONOFF_DO_NOT_DISTURB_SETTING: () =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb/toggle`,
   TODAY_NOTIFCIATON_PRODUCT: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
-
   // RESERVATION
   CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus | 'ALL', page: number, size: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}?status=${reservationStatus}&page=${page}&size=${size}`,
@@ -68,6 +71,8 @@ export const API_END_POINT = {
   CREATE_RESERVATION: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
 
   /** OWNER */
+  OWNER_INIT: `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}`,
+
   // BAKERY
   BAKERY_INFO: (bakeryId: number) => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
   CHANGE_OPERATING_STATUS: (bakeryId: number) =>

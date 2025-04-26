@@ -1,7 +1,10 @@
 import NextAuth from 'next-auth';
 import NaverProvider from 'next-auth/providers/naver';
-
+import KakaoProvider from 'next-auth/providers/kakao';
 const handler = NextAuth({
+  session: {
+    strategy: 'jwt',
+  },
   providers: [
     NaverProvider({
       clientId: process.env.NAVER_CLIENT_ID!,
@@ -14,6 +17,10 @@ const handler = NextAuth({
           image: profile.response?.profile_image ? profile.response?.profile_image : profile.image,
         };
       },
+    }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID!,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
@@ -40,25 +47,14 @@ const handler = NextAuth({
       }
       return baseUrl;
     },
-    async jwt({ token, user }) {
-      // 네이버 로그인 시 받아오는 정보를 토큰에 저장
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-        token.image = user.image;
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user = {
-          ...session.user,
-          name: token.name as string,
-          email: token.email as string,
-          image: token.image as string,
-        };
-      }
+      session.accessToken = token.accessToken;
       return session;
     },
   },

@@ -49,7 +49,6 @@ export default function Page() {
   const { data: bakery } = useBakeryInfo(bakeryId);
   const { data: productsInfo } = useBakeryProducts(bakeryId);
   const [activeChangeProductIds, setActiveChangeProductIds] = useState<number[]>([]);
-
   const {
     hideMenuMutate,
     isOpen: isProductHideManagementBottomSheetOpen,

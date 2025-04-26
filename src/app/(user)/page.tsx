@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import TodayBread from '@/components/main/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { bakeryCardMockData } from '@/mocks/data/bakery';
 import HotBreads from '@/components/main/HotBreads';
-
+import { useSearchParams } from 'next/navigation';
 const hotBreadsData = [
   { title: '모카 크림빵', subtitle: '달콤한 아침', price: '2,700원', img: Bread },
   { title: '뺑 오 쇼콜라', subtitle: '버터 앤 드림', price: '2,700원', img: Bread },
@@ -32,7 +32,6 @@ import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
 import Detail from '@/assets/icons/arrow-down.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import NotificationIcon from '@/components/common/Icons/NotificationIcon';
-
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
 
@@ -42,7 +41,12 @@ export default function Page() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const isScrolled = useScrollDetection(scrollContainerRef);
-
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get('isNewUser') === 'true') {
+      router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
+    }
+  }, [searchParams]);
   return (
     <div
       className="flex flex-col h-[100%]"
@@ -172,6 +176,8 @@ export default function Page() {
                     rank={index + 1}
                     size="large"
                     showBookmark={false}
+                    isBookmarked={false}
+                    onToggleBookmark={() => {}}
                   />
                 </div>
               ))}
@@ -186,7 +192,12 @@ export default function Page() {
         cancelText="취소"
         confirmText="관심지역 설정 완료"
         onClose={close}
-        onConfirm={handleAddReservation}>
+        onConfirm={handleAddReservation}
+        selectedRegion={{
+          id: 0,
+          name: '',
+          subRegions: [],
+        }}>
         <div className="grid grid-cols-2 gap-4">
           <BakeryCard {...bakeryCardMockData} />
           <BakeryCard {...bakeryCardMockData} />

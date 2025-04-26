@@ -4,12 +4,24 @@ import IconButton from '@/components/button/IconButton';
 import Bookmark from '@/assets/icons/bookmark.svg';
 import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import { useState } from 'react';
+import { addBakeryBookmark, removeBakeryBookmark } from '@/lib/api/bakery';
 
 function StoreInfo({ bakery }: { bakery: Bakery }) {
-  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(false);
-  const onBookmarkClick = () => {
-    setBookmarkChecked(!bookmarkChecked);
+  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(bakery.isFavorite);
+  const onBookmarkClick = async () => {
+    try {
+      if (bookmarkChecked) {
+        await removeBakeryBookmark(bakery.bakeryId);
+      } else {
+        await addBakeryBookmark(bakery.bakeryId);
+      }
+      setBookmarkChecked(!bookmarkChecked);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   };
+
   return (
     <article className="bg-white rounded-2xl px-5 py-[30px]">
       <div>
@@ -19,6 +31,7 @@ function StoreInfo({ bakery }: { bakery: Bakery }) {
             isChecked={bookmarkChecked}
             icon={bookmarkChecked ? BookmarkFill : Bookmark}
             iconText=""
+            buttonClass="!border-gray-100 w-8 h-8"
             onClick={onBookmarkClick}
           />
         </div>

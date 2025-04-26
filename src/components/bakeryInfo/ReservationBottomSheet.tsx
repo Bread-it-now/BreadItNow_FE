@@ -2,51 +2,19 @@
 import { useMemo, useState } from 'react';
 import RoundTab from '../common/tabs/RoundTab';
 import ProductReserveCard from './ProductReserveCard';
-import { Product } from '@/types/product';
 import Spinner from '@/components/spinner/Spinner';
 import Checkbox from '@/components/common/checkbox/Checkbox';
 import { comma } from '@/utils/comma';
-
+import { Product } from '@/types/bakery';
 interface MenuCategoryProps {
   key: string;
   label: string;
 }
 
-const productList: Product[] = [
-  {
-    productId: '1',
-    bakery_id: '1',
-    type: 'BREAD',
-    name: '소금빵',
-    price: 1000,
-    stock: 10,
-    description: '소금빵 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-  },
-  {
-    productId: '2',
-    bakery_id: '1',
-    type: 'BREAD',
-    name: '휘낭시에',
-    price: 1000,
-    stock: 10,
-    description: '휘낭시에 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-  },
-  {
-    productId: '3',
-    bakery_id: '1',
-    type: 'BREAD',
-    name: '마들렌',
-    price: 1000,
-    stock: 10,
-    description: '마들렌 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-  },
-];
+interface CheckedProduct extends Product {
+  quantity: number;
+}
+
 const menuCategories: MenuCategoryProps[] = [
   {
     key: '1',
@@ -62,23 +30,33 @@ function BreadCheckBox({
   name,
   isChecked,
   onCheckboxChange,
+  disabled,
 }: {
   name: string;
   isChecked: boolean;
   onCheckboxChange: () => void;
+  disabled: boolean;
 }) {
   return (
     <div className="absolute z-10 top-2 left-2 w-8 h-8">
-      <Checkbox id={name} checked={isChecked} onChange={onCheckboxChange} />
+      <Checkbox disabled={disabled} id={name} checked={isChecked} onChange={onCheckboxChange} />
     </div>
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function SpinnerInfoComponent({ name, price, stock }: { name: string; price: number; stock: number }) {
+function SpinnerInfoComponent({
+  price,
+  stock,
+  onChange,
+}: {
+  name: string;
+  price: number;
+  stock: number;
+  onChange: (quantity: number) => void;
+}) {
   return (
     <div className="flex items-center w-full mt-4">
-      <Spinner minQuantity={0} maxQuantity={10} ininitialQuantity={1} />
+      <Spinner onQuantityChange={onChange} minQuantity={0} maxQuantity={stock} ininitialQuantity={0} />
       <div className="ml-auto">{comma(price)}원</div>
     </div>
   );
@@ -87,10 +65,14 @@ function ReservationBottonSheet({
   reserveStep,
   checkedProducts,
   setCheckProducts,
+  breadMenu,
+  otherMenu,
 }: {
   reserveStep: number;
-  checkedProducts: Product[];
-  setCheckProducts: (item: Product[]) => void;
+  checkedProducts: CheckedProduct[];
+  setCheckProducts: (item: CheckedProduct[]) => void;
+  breadMenu: Product[];
+  otherMenu: Product[];
 }) {
   const [category, setCategory] = useState<string>(menuCategories[0].key);
   const onTabChange = (key: string) => {
@@ -100,42 +82,70 @@ function ReservationBottonSheet({
     }
   };
 
-  const setCheckProductsisCheckedProduct = (item: Product): void => {
+  const isCheckedProduct = (item: Product): void => {
     if (checkedProducts.find((product) => product.name === item.name)) {
       setCheckProducts(checkedProducts.filter((product) => product.name !== item.name));
     } else {
-      setCheckProducts([...checkedProducts, item]);
+      setCheckProducts([...checkedProducts, { ...item, quantity: 0 }]);
     }
   };
 
+  const onProductQuantityChange = (index: number, quantity: number): void => {
+    const newCheckedProducts = [...checkedProducts];
+    newCheckedProducts[index].quantity = quantity;
+    setCheckProducts(newCheckedProducts);
+  };
+
   const totalPrice = useMemo<string>(() => {
-    const totalPrice = checkedProducts.reduce((acc, product) => acc + product.price, 0);
+    const totalPrice = checkedProducts.reduce((acc, product) => acc + product.price * product.quantity, 0);
     return `${comma(totalPrice)}원`;
   }, [checkedProducts]);
 
   return (
-    <div className="h-[630px] flex flex-col pb-[56px]">
+    <div>
       {reserveStep === 1 ? (
         <>
-          <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
-          <div className="flex flex-col gap-2">
-            {category === '1' ? (
-              productList.map((product, index) => (
-                <ProductReserveCard
-                  ImageIconButton={
-                    <BreadCheckBox
-                      name={product.name}
-                      isChecked={checkedProducts.find((product) => product.name === product.name) ? true : false}
-                      onCheckboxChange={() => setCheckProductsisCheckedProduct(product)}
+          <div className="py-[10px]">
+            <RoundTab categories={menuCategories} activeTab={category} onTabChange={onTabChange} />
+          </div>
+          <div key={'category-1'} className="flex flex-col gap-2 max-h-[559px] overflow-y-scroll">
+            {category === '1' && breadMenu.length
+              ? breadMenu.map((p, index) => (
+                  <div key={`${p.bakeryId}-${p.name}`}>
+                    <ProductReserveCard
+                      ImageIconButton={
+                        <BreadCheckBox
+                          name={p.name}
+                          disabled={p.stock === 0}
+                          isChecked={
+                            checkedProducts.find((checkedPropduct) => checkedPropduct.name === p.name) ? true : false
+                          }
+                          onCheckboxChange={() => isCheckedProduct(p)}
+                        />
+                      }
+                      {...p}
                     />
-                  }
-                  key={`product-${index}`}
-                  {...product}
-                />
-              ))
-            ) : (
-              <div>기타</div>
-            )}
+                    {index !== breadMenu.length - 1 && <hr className="w-full my-5" />}
+                  </div>
+                ))
+              : otherMenu.map((p, index) => (
+                  <div key={`${p.bakeryId}-${p.name}`}>
+                    <ProductReserveCard
+                      ImageIconButton={
+                        <BreadCheckBox
+                          name={p.name}
+                          disabled={p.stock === 0}
+                          isChecked={
+                            checkedProducts.find((checkedPropduct) => checkedPropduct.name === p.name) ? true : false
+                          }
+                          onCheckboxChange={() => isCheckedProduct(p)}
+                        />
+                      }
+                      {...p}
+                    />
+                    {index !== otherMenu.length - 1 && <hr className="w-full my-5" />}
+                  </div>
+                ))}
           </div>
         </>
       ) : (
@@ -143,13 +153,21 @@ function ReservationBottonSheet({
           <div className="bg-white  overflow-y-scroll">
             {checkedProducts.map((product, index) => {
               return (
-                <ProductReserveCard
-                  moreInfoComponent={
-                    <SpinnerInfoComponent name={product.name} price={product.price} stock={product.stock} />
-                  }
-                  {...product}
-                  key={`bread-${index}`}
-                />
+                <>
+                  <ProductReserveCard
+                    moreInfoComponent={
+                      <SpinnerInfoComponent
+                        onChange={(quantity: number) => onProductQuantityChange(index, quantity)}
+                        name={product.name}
+                        price={product.price}
+                        stock={product.stock}
+                      />
+                    }
+                    {...product}
+                    key={`bread-${index}`}
+                  />
+                  {index !== checkedProducts.length - 1 && <hr className="w-full my-5" />}
+                </>
               );
             })}
             <div className="mt-[30px] mb-[56px] bg-gray-50 font-semibold">

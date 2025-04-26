@@ -1,7 +1,7 @@
 'use client';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { comma } from '@/utils/comma';
-import { Product } from '@/types/product';
+import { Product } from '@/types/bakery';
 interface ProductReserveCardProps extends Product {
   isChecked?: boolean;
   setIsChecked?: (value: string) => void;
@@ -16,17 +16,16 @@ function ProductReserveCardProps({
   price,
   stock,
   description,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   image,
   FloatingButton = null,
   ImageIconButton = null,
   moreInfoComponent = null,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  showCount = false,
 }: ProductReserveCardProps) {
   return (
     <div className="flex gap-4 relative">
       <div className="min-w-[90px] w-[90px] h-[90px] relative shrink-0">
-        <Image src={image ? image : ''} alt="bread" className="object-cover rounded-lg" fill />
+        {/* <Image src={image ? image : ''} alt="bread" className="object-cover rounded-lg" fill /> */}
         {ImageIconButton && ImageIconButton}
       </div>
       <div className="flex flex-col grow gap-1 line-height text-gray-900 font-medium">

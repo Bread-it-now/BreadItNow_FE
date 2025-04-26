@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import PhoneVerification from '@/components/login/PhoneVerification';
-import VerificationCode from '@/components/login/VerificationCode';
+// import PhoneVerification from '@/components/login/PhoneVerification';
+// import VerificationCode from '@/components/login/VerificationCode';
 import NicknameSetup from '@/components/login/NicknameSetup';
 import BreadCategorySelection from '@/components/login/BreadCategorySelection';
 
 interface FirstLoginFlowProps {
   onComplete: () => void;
+  isSocial?: boolean;
 }
 
 export default function FirstLoginFlow({ onComplete }: FirstLoginFlowProps) {
@@ -16,12 +17,10 @@ export default function FirstLoginFlow({ onComplete }: FirstLoginFlowProps) {
 
   return (
     <div className="flex flex-col h-[100%] max-h-[100%] bg-white">
-      {signupStep === 1 && <PhoneVerification onNext={() => setSignupStep(2)} />}
-      {signupStep === 2 && <VerificationCode onNext={() => setSignupStep(3)} />}
-      {signupStep === 3 && (
-        <NicknameSetup nickname={nickname} setNickname={setNickname} onNext={() => setSignupStep(4)} />
+      {signupStep === 1 && (
+        <NicknameSetup nickname={nickname} setNickname={setNickname} onNext={() => setSignupStep(2)} />
       )}
-      {signupStep === 4 && <BreadCategorySelection nickname={nickname} onComplete={onComplete} />}
+      {signupStep === 2 && <BreadCategorySelection nickname={nickname} onComplete={onComplete} />}
     </div>
   );
 }

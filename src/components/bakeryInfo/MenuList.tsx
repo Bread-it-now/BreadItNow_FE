@@ -1,3 +1,4 @@
+'use client';
 import ProductReserveCard from './ProductReserveCard';
 import { Product } from '@/types/bakery';
 import BellIcon from '@/assets/icons/bell_gray.svg';
@@ -7,16 +8,26 @@ import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Tag from '@/components/common/Tag';
 import IconButton from '@/components/button/IconButton';
 import { useState } from 'react';
+import { addBookmarkProduct, removeBookmarkProduct, setAlertProduct } from '@/lib/api/bakery';
 interface ProductReserveCardProps {
   menuList?: Product[];
   title: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function MenuImageIconButton({ bakeryId, productId }: { bakeryId: number; productId: number }) {
-  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(false);
-  const onBookmarkClick = () => {
-    setBookmarkChecked(!bookmarkChecked);
+function MenuImageIconButton({ productId, isActive }: { productId: number; isActive: boolean }) {
+  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(isActive);
+  const onBookmarkClick = async () => {
+    try {
+      if (bookmarkChecked) {
+        await removeBookmarkProduct(productId);
+      } else {
+        await addBookmarkProduct(productId);
+      }
+      setBookmarkChecked(!bookmarkChecked);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to add or remove favorite product', error);
+    }
   };
   return (
     <IconButton
@@ -29,11 +40,16 @@ function MenuImageIconButton({ bakeryId, productId }: { bakeryId: number; produc
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function MenuFloatingButton({ bakeryId, productId }: { bakeryId: number; productId: number }) {
-  const [alarmChecked, setAlarmChecked] = useState<boolean>(false);
-  const onClickAlarmBtn = () => {
-    setAlarmChecked(!alarmChecked);
+function MenuFloatingButton({ productId, isActive }: { productId: number; isActive: boolean }) {
+  const [alarmChecked, setAlarmChecked] = useState<boolean>(isActive);
+  const onClickAlarmBtn = async () => {
+    try {
+      await setAlertProduct(productId);
+      setAlarmChecked(!alarmChecked);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to add or remove favorite product', error);
+    }
   };
   return (
     <IconButton
@@ -57,24 +73,21 @@ function TimeForBreadComeOut() {
 }
 function MenuList({ menuList, title }: ProductReserveCardProps) {
   return (
-    <article
-      key={title}
-      className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll min-h-[600px] text-black">
+    <article className="bg-white border-box rounded-2xl px-5 py-[30px] mb-[52px] overflow-y-scroll min-h-[600px] text-black">
       <div className="flex justify-between mb-6">
         <div className="font-semibold  text-md">{title}</div>
       </div>
       {menuList &&
         menuList.map((menu, index) => (
-          <>
+          <div key={`${title}-menu-${menu.productId}`}>
             <ProductReserveCard
-              ImageIconButton={<MenuImageIconButton bakeryId={menu.bakeryId} productId={menu.productId} />}
-              FloatingButton={<MenuFloatingButton bakeryId={menu.bakeryId} productId={menu.productId} />}
+              ImageIconButton={<MenuImageIconButton productId={menu.productId} isActive={menu.isFavorite} />}
+              FloatingButton={<MenuFloatingButton productId={menu.productId} isActive={menu.alarmEnabled} />}
               moreInfoComponent={<TimeForBreadComeOut />}
-              key={`${title}-menu-${index}`}
               {...menu}
             />
             {index !== menuList.length - 1 && <hr className="border-gray-200 my-5" />}
-          </>
+          </div>
         ))}
     </article>
   );

@@ -27,7 +27,17 @@ export interface ImageInfo {
   additionalImages?: string[];
 }
 
-export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}
+export interface BreadReleaseTime {
+  releaseTime: string;
+  scheduledProducts: {
+    productId: number;
+    name: string;
+  }[];
+}
+
+export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {
+  isFavorite: boolean;
+}
 export interface Bread {
   id: number;
   bakeryId: number;
@@ -61,6 +71,8 @@ export interface Product {
   isHidden: boolean;
   breadCategories?: BreadCategory[];
   displayOrder?: number;
+  alarmEnabled: boolean;
+  isFavorite: boolean;
 }
 
 export interface BakeryProducts {

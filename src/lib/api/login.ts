@@ -12,8 +12,26 @@ export const login = async (email: string, password: string, role: 'customer' | 
   return response.json();
 };
 
-export const authCheck = async (): Promise<Response> => {
-  const response = (await customFetch('/customer-api/api/v1/alert/product?page=0&size=10', {
+export const signUp = async (email: string, password: string, role: 'customer' | 'owner'): Promise<Response> => {
+  const response = (await customFetch('/auth-api/api/v1/auth/sign-up', {
+    method: 'POST',
+    body: JSON.stringify({ email, password, role }),
+  })) as Response;
+  return response.json();
+};
+
+export const chkDuplicateEmail = async (email: string): Promise<Response> => {
+  const response = (await customFetch(`/customer-api/auth-api/api/v1/email/duplicate-check?email=${email}`, {
+    method: 'GET',
+  })) as Response;
+  if (response.status === 200) {
+    return response.json();
+  }
+  throw new Error('Failed to check duplicate email');
+};
+
+export const chkDuplicateNickname = async (nickname: string): Promise<Response> => {
+  const response = (await customFetch(`/customer-api/api/v1/customer/duplicate-nickname?nickname=${nickname}`, {
     method: 'GET',
   })) as Response;
   return response.json();

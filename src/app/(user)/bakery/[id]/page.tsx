@@ -19,6 +19,7 @@ import NaverIcon from '@/assets/images/naver.png';
 import CopyIcon from '@/assets/icons/copy.svg';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { useParams } from 'next/navigation';
+import StoreInfo from '@/components/bakeryInfo/StoreInfo';
 
 function BakeryOpenInfo({ openInfo }: { openInfo: string }) {
   return (
@@ -145,15 +146,13 @@ function Page() {
         {/* TODO 빵집 섬네일은 1개인데 슬라이더가 필요한가? */}
         <ImageSlider images={bakery?.bakeryImages} />
       </div>
-      {/* <StoreInfo bakery={bakery} /> */}
+      <StoreInfo bakery={bakery} />
       <Accordion title="영업 시간">
         <BakeryOpenInfo openInfo={bakery.openTime} />
       </Accordion>
       <Accordion title="예상 빵 나오는 시간">
         <BakeryComesOutInfo comesOutInfo={obj} />
       </Accordion>
-      {/* TODO 마지막 이미지 클릭한 후 이동할 페이지 필요  */}
-      {/* 이미지 어디서 가져오나? */}
       <Accordion title="이미지">
         <BakeryImages images={bakery.additionalImages ? bakery.additionalImages : []} />
       </Accordion>

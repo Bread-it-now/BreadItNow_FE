@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import emptyIcon from '@/assets/images/empty.png';
 

@@ -5,16 +5,19 @@ import { cn } from '@/utils/cn';
 import bookmark from '@/assets/icons/bookmark.svg';
 import bookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Link from 'next/link';
+import { comma } from '@/utils/comma';
+import { addFavoriteProduct, deleteFavoriteProduct } from '@/lib/api/bakery';
+import { useState } from 'react';
 
 export interface BreadCardProps {
   id: number;
   profileImgUrl: string;
   name: string;
   description: string;
-  price: string;
+  price: number;
   size?: 'small' | 'normal';
   isBookmarked: boolean;
-  onToggleBookmark: () => void;
+  onToggleBookmark?: () => void;
 }
 
 const BreadCard = ({
@@ -27,6 +30,18 @@ const BreadCard = ({
   isBookmarked,
   onToggleBookmark,
 }: BreadCardProps) => {
+  const [checked, setChecked] = useState<boolean>(false);
+  const handleToggleBookmark = (productId: number) => {
+    const willBeBookmarked = !(isBookmarked === checked);
+
+    if (willBeBookmarked) {
+      addFavoriteProduct(productId);
+    } else {
+      deleteFavoriteProduct(productId);
+    }
+
+    setChecked(!checked);
+  };
   return (
     <Link
       href={`/bread/${id}`}
@@ -38,9 +53,12 @@ const BreadCard = ({
           aria-label="bookmark"
           onClick={(e) => {
             e.preventDefault();
-            onToggleBookmark();
+            if (onToggleBookmark) onToggleBookmark();
+            else {
+              handleToggleBookmark(id);
+            }
           }}>
-          <Image width={16} height={16} src={isBookmarked ? bookmarkFill : bookmark} alt="bookmark" />
+          <Image width={16} height={16} src={isBookmarked && !checked ? bookmarkFill : bookmark} alt="bookmark" />
         </button>
       </div>
       <div className="flex flex-col px-1 items-start gap-1 w-full">
@@ -48,7 +66,7 @@ const BreadCard = ({
           <div className="self-stretch text-gray700 text-[13px] font-normal leading-[19px]">{description}</div>
           <div className="self-stretch text-gray900 text-sm font-semibold leading-tight">{name}</div>
         </div>
-        <div className="text-gray900 text-sm font-medium leading-tight">{price}</div>
+        <div className="text-gray900 text-sm font-medium leading-tight">{`${comma(price)}원`}</div>
       </div>
     </Link>
   );

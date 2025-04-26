@@ -1,6 +1,14 @@
 import { API_END_POINT } from '@/constants/api';
 import { NOTIFICATION_QUERY_KEY } from '@/constants/queryKey';
-import { DoNotDisturb, DoNotDisturbForm, NotificationSetting, PageInfo } from '@/types/notification';
+import {
+  CustomerNotification,
+  DoNotDisturb,
+  DoNotDisturbForm,
+  NotificationSetting,
+  NotificationType,
+  OwnerNotification,
+  PageInfo,
+} from '@/types/notification';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const getDoNotDisturbSetting = async (): Promise<{ data: DoNotDisturb }> => {
@@ -161,6 +169,116 @@ export const useOnOffProductNotificationSetting = ({ size = 10 }: { size?: numbe
 
 export const deleteProductNotificationSetting = async (productId: number): Promise<{ data: null }> => {
   const response = await fetch(`/${API_END_POINT.DELETE_PRODUCT_NOTFICATION_SETTING(productId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const getCustomerNotifications = async ({
+  pageParam = 0,
+  size = 10,
+  type,
+}: {
+  pageParam?: number;
+  size?: number;
+  type: NotificationType | 'ALL';
+}): Promise<{ data: { notifications: CustomerNotification[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(`/${API_END_POINT.CUSTOMER_NOTIFICATIONS(pageParam, size, type)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useCustomerNotifications = ({ type, size = 10 }: { type: NotificationType | 'ALL'; size?: number }) => {
+  return useInfiniteQuery({
+    queryKey: [...NOTIFICATION_QUERY_KEY.CUSTOMER_NOTIFICATIONS(type)],
+    queryFn: ({ pageParam = 0 }) => getCustomerNotifications({ pageParam, size, type }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+
+export const readCustomerNotification = async (
+  notificationId: number,
+): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.READ_CUSTOMER_NOTIFICATION(notificationId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const deleteCustomerNotification = async (
+  notificationId: number,
+): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_CUSTOMER_NOTIFICATION(notificationId)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const getOwnerNotifications = async ({
+  pageParam = 0,
+  size = 10,
+}: {
+  pageParam?: number;
+  size?: number;
+}): Promise<{ data: { notifications: OwnerNotification[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(`/${API_END_POINT.OWNER_NOTIFICATIONS(pageParam, size)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const useOwnerNotifications = ({ size = 10 }: { size?: number }) => {
+  return useInfiniteQuery({
+    queryKey: [...NOTIFICATION_QUERY_KEY.OWNER_NOTIFICATIONS()],
+    queryFn: ({ pageParam = 0 }) => getOwnerNotifications({ pageParam, size }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+
+export const readOwnerNotification = async (notificationId: number): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.READ_OWNER_NOTIFICATION(notificationId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch');
+
+  return response.json();
+};
+
+export const deleteOwnerNotification = async (
+  notificationId: number,
+): Promise<{ data: { notificationId: number } }> => {
+  const response = await fetch(`/${API_END_POINT.DELETE_OWNER_NOTIFICATION(notificationId)}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   });

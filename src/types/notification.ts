@@ -1,15 +1,30 @@
 import { ENG_DAY } from './date';
+import { CustomerReservationStatus, OwnerReservationStatus } from './reservation';
 
 export type NotificationType = 'ALERT' | 'RESERVATION';
 
-export interface Notification {
+export interface CustomerNotification {
   notificationId: number;
-  bakeryId: number;
-  productId: number;
   type: NotificationType;
-  content: string;
+  bakeryId: number;
+  bakeryName: string;
+  productName: string[];
+  remainingCount?: number;
+  alertCount?: number;
   isRead: boolean;
-  createAt: string;
+  reservationStatus?: CustomerReservationStatus;
+  pickupDeadline?: string;
+  createdAt: string;
+}
+
+export interface OwnerNotification {
+  notificationId: number;
+  reservationId?: number;
+  nickname: string;
+  status: OwnerReservationStatus;
+  isRead: boolean;
+  productsName: string[];
+  createdAt: string;
 }
 
 export interface NotificationSetting {

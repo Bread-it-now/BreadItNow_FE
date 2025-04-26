@@ -23,7 +23,7 @@ export const ROUTES = {
     NOTIFICATIONS: `/${MYPAGE_PREFIX}/notifications`,
     RESERVATIONS: `/${MYPAGE_PREFIX}/reservations`,
     RESERVATION_DETAIL: `/${MYPAGE_PREFIX}/reservations/[id]`,
-    BOOKMARKS: `/${MYPAGE_PREFIX}/bookmarks`,
+    FAVORITES: `/${MYPAGE_PREFIX}/favorites`,
   },
   OWNER: {
     HOME: `/${OWNER_PREFIX}`,
@@ -52,7 +52,7 @@ export const MYPAGE_TITLE: Record<keyof typeof ROUTES.MYPAGE, string> = {
   NOTIFICATIONS: '알림',
   RESERVATIONS: '예약 내역',
   RESERVATION_DETAIL: '예약 상세',
-  BOOKMARKS: '즐겨찾기',
+  FAVORITES: '즐겨찾기',
 };
 
 export const OWNER_PAGE_TITLE: Record<Exclude<keyof typeof ROUTES.OWNER, 'BAKERY'>, string> = {

@@ -23,7 +23,6 @@ const CustomerReservationCard = ({
   bakeryName,
   totalPrice,
   pickupDeadline,
-  cancelDetail,
   profileImage,
   totalReservationProducts,
   mainReservationProductName,
@@ -41,7 +40,7 @@ const CustomerReservationCard = ({
       </div>
       <div className="flex items-center gap-4 w-full h-[68px]">
         <div className="flex relative w-[6.125rem] h-[68px]">
-          <Image src={profileImage} width={68} height={68} alt="bakery" className="h-full" />
+          <Image src={profileImage} width={68} height={68} alt="bakery" className="h-full rounded-md" />
         </div>
         <div className="flex flex-col items-start gap-2 w-full max-w-[203px]">
           <div className="flex flex-col items-start gap-[0.125rem] w-full">
@@ -58,7 +57,7 @@ const CustomerReservationCard = ({
             <span className="font-semibold text-primary">픽업일시</span>
           )}
           <span>
-            {status === 'CANCELED' ? cancelDetail : pickupDeadline !== undefined ? getDateFormat(pickupDeadline) : ''}
+            {status === 'CANCELED' ? '예약 취소' : pickupDeadline !== undefined ? getDateFormat(pickupDeadline) : ''}
           </span>
         </div>
       )}

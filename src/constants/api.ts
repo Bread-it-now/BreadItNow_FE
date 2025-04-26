@@ -1,3 +1,5 @@
+import { FilterKey } from '@/types/bakery';
+import { NotificationType } from '@/types/notification';
 import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
 const API_SUFFIX = 'api';
@@ -38,11 +40,28 @@ export const CONTROLLER = {
 
 /** Module + API Version Prefix + Contorller + End-Point */
 export const API_END_POINT = {
+  /** CUSTMOMER - BAKERY */
+  FAVORITE_BAKERIES: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
+  ADD_FAVORITE_BAKERY: (bakeryId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}/favorite`,
+  DELETE_FAVORITE_BAKERY: (bakeryId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}/favorite`,
+
+  /** CUSTOMER - PRODUCT */
+  FAVORITE_PRODUCTS: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
+  ADD_FAVORITE_PRODUCT: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}/favorite`,
+  DELETE_FAVORITE_PRODUCT: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${productId}/favorite`,
+ 
   /** AUTH */
   AUTH: {
     SIGN_IN: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-in`,
     SIGN_UP: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-up`,
   },
+  
   /** CUSTOMER */
   CUSTOMER_INIT: `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/init`,
 
@@ -61,6 +80,15 @@ export const API_END_POINT = {
   ONOFF_DO_NOT_DISTURB_SETTING: () =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb/toggle`,
   TODAY_NOTIFCIATON_PRODUCT: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
+
+  /** CUSTOMER - NOTIFICATION */
+  CUSTOMER_NOTIFICATIONS: (page: number, size: number, type: NotificationType | 'ALL') =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}?type=${type}&page=${page}&size=${size}&sort=createdAt`,
+  READ_CUSTOMER_NOTIFICATION: (notificationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/${notificationId}/read`,
+  DELETE_CUSTOMER_NOTIFICATION: (notificationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.NOTIFICATION}/${notificationId}`,
+
   // RESERVATION
   CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus | 'ALL', page: number, size: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}?status=${reservationStatus}&page=${page}&size=${size}`,
@@ -105,4 +133,12 @@ export const API_END_POINT = {
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}`,
   CHANGE_RESERVATION_STATUS: (reservationId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.RESERVATION}/${reservationId}/status`,
+
+  /** OWNER - NOTIFICATION */
+  OWNER_NOTIFICATIONS: (page: number, size: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}?page=${page}&size=${size}&sort=createdAt`,
+  READ_OWNER_NOTIFICATION: (notificationId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}/${notificationId}/read`,
+  DELETE_OWNER_NOTIFICATION: (notificationId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}/${notificationId}`,
 };

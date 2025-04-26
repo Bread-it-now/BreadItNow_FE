@@ -4,6 +4,8 @@ import { Bakery, OPERATING_STATUS } from '@/types/bakery';
 import bookmark from '@/assets/icons/bookmark.svg';
 import bookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Link from 'next/link';
+import { useState } from 'react';
+import { addFavoriteBakery, deleteFavoriteBakery } from '@/lib/api/bakery';
 
 export interface BakeryCardProps
   extends Pick<Bakery, 'bakeryId' | 'operatingStatus' | 'profileImage' | 'name' | 'distance'> {
@@ -11,7 +13,7 @@ export interface BakeryCardProps
   size?: 'normal' | 'large';
   showBookmark?: boolean;
   isBookmarked: boolean;
-  onToggleBookmark: () => void;
+  onToggleBookmark?: () => void;
 }
 
 const BakeryCard = ({
@@ -26,6 +28,19 @@ const BakeryCard = ({
   isBookmarked,
   onToggleBookmark,
 }: BakeryCardProps) => {
+  const [checked, setChecked] = useState<boolean>(false);
+
+  const handleToggleBookmark = (bakeryId: number) => {
+    const willBeBookmarked = !(isBookmarked === checked);
+
+    if (willBeBookmarked) {
+      addFavoriteBakery(bakeryId);
+    } else {
+      deleteFavoriteBakery(bakeryId);
+    }
+
+    setChecked(!checked);
+  };
   return (
     <Link
       href={`/bakery/${bakeryId}`}
@@ -58,7 +73,10 @@ const BakeryCard = ({
             <button
               onClick={(e) => {
                 e.preventDefault();
-                onToggleBookmark();
+                if (onToggleBookmark) onToggleBookmark();
+                else {
+                  handleToggleBookmark(bakeryId);
+                }
               }}
               className={cn(
                 'flex justify-center items-center',
@@ -66,7 +84,7 @@ const BakeryCard = ({
                 'border rounded-full border-gray100',
               )}
               aria-label="bookmark">
-              <Image width={16} height={16} src={isBookmarked ? bookmarkFill : bookmark} alt="bookmark" />
+              <Image width={16} height={16} src={isBookmarked && !checked ? bookmarkFill : bookmark} alt="bookmark" />
             </button>
           )}
         </div>

@@ -16,14 +16,13 @@ import FirstLoginFlow from '@/components/login/FirstLoginFlow';
 import OwnerFirstLoginFlow from '@/components/login/OwnerFirstLoginFlow';
 import { API_END_POINT } from '@/constants/api';
 import { signIn } from 'next-auth/react';
-import { authCheck } from '@/lib/api/login';
 export default function LoginPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('bakery');
   const [activeTab, setActiveTab] = useState<'customer' | 'owner'>('customer');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isFirstLoginPending, setIsFirstLoginPending] = useState(false);
   const [isFirstLoginConfirmed, setIsFirstLoginConfirmed] = useState(false);
 
@@ -33,7 +32,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch(`/${API_END_POINT.AUTH.SIGN_IN}`, {
+      await fetch(`/${API_END_POINT.AUTH.SIGN_IN}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -41,37 +40,6 @@ export default function LoginPage() {
           password: password,
         }),
       });
-
-  //TODO: 추후 로그인 API 연동하고 가져오기
-  const handleLogin = async () => {
-    try {
-      //TODO..로그인 로직 변경
-      // const res = await login("user@example.com", "password123!", activeTab);
-      const res = await authCheck();
-      return;
-      if (!res.ok) {
-        setAlertTitle('로그인 실패했습니다.');
-        setAlertSubtitle('이메일 또는 비밀번호를 확인해주세요.');
-        setShowAlert(true);
-        return;
-      }
-
-      const data = await res.json();
-
-      if (data.data?.isNewUser) {
-        setIsFirstLoginPending(true);
-        setAlertTitle('로그인에 성공했습니다!');
-        setAlertSubtitle('추가 정보를 입력해주세요.');
-        setShowAlert(true);
-      } else {
-        setAlertTitle('로그인에 성공했습니다!');
-        setAlertSubtitle('메인 화면으로 이동합니다.');
-        setShowAlert(true);
-
-        setTimeout(() => {
-          router.push('/');
-        }, 1500);
-      }
     } catch {
       setAlertTitle('오류 발생');
       setAlertSubtitle('로그인 중 문제가 발생했습니다. 다시 시도해주세요.');
@@ -92,7 +60,7 @@ export default function LoginPage() {
   };
 
   if (isFirstLoginConfirmed) {
-    return activeTab === 'personal' ? (
+    return activeTab === 'customer' ? (
       <FirstLoginFlow onComplete={() => router.push('/')} />
     ) : (
       <OwnerFirstLoginFlow onComplete={() => router.push('/')} />

@@ -24,6 +24,7 @@ export interface OperatingInfo {
 export interface ImageInfo {
   profileImage: string;
   bakeryImages: string[];
+  additionalImages?: string[];
 }
 
 export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}
@@ -41,6 +42,10 @@ export interface Bread {
 }
 
 export type ProductType = 'BREAD' | 'OTHER';
+export interface BreadCategory {
+  categoryId: number;
+  categoryName: string;
+}
 
 export interface Product {
   productId: number;
@@ -53,7 +58,8 @@ export interface Product {
   releaseTimes?: string[];
   stock: number;
   isActive: boolean;
-  breadCategories: { categoryId: number; categoryName: string }[];
+  isHidden: boolean;
+  breadCategories?: BreadCategory[];
   displayOrder?: number;
 }
 
@@ -61,4 +67,18 @@ export interface BakeryProducts {
   totalCount: number;
   breadProducts: Product[];
   otherProducts: Product[];
+}
+
+export interface ProductOrder {
+  productId: number;
+  order: number;
+}
+
+export interface ProductForm {
+  productType: ProductType;
+  breadCategoryIds: number[];
+  name: string;
+  price: number;
+  description: string;
+  releaseTimes: string[];
 }

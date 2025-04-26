@@ -24,7 +24,7 @@ function ProductReserveCardProps({
   showCount = false,
 }: ProductReserveCardProps) {
   return (
-    <div className="flex gap-4 border-b py-5 relative">
+    <div className="flex gap-4 relative">
       <div className="min-w-[90px] w-[90px] h-[90px] relative shrink-0">
         <Image src={image ? image : ''} alt="bread" className="object-cover rounded-lg" fill />
         {ImageIconButton && ImageIconButton}

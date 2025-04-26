@@ -45,6 +45,22 @@ export const API_END_POINT = {
   },
   /** CUSTOMER */
   CUSTOMER_INIT: `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/init`,
+
+  // ALERT
+  ADD_NOTFICATION_SETTING: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/${productId}`,
+  DELETE_PRODUCT_NOTFICATION_SETTING: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/${productId}`,
+  ONOFF_PRODUCT_NOTIFICATION_SETTING: (productId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product/${productId}/toggle`,
+  PRODUCT_NOTIFICATION_SETTINGS: (page: number, size: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/product?page=${page}&size=${size}`,
+  DO_NOT_DISTURB_SETTING: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb`,
+  EDIT_DO_NOT_DISTURB_SETTING: () =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb`,
+  ONOFF_DO_NOT_DISTURB_SETTING: () =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb/toggle`,
+  TODAY_NOTIFCIATON_PRODUCT: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
   // RESERVATION
   CUSTOMER_RESERVATIONS: (reservationStatus: CustomerReservationStatus | 'ALL', page: number, size: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}?status=${reservationStatus}&page=${page}&size=${size}`,
@@ -59,12 +75,28 @@ export const API_END_POINT = {
 
   // BAKERY
   BAKERY_INFO: (bakeryId: number) => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
-  BAKERY_PRODUCTS: (bakeryId: number) =>
-    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}`,
-  CHANGE_STOCK_QUANTITY: (bakeryId: number, productId: number) =>
-    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/bakery-product/${bakeryId}/product/${productId}/stock`,
   CHANGE_OPERATING_STATUS: (bakeryId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}/operating-status`,
+
+  // BAKERY_PRODUCT
+  CREATE_PRODUCT: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}`,
+  EDIT_PRODUCT: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
+  DELETE_PRODUCT: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
+  DELETE_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/products`,
+  HIDE_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/hide`,
+  BAKERY_PRODUCT: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
+  BAKERY_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}`,
+  REORDER_PRODUCTS: (bakeryId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/order`,
+  CHANGE_STOCK_QUANTITY: (bakeryId: number, productId: number) =>
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}/stock`,
 
   // RESERVATION
   OWNER_RESERVATIONS: (reservationStatus: OwnerReservationStatusQuery, page: number, size: number) =>

@@ -9,17 +9,18 @@ import VerificationInput from '@/components/common/Input/VerificationInput';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import Button from '@/components/button/Button';
 import kakaoIcon from '@/assets/icons/kakao.svg';
-import naverIcon from '@/assets/icons/naver.svg';
+import naverIcon from '@/assets/icons/naver-white.svg';
 import googleIcon from '@/assets/icons/google.svg';
 import Alert from '@/components/common/Alert';
 import FirstLoginFlow from '@/components/login/FirstLoginFlow';
 import OwnerFirstLoginFlow from '@/components/login/OwnerFirstLoginFlow';
 import { API_END_POINT } from '@/constants/api';
 import { signIn } from 'next-auth/react';
-
+import { authCheck } from '@/lib/api/login';
 export default function LoginPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('bakery');
+  const [activeTab, setActiveTab] = useState<'customer' | 'owner'>('customer');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
@@ -41,9 +42,16 @@ export default function LoginPage() {
         }),
       });
 
+  //TODO: 추후 로그인 API 연동하고 가져오기
+  const handleLogin = async () => {
+    try {
+      //TODO..로그인 로직 변경
+      // const res = await login("user@example.com", "password123!", activeTab);
+      const res = await authCheck();
+      return;
       if (!res.ok) {
         setAlertTitle('로그인 실패했습니다.');
-        setAlertSubtitle('아이디 또는 비밀번호를 확인해주세요.');
+        setAlertSubtitle('이메일 또는 비밀번호를 확인해주세요.');
         setShowAlert(true);
         return;
       }
@@ -109,11 +117,11 @@ export default function LoginPage() {
 
       <HotBreadTab
         tabs={[
-          { key: 'personal', label: '개인회원' },
-          { key: 'bakery', label: '빵집회원' },
+          { key: 'customer', label: '개인회원' },
+          { key: 'owner', label: '빵집회원' },
         ]}
         activeTab={activeTab}
-        setActiveTab={(key) => setActiveTab(key as 'personal' | 'bakery')}
+        setActiveTab={(key) => setActiveTab(key as 'customer' | 'owner')}
       />
 
       <div className="flex flex-col px-5 gap-4 mt-4">
@@ -121,7 +129,7 @@ export default function LoginPage() {
           value={email}
           maxLength={13}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="아이디"
+          placeholder="이메일"
         />
 
         <div className="relative w-full">
@@ -150,7 +158,7 @@ export default function LoginPage() {
         </Button>
       </div>
 
-      {activeTab === 'personal' && (
+      {activeTab === 'customer' && (
         <div className="flex flex-col items-center justify-center gap-4 mt-6">
           <div className="flex items-center w-full my-3 px-5">
             <div className="flex-1 h-px bg-gray-300" />

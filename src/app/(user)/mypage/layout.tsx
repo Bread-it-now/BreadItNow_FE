@@ -3,7 +3,6 @@
 import { MYPAGE_TITLE, ROUTES } from '@/constants/routes';
 import Topbar from '@/components/topbar/Topbar';
 import { usePathname } from 'next/navigation';
-
 const reservationDetailPathRegex = /^\/mypage\/reservations\/\d+$/;
 
 const getPageRoute = (path: string): keyof typeof ROUTES.MYPAGE => {

@@ -28,15 +28,15 @@ const handler = NextAuth({
     async redirect({ url, baseUrl }) {
       // 에러가 있는 경우 처리
       if (url.includes('error=Callback')) {
-        return `${baseUrl}/login`;
+        return `${process.env.NEXTAUTH_URL}/login`;
       }
       // 취소된 경우 처리
       if (url.includes('error=AccessDenied')) {
-        return `${baseUrl}/login`;
+        return `${process.env.NEXTAUTH_URL}/login`;
       }
       // 기본 리다이렉트
       if (url.startsWith(baseUrl)) {
-        return url;
+        return `${process.env.NEXTAUTH_URL}/`;
       }
       return baseUrl;
     },

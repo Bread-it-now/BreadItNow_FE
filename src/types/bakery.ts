@@ -35,7 +35,9 @@ export interface BreadReleaseTime {
   }[];
 }
 
-export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {}
+export interface Bakery extends BaseInfo, OperatingInfo, ImageInfo {
+  isFavorite: boolean;
+}
 export interface Bread {
   id: number;
   bakeryId: number;

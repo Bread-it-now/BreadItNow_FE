@@ -14,16 +14,7 @@ interface ProductReserveCardProps {
   title: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function MenuImageIconButton({
-  bakeryId,
-  productId,
-  isActive,
-}: {
-  bakeryId: number;
-  productId: number;
-  isActive: boolean;
-}) {
+function MenuImageIconButton({ productId, isActive }: { productId: number; isActive: boolean }) {
   const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(isActive);
   const onBookmarkClick = async () => {
     try {
@@ -49,16 +40,7 @@ function MenuImageIconButton({
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function MenuFloatingButton({
-  bakeryId,
-  productId,
-  isActive,
-}: {
-  bakeryId: number;
-  productId: number;
-  isActive: boolean;
-}) {
+function MenuFloatingButton({ productId, isActive }: { productId: number; isActive: boolean }) {
   const [alarmChecked, setAlarmChecked] = useState<boolean>(isActive);
   const onClickAlarmBtn = async () => {
     try {
@@ -99,12 +81,8 @@ function MenuList({ menuList, title }: ProductReserveCardProps) {
         menuList.map((menu, index) => (
           <div key={`${title}-menu-${menu.productId}`}>
             <ProductReserveCard
-              ImageIconButton={
-                <MenuImageIconButton bakeryId={menu.bakeryId} productId={menu.productId} isActive={menu.isFavorite} />
-              }
-              FloatingButton={
-                <MenuFloatingButton bakeryId={menu.bakeryId} productId={menu.productId} isActive={menu.alarmEnabled} />
-              }
+              ImageIconButton={<MenuImageIconButton productId={menu.productId} isActive={menu.isFavorite} />}
+              FloatingButton={<MenuFloatingButton productId={menu.productId} isActive={menu.alarmEnabled} />}
               moreInfoComponent={<TimeForBreadComeOut />}
               {...menu}
             />

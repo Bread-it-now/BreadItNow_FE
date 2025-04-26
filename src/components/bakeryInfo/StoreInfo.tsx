@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { addBakeryBookmark, removeBakeryBookmark } from '@/lib/api/bakery';
 
 function StoreInfo({ bakery }: { bakery: Bakery }) {
-  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(false);
+  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(bakery.isFavorite);
   const onBookmarkClick = async () => {
     try {
       if (bookmarkChecked) {
@@ -21,6 +21,7 @@ function StoreInfo({ bakery }: { bakery: Bakery }) {
       console.error(error);
     }
   };
+
   return (
     <article className="bg-white rounded-2xl px-5 py-[30px]">
       <div>

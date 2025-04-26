@@ -40,8 +40,6 @@ export const CONTROLLER = {
 
 /** Module + API Version Prefix + Contorller + End-Point */
 export const API_END_POINT = {
-  /** AUTH */
-
   /** CUSTMOMER - BAKERY */
   FAVORITE_BAKERIES: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
@@ -57,6 +55,15 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}/favorite`,
   DELETE_FAVORITE_PRODUCT: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${productId}/favorite`,
+ 
+  /** AUTH */
+  AUTH: {
+    SIGN_IN: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-in`,
+    SIGN_UP: `${MODULE.AUTH}/${API_VERSION_PREFIX}/${CONTROLLER.AUTH.AUTH}/sign-up`,
+  },
+  
+  /** CUSTOMER */
+  CUSTOMER_INIT: `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/init`,
 
   // ALERT
   ADD_NOTFICATION_SETTING: (productId: number) =>
@@ -92,6 +99,8 @@ export const API_END_POINT = {
   CREATE_RESERVATION: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
 
   /** OWNER */
+  OWNER_INIT: `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}`,
+
   // BAKERY
   BAKERY_INFO: (bakeryId: number) => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY}/${bakeryId}`,
   CHANGE_OPERATING_STATUS: (bakeryId: number) =>

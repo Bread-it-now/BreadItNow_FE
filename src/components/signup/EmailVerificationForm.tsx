@@ -46,7 +46,7 @@ export default function EmailVerificationForm({ onVerify }: EmailVerificationFor
             timeLeft={timeLeft}
           />
 
-          <ResendButton disabled={isResendDisabled} className="h-12" onClick={handleResend} />
+          <ResendButton disabled={isResendDisabled} className="h-12" onClick={handleResend} message="재전송" />
         </div>
       </div>
 

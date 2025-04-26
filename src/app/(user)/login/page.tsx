@@ -13,18 +13,35 @@ import naverIcon from '@/assets/icons/naver-white.svg';
 import googleIcon from '@/assets/icons/google.svg';
 import Alert from '@/components/common/Alert';
 import FirstLoginFlow from '@/components/login/FirstLoginFlow';
+import OwnerFirstLoginFlow from '@/components/login/OwnerFirstLoginFlow';
+import { API_END_POINT } from '@/constants/api';
 import { signIn } from 'next-auth/react';
 import { authCheck } from '@/lib/api/login';
 export default function LoginPage() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'personal' | 'bakery'>('bakery');
   const [activeTab, setActiveTab] = useState<'customer' | 'owner'>('customer');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAutoLogin, setIsAutoLogin] = useState(false);
-  const [isFirstLogin, setIsFirstLogin] = useState(false);
+  const [isFirstLoginPending, setIsFirstLoginPending] = useState(false);
+  const [isFirstLoginConfirmed, setIsFirstLoginConfirmed] = useState(false);
+
   const [showAlert, setShowAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertSubtitle, setAlertSubtitle] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      const res = await fetch(`/${API_END_POINT.AUTH.SIGN_IN}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
   //TODO: 추후 로그인 API 연동하고 가져오기
   const handleLogin = async () => {
     try {
@@ -41,8 +58,11 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      if (data.firstLogin) {
-        setIsFirstLogin(true);
+      if (data.data?.isNewUser) {
+        setIsFirstLoginPending(true);
+        setAlertTitle('로그인에 성공했습니다!');
+        setAlertSubtitle('추가 정보를 입력해주세요.');
+        setShowAlert(true);
       } else {
         setAlertTitle('로그인에 성공했습니다!');
         setAlertSubtitle('메인 화면으로 이동합니다.');
@@ -71,9 +91,12 @@ export default function LoginPage() {
     }
   };
 
-  if (isFirstLogin) {
-    // TODO: 첫 로그인 시 뜨는 화면 로직 구현
-    return <FirstLoginFlow onComplete={() => router.push('/')} />;
+  if (isFirstLoginConfirmed) {
+    return activeTab === 'personal' ? (
+      <FirstLoginFlow onComplete={() => router.push('/')} />
+    ) : (
+      <OwnerFirstLoginFlow onComplete={() => router.push('/')} />
+    );
   }
 
   return (
@@ -161,7 +184,17 @@ export default function LoginPage() {
 
       {showAlert && (
         <div className="fixed z-10 inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <Alert title={alertTitle} subtitle={alertSubtitle} buttonLabel="확인" onClose={() => setShowAlert(false)} />
+          <Alert
+            title={alertTitle}
+            subtitle={alertSubtitle}
+            buttonLabel="확인"
+            onClose={() => {
+              setShowAlert(false);
+              if (isFirstLoginPending) {
+                setIsFirstLoginConfirmed(true);
+              }
+            }}
+          />
         </div>
       )}
     </div>

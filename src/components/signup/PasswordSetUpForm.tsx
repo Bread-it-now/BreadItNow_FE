@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import Button from '@/components/button/Button';
 import VerificationInput from '@/components/common/Input/VerificationInput';
+import Button from '@/components/button/Button';
 
-interface PasswordSetupFormProps {
+interface Props {
+  password: string;
+  setPassword: (value: string) => void;
   onComplete: () => void;
 }
 
-export default function PasswordSetupForm({ onComplete }: PasswordSetupFormProps) {
-  const [password, setPassword] = useState('');
+export default function PasswordSetupForm({ password, setPassword, onComplete }: Props) {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const isLengthValid = password.length >= 8;
@@ -65,7 +66,7 @@ export default function PasswordSetupForm({ onComplete }: PasswordSetupFormProps
           className="h-[52px] text-[15px] font-semibold"
           disabled={!isValid}
           onClick={onComplete}>
-          다음
+          회원가입
         </Button>
       </div>
     </div>

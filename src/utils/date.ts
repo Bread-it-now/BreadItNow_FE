@@ -137,7 +137,7 @@ export const formatToHour = (time: string) => {
   return `${meridiem} ${formattedHour}:${minute}`;
 };
 
-export function getFormattedStartEnd(startTime: string, endTime: string) {
+export const getFormattedStartEnd = (startTime: string, endTime: string) => {
   const startMinutes = getMinutes(startTime);
   const endMinutes = getMinutes(endTime);
 
@@ -147,4 +147,16 @@ export function getFormattedStartEnd(startTime: string, endTime: string) {
   const formattedEnd = (isNextDay ? ' 다음날 ' : '') + formatToHour(endTime);
 
   return `${formattedStart} - ${formattedEnd}`;
-}
+};
+
+export const getMonthDateDay = (dateStr: Date) => {
+  const monthNames = ['01월', '02월', '03월', '04월', '05월', '06월', '07월', '08월', '09월', '10월', '11월', '12월'];
+
+  const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+
+  const month = monthNames[dateStr.getMonth()];
+  const date = dateStr.getDate();
+  const day = dayNames[dateStr.getDay()];
+
+  return { month, date, day };
+};

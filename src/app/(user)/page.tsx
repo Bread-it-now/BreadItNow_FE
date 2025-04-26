@@ -32,6 +32,7 @@ import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
 import Detail from '@/assets/icons/arrow-down.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import NotificationIcon from '@/components/common/Icons/NotificationIcon';
+import { getMonthDateDay } from '@/utils/date';
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
 
@@ -39,6 +40,7 @@ export default function Page() {
   const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
   const navigateToBakeries = () => router.push(ROUTES.HOME.BAKERY_LIST);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { month, date, day } = getMonthDateDay(new Date());
 
   const isScrolled = useScrollDetection(scrollContainerRef);
   const searchParams = useSearchParams();
@@ -46,7 +48,7 @@ export default function Page() {
     if (searchParams.get('isNewUser') === 'true') {
       router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
   return (
     <div
       className="flex flex-col h-[100%]"
@@ -93,8 +95,10 @@ export default function Page() {
             <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
           </div>
           <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
-            <span>01월 27일</span>
-            <span>월요일</span>
+            <span>
+              {month} {date}
+            </span>
+            <span>{day}</span>
           </div>
         </div>
 

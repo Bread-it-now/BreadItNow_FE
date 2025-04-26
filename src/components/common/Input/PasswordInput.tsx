@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { InputProps } from '../common/Input/Input';
+import { InputProps } from './Input';
 import PWSHOWICON from '@/assets/icons/pw_show.svg';
 import PWHIDEICON from '@/assets/icons/pw_hide.svg';
 import Image from 'next/image';
@@ -19,13 +19,11 @@ function PasswordInput({
     setShowPassword(!showPassword);
   };
   return (
-    <div className={cn(className, 'relative')}>
+    <div className={cn(className, 'relative overflow-hidden')}>
       <input
         type={showPassword ? 'text' : 'password'}
         id={id}
-        className={cn(
-          'px-4 py-[14px] outline-none text-gray-900 w-full text-[13px] border border-gray-200  rounded-lg',
-        )}
+        className={cn('px-4 py-[14px] outline-none text-gray-900 w-full text-[13px] border border-none  rounded-lg')}
         onChange={onChange}
         value={value}
         disabled={disabled}

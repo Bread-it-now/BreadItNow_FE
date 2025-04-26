@@ -27,7 +27,9 @@ export default function LoginPage() {
   const [isFirstLoginConfirmed, setIsFirstLoginConfirmed] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
+   
   const [alertTitle, setAlertTitle] = useState('');
+   
   const [alertSubtitle, setAlertSubtitle] = useState('');
 
   const handleLogin = async () => {

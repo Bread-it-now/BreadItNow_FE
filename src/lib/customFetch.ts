@@ -2,11 +2,12 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   //TODO: 토큰 쿠키로 변경
-  const defaultHeaders = {
+  const defaultHeaders: HeadersInit = {
     Accept: 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
   };
-
+  if (localStorage.getItem('token')) {
+    defaultHeaders.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  }
   const mergedHeaders = {
     ...defaultHeaders,
     ...options.headers,

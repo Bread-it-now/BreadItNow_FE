@@ -8,6 +8,7 @@ import BreadCategorySelection from '@/components/login/BreadCategorySelection';
 
 interface FirstLoginFlowProps {
   onComplete: () => void;
+  isSocial?: boolean;
 }
 
 export default function FirstLoginFlow({ onComplete }: FirstLoginFlowProps) {

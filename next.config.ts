@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
     NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
     NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    KAKAO_CLIENT_ID: process.env.KAKAO_CLIENT_ID,
+    KAKAO_CLIENT_SECRET: process.env.KAKAO_CLIENT_SECRET,
   },
   async rewrites() {
     return [

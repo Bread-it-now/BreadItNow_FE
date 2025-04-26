@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -42,9 +42,11 @@ export default function Page() {
 
   const isScrolled = useScrollDetection(scrollContainerRef);
   const searchParams = useSearchParams();
-  if (searchParams.get('isNewUser') === 'true') {
-    return router.push(ROUTES.AUTH.LOGIN + '?isFirstLogin=true&isSocial=true');
-  }
+  useEffect(() => {
+    if (searchParams.get('isNewUser') === 'true') {
+      router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
+    }
+  }, [searchParams]);
   return (
     <div
       className="flex flex-col h-[100%]"

@@ -57,8 +57,7 @@ export default function NicknameSetup({ nickname, setNickname, onNext }: Nicknam
       </div>
 
       <div className="w-full px-5 py-3 bg-white shadow-[...]">
-        {/* disabled={!isCorrectNickname} */}
-        <Button fullWidth variant="primary" onClick={onNext}>
+        <Button disabled={!isCorrectNickname} fullWidth variant="primary" onClick={onNext}>
           다음
         </Button>
       </div>

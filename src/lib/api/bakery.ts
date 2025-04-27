@@ -7,6 +7,7 @@ import {
   FavoriteBakeryList,
   FavoriteProductList,
   FilterKey,
+  HotBakery,
   HotFilterKey,
   HotProduct,
   OPERATING_STATUS,
@@ -216,8 +217,8 @@ export const getFavoriteBakeryList = async ({
   pageParam: number;
   size: number;
   sort: FilterKey;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
 }): Promise<{ data: FavoriteBakeryList }> => {
   const response = await customFetch(
     `/${API_END_POINT.FAVORITE_BAKERIES(pageParam, size, sort, latitude, longitude)}`,
@@ -241,8 +242,8 @@ export const useFavoriteBakeryList = ({
   page?: number;
   size?: number;
   sort: FilterKey;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
 }) => {
   return useInfiniteQuery({
     queryKey: [...BAKERY_QUERY_KEY.FAVORITE_BAKERIES(sort)],
@@ -459,6 +460,48 @@ export const useHotProducts = ({
   return useInfiniteQuery({
     queryKey: [...BAKERY_QUERY_KEY.HOT_PRODUCTS(sort)],
     queryFn: ({ pageParam = 0 }) => getHotProducts({ pageParam, size, sort }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+
+export const getHotBakeries = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'reservation',
+  latitude = 10,
+  longitude = 10,
+}: {
+  pageParam: number;
+  size: number;
+  sort?: HotFilterKey;
+  latitude?: number;
+  longitude?: number;
+}): Promise<{ data: { hotBakeries: HotBakery[]; pageInfo: PageInfo } }> => {
+  const response = await customFetch(`/${API_END_POINT.HOT_BAKERIES(pageParam, size, sort, latitude, longitude)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to fetch hot bakeries');
+
+  return response.json();
+};
+
+export const useHotBakeries = ({
+  size = 10,
+  sort = 'reservation',
+}: {
+  page?: number;
+  size?: number;
+  sort?: HotFilterKey;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...BAKERY_QUERY_KEY.HOT_BAKERIES(sort)],
+    queryFn: ({ pageParam = 0 }) => getHotBakeries({ pageParam, size, sort }),
     getNextPageParam: (lastPage) => {
       if (lastPage.data.pageInfo.isLast) return undefined;
       return lastPage.data.pageInfo.currPage + 1;

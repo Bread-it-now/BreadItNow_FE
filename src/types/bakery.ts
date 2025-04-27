@@ -141,18 +141,6 @@ export interface FavoriteProductList {
     currPage: number;
   };
 }
-
-export interface HotProduct {
-  productId: number;
-  bakeryId: number;
-  bakeryName: string;
-  productName: string;
-  image: string;
-  price: number;
-  stock: number;
-  isFavorite: boolean;
-}
-
 export interface HotProduct {
   productId: Product['productId'];
   bakeryId: Product['bakeryId'];
@@ -162,6 +150,15 @@ export interface HotProduct {
   price: Product['price'];
   stock: Product['stock'];
   isFavorite: Product['isFavorite'];
+}
+
+export interface HotBakery {
+  bakeryId: Bakery['bakeryId'];
+  bakeryName: Bakery['name'];
+  profileImage: Bakery['profileImage'];
+  distance: number;
+  isFavorite: Bakery['isFavorite'];
+  operatingStatus: Bakery['operatingStatus'];
 }
 
 export type FilterKey = 'latest' | 'popular' | 'distance';

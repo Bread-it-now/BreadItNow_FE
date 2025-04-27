@@ -2,7 +2,13 @@ import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservation, CustomerReservationStatus } from '@/types/reservation';
 import { mockCustomerReservationDetailList, mockCustomerReservations } from '../data/reservation';
-import { mockFavoriteBakeries, mockFavoriteProducts, mockHotProducts, mockNotificationSettings } from '../data/bakery';
+import {
+  mockFavoriteBakeries,
+  mockFavoriteProducts,
+  mockHotBakeries,
+  mockHotProducts,
+  mockNotificationSettings,
+} from '../data/bakery';
 import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { mockCustomerNotifications } from '../data/notification';
@@ -520,6 +526,45 @@ const getHotProducts = http.get(
   },
 );
 
+const getHotBakeries = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/hot`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const sort: HotFilterKey = url.searchParams.get('sort') as HotFilterKey;
+
+    const sortedHotBakeries =
+      sort === 'reservation' ? [...mockHotBakeries] : mockHotBakeries.slice().sort((a, b) => b.distance - a.distance);
+
+    const start = page * size;
+    const end = start + size;
+
+    const hotBakeries = sortedHotBakeries.slice(start, end);
+    const totalElements = sortedHotBakeries.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          hotBakeries,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -541,4 +586,5 @@ export default [
   deleteCustomerNotification,
   getTodayAlertProducts,
   getHotProducts,
+  getHotBakeries,
 ];

@@ -45,7 +45,7 @@ const BakeryCard = ({
     <Link
       href={`/bakery/${bakeryId}`}
       className={cn(' flex flex-col items-start gap-3', size === 'normal' ? 'w-60' : 'w-full')}>
-      <div className={cn('relative', `w-full ${size === 'normal' ? 'h-40' : 'h-[223px]'}`)}>
+      <div className={`relative w-full ${size === 'normal' ? 'h-40' : 'h-[223px]'}`}>
         <Image src={profileImage} fill alt="bakery" className="rounded-md object-cover" />
       </div>
       <div className={cn('flex items-start gap-[10px]', 'w-full h-11')}>

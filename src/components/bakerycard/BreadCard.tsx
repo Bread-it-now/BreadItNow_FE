@@ -42,7 +42,7 @@ const BreadCard = ({
 }: BreadCardProps) => {
   const [checked, setChecked] = useState<boolean>(false);
   const handleToggleBookmark = (productId: number) => {
-    const willBeBookmarked = !(isBookmarked === checked);
+    const willBeBookmarked = isBookmarked === checked;
 
     if (willBeBookmarked) {
       addFavoriteProduct(productId);
@@ -100,7 +100,7 @@ const BreadCard = ({
                     handleToggleBookmark(id);
                   }
                 }}>
-                <Image width={16} height={16} src={isBookmarked && !checked ? bookmarkFill : bookmark} alt="bookmark" />
+                <Image width={16} height={16} src={isBookmarked !== checked ? bookmarkFill : bookmark} alt="bookmark" />
               </button>
             )}
             {stock === 0 && (

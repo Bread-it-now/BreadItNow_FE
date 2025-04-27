@@ -12,6 +12,17 @@ import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { bakeryCardMockData } from '@/mocks/data/bakery';
 import HotBreads from '@/components/main/HotBreads';
 import { useSearchParams } from 'next/navigation';
+import Bakery from '@/assets/images/bakery.png';
+import Bread from '@/assets/images/bread.png';
+import MapIcon from '@/components/common/Icons/MapIcon';
+import ArrowDown from '@/assets/icons/arrow-down-white.svg';
+import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
+import Detail from '@/assets/icons/arrow-down.svg';
+import SearchIcon from '@/components/common/Icons/SearchIcon';
+import NotificationIcon from '@/components/common/Icons/NotificationIcon';
+import { getMonthDateDay } from '@/utils/date';
+import { useTodayAlertProducts } from '@/lib/api/notification';
+
 const hotBreadsData = [
   { title: '모카 크림빵', subtitle: '달콤한 아침', price: '2,700원', img: Bread },
   { title: '뺑 오 쇼콜라', subtitle: '버터 앤 드림', price: '2,700원', img: Bread },
@@ -24,17 +35,9 @@ const hotBreadsData = [
   <HotBreads breads={hotBreadsData} />
 </div>;
 
-import Bakery from '@/assets/images/bakery.png';
-import Bread from '@/assets/images/bread.png';
-import MapIcon from '@/components/common/Icons/MapIcon';
-import ArrowDown from '@/assets/icons/arrow-down-white.svg';
-import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
-import Detail from '@/assets/icons/arrow-down.svg';
-import SearchIcon from '@/components/common/Icons/SearchIcon';
-import NotificationIcon from '@/components/common/Icons/NotificationIcon';
-import { getMonthDateDay } from '@/utils/date';
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
+  const { data: todayProducts } = useTodayAlertProducts();
 
   const router = useRouter();
   const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
@@ -79,9 +82,7 @@ export default function Page() {
                 <span
                   className={`absolute -top-1 -right-1 text-xs rounded-full px-1 transition-all duration-100 ${
                     isScrolled ? 'text-white bg-primary' : 'text-primary bg-white'
-                  }`}>
-                  8
-                </span>
+                  }`}></span>
               </div>
             </Link>
           </div>
@@ -101,13 +102,17 @@ export default function Page() {
             <span>{day}</span>
           </div>
         </div>
-
-        <div className="flex gap-3 mx-4 overflow-x-auto pl-1">
-          <TodayBread subTitle="달콤한 아침" title="모카 크림빵" reserveTimes={['8:00', '10:00']} />
-          <TodayBread subTitle="라 메종 뒤 팡" title="생크림 식빵" reserveTimes={['8:00', '10:00', '14:00']} />
-          <TodayBread subTitle="빵굽는 집" title="크루아상" reserveTimes={['8:00', '10:00']} />
+        <div
+          className={`flex gap-3 mx-4 overflow-x-auto pl-1 'min-h-[161px]' ${todayProducts && todayProducts.length === 0 ? 'items-center min-h-[80px]' : 'min-h-[161px]'}`}>
+          {todayProducts &&
+            (todayProducts.length !== 0 ? (
+              todayProducts.map((product) => <TodayBread key={product.productId} {...product} />)
+            ) : (
+              <div className="flex justify-center text-title-content-l w-full h-full text-white">
+                오늘의 빵을 설정해주세요
+              </div>
+            ))}
         </div>
-
         <div className="bg-white rounded-t-2xl mt-6 mb-1 p-4 w-[100%]">
           <div className="flex mt-3 justify-between items-center">
             <div className="flex flex-col">

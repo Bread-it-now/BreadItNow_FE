@@ -1,5 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { NOTIFICATION_QUERY_KEY } from '@/constants/queryKey';
+import { TodayProduct } from '@/types/bakery';
 import {
   CustomerNotification,
   DoNotDisturb,
@@ -287,3 +288,21 @@ export const deleteOwnerNotification = async (
 
   return response.json();
 };
+
+export const getTodayAlertProducts = async (): Promise<{ data: { alerts: TodayProduct[] } }> => {
+  const response = await fetch(`/${API_END_POINT.TODAY_ALERT_PRODUCT()}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch Today Alert Products');
+
+  return response.json();
+};
+
+export const useTodayAlertProducts = () =>
+  useQuery({
+    queryKey: [...NOTIFICATION_QUERY_KEY.TODAY_ALERT_PRODUCTS()],
+    queryFn: () => getTodayAlertProducts(),
+    select: (data: { data: { alerts: TodayProduct[] } }) => data?.data.alerts,
+  });

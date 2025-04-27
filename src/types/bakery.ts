@@ -81,6 +81,13 @@ export interface BakeryProducts {
   otherProducts: Product[];
 }
 
+export interface TodayProduct {
+  bakeryId: number;
+  bakeryName: string;
+  productId: number;
+  productName: string;
+  releaseTimes: string[];
+}
 export interface ProductOrder {
   productId: number;
   order: number;

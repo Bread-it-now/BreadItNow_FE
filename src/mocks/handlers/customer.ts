@@ -442,6 +442,45 @@ const deleteCustomerNotification = http.patch(
   },
 );
 
+const getTodayAlertProducts = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          alerts: [
+            {
+              bakeryId: 1,
+              bakeryName: '달콤한 아침',
+              productId: 1,
+              productName: '모카 크림빵',
+              releaseTimes: ['8:00', '10:00'],
+            },
+            {
+              bakeryId: 2,
+              bakeryName: '라 메종 뒤 팡',
+              productId: 2,
+              productName: '생크림 식빵',
+              releaseTimes: ['8:00', '10:00', '14:00'],
+            },
+            {
+              bakeryId: 3,
+              bakeryName: '빵굽는 집',
+              productId: 3,
+              productName: '크루아상',
+              releaseTimes: ['8:00', '10:00'],
+            },
+          ],
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -461,4 +500,5 @@ export default [
   getCustomerNotifications,
   readCustomerNotification,
   deleteCustomerNotification,
+  getTodayAlertProducts,
 ];

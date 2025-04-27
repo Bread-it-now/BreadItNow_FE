@@ -24,7 +24,7 @@ const BakeryCard = ({
   rank,
   distance,
   size = 'normal',
-  isShowBookmark = true,
+  isShowBookmark = false,
   isBookmarked,
   onToggleBookmark,
 }: BakeryCardProps) => {

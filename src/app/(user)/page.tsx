@@ -131,7 +131,6 @@ const HotBakerySection = () => {
                   distance={bakery.distance}
                   profileImage={bakery.profileImage}
                   rank={idx + 1}
-                  showBookmark={false}
                   isBookmarked={false}
                 />
               </div>

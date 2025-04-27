@@ -11,7 +11,7 @@ export interface BakeryCardProps
   extends Pick<Bakery, 'bakeryId' | 'operatingStatus' | 'profileImage' | 'name' | 'distance'> {
   rank?: number;
   size?: 'normal' | 'large';
-  showBookmark?: boolean;
+  isShowBookmark?: boolean;
   isBookmarked: boolean;
   onToggleBookmark?: () => void;
 }
@@ -24,7 +24,7 @@ const BakeryCard = ({
   rank,
   distance,
   size = 'normal',
-  showBookmark = true,
+  isShowBookmark = true,
   isBookmarked,
   onToggleBookmark,
 }: BakeryCardProps) => {
@@ -69,7 +69,7 @@ const BakeryCard = ({
               <span className={cn('text-[13px]', 'text-gray-500')}>{distance}KM</span>
             </div>
           </div>
-          {size === 'large' && showBookmark && (
+          {isShowBookmark && (
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -84,7 +84,7 @@ const BakeryCard = ({
                 'border rounded-full border-gray100',
               )}
               aria-label="bookmark">
-              <Image width={16} height={16} src={isBookmarked && !checked ? bookmarkFill : bookmark} alt="bookmark" />
+              <Image width={16} height={16} src={isBookmarked !== checked ? bookmarkFill : bookmark} alt="bookmark" />
             </button>
           )}
         </div>

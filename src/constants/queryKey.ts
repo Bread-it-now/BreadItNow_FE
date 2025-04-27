@@ -1,4 +1,4 @@
-import { FilterKey } from '@/types/bakery';
+import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
 export const BASE_KEY = {
@@ -13,7 +13,7 @@ export const BAKERY_QUERY_KEY = {
   BAKERY_PRODUCT: (bakeryId: number, productId: number) => [BASE_KEY.OWNER, 'BAKERY', bakeryId, 'PRODUCT', productId],
   FAVORITE_BAKERIES: (sort: FilterKey) => [BASE_KEY.CUSTOMER, 'BAKERY', 'FAVORITE', sort],
   FAVORITE_PRODUCTS: (sort: FilterKey) => [BASE_KEY.CUSTOMER, 'BAKERY', 'FAVORITE', 'PRODUCT', sort],
-  HOT_PRODUCTS: () => [BASE_KEY.CUSTOMER, 'PRODUCT', 'HOT'],
+  HOT_PRODUCTS: (sort: HotFilterKey) => [BASE_KEY.CUSTOMER, 'PRODUCT', 'HOT', sort],
 };
 
 export const RESERVATION_QUERY_KEY = {

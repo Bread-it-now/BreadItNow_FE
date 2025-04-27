@@ -433,7 +433,7 @@ export const getHotProducts = async ({
 }: {
   pageParam: number;
   size: number;
-  sort: HotFilterKey;
+  sort?: HotFilterKey;
 }): Promise<{ data: { hotProducts: HotProduct[]; pageInfo: PageInfo } }> => {
   const response = await fetch(`/${API_END_POINT.HOT_PRODUCTS(pageParam, size, sort)}`, {
     method: 'GET',
@@ -451,10 +451,10 @@ export const useHotProducts = ({
 }: {
   page?: number;
   size?: number;
-  sort: HotFilterKey;
+  sort?: HotFilterKey;
 }) => {
   return useInfiniteQuery({
-    queryKey: [...BAKERY_QUERY_KEY.HOT_PRODUCTS()],
+    queryKey: [...BAKERY_QUERY_KEY.HOT_PRODUCTS(sort)],
     queryFn: ({ pageParam = 0 }) => getHotProducts({ pageParam, size, sort }),
     getNextPageParam: (lastPage) => {
       if (lastPage.data.pageInfo.isLast) return undefined;

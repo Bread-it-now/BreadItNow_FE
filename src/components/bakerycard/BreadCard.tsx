@@ -20,7 +20,7 @@ export interface BreadCardProps {
   onToggleBookmark?: () => void;
   direction?: 'row' | 'column';
   isShowRank?: boolean;
-  isShowBookark?: boolean;
+  isShowBookmark?: boolean;
   rank?: number;
   stock?: number;
 }
@@ -36,7 +36,7 @@ const BreadCard = ({
   isBookmarked,
   onToggleBookmark,
   isShowRank = false,
-  isShowBookark = false,
+  isShowBookmark = false,
   stock,
   rank = 0,
 }: BreadCardProps) => {
@@ -56,26 +56,40 @@ const BreadCard = ({
     <Link
       href={`/bakery/${bakeryId}`}
       className={cn(
-        'flex flex-col items-start gap-3 relative w-full',
+        'flex flex-col items-start gap-3 relative',
         direction === 'row' ? 'flex-row h-[90px]' : 'flex-col',
       )}>
       <div
         className={cn(
           'relative overflow-hidden rounded-xl',
-          direction === 'row' ? 'flex-row h-[90px] min-w-[120px]' : 'flex-col',
+          direction === 'row' ? 'flex-row h-[90px] min-w-[120px]' : 'flex-col w-full',
         )}>
         <div
           className={`flex flex-row gap-[10px] ${isShowRank ? 'items-center w-[120px]' : direction === 'row' ? 'w-[90px]' : 'w-full'}`}>
-          {isShowRank && <div className="text-title-content-m font-semibold text-gray900">{rank}</div>}
+          {isShowRank && (
+            <div className="text-title-content-m font-semibold text-gray900 w-full max-w-[20px]">{rank}</div>
+          )}
           <div className="relative flex w-full">
-            <Image
-              src={profileImgUrl}
-              width={90}
-              height={90}
-              alt="bread"
-              className={cn(stock === 0 ? 'opacity-70' : 'opacity-100', 'rounded-[10px]')}
-            />
-            {isShowBookark && (
+            {direction === 'row' ? (
+              <Image
+                src={profileImgUrl}
+                width={90}
+                height={90}
+                alt="bread"
+                className={cn(stock === 0 ? 'opacity-70' : 'opacity-100', 'rounded-[10px]')}
+              />
+            ) : (
+              <Image
+                src={profileImgUrl}
+                alt="bread"
+                className={cn(
+                  'object-cover rounded-[10px] w-full h-full',
+                  stock === 0 ? 'opacity-70' : 'opacity-100',
+                  'rounded-[10px]',
+                )}
+              />
+            )}
+            {isShowBookmark && (
               <button
                 className="absolute opacity-90 bottom-2 right-2 flex justify-center items-center w-8 h-8 min-w-8 border rounded-full border-gray100 bg-white shadow-md"
                 aria-label="bookmark"
@@ -91,7 +105,7 @@ const BreadCard = ({
             )}
             {stock === 0 && (
               <p
-                className={`absolute flex text-center ${direction === 'row' ? 'top-[25px] left-[28px]' : 'top-[25px] left-[30px]'} h-[40px] w-[40px] text-title-content-s text-white`}>
+                className={`absolute flex text-center ${direction === 'row' ? 'top-[25px] left-[28px] text-title-content-s' : 'top-[60px] left-[60px] text-title-content-lg'} h-[40px] w-[40px]  text-white`}>
                 SOLD
                 <br />
                 OUT

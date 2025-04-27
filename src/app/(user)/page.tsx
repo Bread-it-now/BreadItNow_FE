@@ -15,7 +15,7 @@ import Bakery from '@/assets/images/bakery.png';
 import MapIcon from '@/components/common/Icons/MapIcon';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
 import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
-import Detail from '@/assets/icons/arrow-down.svg';
+import ArrowRight from '@/assets/icons/arrow-right.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import NotificationIcon from '@/components/common/Icons/NotificationIcon';
 import { getMonthDateDay } from '@/utils/date';
@@ -70,7 +70,7 @@ const HotProductsSection = () => {
           <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
         </div>
         <button onClick={navigateToBreads}>
-          <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
+          <Image src={ArrowRight} alt="더보기" />
         </button>
       </div>
       <div className="flex flex-col gap-4 bg-white rounded-t-2xl my-1 w-[100%]">
@@ -169,7 +169,7 @@ export default function Page() {
                 <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
               </div>
               <button onClick={navigateToBakeries}>
-                <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
+                <Image src={ArrowRight} alt="더보기" />
               </button>
             </div>
             <div className="flex gap-4 overflow-x-auto pl-1 scrollbar-hide pb-10">

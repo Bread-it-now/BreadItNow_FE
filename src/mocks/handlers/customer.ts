@@ -3,7 +3,7 @@ import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservation, CustomerReservationStatus } from '@/types/reservation';
 import { mockCustomerReservationDetailList, mockCustomerReservations } from '../data/reservation';
 import { mockFavoriteBakeries, mockFavoriteProducts, mockHotProducts, mockNotificationSettings } from '../data/bakery';
-import { FilterKey } from '@/types/bakery';
+import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { mockCustomerNotifications } from '../data/notification';
 
@@ -487,8 +487,10 @@ const getHotProducts = http.get(
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') as string);
     const size = parseInt(url.searchParams.get('size') as string);
+    const sort: HotFilterKey = url.searchParams.get('sort') as HotFilterKey;
 
-    const sortedHotProducts = [...mockHotProducts];
+    const sortedHotProducts =
+      sort === 'reservation' ? [...mockHotProducts] : mockHotProducts.slice().sort((a, b) => b.price - a.price);
 
     const start = page * size;
     const end = start + size;

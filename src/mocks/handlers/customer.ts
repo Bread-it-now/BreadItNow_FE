@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservation, CustomerReservationStatus } from '@/types/reservation';
 import { mockCustomerReservationDetailList, mockCustomerReservations } from '../data/reservation';
-import { mockFavoriteBakeries, mockFavoriteProducts, mockNotificationSettings } from '../data/bakery';
+import { mockFavoriteBakeries, mockFavoriteProducts, mockHotProducts, mockNotificationSettings } from '../data/bakery';
 import { FilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { mockCustomerNotifications } from '../data/notification';
@@ -481,6 +481,43 @@ const getTodayAlertProducts = http.get(
   },
 );
 
+const getHotProducts = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+
+    const sortedHotProducts = [...mockHotProducts];
+
+    const start = page * size;
+    const end = start + size;
+
+    const hotProducts = sortedHotProducts.slice(start, end);
+    const totalElements = sortedHotProducts.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          hotProducts,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -501,4 +538,5 @@ export default [
   readCustomerNotification,
   deleteCustomerNotification,
   getTodayAlertProducts,
+  getHotProducts,
 ];

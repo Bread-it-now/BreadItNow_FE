@@ -64,7 +64,7 @@ export interface Product {
   name: string;
   price: number;
   image: string;
-  description: string;
+  description?: string;
   releaseTimes?: string[];
   stock: number;
   isActive: boolean;
@@ -142,4 +142,27 @@ export interface FavoriteProductList {
   };
 }
 
+export interface HotProduct {
+  productId: number;
+  bakeryId: number;
+  bakeryName: string;
+  productName: string;
+  image: string;
+  price: number;
+  stock: number;
+  isFavorite: boolean;
+}
+
+export interface HotProduct {
+  productId: Product['productId'];
+  bakeryId: Product['bakeryId'];
+  bakeryName: string;
+  productName: Product['name'];
+  image: Product['image'];
+  price: Product['price'];
+  stock: Product['stock'];
+  isFavorite: Product['isFavorite'];
+}
+
 export type FilterKey = 'latest' | 'popular' | 'distance';
+export type HotFilterKey = 'reservation' | 'favorite';

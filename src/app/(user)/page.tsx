@@ -10,10 +10,8 @@ import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/main/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { bakeryCardMockData } from '@/mocks/data/bakery';
-import HotBreads from '@/components/main/HotBreads';
 import { useSearchParams } from 'next/navigation';
 import Bakery from '@/assets/images/bakery.png';
-import Bread from '@/assets/images/bread.png';
 import MapIcon from '@/components/common/Icons/MapIcon';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
 import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
@@ -22,36 +20,106 @@ import SearchIcon from '@/components/common/Icons/SearchIcon';
 import NotificationIcon from '@/components/common/Icons/NotificationIcon';
 import { getMonthDateDay } from '@/utils/date';
 import { useTodayAlertProducts } from '@/lib/api/notification';
+import { useHotProducts } from '@/lib/api/bakery';
+import { HotProduct } from '@/types/bakery';
+import BreadCard from '@/components/bakerycard/BreadCard';
+import EmptyState from '@/components/common/EmptyState';
 
-const hotBreadsData = [
-  { title: '모카 크림빵', subtitle: '달콤한 아침', price: '2,700원', img: Bread },
-  { title: '뺑 오 쇼콜라', subtitle: '버터 앤 드림', price: '2,700원', img: Bread },
-  { title: '생크림 식빵', subtitle: '소금 한 꼬집', price: '2,700원', img: Bread },
-  { title: '크루아상', subtitle: '라 메종 뒤 팡', price: '2,700원', img: Bread },
-  { title: '매듭빵', subtitle: '빵굽는 집', price: '2,700원', img: Bread },
-];
+const TodayProductsSection = () => {
+  const { data: todayProducts } = useTodayAlertProducts();
+  const { month, date, day } = getMonthDateDay(new Date());
+  return (
+    <>
+      <div className="flex px-4 justify-between items-center my-8">
+        <div className="relative flex items-center">
+          <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>
+          <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
+        </div>
+        <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
+          <span>
+            {month} {date}
+          </span>
+          <span>{day}</span>
+        </div>
+      </div>
+      <div
+        className={`flex gap-3 mx-4 overflow-x-auto pl-1 'min-h-[161px]' ${todayProducts && todayProducts.length === 0 ? 'items-center min-h-[80px]' : 'min-h-[161px]'}`}>
+        {todayProducts &&
+          (todayProducts.length !== 0 ? (
+            todayProducts.map((product) => <TodayBread key={product.productId} {...product} />)
+          ) : (
+            <div className="flex justify-center text-title-content-l w-full h-full text-white">
+              오늘의 빵을 설정해주세요
+            </div>
+          ))}
+      </div>
+    </>
+  );
+};
 
-<div className="bg-white rounded-t-2xl mt-6 p-4 w-[100%]">
-  <HotBreads breads={hotBreadsData} />
-</div>;
+const HotProductsSection = () => {
+  const router = useRouter();
+  const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
+  const { data } = useHotProducts({ size: 5, sort: 'reservation' });
+
+  return (
+    <div className="flex flex-col gap-[30px] w-full">
+      <div className="flex mt-3 justify-between items-center">
+        <div className="flex flex-col">
+          <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
+          <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
+        </div>
+        <button onClick={navigateToBreads}>
+          <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
+        </button>
+      </div>
+      <div className="flex flex-col gap-4 bg-white rounded-t-2xl my-1 w-[100%]">
+        <>
+          {data?.pages[0].data.hotProducts.length !== 0 ? (
+            data?.pages.map((page) =>
+              page.data.hotProducts.map((product: HotProduct, idx: number) => (
+                <BreadCard
+                  key={product.productId}
+                  id={product.productId}
+                  bakeryId={product.bakeryId}
+                  profileImgUrl={product.image}
+                  name={product.productName}
+                  bakeryName={product.bakeryName}
+                  price={product.price}
+                  isBookmarked={false}
+                  stock={product.stock}
+                  direction="row"
+                  isShowRank
+                  rank={idx + 1}
+                />
+              )),
+            )
+          ) : (
+            <EmptyState title="핫한 빵이 없습니다." message="핫한 빵이 없습니다." />
+          )}
+        </>
+      </div>
+    </div>
+  );
+};
 
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
-  const { data: todayProducts } = useTodayAlertProducts();
 
   const router = useRouter();
-  const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
+
   const navigateToBakeries = () => router.push(ROUTES.HOME.BAKERY_LIST);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { month, date, day } = getMonthDateDay(new Date());
 
   const isScrolled = useScrollDetection(scrollContainerRef);
   const searchParams = useSearchParams();
+
   useEffect(() => {
     if (searchParams.get('isNewUser') === 'true') {
       router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
     }
   }, [searchParams, router]);
+
   return (
     <div
       className="flex flex-col h-[100%]"
@@ -90,42 +158,9 @@ export default function Page() {
       </div>
 
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-4">
-        <div className="flex px-4 justify-between items-center my-8">
-          <div className="relative flex items-center">
-            <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>
-            <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
-          </div>
-          <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
-            <span>
-              {month} {date}
-            </span>
-            <span>{day}</span>
-          </div>
-        </div>
-        <div
-          className={`flex gap-3 mx-4 overflow-x-auto pl-1 'min-h-[161px]' ${todayProducts && todayProducts.length === 0 ? 'items-center min-h-[80px]' : 'min-h-[161px]'}`}>
-          {todayProducts &&
-            (todayProducts.length !== 0 ? (
-              todayProducts.map((product) => <TodayBread key={product.productId} {...product} />)
-            ) : (
-              <div className="flex justify-center text-title-content-l w-full h-full text-white">
-                오늘의 빵을 설정해주세요
-              </div>
-            ))}
-        </div>
+        <TodayProductsSection />
         <div className="bg-white rounded-t-2xl mt-6 mb-1 p-4 w-[100%]">
-          <div className="flex mt-3 justify-between items-center">
-            <div className="flex flex-col">
-              <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
-              <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
-            </div>
-            <button onClick={navigateToBreads}>
-              <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
-            </button>
-          </div>
-          <div className="bg-white rounded-t-2xl my-1 w-[100%]">
-            <HotBreads breads={hotBreadsData} />
-          </div>
+          <HotProductsSection />
 
           <div className="mt-6">
             <div className="mb-6 flex justify-between items-center">

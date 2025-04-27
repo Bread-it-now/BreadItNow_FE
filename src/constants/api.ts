@@ -1,4 +1,4 @@
-import { FilterKey } from '@/types/bakery';
+import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
@@ -56,6 +56,8 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}/favorite`,
   DELETE_FAVORITE_PRODUCT: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${productId}/favorite`,
+  HOT_PRODUCTS: (page: number, size: number, sort: HotFilterKey) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot?page=${page}&size=${size}&sort=${sort}`,
 
   /** AUTH */
   AUTH: {

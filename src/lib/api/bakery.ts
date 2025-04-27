@@ -7,6 +7,8 @@ import {
   FavoriteBakeryList,
   FavoriteProductList,
   FilterKey,
+  HotFilterKey,
+  HotProduct,
   OPERATING_STATUS,
   Product,
   ProductForm,
@@ -14,6 +16,7 @@ import {
 } from '@/types/bakery';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { customFetch } from '../customFetch';
+import { PageInfo } from '@/types/reservation';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
   const response = await customFetch(`/${API_END_POINT.BAKERY_INFO(bakeryId)}`, {
@@ -302,13 +305,10 @@ export const getFavoriteProductList = async ({
   latitude: number;
   longitude: number;
 }): Promise<{ data: FavoriteProductList }> => {
-  const response = await customFetch(
-    `/${API_END_POINT.FAVORITE_PRODUCTS(pageParam, size, sort, latitude, longitude)}`,
-    {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    },
-  );
+  const response = await fetch(`/${API_END_POINT.FAVORITE_PRODUCTS(pageParam, size, sort, latitude, longitude)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
 
   if (!response?.ok) throw new Error('Failed to fetch');
 
@@ -424,4 +424,42 @@ export const removeBakeryBookmark = async (bakeryId: number): Promise<{ data: { 
   if (!response?.ok) throw new Error('Failed to remove alert product');
 
   return response.json();
+};
+
+export const getHotProducts = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'reservation',
+}: {
+  pageParam: number;
+  size: number;
+  sort: HotFilterKey;
+}): Promise<{ data: { hotProducts: HotProduct[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(`/${API_END_POINT.HOT_PRODUCTS(pageParam, size, sort)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to fetch hot products');
+
+  return response.json();
+};
+
+export const useHotProducts = ({
+  size = 10,
+  sort = 'reservation',
+}: {
+  page?: number;
+  size?: number;
+  sort: HotFilterKey;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...BAKERY_QUERY_KEY.HOT_PRODUCTS()],
+    queryFn: ({ pageParam = 0 }) => getHotProducts({ pageParam, size, sort }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
 };

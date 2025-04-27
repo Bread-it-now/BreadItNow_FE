@@ -305,10 +305,13 @@ export const getFavoriteProductList = async ({
   latitude: number;
   longitude: number;
 }): Promise<{ data: FavoriteProductList }> => {
-  const response = await fetch(`/${API_END_POINT.FAVORITE_PRODUCTS(pageParam, size, sort, latitude, longitude)}`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  });
+  const response = await customFetch(
+    `/${API_END_POINT.FAVORITE_PRODUCTS(pageParam, size, sort, latitude, longitude)}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
 
   if (!response?.ok) throw new Error('Failed to fetch');
 
@@ -435,7 +438,7 @@ export const getHotProducts = async ({
   size: number;
   sort?: HotFilterKey;
 }): Promise<{ data: { hotProducts: HotProduct[]; pageInfo: PageInfo } }> => {
-  const response = await fetch(`/${API_END_POINT.HOT_PRODUCTS(pageParam, size, sort)}`, {
+  const response = await customFetch(`/${API_END_POINT.HOT_PRODUCTS(pageParam, size, sort)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });

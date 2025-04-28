@@ -41,7 +41,10 @@ export default function SearchPage() {
       </div>
 
       {!isSearchActive ? (
-        <KeywordsSection keyword={searchTerm} />
+        <KeywordsSection
+          keyword={searchTerm}
+          selectAutoComplete={(autoComplete: string) => setSearchTerm(autoComplete)}
+        />
       ) : (
         <div className="w-full flex flex-col h-full overflow-hidden">
           <HotBreadTab
@@ -99,7 +102,13 @@ export default function SearchPage() {
   );
 }
 
-const KeywordsSection = ({ keyword }: { keyword: string }) => {
+const KeywordsSection = ({
+  keyword,
+  selectAutoComplete,
+}: {
+  keyword: string;
+  selectAutoComplete: (autocomplete: string) => void;
+}) => {
   const { data: searchAutoCompletes } = useSearchAutoCompletes(keyword);
   return (
     <div className="flex w-full justify-end">
@@ -109,7 +118,8 @@ const KeywordsSection = ({ keyword }: { keyword: string }) => {
             {searchAutoCompletes?.map((searchAutoComplete: SearchAutoComplete, idx: number) => (
               <li
                 key={`${searchAutoComplete}-${idx}`}
-                className="flex px-4 gap-[5px] items-center py-2 text-title-content-s hover:cursor-pointer hover:bg-gray100">
+                className="flex px-4 gap-[5px] items-center py-2 text-title-content-s hover:cursor-pointer hover:bg-gray100"
+                onClick={() => selectAutoComplete(searchAutoComplete.name)}>
                 <SearchIcon color="#b2b4b6" size={20} />
                 <span className="text-gray900">{searchAutoComplete.name}</span>
               </li>

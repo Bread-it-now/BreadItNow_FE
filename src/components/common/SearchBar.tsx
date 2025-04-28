@@ -49,7 +49,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
 
   return (
     <label
-      className={`flex items-center rounded-[8px] bg-white transition-all px-4 shadow-sm 
+      className={`flex items-center rounded-[8px] bg-white transition-all px-4 shadow-sm max-w-[300px]
         ${width} ${height} ${
           isFocus ? 'outline outline-1 outline-gray400 text-black' : 'outline outline-1 outline-gray200 text-gray400'
         }`}
@@ -63,7 +63,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
         onKeyDown={handlePressEnter}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        className="flex-1 bg-transparent border-none outline-none px-0 text-black"
+        className="flex-1 bg-transparent border-none outline-none px-0 text-[14px] text-black placeholder:text-[14px] "
       />
 
       <div className="w-5 h-5 flex items-center justify-center mr-2">

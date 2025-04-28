@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import SearchBar from '@/components/common/SearchBar';
-import BackIcon from '@/assets/icons/back.svg';
+import Back from '@/assets/icons/back.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import FilterDropdown from '@/components/search/FilterDropdown';
@@ -38,21 +38,20 @@ export default function SearchPage() {
   const filteredBreadList = breadList.filter((b) => b.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className="relative flex flex-col items-center w-full max-h-[100%] bg-white p-4">
-      <div className="flex items-center w-full py-2">
+    <div className="relative flex flex-col items-stasrt w-full max-h-[100%] bg-white px-5">
+      <div className="flex items-center justify-between w-full py-[13px]">
         <button className="p-0 flex items-center justify-center" onClick={() => window.history.back()}>
-          <Image src={BackIcon} alt="뒤로 가기" className="w-[40px] h-[40px] aspect-square" priority />
+          <Image src={Back} alt="Back" className="w-6 h-6 cursor-pointer" />
         </button>
-        <div className="flex-1">
-          <SearchBar
-            name="search"
-            placeholder="빵, 빵집으로 검색"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onClear={() => setSearchTerm('')}
-            onEnter={handleSearchEnter}
-          />
-        </div>
+
+        <SearchBar
+          name="search"
+          placeholder="빵, 빵집으로 검색"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onClear={() => setSearchTerm('')}
+          onEnter={handleSearchEnter}
+        />
       </div>
 
       {!isSearchActive ? (

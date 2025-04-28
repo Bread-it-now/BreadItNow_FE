@@ -46,6 +46,10 @@ const InputSearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function S
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && onEnter) {
       onEnter();
+      if (ref && 'current' in ref && ref.current) {
+        ref.current.blur();
+      }
+      setIsFocus(false);
     }
   };
 

@@ -626,6 +626,45 @@ const getSearchBakeries = http.get(
   },
 );
 
+const getSearchProducts = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/product`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const sort: FilterKey = url.searchParams.get('sort') as FilterKey;
+
+    const sortedSearchProducts =
+      sort === 'distance' ? [...mockHotProducts] : mockHotProducts.slice().sort((a, b) => b.stock - a.stock);
+
+    const start = page * size;
+    const end = start + size;
+
+    const searchProducts = sortedSearchProducts.slice(start, end);
+    const totalElements = sortedSearchProducts.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          searchProducts,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -650,4 +689,5 @@ export default [
   getHotBakeries,
   getSearchAutoCompletes,
   getSearchBakeries,
+  getSearchProducts,
 ];

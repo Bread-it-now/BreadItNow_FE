@@ -35,4 +35,5 @@ export const NOTIFICATION_QUERY_KEY = {
 export const SEARCH_QUERY_KEY = {
   AUTOCOMPLETE: (keyword: string) => [BASE_KEY.CUSTOMER, 'SEARCH', 'AUTOCOMPLETE', keyword],
   BAKERIES: (keyword: string, sort: FilterKey) => [BASE_KEY.CUSTOMER, 'SEARCH', 'BAKERIES', keyword, sort],
+  PRODUCTS: (keyword: string, sort: FilterKey) => [BASE_KEY.CUSTOMER, 'SEARCH', 'PRODUCTS', keyword, sort],
 };

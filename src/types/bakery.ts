@@ -169,6 +169,16 @@ export interface SearchBakery {
   isFavorite: Bakery['isFavorite'];
   operatingStatus: Bakery['operatingStatus'];
 }
+export interface SearchProduct {
+  productId: Product['productId'];
+  bakeryId: Product['bakeryId'];
+  bakeryName: string;
+  productName: Product['name'];
+  image: Product['image'];
+  price: Product['price'];
+  stock: Product['stock'];
+  isFavorite: Product['isFavorite'];
+}
 export interface SearchAutoComplete {
   name: string;
   type: 'BAKERY' | 'PRODUCT';

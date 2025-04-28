@@ -16,6 +16,7 @@ import {
   ProductOrder,
   SearchAutoComplete,
   SearchBakery,
+  SearchProduct,
 } from '@/types/bakery';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { customFetch } from '../customFetch';
@@ -555,7 +556,7 @@ export const getSearchBakeries = async ({
     },
   );
 
-  if (!response?.ok) throw new Error('Failed to fetch  bakeries');
+  if (!response?.ok) throw new Error('Failed to fetch bakeries');
 
   return response.json();
 };
@@ -577,6 +578,58 @@ export const useSearchBakeries = ({
   return useInfiniteQuery({
     queryKey: [...SEARCH_QUERY_KEY.BAKERIES(keyword, sort)],
     queryFn: ({ pageParam = 0 }) => getSearchBakeries({ pageParam, size, keyword, sort, latitude, longitude }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+export const getSearchProducts = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'latest',
+  latitude = 10,
+  longitude = 10,
+  keyword,
+}: {
+  pageParam: number;
+  size: number;
+  sort?: FilterKey;
+  latitude?: number;
+  longitude?: number;
+  keyword: string;
+}): Promise<{ data: { searchProducts: SearchProduct[]; pageInfo: PageInfo } }> => {
+  const response = await fetch(
+    `/${API_END_POINT.SEARCH_PRODUCTS(pageParam, size, sort, keyword, latitude, longitude)}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+
+  if (!response?.ok) throw new Error('Failed to fetch products');
+
+  return response.json();
+};
+
+export const useSearchProducts = ({
+  size = 10,
+  sort = 'latest',
+  keyword,
+  latitude = 10,
+  longitude = 10,
+}: {
+  page?: number;
+  size?: number;
+  sort?: FilterKey;
+  keyword: string;
+  latitude?: number;
+  longitude?: number;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...SEARCH_QUERY_KEY.PRODUCTS(keyword, sort)],
+    queryFn: ({ pageParam = 0 }) => getSearchProducts({ pageParam, size, keyword, sort, latitude, longitude }),
     getNextPageParam: (lastPage) => {
       if (lastPage.data.pageInfo.isLast) return undefined;
       return lastPage.data.pageInfo.currPage + 1;

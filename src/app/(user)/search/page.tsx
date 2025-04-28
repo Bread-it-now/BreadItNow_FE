@@ -74,7 +74,7 @@ export default function SearchPage() {
                 <BakeryList sort={selectedFilter} keyword={searchTerm} handleTotalCnt={setTotalCnt} />
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-4 w-full px-5">
+              <div className={`w-full px-5 ${totalCnt !== 0 ? 'grid grid-cols-2 gap-4' : ''}`}>
                 <ProductList sort={selectedFilter} keyword={searchTerm} handleTotalCnt={setTotalCnt} />
               </div>
             )}

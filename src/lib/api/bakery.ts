@@ -516,7 +516,7 @@ export const useHotBakeries = ({
 export const getSearchAutoCompletes = async (
   searchTerm: string,
 ): Promise<{ data: { searchAutoCompletes: SearchAutoComplete[] } }> => {
-  const response = await fetch(`/${API_END_POINT.SEARCH_AUTOCOMPLETE(searchTerm)}`, {
+  const response = await customFetch(`/${API_END_POINT.SEARCH_AUTOCOMPLETE(searchTerm)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -548,7 +548,7 @@ export const getSearchBakeries = async ({
   longitude?: number;
   keyword: string;
 }): Promise<{ data: { searchBakeries: SearchBakery[]; pageInfo: PageInfo } }> => {
-  const response = await fetch(
+  const response = await customFetch(
     `/${API_END_POINT.SEARCH_BAKERIES(pageParam, size, sort, keyword, latitude, longitude)}`,
     {
       method: 'GET',
@@ -600,7 +600,7 @@ export const getSearchProducts = async ({
   longitude?: number;
   keyword: string;
 }): Promise<{ data: { searchProducts: SearchProduct[]; pageInfo: PageInfo } }> => {
-  const response = await fetch(
+  const response = await customFetch(
     `/${API_END_POINT.SEARCH_PRODUCTS(pageParam, size, sort, keyword, latitude, longitude)}`,
     {
       method: 'GET',

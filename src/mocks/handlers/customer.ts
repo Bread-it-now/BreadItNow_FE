@@ -587,6 +587,45 @@ export const getSearchAutoCompletes = http.get(
   },
 );
 
+const getSearchBakeries = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/bakery`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const sort: FilterKey = url.searchParams.get('sort') as FilterKey;
+
+    const sortedSearchBakeries =
+      sort === 'distance' ? [...mockHotBakeries] : mockHotBakeries.slice().sort((a, b) => b.distance - a.distance);
+
+    const start = page * size;
+    const end = start + size;
+
+    const searchBakeries = sortedSearchBakeries.slice(start, end);
+    const totalElements = sortedSearchBakeries.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          searchBakeries,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -610,4 +649,5 @@ export default [
   getHotProducts,
   getHotBakeries,
   getSearchAutoCompletes,
+  getSearchBakeries,
 ];

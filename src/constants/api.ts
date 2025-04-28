@@ -62,6 +62,15 @@ export const API_END_POINT = {
   /** CUSTOMER - SEARCH */
   SEARCH_AUTOCOMPLETE: (keyword: string) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/autocomplete?keyword=${keyword}`,
+  SEARCH_BAKERIES: (
+    page: number,
+    size: number,
+    sort: FilterKey,
+    keyword: string,
+    latitude: number,
+    longitude: number,
+  ) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/bakery?page=${page}&size=${size}&sort=${sort}&keyword=${keyword}&latitude=${latitude}&longitude=${longitude}`,
 
   /** CUSTOMER - BAKERY */
   HOT_BAKERIES: (page: number, size: number, sort: HotFilterKey, latitude: number, longitude: number) =>

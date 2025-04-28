@@ -161,6 +161,14 @@ export interface HotBakery {
   operatingStatus: Bakery['operatingStatus'];
 }
 
+export interface SearchBakery {
+  bakeryId: Bakery['bakeryId'];
+  bakeryName: Bakery['name'];
+  profileImage: Bakery['profileImage'];
+  distance: number;
+  isFavorite: Bakery['isFavorite'];
+  operatingStatus: Bakery['operatingStatus'];
+}
 export interface SearchAutoComplete {
   name: string;
   type: 'BAKERY' | 'PRODUCT';

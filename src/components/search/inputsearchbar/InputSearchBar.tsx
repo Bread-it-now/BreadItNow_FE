@@ -27,7 +27,7 @@ interface SearchInputProps {
  * @param onClear - X 버튼 클릭 시 검색어를 초기화하는 함수 (optional)
  */
 
-const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function SearchBar(
+const InputSearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function SearchBar(
   {
     name,
     placeholder = '검색...',
@@ -93,4 +93,4 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
   );
 });
 
-export default SearchBar;
+export default InputSearchBar;

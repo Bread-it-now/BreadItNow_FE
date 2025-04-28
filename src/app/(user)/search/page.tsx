@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import SearchBar from '@/components/common/SearchBar';
 import Back from '@/assets/icons/back.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
@@ -13,6 +12,7 @@ import EmptyState from '@/components/common/EmptyState';
 import { FilterKey, SearchAutoComplete, SearchBakery } from '@/types/bakery';
 import { useSearchAutoCompletes, useSearchBakeries } from '@/lib/api/bakery';
 import useLocation from '@/hooks/useLocation';
+import InputSearchBar from '@/components/search/inputsearchbar/InputSearchBar';
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -28,7 +28,7 @@ export default function SearchPage() {
           <Image src={Back} alt="Back" className="w-6 h-6 cursor-pointer" />
         </button>
 
-        <SearchBar
+        <InputSearchBar
           name="search"
           placeholder="빵, 빵집으로 검색"
           value={searchTerm}
@@ -42,7 +42,10 @@ export default function SearchPage() {
       {!isResultVisible ? (
         <KeywordsSection
           keyword={searchTerm}
-          selectAutoComplete={(autoComplete: string) => setSearchTerm(autoComplete)}
+          selectAutoComplete={(autoComplete: string) => {
+            setSearchTerm(autoComplete);
+            setIsResultVisible(true);
+          }}
         />
       ) : (
         <div className="flex flex-col gap-8 h-full overflow-hidden w-full">
@@ -89,7 +92,7 @@ const KeywordsSection = ({
   return (
     <div className="flex w-full justify-end px-5">
       {keyword && searchAutoCompletes && searchAutoCompletes.length !== 0 && (
-        <div className="w-full max-w-[300px] overflow-y-scroll scrollbar-hide border border-gray200 rounded-[8px] bg-white">
+        <div className="w-full overflow-y-scroll scrollbar-hide border border-gray200 rounded-[8px] bg-white ">
           <ul>
             {searchAutoCompletes?.map((searchAutoComplete: SearchAutoComplete, idx: number) => (
               <li

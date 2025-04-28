@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
+import { Dispatch, forwardRef, SetStateAction, useState } from 'react';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import CloseIcon from '@/components/common/Icons/CloseIcon';
 
@@ -13,6 +13,7 @@ interface SearchInputProps {
   height?: string;
   onEnter?: () => void;
   onClear?: () => void;
+  handleVisibleResult?: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -36,6 +37,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
     onEnter,
     onClear,
     value,
+    handleVisibleResult,
   }: SearchInputProps,
   ref,
 ) {
@@ -61,8 +63,12 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
         placeholder={placeholder}
         onChange={onChange}
         onKeyDown={handlePressEnter}
-        onFocus={() => setIsFocus(true)}
+        onFocus={() => {
+          setIsFocus(true);
+          if (handleVisibleResult) handleVisibleResult(false);
+        }}
         onBlur={() => setIsFocus(false)}
+        autoComplete="off"
         className="flex-1 bg-transparent border-none outline-none px-0 text-[14px] text-black placeholder:text-[14px] "
       />
 
@@ -70,7 +76,10 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
         {value && (
           <button
             type="button"
-            onClick={onClear}
+            onClick={() => {
+              if (onClear) onClear();
+              if (handleVisibleResult) handleVisibleResult(false);
+            }}
             className="flex items-center justify-center w-5 h-5 p-1.5 bg-gray-100 rounded-full mr-2">
             <CloseIcon color="#808284" />
           </button>

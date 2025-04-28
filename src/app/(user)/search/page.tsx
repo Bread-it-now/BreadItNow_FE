@@ -15,13 +15,9 @@ import { useSearchAutoCompletes } from '@/lib/api/bakery';
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [isResultVisible, setIsResultVisible] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'빵집' | '빵'>('빵집');
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>('popular');
-
-  const handleSearchEnter = (): void => {
-    setIsSearchActive(true);
-  };
 
   return (
     <div className="relative flex flex-col items-stasrt w-full max-h-[100%] bg-white px-5">
@@ -36,11 +32,12 @@ export default function SearchPage() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onClear={() => setSearchTerm('')}
-          onEnter={handleSearchEnter}
+          onEnter={() => setIsResultVisible(true)}
+          handleVisibleResult={setIsResultVisible}
         />
       </div>
 
-      {!isSearchActive ? (
+      {!isResultVisible ? (
         <KeywordsSection
           keyword={searchTerm}
           selectAutoComplete={(autoComplete: string) => setSearchTerm(autoComplete)}
@@ -62,39 +59,6 @@ export default function SearchPage() {
               </span>
               <FilterDropdown handleSelectedFilter={setSelectedFilter} selectedFilter={selectedFilter} />
             </div>
-
-            {/* {activeTab === '빵집' ? (
-              filteredBakeryList.length > 0 ? (
-                <div className="p-4 space-y-4">
-                  {filteredBakeryList.map((bakery) => (
-                    <BakeryCard
-                      key={bakery.id}
-                      bakeryId={bakery.id}
-                      profileImage={bakery.profileImgUrl}
-                      name={bakery.name}
-                      distance={bakery.distance}
-                      operatingStatus={bakery.operatingStatus}
-                      size="large"
-                    />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState message="다른 키워드로 검색해보세요." searchTerm={searchTerm} />
-              )
-            ) : filteredBreadList.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 p-4">
-                {filteredBreadList.map((bread) => (
-                  <BreadCard
-                    key={bread.id}
-                    {...bread}
-                    price={Number(bread.price)}
-                    isBookmarked={bookmarkedBreads.includes(bread.id)}
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptyState message="다른 키워드로 검색해보세요." searchTerm={searchTerm} />
-            )} */}
           </div>
         </div>
       )}

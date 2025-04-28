@@ -161,5 +161,10 @@ export interface HotBakery {
   operatingStatus: Bakery['operatingStatus'];
 }
 
+export interface SearchAutoComplete {
+  name: string;
+  type: 'BAKERY' | 'PRODUCT';
+}
+
 export type FilterKey = 'latest' | 'popular' | 'distance';
 export type HotFilterKey = 'reservation' | 'favorite';

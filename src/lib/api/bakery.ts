@@ -1,5 +1,5 @@
 import { API_END_POINT } from '@/constants/api';
-import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
+import { BAKERY_QUERY_KEY, SEARCH_QUERY_KEY } from '@/constants/queryKey';
 import {
   Bakery,
   BakeryProducts,
@@ -14,6 +14,7 @@ import {
   Product,
   ProductForm,
   ProductOrder,
+  SearchAutoComplete,
 } from '@/types/bakery';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { customFetch } from '../customFetch';
@@ -509,3 +510,23 @@ export const useHotBakeries = ({
     initialPageParam: 0,
   });
 };
+
+export const getSearchAutoCompletes = async (
+  searchTerm: string,
+): Promise<{ data: { searchAutoCompletes: SearchAutoComplete[] } }> => {
+  const response = await customFetch(`/${API_END_POINT.SEARCH_AUTOCOMPLETE(searchTerm)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to fetch autocompletes');
+
+  return response.json();
+};
+
+export const useSearchAutoCompletes = (searchTerm: string) =>
+  useQuery({
+    queryKey: [...SEARCH_QUERY_KEY.AUTOCOMPLETE(searchTerm)],
+    queryFn: () => getSearchAutoCompletes(searchTerm),
+    select: (data: { data: { searchAutoCompletes: SearchAutoComplete[] } }) => data.data.searchAutoCompletes,
+  });

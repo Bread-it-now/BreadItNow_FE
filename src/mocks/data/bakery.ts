@@ -1,7 +1,15 @@
 import { BakeryCardProps } from '@/components/bakerycard/BakeryCard';
 import bakery from '@/assets/images/bakery.png';
 import bread from '@/assets/images/bread.png';
-import { Bakery, FavoriteBakery, FavoriteProduct, HotBakery, HotProduct, OPERATING_STATUS } from '@/types/bakery';
+import {
+  Bakery,
+  FavoriteBakery,
+  FavoriteProduct,
+  HotBakery,
+  HotProduct,
+  OPERATING_STATUS,
+  SearchAutoComplete,
+} from '@/types/bakery';
 import { NotificationSetting } from '@/types/notification';
 
 export const bakeryCardMockData: BakeryCardProps = {
@@ -90,3 +98,26 @@ export const mockHotBakeries: HotBakery[] = Array.from({ length: 20 }, (_, index
     Math.floor(Math.random() * 3)
   ] as HotBakery['operatingStatus'],
 }));
+
+export const mockSearchAutoComplete: SearchAutoComplete[] = [
+  { name: '식빵', type: 'PRODUCT' },
+  { name: '크림빵', type: 'PRODUCT' },
+  { name: '치즈빵', type: 'PRODUCT' },
+  { name: '감자빵', type: 'PRODUCT' },
+  { name: '호두빵', type: 'PRODUCT' },
+  { name: '바나나빵', type: 'PRODUCT' },
+  { name: '빵 갤러리', type: 'BAKERY' },
+  { name: '서울베이커리', type: 'BAKERY' },
+  { name: '단팥빵', type: 'PRODUCT' },
+  { name: '우유식빵', type: 'PRODUCT' },
+  { name: '바게트', type: 'PRODUCT' },
+  { name: '마늘빵', type: 'PRODUCT' },
+  { name: '찰보리빵', type: 'PRODUCT' },
+  { name: '통밀식빵', type: 'PRODUCT' },
+  { name: '제주빵집', type: 'BAKERY' },
+  { name: '크로와상', type: 'PRODUCT' },
+  { name: '롤케이크', type: 'PRODUCT' },
+  { name: '앙버터빵', type: 'PRODUCT' },
+  { name: '부산빵지순례', type: 'BAKERY' },
+  { name: '우리동네빵집', type: 'BAKERY' },
+];

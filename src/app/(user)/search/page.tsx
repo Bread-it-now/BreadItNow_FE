@@ -7,35 +7,21 @@ import Back from '@/assets/icons/back.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import FilterDropdown from '@/components/search/FilterDropdown';
-import BakeryCard from '@/components/bakerycard/BakeryCard';
-import BreadCard from '@/components/bakerycard/BreadCard';
-import EmptyState from '@/components/common/EmptyState';
-import { suggestions, bakeryList, breadList } from './searchData';
-import { FilterKey } from '@/types/bakery';
+// import BakeryCard from '@/components/bakerycard/BakeryCard';
+// import BreadCard from '@/components/bakerycard/BreadCard';
+// import EmptyState from '@/components/common/EmptyState';
+import { FilterKey, SearchAutoComplete } from '@/types/bakery';
+import { useSearchAutoCompletes } from '@/lib/api/bakery';
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'빵집' | '빵'>('빵집');
-  const [bookmarkedBreads, setBookmarkedBreads] = useState<number[]>([]);
-  const [bookmarkedBakeries, setBookmarkedBakeries] = useState<number[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>('popular');
 
   const handleSearchEnter = (): void => {
     setIsSearchActive(true);
   };
-
-  const toggleBreadBookmark = (id: number) => {
-    setBookmarkedBreads((prev) => (prev.includes(id) ? prev.filter((bId) => bId !== id) : [...prev, id]));
-  };
-
-  const toggleBakeryBookmark = (id: number) => {
-    setBookmarkedBakeries((prev) => (prev.includes(id) ? prev.filter((bId) => bId !== id) : [...prev, id]));
-  };
-
-  const filteredBakeryList = bakeryList.filter((b) => b.name.toLowerCase().includes(searchTerm.toLowerCase()));
-
-  const filteredBreadList = breadList.filter((b) => b.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="relative flex flex-col items-stasrt w-full max-h-[100%] bg-white px-5">
@@ -55,29 +41,7 @@ export default function SearchPage() {
       </div>
 
       {!isSearchActive ? (
-        <div className="w-full flex-1 px-4 overflow-y-scroll scrollbar-hide">
-          {searchTerm && (
-            <ul className="mt-2">
-              {suggestions.map((suggestion, index) => {
-                const highlightedText = suggestion.split(new RegExp(`(${searchTerm})`, 'gi')).map((part, i) =>
-                  part.toLowerCase() === searchTerm.toLowerCase() ? (
-                    <span key={i} className="text-gray400">
-                      {part}
-                    </span>
-                  ) : (
-                    part
-                  ),
-                );
-                return (
-                  <li key={index} className="gap-2 flex items-center py-2 text-gray900">
-                    <SearchIcon color="#999b9d" />
-                    <span className="text-gray900">{highlightedText}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
+        <KeywordsSection keyword={searchTerm} />
       ) : (
         <div className="w-full flex flex-col h-full overflow-hidden">
           <HotBreadTab
@@ -91,16 +55,12 @@ export default function SearchPage() {
           <div className="flex-1 overflow-y-auto scrollbar-hide text-gray900">
             <div className="flex items-center justify-between p-4">
               <span>
-                총{' '}
-                <span className="text-primary">
-                  {activeTab === '빵집' ? filteredBakeryList.length : filteredBreadList.length}
-                </span>{' '}
-                개
+                총 <span className="text-primary">{activeTab === '빵집' ? 0 : 0}</span> 개
               </span>
               <FilterDropdown handleSelectedFilter={setSelectedFilter} selectedFilter={selectedFilter} />
             </div>
 
-            {activeTab === '빵집' ? (
+            {/* {activeTab === '빵집' ? (
               filteredBakeryList.length > 0 ? (
                 <div className="p-4 space-y-4">
                   {filteredBakeryList.map((bakery) => (
@@ -112,8 +72,6 @@ export default function SearchPage() {
                       distance={bakery.distance}
                       operatingStatus={bakery.operatingStatus}
                       size="large"
-                      isBookmarked={bookmarkedBakeries.includes(bakery.id)}
-                      onToggleBookmark={() => toggleBakeryBookmark(bakery.id)}
                     />
                   ))}
                 </div>
@@ -128,16 +86,37 @@ export default function SearchPage() {
                     {...bread}
                     price={Number(bread.price)}
                     isBookmarked={bookmarkedBreads.includes(bread.id)}
-                    onToggleBookmark={() => toggleBreadBookmark(bread.id)}
                   />
                 ))}
               </div>
             ) : (
               <EmptyState message="다른 키워드로 검색해보세요." searchTerm={searchTerm} />
-            )}
+            )} */}
           </div>
         </div>
       )}
     </div>
   );
 }
+
+const KeywordsSection = ({ keyword }: { keyword: string }) => {
+  const { data: searchAutoCompletes } = useSearchAutoCompletes(keyword);
+  return (
+    <div className="flex w-full justify-end">
+      {keyword && searchAutoCompletes && searchAutoCompletes.length !== 0 && (
+        <div className="w-full max-w-[300px] overflow-y-scroll scrollbar-hide border border-gray200 rounded-[8px] bg-white">
+          <ul>
+            {searchAutoCompletes?.map((searchAutoComplete: SearchAutoComplete, idx: number) => (
+              <li
+                key={`${searchAutoComplete}-${idx}`}
+                className="flex px-4 gap-[5px] items-center py-2 text-title-content-s hover:cursor-pointer hover:bg-gray100">
+                <SearchIcon color="#b2b4b6" size={20} />
+                <span className="text-gray900">{searchAutoComplete.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};

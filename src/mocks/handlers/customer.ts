@@ -8,6 +8,7 @@ import {
   mockHotBakeries,
   mockHotProducts,
   mockNotificationSettings,
+  mockSearchAutoComplete,
 } from '../data/bakery';
 import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
@@ -565,6 +566,27 @@ const getHotBakeries = http.get(
   },
 );
 
+export const getSearchAutoCompletes = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/autocomplete`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const keyword = url.searchParams.get('keyword') as string;
+    const searchAutoCompletes = mockSearchAutoComplete.filter((item) => item.name.includes(keyword)).slice(0, 10);
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          searchAutoCompletes,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -587,4 +609,5 @@ export default [
   getTodayAlertProducts,
   getHotProducts,
   getHotBakeries,
+  getSearchAutoCompletes,
 ];

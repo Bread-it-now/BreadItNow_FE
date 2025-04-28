@@ -59,6 +59,10 @@ export const API_END_POINT = {
   HOT_PRODUCTS: (page: number, size: number, sort: HotFilterKey) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot?page=${page}&size=${size}&sort=${sort}`,
 
+  /** CUSTOMER - SEARCH */
+  SEARCH_AUTOCOMPLETE: (keyword: string) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/autocomplete?keyword=${keyword}`,
+
   /** CUSTOMER - BAKERY */
   HOT_BAKERIES: (page: number, size: number, sort: HotFilterKey, latitude: number, longitude: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/hot?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,

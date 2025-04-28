@@ -1,13 +1,17 @@
 export const customFetch = async (url: string, options: RequestInit): Promise<Response | undefined> => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
+  // const cookieStr = document.cookie;
+  // const refreshToken = cookieStr
+  //   .split('; ')
+  //   .find(row => row.startsWith('refreshToken='))
+  //   ?.split('=')[1];
   //TODO: 토큰 쿠키로 변경
   const defaultHeaders: HeadersInit = {
     Accept: 'application/json',
+    credentials: 'include',
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
   };
-  if (localStorage.getItem('token')) {
-    defaultHeaders.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  }
+
   const mergedHeaders = {
     ...defaultHeaders,
     ...options.headers,

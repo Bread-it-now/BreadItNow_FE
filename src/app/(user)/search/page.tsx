@@ -13,6 +13,7 @@ import { FilterKey, SearchAutoComplete, SearchBakery } from '@/types/bakery';
 import { useSearchAutoCompletes, useSearchBakeries } from '@/lib/api/bakery';
 import useLocation from '@/hooks/useLocation';
 import InputSearchBar from '@/components/search/inputsearchbar/InputSearchBar';
+import useDebounce from '@/hooks/useDebounce';
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -20,6 +21,7 @@ export default function SearchPage() {
   const [activeTab, setActiveTab] = useState<'bakery' | 'product'>('bakery');
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>('popular');
   const [totalCnt, setTotalCnt] = useState<number>(0);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   return (
     <div className="relative flex flex-col items-stasrt w-full max-h-[100%] bg-white">
@@ -41,7 +43,7 @@ export default function SearchPage() {
 
       {!isResultVisible ? (
         <KeywordsSection
-          keyword={searchTerm}
+          keyword={debouncedSearchTerm}
           selectAutoComplete={(autoComplete: string) => {
             setSearchTerm(autoComplete);
             setIsResultVisible(true);

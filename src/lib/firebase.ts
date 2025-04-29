@@ -1,13 +1,15 @@
 // lib/firebase.ts
 import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
 const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_AUTH_DOMAIN',
-  projectId: 'YOUR_PROJECT_ID',
-  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-  appId: 'YOUR_APP_ID',
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -19,8 +21,9 @@ export const requestPermissionAndGetToken = async () => {
   try {
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
-      const token = await getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY' });
-      // console.log('FCM Token:', token);
+      const token = await getToken(messaging, {
+        vapidKey: 'BEY2Hsv4eCXijQ4bL9J7Ax7bvJXjMZS_j8CiBlFIboIxD6bWEjB4weljTwMLLSrQuWxIXJvA0eTbo-mXa0NoeeE',
+      });
       return token;
     } else {
       // console.warn('Notification permission denied');
@@ -28,4 +31,9 @@ export const requestPermissionAndGetToken = async () => {
   } catch {
     // console.error('Error getting FCM token', error);
   }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const onForegroundMessage = (callback: (payload: any) => void) => {
+  onMessage(messaging, callback);
 };

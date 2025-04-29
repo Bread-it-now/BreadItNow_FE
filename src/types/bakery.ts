@@ -98,6 +98,7 @@ export interface ProductForm {
   breadCategoryIds: number[];
   name: string;
   price: number;
+  productImage?: string | File;
   description: string;
   releaseTimes: string[];
 }

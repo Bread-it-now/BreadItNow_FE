@@ -75,7 +75,7 @@ export const useBakeryInfo = (bakeryId: number) =>
   });
 
 export const getBakeryProducts = async (bakeryId: number): Promise<{ data: BakeryProducts }> => {
-  const response = await customFetch(`/${API_END_POINT.BAKERY_PRODUCTS(bakeryId)}`, {
+  const response = await fetch(`/${API_END_POINT.BAKERY_PRODUCTS(bakeryId)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -174,7 +174,7 @@ export const reorderProducts = async (bakeryId: number, productOrders: ProductOr
 };
 
 export const getBakeryProduct = async (bakeryId: number, productId: number): Promise<{ data: Product }> => {
-  const response = await customFetch(`/${API_END_POINT.BAKERY_PRODUCT(bakeryId, productId)}`, {
+  const response = await fetch(`/${API_END_POINT.BAKERY_PRODUCT(bakeryId, productId)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -195,10 +195,23 @@ export const createProduct = async (
   bakeryId: number,
   productForm: ProductForm,
 ): Promise<{ data: { productId: number } }> => {
-  const response = await customFetch(`/${API_END_POINT.CREATE_PRODUCT(bakeryId)}`, {
+  const formData = new FormData();
+  formData.append('productImage', productForm.productImage as File);
+  formData.append(
+    'data',
+    JSON.stringify({
+      productType: productForm.productType,
+      breadCategoryIds: productForm.breadCategoryIds,
+      name: productForm.name,
+      price: productForm.price,
+      description: productForm.description,
+      releaseTimes: productForm.releaseTimes,
+    }),
+  );
+  const response = await fetch(`/${API_END_POINT.CREATE_PRODUCT(bakeryId)}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: { ...productForm }, productImage: 'bread.png' }),
+    headers: { 'Content-Type': 'multipart/form-data' },
+    body: formData,
   });
 
   if (!response?.ok) throw new Error('Failed to create product');
@@ -211,10 +224,23 @@ export const editProduct = async (
   productId: number,
   productForm: ProductForm,
 ): Promise<{ data: Product }> => {
-  const response = await customFetch(`/${API_END_POINT.EDIT_PRODUCT(bakeryId, productId)}`, {
+  const formData = new FormData();
+  formData.append('productImage', productForm.productImage as File);
+  formData.append(
+    'data',
+    JSON.stringify({
+      productType: productForm.productType,
+      breadCategoryIds: productForm.breadCategoryIds,
+      name: productForm.name,
+      price: productForm.price,
+      description: productForm.description,
+      releaseTimes: productForm.releaseTimes,
+    }),
+  );
+  const response = await fetch(`/${API_END_POINT.EDIT_PRODUCT(bakeryId, productId)}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: { ...productForm }, productImage: 'bread.png' }),
+    headers: { 'Content-Type': 'multipart/form-data' },
+    body: formData,
   });
 
   if (!response?.ok) throw new Error('Failed to edit product');

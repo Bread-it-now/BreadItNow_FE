@@ -16,9 +16,11 @@ import WheelTimePicker from '../wheeltimepicker/WheelTimePicker';
 import BottomSheet from '../bottomsheet/Bottomsheet';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
 import TimeChip from '../common/chips/timechip/TimeChip';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getFormattedTime } from '@/utils/date';
+import upload from '@/assets/icons/upload.svg';
 import add from '@/assets/icons/add.svg';
+import Reset from '@/assets/icons/resetImage.svg';
 import Image from 'next/image';
 
 interface ProductFormLayoutProps {
@@ -59,6 +61,7 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
       productType: undefined,
       breadCategoryIds: [],
       name: '',
+      productImage: undefined,
       price: undefined,
       description: '',
       releaseTimes: [],
@@ -66,6 +69,14 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
   });
   const data = watch();
   const isBreadProduct = data.productType === 'BREAD';
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initValue?.productImage && typeof initValue.productImage === 'string') {
+      setPreview(initValue.productImage);
+    }
+  }, [initValue]);
 
   return (
     <div className="flex flex-col items-start w-full h-full bg-gray50">
@@ -158,6 +169,67 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
             />
           </LabelForm>
         )}
+
+        <LabelForm name="productIamge" label="메뉴이미지" className="w-full">
+          <Controller
+            {...register('productImage')}
+            control={control}
+            render={({ field }) => {
+              return (
+                <>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={(e) => {
+                      field.ref(e);
+                      fileInputRef.current = e;
+                    }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setPreview(URL.createObjectURL(file));
+                      }
+                      field.onChange(e.target.files?.[0]);
+                    }}
+                    className="hidden"
+                  />
+
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`relative w-[105px] h-[105px] rounded-lg ${preview ? '' : 'border border-dashed border-primary flex items-center justify-center cursor-pointer'}`}>
+                    {preview ? (
+                      <>
+                        <Image
+                          width={105}
+                          height={105}
+                          src={preview}
+                          alt="미리보기"
+                          className="w-full h-full object-cover rounded"
+                        />
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPreview(null);
+                            field.onChange(undefined);
+                            if (fileInputRef.current) {
+                              fileInputRef.current.value = '';
+                            }
+                          }}
+                          className="absolute top-[6px] right-[6px] text-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-100">
+                          <Image src={Reset} alt="reset" width={22} height={22} />
+                        </button>
+                      </>
+                    ) : (
+                      <Image src={upload} alt="upload" width={20} height={20} />
+                    )}
+                  </div>
+                </>
+              );
+            }}
+          />
+        </LabelForm>
+
         <LabelForm name="name" label="메뉴 이름" isRequired errors={errors} className="w-full">
           <Controller
             control={control}

@@ -149,6 +149,18 @@ export const deleteProducts = async (
   return response.json();
 };
 
+export const hideProducts = async (bakeryId: number, productIds: number[]): Promise<{ data: null }> => {
+  const response = await customFetch(`/${API_END_POINT.HIDE_PRODUCTS(bakeryId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ hidden: true, productIds }),
+  });
+
+  if (!response?.ok) throw new Error('Failed to change operating Status');
+
+  return response.json();
+};
+
 export const reorderProducts = async (bakeryId: number, productOrders: ProductOrder[]): Promise<{ data: null }> => {
   const response = await customFetch(`/${API_END_POINT.REORDER_PRODUCTS(bakeryId)}`, {
     method: 'PATCH',

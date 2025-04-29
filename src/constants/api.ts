@@ -165,7 +165,7 @@ export const API_END_POINT = {
   DELETE_PRODUCTS: (bakeryId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/products`,
   HIDE_PRODUCTS: (bakeryId: number) =>
-    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/hide`,
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/products/hide`,
   BAKERY_PRODUCT: (bakeryId: number, productId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
   BAKERY_PRODUCTS: (bakeryId: number) =>

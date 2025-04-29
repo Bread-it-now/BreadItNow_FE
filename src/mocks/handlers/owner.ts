@@ -207,6 +207,21 @@ const reorderProducts = http.patch(
   },
 );
 
+const hideProducts = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/products/hide`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 const getBakeryProoduct = http.get(
   `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId`,
   async ({ params }) => {
@@ -321,6 +336,7 @@ export default [
   changeReservationStatus,
   deleteProduct,
   deleteProducts,
+  hideProducts,
   reorderProducts,
   getBakeryProoduct,
   createProduct,

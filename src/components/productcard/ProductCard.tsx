@@ -106,7 +106,7 @@ const ProductCard = ({
               <div className="absolute top-1 left-1 z-1">
                 <Checkbox
                   id={String(productId)}
-                  checked={isEditProductActive ? !isActive : checked}
+                  checked={isEditProductActive ? isActive : checked}
                   onChange={handleCheckboxChange}
                 />
               </div>

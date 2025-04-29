@@ -1,5 +1,5 @@
 import { API_END_POINT } from '@/constants/api';
-import { BAKERY_QUERY_KEY } from '@/constants/queryKey';
+import { BAKERY_QUERY_KEY, SEARCH_QUERY_KEY } from '@/constants/queryKey';
 import {
   Bakery,
   BakeryProducts,
@@ -7,13 +7,20 @@ import {
   FavoriteBakeryList,
   FavoriteProductList,
   FilterKey,
+  HotBakery,
+  HotFilterKey,
+  HotProduct,
   OPERATING_STATUS,
   Product,
   ProductForm,
   ProductOrder,
+  SearchAutoComplete,
+  SearchBakery,
+  SearchProduct,
 } from '@/types/bakery';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { customFetch } from '../customFetch';
+import { PageInfo } from '@/types/reservation';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
   const response = await customFetch(`/${API_END_POINT.BAKERY_INFO(bakeryId)}`, {
@@ -68,7 +75,7 @@ export const useBakeryInfo = (bakeryId: number) =>
   });
 
 export const getBakeryProducts = async (bakeryId: number): Promise<{ data: BakeryProducts }> => {
-  const response = await customFetch(`/${API_END_POINT.BAKERY_PRODUCTS(bakeryId)}`, {
+  const response = await fetch(`/${API_END_POINT.BAKERY_PRODUCTS(bakeryId)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -142,6 +149,18 @@ export const deleteProducts = async (
   return response.json();
 };
 
+export const hideProducts = async (bakeryId: number, productIds: number[]): Promise<{ data: null }> => {
+  const response = await customFetch(`/${API_END_POINT.HIDE_PRODUCTS(bakeryId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ hidden: true, productIds }),
+  });
+
+  if (!response?.ok) throw new Error('Failed to change operating Status');
+
+  return response.json();
+};
+
 export const reorderProducts = async (bakeryId: number, productOrders: ProductOrder[]): Promise<{ data: null }> => {
   const response = await customFetch(`/${API_END_POINT.REORDER_PRODUCTS(bakeryId)}`, {
     method: 'PATCH',
@@ -155,7 +174,7 @@ export const reorderProducts = async (bakeryId: number, productOrders: ProductOr
 };
 
 export const getBakeryProduct = async (bakeryId: number, productId: number): Promise<{ data: Product }> => {
-  const response = await customFetch(`/${API_END_POINT.BAKERY_PRODUCT(bakeryId, productId)}`, {
+  const response = await fetch(`/${API_END_POINT.BAKERY_PRODUCT(bakeryId, productId)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -176,10 +195,23 @@ export const createProduct = async (
   bakeryId: number,
   productForm: ProductForm,
 ): Promise<{ data: { productId: number } }> => {
-  const response = await customFetch(`/${API_END_POINT.CREATE_PRODUCT(bakeryId)}`, {
+  const formData = new FormData();
+  formData.append('productImage', productForm.productImage as File);
+  formData.append(
+    'data',
+    JSON.stringify({
+      productType: productForm.productType,
+      breadCategoryIds: productForm.breadCategoryIds,
+      name: productForm.name,
+      price: productForm.price,
+      description: productForm.description,
+      releaseTimes: productForm.releaseTimes,
+    }),
+  );
+  const response = await fetch(`/${API_END_POINT.CREATE_PRODUCT(bakeryId)}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: { ...productForm }, productImage: 'bread.png' }),
+    headers: { 'Content-Type': 'multipart/form-data' },
+    body: formData,
   });
 
   if (!response?.ok) throw new Error('Failed to create product');
@@ -192,10 +224,23 @@ export const editProduct = async (
   productId: number,
   productForm: ProductForm,
 ): Promise<{ data: Product }> => {
-  const response = await customFetch(`/${API_END_POINT.EDIT_PRODUCT(bakeryId, productId)}`, {
+  const formData = new FormData();
+  formData.append('productImage', productForm.productImage as File);
+  formData.append(
+    'data',
+    JSON.stringify({
+      productType: productForm.productType,
+      breadCategoryIds: productForm.breadCategoryIds,
+      name: productForm.name,
+      price: productForm.price,
+      description: productForm.description,
+      releaseTimes: productForm.releaseTimes,
+    }),
+  );
+  const response = await fetch(`/${API_END_POINT.EDIT_PRODUCT(bakeryId, productId)}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: { ...productForm }, productImage: 'bread.png' }),
+    headers: { 'Content-Type': 'multipart/form-data' },
+    body: formData,
   });
 
   if (!response?.ok) throw new Error('Failed to edit product');
@@ -213,8 +258,8 @@ export const getFavoriteBakeryList = async ({
   pageParam: number;
   size: number;
   sort: FilterKey;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
 }): Promise<{ data: FavoriteBakeryList }> => {
   const response = await customFetch(
     `/${API_END_POINT.FAVORITE_BAKERIES(pageParam, size, sort, latitude, longitude)}`,
@@ -238,8 +283,8 @@ export const useFavoriteBakeryList = ({
   page?: number;
   size?: number;
   sort: FilterKey;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
 }) => {
   return useInfiniteQuery({
     queryKey: [...BAKERY_QUERY_KEY.FAVORITE_BAKERIES(sort)],
@@ -424,4 +469,209 @@ export const removeBakeryBookmark = async (bakeryId: number): Promise<{ data: { 
   if (!response?.ok) throw new Error('Failed to remove alert product');
 
   return response.json();
+};
+
+export const getHotProducts = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'reservation',
+}: {
+  pageParam: number;
+  size: number;
+  sort?: HotFilterKey;
+}): Promise<{ data: { hotProducts: HotProduct[]; pageInfo: PageInfo } }> => {
+  const response = await customFetch(`/${API_END_POINT.HOT_PRODUCTS(pageParam, size, sort)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to fetch hot products');
+
+  return response.json();
+};
+
+export const useHotProducts = ({
+  size = 10,
+  sort = 'reservation',
+}: {
+  page?: number;
+  size?: number;
+  sort?: HotFilterKey;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...BAKERY_QUERY_KEY.HOT_PRODUCTS(sort)],
+    queryFn: ({ pageParam = 0 }) => getHotProducts({ pageParam, size, sort }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+
+export const getHotBakeries = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'reservation',
+  latitude = 10,
+  longitude = 10,
+}: {
+  pageParam: number;
+  size: number;
+  sort?: HotFilterKey;
+  latitude?: number;
+  longitude?: number;
+}): Promise<{ data: { hotBakeries: HotBakery[]; pageInfo: PageInfo } }> => {
+  const response = await customFetch(`/${API_END_POINT.HOT_BAKERIES(pageParam, size, sort, latitude, longitude)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to fetch hot bakeries');
+
+  return response.json();
+};
+
+export const useHotBakeries = ({
+  size = 10,
+  sort = 'reservation',
+}: {
+  page?: number;
+  size?: number;
+  sort?: HotFilterKey;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...BAKERY_QUERY_KEY.HOT_BAKERIES(sort)],
+    queryFn: ({ pageParam = 0 }) => getHotBakeries({ pageParam, size, sort }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+
+export const getSearchAutoCompletes = async (
+  searchTerm: string,
+): Promise<{ data: { searchAutoCompletes: SearchAutoComplete[] } }> => {
+  const response = await customFetch(`/${API_END_POINT.SEARCH_AUTOCOMPLETE(searchTerm)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to fetch autocompletes');
+
+  return response.json();
+};
+
+export const useSearchAutoCompletes = (searchTerm: string) =>
+  useQuery({
+    queryKey: [...SEARCH_QUERY_KEY.AUTOCOMPLETE(searchTerm)],
+    queryFn: () => getSearchAutoCompletes(searchTerm),
+    select: (data: { data: { searchAutoCompletes: SearchAutoComplete[] } }) => data.data.searchAutoCompletes,
+  });
+
+export const getSearchBakeries = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'latest',
+  latitude = 10,
+  longitude = 10,
+  keyword,
+}: {
+  pageParam: number;
+  size: number;
+  sort?: FilterKey;
+  latitude?: number;
+  longitude?: number;
+  keyword: string;
+}): Promise<{ data: { searchBakeries: SearchBakery[]; pageInfo: PageInfo } }> => {
+  const response = await customFetch(
+    `/${API_END_POINT.SEARCH_BAKERIES(pageParam, size, sort, keyword, latitude, longitude)}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+
+  if (!response?.ok) throw new Error('Failed to fetch bakeries');
+
+  return response.json();
+};
+
+export const useSearchBakeries = ({
+  size = 10,
+  sort = 'latest',
+  keyword,
+  latitude = 10,
+  longitude = 10,
+}: {
+  page?: number;
+  size?: number;
+  sort?: FilterKey;
+  keyword: string;
+  latitude?: number;
+  longitude?: number;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...SEARCH_QUERY_KEY.BAKERIES(keyword, sort)],
+    queryFn: ({ pageParam = 0 }) => getSearchBakeries({ pageParam, size, keyword, sort, latitude, longitude }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
+};
+export const getSearchProducts = async ({
+  pageParam = 0,
+  size = 10,
+  sort = 'latest',
+  latitude = 10,
+  longitude = 10,
+  keyword,
+}: {
+  pageParam: number;
+  size: number;
+  sort?: FilterKey;
+  latitude?: number;
+  longitude?: number;
+  keyword: string;
+}): Promise<{ data: { searchProducts: SearchProduct[]; pageInfo: PageInfo } }> => {
+  const response = await customFetch(
+    `/${API_END_POINT.SEARCH_PRODUCTS(pageParam, size, sort, keyword, latitude, longitude)}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+
+  if (!response?.ok) throw new Error('Failed to fetch products');
+
+  return response.json();
+};
+
+export const useSearchProducts = ({
+  size = 10,
+  sort = 'latest',
+  keyword,
+  latitude = 10,
+  longitude = 10,
+}: {
+  page?: number;
+  size?: number;
+  sort?: FilterKey;
+  keyword: string;
+  latitude?: number;
+  longitude?: number;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [...SEARCH_QUERY_KEY.PRODUCTS(keyword, sort)],
+    queryFn: ({ pageParam = 0 }) => getSearchProducts({ pageParam, size, keyword, sort, latitude, longitude }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.pageInfo.isLast) return undefined;
+      return lastPage.data.pageInfo.currPage + 1;
+    },
+    initialPageParam: 0,
+  });
 };

@@ -2,8 +2,15 @@ import { http, HttpResponse } from 'msw';
 import { MODULE, CONTROLLER, API_VERSION_PREFIX } from '@/constants/api';
 import { CustomerReservation, CustomerReservationStatus } from '@/types/reservation';
 import { mockCustomerReservationDetailList, mockCustomerReservations } from '../data/reservation';
-import { mockFavoriteBakeries, mockFavoriteProducts, mockNotificationSettings } from '../data/bakery';
-import { FilterKey } from '@/types/bakery';
+import {
+  mockFavoriteBakeries,
+  mockFavoriteProducts,
+  mockHotBakeries,
+  mockHotProducts,
+  mockNotificationSettings,
+  mockSearchAutoComplete,
+} from '../data/bakery';
+import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { mockCustomerNotifications } from '../data/notification';
 
@@ -442,6 +449,222 @@ const deleteCustomerNotification = http.patch(
   },
 );
 
+const getTodayAlertProducts = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          alerts: [
+            {
+              bakeryId: 1,
+              bakeryName: '달콤한 아침',
+              productId: 1,
+              productName: '모카 크림빵',
+              releaseTimes: ['8:00', '10:00'],
+            },
+            {
+              bakeryId: 2,
+              bakeryName: '라 메종 뒤 팡',
+              productId: 2,
+              productName: '생크림 식빵',
+              releaseTimes: ['8:00', '10:00', '14:00'],
+            },
+            {
+              bakeryId: 3,
+              bakeryName: '빵굽는 집',
+              productId: 3,
+              productName: '크루아상',
+              releaseTimes: ['8:00', '10:00'],
+            },
+          ],
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const getHotProducts = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const sort: HotFilterKey = url.searchParams.get('sort') as HotFilterKey;
+
+    const sortedHotProducts =
+      sort === 'reservation' ? [...mockHotProducts] : mockHotProducts.slice().sort((a, b) => b.price - a.price);
+
+    const start = page * size;
+    const end = start + size;
+
+    const hotProducts = sortedHotProducts.slice(start, end);
+    const totalElements = sortedHotProducts.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          hotProducts,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const getHotBakeries = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/hot`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const sort: HotFilterKey = url.searchParams.get('sort') as HotFilterKey;
+
+    const sortedHotBakeries =
+      sort === 'reservation' ? [...mockHotBakeries] : mockHotBakeries.slice().sort((a, b) => b.distance - a.distance);
+
+    const start = page * size;
+    const end = start + size;
+
+    const hotBakeries = sortedHotBakeries.slice(start, end);
+    const totalElements = sortedHotBakeries.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          hotBakeries,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+export const getSearchAutoCompletes = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/autocomplete`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const keyword = url.searchParams.get('keyword') as string;
+    const searchAutoCompletes = mockSearchAutoComplete.filter((item) => item.name.includes(keyword)).slice(0, 10);
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          searchAutoCompletes,
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const getSearchBakeries = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/bakery`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const sort: FilterKey = url.searchParams.get('sort') as FilterKey;
+
+    const sortedSearchBakeries =
+      sort === 'distance' ? [...mockHotBakeries] : mockHotBakeries.slice().sort((a, b) => b.distance - a.distance);
+
+    const start = page * size;
+    const end = start + size;
+
+    const searchBakeries = sortedSearchBakeries.slice(start, end);
+    const totalElements = sortedSearchBakeries.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          searchBakeries,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const getSearchProducts = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/product`,
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') as string);
+    const size = parseInt(url.searchParams.get('size') as string);
+    const sort: FilterKey = url.searchParams.get('sort') as FilterKey;
+
+    const sortedSearchProducts =
+      sort === 'distance' ? [...mockHotProducts] : mockHotProducts.slice().sort((a, b) => b.stock - a.stock);
+
+    const start = page * size;
+    const end = start + size;
+
+    const searchProducts = sortedSearchProducts.slice(start, end);
+    const totalElements = sortedSearchProducts.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page + 1 >= totalPages;
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: {
+          searchProducts,
+          pageInfo: {
+            totalElements,
+            totalPages,
+            currPage: page,
+            isLast,
+          },
+        },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -461,4 +684,10 @@ export default [
   getCustomerNotifications,
   readCustomerNotification,
   deleteCustomerNotification,
+  getTodayAlertProducts,
+  getHotProducts,
+  getHotBakeries,
+  getSearchAutoCompletes,
+  getSearchBakeries,
+  getSearchProducts,
 ];

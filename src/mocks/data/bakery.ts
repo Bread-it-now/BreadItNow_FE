@@ -1,7 +1,15 @@
 import { BakeryCardProps } from '@/components/bakerycard/BakeryCard';
 import bakery from '@/assets/images/bakery.png';
 import bread from '@/assets/images/bread.png';
-import { Bakery, FavoriteBakery, FavoriteProduct, OPERATING_STATUS } from '@/types/bakery';
+import {
+  Bakery,
+  FavoriteBakery,
+  FavoriteProduct,
+  HotBakery,
+  HotProduct,
+  OPERATING_STATUS,
+  SearchAutoComplete,
+} from '@/types/bakery';
 import { NotificationSetting } from '@/types/notification';
 
 export const bakeryCardMockData: BakeryCardProps = {
@@ -68,3 +76,48 @@ export const mockFavoriteProducts: FavoriteProduct[] = Array.from({ length: 30 }
   isBakeryActive: Math.random() > 0.1,
   isBreadActive: Math.random() > 0.3,
 }));
+
+export const mockHotProducts: HotProduct[] = Array.from({ length: 30 }, (_, i) => ({
+  productId: i + 1,
+  bakeryId: (i % 10) + 1,
+  bakeryName: `인기 빵집 ${i + 1}`,
+  productName: `맛있는 빵 ${i + 1}`,
+  image: bread,
+  price: 1000 + i * 100,
+  stock: i * 4,
+  isFavorite: Math.random() < 0.5,
+}));
+
+export const mockHotBakeries: HotBakery[] = Array.from({ length: 20 }, (_, index) => ({
+  bakeryId: index + 1,
+  bakeryName: `맛있는 빵집 ${index + 1}`,
+  profileImage: bakery,
+  distance: Number((Math.random() * 5).toFixed(1)),
+  isFavorite: Math.random() < 0.5,
+  operatingStatus: ['OPEN', 'CLOSED', 'TEMPORARY_CLOSED'][
+    Math.floor(Math.random() * 3)
+  ] as HotBakery['operatingStatus'],
+}));
+
+export const mockSearchAutoComplete: SearchAutoComplete[] = [
+  { name: '식빵', type: 'PRODUCT' },
+  { name: '크림빵', type: 'PRODUCT' },
+  { name: '치즈빵', type: 'PRODUCT' },
+  { name: '감자빵', type: 'PRODUCT' },
+  { name: '호두빵', type: 'PRODUCT' },
+  { name: '바나나빵', type: 'PRODUCT' },
+  { name: '빵 갤러리', type: 'BAKERY' },
+  { name: '서울베이커리', type: 'BAKERY' },
+  { name: '단팥빵', type: 'PRODUCT' },
+  { name: '우유식빵', type: 'PRODUCT' },
+  { name: '바게트', type: 'PRODUCT' },
+  { name: '마늘빵', type: 'PRODUCT' },
+  { name: '찰보리빵', type: 'PRODUCT' },
+  { name: '통밀식빵', type: 'PRODUCT' },
+  { name: '제주빵집', type: 'BAKERY' },
+  { name: '크로와상', type: 'PRODUCT' },
+  { name: '롤케이크', type: 'PRODUCT' },
+  { name: '앙버터빵', type: 'PRODUCT' },
+  { name: '부산빵지순례', type: 'BAKERY' },
+  { name: '우리동네빵집', type: 'BAKERY' },
+];

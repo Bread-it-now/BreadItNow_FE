@@ -17,8 +17,9 @@ export default function Page() {
         breadCategoryIds: product.breadCategories ? product.breadCategories.map((category) => category.categoryId) : [],
         name: product.name,
         price: product.price,
-        description: product.description,
+        description: product.description ?? '',
         releaseTimes: product.releaseTimes || [],
+        productImage: product.image,
       }
     : null;
 

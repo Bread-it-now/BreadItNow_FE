@@ -64,7 +64,7 @@ export interface Product {
   name: string;
   price: number;
   image: string;
-  description: string;
+  description?: string;
   releaseTimes?: string[];
   stock: number;
   isActive: boolean;
@@ -81,6 +81,13 @@ export interface BakeryProducts {
   otherProducts: Product[];
 }
 
+export interface TodayProduct {
+  bakeryId: number;
+  bakeryName: string;
+  productId: number;
+  productName: string;
+  releaseTimes: string[];
+}
 export interface ProductOrder {
   productId: number;
   order: number;
@@ -91,6 +98,7 @@ export interface ProductForm {
   breadCategoryIds: number[];
   name: string;
   price: number;
+  productImage?: string | File;
   description: string;
   releaseTimes: string[];
 }
@@ -134,5 +142,48 @@ export interface FavoriteProductList {
     currPage: number;
   };
 }
+export interface HotProduct {
+  productId: Product['productId'];
+  bakeryId: Product['bakeryId'];
+  bakeryName: string;
+  productName: Product['name'];
+  image: Product['image'];
+  price: Product['price'];
+  stock: Product['stock'];
+  isFavorite: Product['isFavorite'];
+}
+
+export interface HotBakery {
+  bakeryId: Bakery['bakeryId'];
+  bakeryName: Bakery['name'];
+  profileImage: Bakery['profileImage'];
+  distance: number;
+  isFavorite: Bakery['isFavorite'];
+  operatingStatus: Bakery['operatingStatus'];
+}
+
+export interface SearchBakery {
+  bakeryId: Bakery['bakeryId'];
+  bakeryName: Bakery['name'];
+  profileImage: Bakery['profileImage'];
+  distance: number;
+  isFavorite: Bakery['isFavorite'];
+  operatingStatus: Bakery['operatingStatus'];
+}
+export interface SearchProduct {
+  productId: Product['productId'];
+  bakeryId: Product['bakeryId'];
+  bakeryName: string;
+  productName: Product['name'];
+  image: Product['image'];
+  price: Product['price'];
+  stock: Product['stock'];
+  isFavorite: Product['isFavorite'];
+}
+export interface SearchAutoComplete {
+  name: string;
+  type: 'BAKERY' | 'PRODUCT';
+}
 
 export type FilterKey = 'latest' | 'popular' | 'distance';
+export type HotFilterKey = 'reservation' | 'favorite';

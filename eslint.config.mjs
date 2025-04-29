@@ -15,6 +15,7 @@ const eslintConfig = [
     rules: {
       // ✅ 올바른 위치
       'no-console': 'error', // 🚨 console.log 사용 시 에러 발생
+      'import/no-anonymous-default-export': 'off',
     },
   },
 ];

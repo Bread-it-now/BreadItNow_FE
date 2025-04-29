@@ -2,11 +2,6 @@ import Button from '@/components/button/Button';
 import { ROUTES } from '@/constants/routes';
 import { LabelForm } from '@/components/common/labelform/LabelForm';
 import SelectedItem from '@/components/selecteditem/SelectItem';
-import { generateSharedObjectByCustomKey, mapCategoryIdsToIdLabel } from '@/utils/mappingUtils';
-import { BREAD_CATEGORY, MAIN_BREAD_CATEGORY, Option } from '@/lib/shared/product';
-import CustomInputWithOptions from '@/components/custominputwithoptions/CustomInputWithOptions';
-import ProductCategory from '@/components/productcategory/ProductCategory';
-import CategoryChip from '@/components/common/chips/categorychip/CategoryChip';
 import InputText from '@/components/common/inputtext/InputText';
 import TextArea from '@/components/common/textarea/TextArea';
 import { useForm, Controller } from 'react-hook-form';
@@ -16,9 +11,11 @@ import WheelTimePicker from '../wheeltimepicker/WheelTimePicker';
 import BottomSheet from '../bottomsheet/Bottomsheet';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
 import TimeChip from '../common/chips/timechip/TimeChip';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getFormattedTime } from '@/utils/date';
+import upload from '@/assets/icons/upload.svg';
 import add from '@/assets/icons/add.svg';
+import Reset from '@/assets/icons/resetImage.svg';
 import Image from 'next/image';
 
 interface ProductFormLayoutProps {
@@ -29,7 +26,6 @@ interface ProductFormLayoutProps {
 }
 export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps) => {
   const router = useRouter();
-  const generateSelectOption = generateSharedObjectByCustomKey('id', 'label');
   const { isOpen: isWheelTimePickerOpen, dispatch } = useBaseBottomSheet();
   const [newReleaseTime, setNewReleaseTime] = useState<{ hours: number; minutes: number; ampm: 'AM' | 'PM' }>({
     hours: 9,
@@ -59,6 +55,7 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
       productType: undefined,
       breadCategoryIds: [],
       name: '',
+      productImage: undefined,
       price: undefined,
       description: '',
       releaseTimes: [],
@@ -66,6 +63,14 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
   });
   const data = watch();
   const isBreadProduct = data.productType === 'BREAD';
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initValue?.productImage && typeof initValue.productImage === 'string') {
+      setPreview(initValue.productImage);
+    }
+  }, [initValue]);
 
   return (
     <div className="flex flex-col items-start w-full h-full bg-gray50">
@@ -104,60 +109,66 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
           </div>
         </LabelForm>
 
-        {isBreadProduct && (
-          <LabelForm name="breadCategoryIds" label="빵 카테고리" isRequired errors={errors} className="w-full">
-            <Controller
-              control={control}
-              rules={{ required: '빵 카테고리를 선택해주세요.' }}
-              {...register('breadCategoryIds')}
-              render={({ field }) => {
-                const breadCategories: Option[] =
-                  field.value && field.value.length !== 0 ? mapCategoryIdsToIdLabel(field.value) : [];
+        <LabelForm name="productIamge" label="메뉴이미지" className="w-full">
+          <Controller
+            {...register('productImage')}
+            control={control}
+            render={({ field }) => {
+              return (
+                <>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={(e) => {
+                      field.ref(e);
+                      fileInputRef.current = e;
+                    }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setPreview(URL.createObjectURL(file));
+                      }
+                      field.onChange(e.target.files?.[0]);
+                    }}
+                    className="hidden"
+                  />
 
-                return (
-                  <div className="flex flex-col items-start gap-1 w-full">
-                    <div className="flex flex-col gap-1 w-full">
-                      {breadCategories.map((category) => (
-                        <ProductCategory
-                          key={category.label}
-                          category={{ ...category, id: Number(category.id) }}
-                          handleDelete={() => field.onChange(field.value.filter((id: number) => id !== category.id))}
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`relative w-[105px] h-[105px] rounded-lg ${preview ? '' : 'border border-dashed border-primary flex items-center justify-center cursor-pointer'}`}>
+                    {preview ? (
+                      <>
+                        <Image
+                          width={105}
+                          height={105}
+                          src={preview}
+                          alt="미리보기"
+                          className="w-full h-full object-cover rounded"
                         />
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                      <CustomInputWithOptions
-                        selectOption={({ id }: Option) => {
-                          if (!field.value.includes(Number(id))) {
-                            field.onChange([...field.value, Number(id)]);
-                          }
-                        }}
-                        placeholder="카테고리 검색"
-                        options={generateSelectOption(BREAD_CATEGORY)}
-                      />
-                      <div className="flex flex-wrap items-start content-center gap-[6px] w-full">
-                        {generateSelectOption(MAIN_BREAD_CATEGORY).map((category) => (
-                          <CategoryChip
-                            key={category.label}
-                            category={{ id: Number(category.id), label: String(category.label) }}
-                            checked={field.value.includes(Number(category.id))}
-                            handleChecked={() => {
-                              if (field.value.includes(Number(category.id))) {
-                                field.onChange(field.value.filter((id: number) => id !== Number(category.id)));
-                              } else {
-                                field.onChange([...field.value, Number(category.id)]);
-                              }
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPreview(null);
+                            field.onChange(undefined);
+                            if (fileInputRef.current) {
+                              fileInputRef.current.value = '';
+                            }
+                          }}
+                          className="absolute top-[6px] right-[6px] text-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-100">
+                          <Image src={Reset} alt="reset" width={22} height={22} />
+                        </button>
+                      </>
+                    ) : (
+                      <Image src={upload} alt="upload" width={20} height={20} />
+                    )}
                   </div>
-                );
-              }}
-            />
-          </LabelForm>
-        )}
+                </>
+              );
+            }}
+          />
+        </LabelForm>
+
         <LabelForm name="name" label="메뉴 이름" isRequired errors={errors} className="w-full">
           <Controller
             control={control}

@@ -207,6 +207,21 @@ const reorderProducts = http.patch(
   },
 );
 
+const hideProducts = http.patch(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/products/hide`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 const getBakeryProoduct = http.get(
   `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/:bakeryId/product/:productId`,
   async ({ params }) => {
@@ -311,6 +326,22 @@ const readOwnerNotification = http.patch(
   },
 );
 
+const sendFreshProductNotification = http.post(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}`,
+
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: { productId: mockProductsList.length + 1 },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -321,10 +352,12 @@ export default [
   changeReservationStatus,
   deleteProduct,
   deleteProducts,
+  hideProducts,
   reorderProducts,
   getBakeryProoduct,
   createProduct,
   editProduct,
   getOwnerNotifications,
   readOwnerNotification,
+  sendFreshProductNotification,
 ];

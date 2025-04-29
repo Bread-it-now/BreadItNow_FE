@@ -1,4 +1,4 @@
-import { FilterKey } from '@/types/bakery';
+import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
 export const BASE_KEY = {
@@ -13,6 +13,8 @@ export const BAKERY_QUERY_KEY = {
   BAKERY_PRODUCT: (bakeryId: number, productId: number) => [BASE_KEY.OWNER, 'BAKERY', bakeryId, 'PRODUCT', productId],
   FAVORITE_BAKERIES: (sort: FilterKey) => [BASE_KEY.CUSTOMER, 'BAKERY', 'FAVORITE', sort],
   FAVORITE_PRODUCTS: (sort: FilterKey) => [BASE_KEY.CUSTOMER, 'BAKERY', 'FAVORITE', 'PRODUCT', sort],
+  HOT_PRODUCTS: (sort: HotFilterKey) => [BASE_KEY.CUSTOMER, 'PRODUCT', 'HOT', sort],
+  HOT_BAKERIES: (sort: HotFilterKey) => [BASE_KEY.CUSTOMER, 'BAKERY', 'HOT', sort],
 };
 
 export const RESERVATION_QUERY_KEY = {
@@ -27,4 +29,11 @@ export const NOTIFICATION_QUERY_KEY = {
   PRODUCT_NOTIFICATION_SETTINGS: (size: number) => [BASE_KEY.CUSTOMER, 'NOTIFICATION', 'DO-NOT_DISTURB', size],
   CUSTOMER_NOTIFICATIONS: (type: string) => [BASE_KEY.CUSTOMER, 'NOTIFICATION', type],
   OWNER_NOTIFICATIONS: () => [BASE_KEY.OWNER, 'NOTIFICATION'],
+  TODAY_ALERT_PRODUCTS: () => [BASE_KEY.CUSTOMER, 'NOTIFICATION', 'TODAY_ALERT_PRODUCTS'],
+};
+
+export const SEARCH_QUERY_KEY = {
+  AUTOCOMPLETE: (keyword: string) => [BASE_KEY.CUSTOMER, 'SEARCH', 'AUTOCOMPLETE', keyword],
+  BAKERIES: (keyword: string, sort: FilterKey) => [BASE_KEY.CUSTOMER, 'SEARCH', 'BAKERIES', keyword, sort],
+  PRODUCTS: (keyword: string, sort: FilterKey) => [BASE_KEY.CUSTOMER, 'SEARCH', 'PRODUCTS', keyword, sort],
 };

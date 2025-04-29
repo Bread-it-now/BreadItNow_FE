@@ -12,6 +12,9 @@ import BottomSheet from '@/components/bottomsheet/Bottomsheet';
 import Reset from '@/assets/icons/reset.svg';
 import Drag from '@/assets/icons/drag.svg';
 import QuantityChip from '../common/chips/quantitychip/quantityChip';
+import Modal from '@/components/common/modal/Modal';
+import useModal from '@/hooks/useModal';
+import { sendFreshProductNotification } from '@/lib/api/notification';
 
 interface ProductCardProps extends Product {
   isEditProductActive?: boolean;
@@ -65,6 +68,8 @@ const ProductCard = ({
     stockQuantityInput,
   } = useProductStockBottomSheet({ initStock: stock, bakeryId, productId });
 
+  const { isOpen: isModalOpen, dispatch } = useModal();
+
   const handleCheckboxChange = () => {
     if (handleProductActiveChange) {
       handleProductActiveChange((prevIds) => {
@@ -106,7 +111,7 @@ const ProductCard = ({
               <div className="absolute top-1 left-1 z-1">
                 <Checkbox
                   id={String(productId)}
-                  checked={isEditProductActive ? !isActive : checked}
+                  checked={isEditProductActive ? isActive : checked}
                   onChange={handleCheckboxChange}
                 />
               </div>
@@ -172,7 +177,10 @@ const ProductCard = ({
           title={name}
           confirmText="변경"
           confirmDisabled={stockQuantityInput === '' || stockQuantityInput === String(stock)}
-          onConfirm={() => handleChangeProductStock(Number(stockQuantityInput))}>
+          onConfirm={() => {
+            handleChangeProductStock(Number(stockQuantityInput));
+            dispatch.open();
+          }}>
           <div className="flex flex-col items-start justify-center pb-5 gap-6 w-full">
             <QuantityInput
               name="재고 수량 결정"
@@ -192,6 +200,23 @@ const ProductCard = ({
             </div>
           </div>
         </BottomSheet>
+      )}
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={dispatch.close}
+          confirmText="알림 전송"
+          cancelText="건너뛰기"
+          onConfirm={() => {
+            sendFreshProductNotification(bakeryId, productId);
+            dispatch.close();
+          }}
+          cancelBtnFullWidth>
+          <div className="text-center text-title-content-s font-normal">
+            대기 중인 고객에게
+            <br />갓 구운 빵 소식을 전할까요?
+          </div>
+        </Modal>
       )}
     </div>
   );

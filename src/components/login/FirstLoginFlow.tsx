@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-// import PhoneVerification from '@/components/login/PhoneVerification';
-// import VerificationCode from '@/components/login/VerificationCode';
 import NicknameSetup from '@/components/login/NicknameSetup';
 import BreadCategorySelection from '@/components/login/BreadCategorySelection';
 

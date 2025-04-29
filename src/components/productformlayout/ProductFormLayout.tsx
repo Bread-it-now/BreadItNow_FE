@@ -2,11 +2,6 @@ import Button from '@/components/button/Button';
 import { ROUTES } from '@/constants/routes';
 import { LabelForm } from '@/components/common/labelform/LabelForm';
 import SelectedItem from '@/components/selecteditem/SelectItem';
-import { generateSharedObjectByCustomKey, mapCategoryIdsToIdLabel } from '@/utils/mappingUtils';
-import { BREAD_CATEGORY, MAIN_BREAD_CATEGORY, Option } from '@/lib/shared/product';
-import CustomInputWithOptions from '@/components/custominputwithoptions/CustomInputWithOptions';
-import ProductCategory from '@/components/productcategory/ProductCategory';
-import CategoryChip from '@/components/common/chips/categorychip/CategoryChip';
 import InputText from '@/components/common/inputtext/InputText';
 import TextArea from '@/components/common/textarea/TextArea';
 import { useForm, Controller } from 'react-hook-form';
@@ -31,7 +26,6 @@ interface ProductFormLayoutProps {
 }
 export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps) => {
   const router = useRouter();
-  const generateSelectOption = generateSharedObjectByCustomKey('id', 'label');
   const { isOpen: isWheelTimePickerOpen, dispatch } = useBaseBottomSheet();
   const [newReleaseTime, setNewReleaseTime] = useState<{ hours: number; minutes: number; ampm: 'AM' | 'PM' }>({
     hours: 9,
@@ -114,61 +108,6 @@ export const ProductFormLayout = ({ initValue, mutate }: ProductFormLayoutProps)
             </p>
           </div>
         </LabelForm>
-
-        {isBreadProduct && (
-          <LabelForm name="breadCategoryIds" label="빵 카테고리" isRequired errors={errors} className="w-full">
-            <Controller
-              control={control}
-              rules={{ required: '빵 카테고리를 선택해주세요.' }}
-              {...register('breadCategoryIds')}
-              render={({ field }) => {
-                const breadCategories: Option[] =
-                  field.value && field.value.length !== 0 ? mapCategoryIdsToIdLabel(field.value) : [];
-
-                return (
-                  <div className="flex flex-col items-start gap-1 w-full">
-                    <div className="flex flex-col gap-1 w-full">
-                      {breadCategories.map((category) => (
-                        <ProductCategory
-                          key={category.label}
-                          category={{ ...category, id: Number(category.id) }}
-                          handleDelete={() => field.onChange(field.value.filter((id: number) => id !== category.id))}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                      <CustomInputWithOptions
-                        selectOption={({ id }: Option) => {
-                          if (!field.value.includes(Number(id))) {
-                            field.onChange([...field.value, Number(id)]);
-                          }
-                        }}
-                        placeholder="카테고리 검색"
-                        options={generateSelectOption(BREAD_CATEGORY)}
-                      />
-                      <div className="flex flex-wrap items-start content-center gap-[6px] w-full">
-                        {generateSelectOption(MAIN_BREAD_CATEGORY).map((category) => (
-                          <CategoryChip
-                            key={category.label}
-                            category={{ id: Number(category.id), label: String(category.label) }}
-                            checked={field.value.includes(Number(category.id))}
-                            handleChecked={() => {
-                              if (field.value.includes(Number(category.id))) {
-                                field.onChange(field.value.filter((id: number) => id !== Number(category.id)));
-                              } else {
-                                field.onChange([...field.value, Number(category.id)]);
-                              }
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                );
-              }}
-            />
-          </LabelForm>
-        )}
 
         <LabelForm name="productIamge" label="메뉴이미지" className="w-full">
           <Controller

@@ -1,4 +1,4 @@
-import { FilterKey } from '@/types/bakery';
+import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { CustomerReservationStatus, OwnerReservationStatusQuery } from '@/types/reservation';
 
@@ -56,6 +56,34 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}/favorite`,
   DELETE_FAVORITE_PRODUCT: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${productId}/favorite`,
+  HOT_PRODUCTS: (page: number, size: number, sort: HotFilterKey) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot?page=${page}&size=${size}&sort=${sort}`,
+
+  /** CUSTOMER - SEARCH */
+  SEARCH_AUTOCOMPLETE: (keyword: string) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/autocomplete?keyword=${keyword}`,
+  SEARCH_BAKERIES: (
+    page: number,
+    size: number,
+    sort: FilterKey,
+    keyword: string,
+    latitude: number,
+    longitude: number,
+  ) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/bakery?page=${page}&size=${size}&sort=${sort}&keyword=${keyword}&latitude=${latitude}&longitude=${longitude}`,
+  SEARCH_PRODUCTS: (
+    page: number,
+    size: number,
+    sort: FilterKey,
+    keyword: string,
+    latitude: number,
+    longitude: number,
+  ) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/product?page=${page}&size=${size}&sort=${sort}&keyword=${keyword}&latitude=${latitude}&longitude=${longitude}`,
+
+  /** CUSTOMER - BAKERY */
+  HOT_BAKERIES: (page: number, size: number, sort: HotFilterKey, latitude: number, longitude: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/hot?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
 
   /** AUTH */
   AUTH: {
@@ -80,7 +108,7 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb`,
   ONOFF_DO_NOT_DISTURB_SETTING: () =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/do-not-disturb/toggle`,
-  TODAY_NOTIFCIATON_PRODUCT: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
+  TODAY_ALERT_PRODUCT: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/today`,
 
   /** CUSTOMER - NOTIFICATION */
   CUSTOMER_NOTIFICATIONS: (page: number, size: number, type: NotificationType | 'ALL') =>
@@ -95,6 +123,7 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}`,
   CANCEL_ALERT_PRODUCT: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.ALERT}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}`,
+
   /** FAVORITE */
   BOOKMARK_PRODUCT: (productId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/${productId}/${CONTROLLER.CUSTOMER.FAVORITE}`,
@@ -136,7 +165,7 @@ export const API_END_POINT = {
   DELETE_PRODUCTS: (bakeryId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/products`,
   HIDE_PRODUCTS: (bakeryId: number) =>
-    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/hide`,
+    `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/products/hide`,
   BAKERY_PRODUCT: (bakeryId: number, productId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.BAKERY_PRODUCT}/${bakeryId}/product/${productId}`,
   BAKERY_PRODUCTS: (bakeryId: number) =>
@@ -161,4 +190,5 @@ export const API_END_POINT = {
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}/${notificationId}/read`,
   DELETE_OWNER_NOTIFICATION: (notificationId: number) =>
     `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}/${notificationId}`,
+  SEND_FRESH_PRODUCT_NOTIFICATION: () => `${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}`,
 };

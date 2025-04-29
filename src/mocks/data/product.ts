@@ -18,6 +18,7 @@ export const mockProducts: {
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 0,
       isActive: false,
+      isHidden: false,
       breadCategories: [
         {
           categoryId: 1,
@@ -37,6 +38,7 @@ export const mockProducts: {
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 100,
       isActive: true,
+      isHidden: true,
       breadCategories: [
         {
           categoryId: 2,
@@ -56,6 +58,7 @@ export const mockProducts: {
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 100,
       isActive: false,
+      isHidden: false,
       breadCategories: [
         {
           categoryId: 3,
@@ -75,6 +78,7 @@ export const mockProducts: {
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 100,
       isActive: true,
+      isHidden: false,
       breadCategories: [
         {
           categoryId: 4,
@@ -94,6 +98,7 @@ export const mockProducts: {
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 100,
       isActive: true,
+      isHidden: true,
       breadCategories: [
         {
           categoryId: 5,
@@ -113,6 +118,7 @@ export const mockProducts: {
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 100,
       isActive: true,
+      isHidden: false,
       breadCategories: [
         {
           categoryId: 6,
@@ -132,6 +138,7 @@ export const mockProducts: {
       releaseTimes: ['08:00', '12:00', '16:00'],
       stock: 100,
       isActive: true,
+      isHidden: false,
       breadCategories: [
         {
           categoryId: 7,
@@ -152,6 +159,7 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
+      isHidden: false,
       displayOrder: 0,
     },
     {
@@ -164,6 +172,7 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
+      isHidden: false,
       displayOrder: 1,
     },
     {
@@ -176,6 +185,7 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
+      isHidden: false,
       displayOrder: 2,
     },
     {
@@ -188,6 +198,7 @@ export const mockProducts: {
       description: '커피 한잔 하세요',
       stock: 100,
       isActive: true,
+      isHidden: false,
       displayOrder: 3,
     },
   ],
@@ -205,6 +216,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 0,
     isActive: false,
+    isHidden: false,
     breadCategories: [
       {
         categoryId: 1,
@@ -226,6 +238,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
+    isHidden: true,
     breadCategories: [{ categoryId: 2, categoryName: '통밀빵' }],
     displayOrder: 2,
   },
@@ -240,6 +253,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: false,
+    isHidden: false,
     breadCategories: [{ categoryId: 3, categoryName: '호밀빵' }],
     displayOrder: 3,
   },
@@ -254,6 +268,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
+    isHidden: true,
     breadCategories: [{ categoryId: 4, categoryName: '소금빵' }],
     displayOrder: 4,
   },
@@ -268,6 +283,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
+    isHidden: false,
     breadCategories: [{ categoryId: 5, categoryName: '크림빵' }],
     displayOrder: 5,
   },
@@ -282,6 +298,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
+    isHidden: true,
     breadCategories: [{ categoryId: 6, categoryName: '단팥빵' }],
     displayOrder: 6,
   },
@@ -296,6 +313,7 @@ export const mockProductsList: Product[] = [
     releaseTimes: ['08:00', '12:00', '16:00'],
     stock: 100,
     isActive: true,
+    isHidden: false,
     breadCategories: [{ categoryId: 7, categoryName: '치아바타' }],
     displayOrder: 7,
   },
@@ -309,6 +327,7 @@ export const mockProductsList: Product[] = [
     description: '커피 한잔 하세요',
     stock: 100,
     isActive: true,
+    isHidden: false,
     displayOrder: 0,
   },
   {
@@ -321,6 +340,7 @@ export const mockProductsList: Product[] = [
     description: '커피 한잔 하세요',
     stock: 100,
     isActive: true,
+    isHidden: false,
     displayOrder: 1,
   },
   {
@@ -333,6 +353,7 @@ export const mockProductsList: Product[] = [
     description: '커피 한잔 하세요',
     stock: 100,
     isActive: true,
+    isHidden: false,
     displayOrder: 2,
   },
   {
@@ -345,6 +366,7 @@ export const mockProductsList: Product[] = [
     description: '커피 한잔 하세요',
     stock: 100,
     isActive: true,
+    isHidden: false,
     displayOrder: 3,
   },
 ];

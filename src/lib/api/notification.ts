@@ -1,5 +1,6 @@
 import { API_END_POINT } from '@/constants/api';
 import { NOTIFICATION_QUERY_KEY } from '@/constants/queryKey';
+import { TodayProduct } from '@/types/bakery';
 import {
   CustomerNotification,
   DoNotDisturb,
@@ -10,14 +11,15 @@ import {
   PageInfo,
 } from '@/types/notification';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { customFetch } from '../customFetch';
 
 export const getDoNotDisturbSetting = async (): Promise<{ data: DoNotDisturb }> => {
-  const response = await fetch(`/${API_END_POINT.DO_NOT_DISTURB_SETTING()}`, {
+  const response = await customFetch(`/${API_END_POINT.DO_NOT_DISTURB_SETTING()}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -30,12 +32,12 @@ export const useDoNotDisturbSetting = () =>
   });
 
 export const onOffDoNotDisturbSetting = async (): Promise<{ data: { active: boolean } }> => {
-  const response = await fetch(`/${API_END_POINT.DO_NOT_DISTURB_SETTING()}`, {
+  const response = await customFetch(`/${API_END_POINT.DO_NOT_DISTURB_SETTING()}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -70,13 +72,13 @@ export const useOnOffDoNotDisturbSetting = () => {
 };
 
 export const editDoNotDisturbSetting = async (doNotDisturbForm: DoNotDisturbForm): Promise<{ data: null }> => {
-  const response = await fetch(`/${API_END_POINT.EDIT_DO_NOT_DISTURB_SETTING()}`, {
+  const response = await customFetch(`/${API_END_POINT.EDIT_DO_NOT_DISTURB_SETTING()}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ...doNotDisturbForm }),
   });
 
-  if (!response.ok) throw new Error('Failed to edit do not distub setting');
+  if (!response?.ok) throw new Error('Failed to edit do not distub setting');
 
   return response.json();
 };
@@ -88,12 +90,12 @@ export const getProductNotificationSettings = async ({
   pageParam?: number;
   size?: number;
 }): Promise<{ data: { alerts: NotificationSetting[]; pageInfo: PageInfo } }> => {
-  const response = await fetch(`/${API_END_POINT.PRODUCT_NOTIFICATION_SETTINGS(pageParam, size)}`, {
+  const response = await customFetch(`/${API_END_POINT.PRODUCT_NOTIFICATION_SETTINGS(pageParam, size)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -111,12 +113,12 @@ export const useProductNotificationSettings = ({ size = 10 }: { page?: number; s
 };
 
 export const onOffProductNotificaitonSetting = async (productId: number): Promise<{ data: { active: boolean } }> => {
-  const response = await fetch(`/${API_END_POINT.ONOFF_PRODUCT_NOTIFICATION_SETTING(productId)}`, {
+  const response = await customFetch(`/${API_END_POINT.ONOFF_PRODUCT_NOTIFICATION_SETTING(productId)}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -168,12 +170,12 @@ export const useOnOffProductNotificationSetting = ({ size = 10 }: { size?: numbe
 };
 
 export const deleteProductNotificationSetting = async (productId: number): Promise<{ data: null }> => {
-  const response = await fetch(`/${API_END_POINT.DELETE_PRODUCT_NOTFICATION_SETTING(productId)}`, {
+  const response = await customFetch(`/${API_END_POINT.DELETE_PRODUCT_NOTFICATION_SETTING(productId)}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -187,12 +189,12 @@ export const getCustomerNotifications = async ({
   size?: number;
   type: NotificationType | 'ALL';
 }): Promise<{ data: { notifications: CustomerNotification[]; pageInfo: PageInfo } }> => {
-  const response = await fetch(`/${API_END_POINT.CUSTOMER_NOTIFICATIONS(pageParam, size, type)}`, {
+  const response = await customFetch(`/${API_END_POINT.CUSTOMER_NOTIFICATIONS(pageParam, size, type)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -212,12 +214,12 @@ export const useCustomerNotifications = ({ type, size = 10 }: { type: Notificati
 export const readCustomerNotification = async (
   notificationId: number,
 ): Promise<{ data: { notificationId: number } }> => {
-  const response = await fetch(`/${API_END_POINT.READ_CUSTOMER_NOTIFICATION(notificationId)}`, {
+  const response = await customFetch(`/${API_END_POINT.READ_CUSTOMER_NOTIFICATION(notificationId)}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -225,12 +227,12 @@ export const readCustomerNotification = async (
 export const deleteCustomerNotification = async (
   notificationId: number,
 ): Promise<{ data: { notificationId: number } }> => {
-  const response = await fetch(`/${API_END_POINT.DELETE_CUSTOMER_NOTIFICATION(notificationId)}`, {
+  const response = await customFetch(`/${API_END_POINT.DELETE_CUSTOMER_NOTIFICATION(notificationId)}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -242,12 +244,12 @@ export const getOwnerNotifications = async ({
   pageParam?: number;
   size?: number;
 }): Promise<{ data: { notifications: OwnerNotification[]; pageInfo: PageInfo } }> => {
-  const response = await fetch(`/${API_END_POINT.OWNER_NOTIFICATIONS(pageParam, size)}`, {
+  const response = await customFetch(`/${API_END_POINT.OWNER_NOTIFICATIONS(pageParam, size)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -265,12 +267,12 @@ export const useOwnerNotifications = ({ size = 10 }: { size?: number }) => {
 };
 
 export const readOwnerNotification = async (notificationId: number): Promise<{ data: { notificationId: number } }> => {
-  const response = await fetch(`/${API_END_POINT.READ_OWNER_NOTIFICATION(notificationId)}`, {
+  const response = await customFetch(`/${API_END_POINT.READ_OWNER_NOTIFICATION(notificationId)}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
   return response.json();
 };
@@ -278,12 +280,41 @@ export const readOwnerNotification = async (notificationId: number): Promise<{ d
 export const deleteOwnerNotification = async (
   notificationId: number,
 ): Promise<{ data: { notificationId: number } }> => {
-  const response = await fetch(`/${API_END_POINT.DELETE_OWNER_NOTIFICATION(notificationId)}`, {
+  const response = await customFetch(`/${API_END_POINT.DELETE_OWNER_NOTIFICATION(notificationId)}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Failed to fetch');
+  if (!response?.ok) throw new Error('Failed to fetch');
 
+  return response.json();
+};
+
+export const getTodayAlertProducts = async (): Promise<{ data: { alerts: TodayProduct[] } }> => {
+  const response = await customFetch(`/${API_END_POINT.TODAY_ALERT_PRODUCT()}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to fetch Today Alert Products');
+
+  return response.json();
+};
+
+export const useTodayAlertProducts = () =>
+  useQuery({
+    queryKey: [...NOTIFICATION_QUERY_KEY.TODAY_ALERT_PRODUCTS()],
+    queryFn: () => getTodayAlertProducts(),
+    select: (data: { data: { alerts: TodayProduct[] } }) => data?.data.alerts,
+  });
+
+export const sendFreshProductNotification = async (bakeryId: number, productId: number): Promise<{ data: null }> => {
+  const response = await customFetch(`/${API_END_POINT.SEND_FRESH_PRODUCT_NOTIFICATION()}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bakeryId, productId }),
+  });
+
+  if (!response?.ok) throw new Error('Failed to add bookmark product');
   return response.json();
 };

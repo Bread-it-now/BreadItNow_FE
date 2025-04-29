@@ -10,43 +10,156 @@ import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/main/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { bakeryCardMockData } from '@/mocks/data/bakery';
-import HotBreads from '@/components/main/HotBreads';
 import { useSearchParams } from 'next/navigation';
-const hotBreadsData = [
-  { title: '모카 크림빵', subtitle: '달콤한 아침', price: '2,700원', img: Bread },
-  { title: '뺑 오 쇼콜라', subtitle: '버터 앤 드림', price: '2,700원', img: Bread },
-  { title: '생크림 식빵', subtitle: '소금 한 꼬집', price: '2,700원', img: Bread },
-  { title: '크루아상', subtitle: '라 메종 뒤 팡', price: '2,700원', img: Bread },
-  { title: '매듭빵', subtitle: '빵굽는 집', price: '2,700원', img: Bread },
-];
-
-<div className="bg-white rounded-t-2xl mt-6 p-4 w-[100%]">
-  <HotBreads breads={hotBreadsData} />
-</div>;
-
-import Bakery from '@/assets/images/bakery.png';
-import Bread from '@/assets/images/bread.png';
 import MapIcon from '@/components/common/Icons/MapIcon';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
 import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
-import Detail from '@/assets/icons/arrow-down.svg';
+import ArrowRight from '@/assets/icons/arrow-right.svg';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import NotificationIcon from '@/components/common/Icons/NotificationIcon';
+import { getMonthDateDay } from '@/utils/date';
+import { useTodayAlertProducts } from '@/lib/api/notification';
+import { useHotBakeries, useHotProducts } from '@/lib/api/bakery';
+import { HotBakery, HotProduct } from '@/types/bakery';
+import BreadCard from '@/components/bakerycard/BreadCard';
+import EmptyState from '@/components/common/EmptyState';
+
+const TodayProductsSection = () => {
+  const { data: todayProducts } = useTodayAlertProducts();
+  const { month, date, day } = getMonthDateDay(new Date());
+  return (
+    <>
+      <div className="flex px-4 justify-between items-center my-8">
+        <div className="relative flex items-center">
+          <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>
+          <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
+        </div>
+        <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
+          <span>
+            {month} {date}
+          </span>
+          <span>{day}</span>
+        </div>
+      </div>
+      <div
+        className={`flex gap-3 mx-4 overflow-x-auto pl-1 'min-h-[161px]' ${todayProducts && todayProducts.length === 0 ? 'items-center min-h-[80px]' : 'min-h-[161px]'}`}>
+        {todayProducts &&
+          (todayProducts.length !== 0 ? (
+            todayProducts.map((product) => <TodayBread key={product.productId} {...product} />)
+          ) : (
+            <div className="flex justify-center text-title-content-l w-full h-full text-white">
+              오늘의 빵을 설정해주세요
+            </div>
+          ))}
+      </div>
+    </>
+  );
+};
+
+const HotProductsSection = () => {
+  const router = useRouter();
+  const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
+  const { data } = useHotProducts({ size: 5, sort: 'reservation' });
+
+  return (
+    <div className="flex flex-col gap-[30px] w-full">
+      <div className="flex mt-3 justify-between items-center">
+        <div className="flex flex-col">
+          <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
+          <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
+        </div>
+        <button onClick={navigateToBreads}>
+          <Image src={ArrowRight} alt="더보기" />
+        </button>
+      </div>
+      <div className="flex flex-col gap-4 bg-white rounded-t-2xl my-1 w-[100%]">
+        <>
+          {data?.pages[0].data.hotProducts.length !== 0 ? (
+            data?.pages.map((page) =>
+              page.data.hotProducts.map((product: HotProduct, idx: number) => (
+                <BreadCard
+                  key={product.productId}
+                  id={product.productId}
+                  bakeryId={product.bakeryId}
+                  profileImgUrl={product.image}
+                  name={product.productName}
+                  bakeryName={product.bakeryName}
+                  price={product.price}
+                  isBookmarked={false}
+                  stock={product.stock}
+                  direction="row"
+                  isShowRank
+                  rank={idx + 1}
+                />
+              )),
+            )
+          ) : (
+            <EmptyState title="핫한 빵이 없습니다." message="핫한 빵이 없습니다." />
+          )}
+        </>
+      </div>
+    </div>
+  );
+};
+
+const HotBakerySection = () => {
+  const router = useRouter();
+  const navigateToBakeries = () => router.push(ROUTES.HOME.BAKERY_LIST);
+  const { data } = useHotBakeries({ size: 5, sort: 'reservation' });
+
+  return (
+    <div className="flex flex-col gap-[30px] w-full">
+      <div className="flex justify-between items-center">
+        <div className="flex flex-col">
+          <h2 className="text-lg font-bold text-gray900">핫한 빵집 top 5</h2>
+          <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
+        </div>
+        <button onClick={navigateToBakeries}>
+          <Image src={ArrowRight} alt="더보기" />
+        </button>
+      </div>
+      <div className="flex gap-4 overflow-x-auto pl-1 scrollbar-hide">
+        {data?.pages[0].data.hotBakeries.length !== 0 ? (
+          data?.pages.map((page) =>
+            page.data.hotBakeries.map((bakery: HotBakery, idx: number) => (
+              <div key={idx} className="flex-shrink-0 w-[250px] text-gray900">
+                <BakeryCard
+                  key={bakery.bakeryId}
+                  bakeryId={bakery.bakeryId}
+                  name={bakery.bakeryName}
+                  operatingStatus={bakery.operatingStatus}
+                  distance={bakery.distance}
+                  profileImage={bakery.profileImage}
+                  rank={idx + 1}
+                  isBookmarked={false}
+                />
+              </div>
+            )),
+          )
+        ) : (
+          <EmptyState title="핫한 빵이 없습니다." message="핫한 빵이 없습니다." />
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
 
   const router = useRouter();
-  const navigateToBreads = () => router.push(ROUTES.HOME.BREAD_LIST);
-  const navigateToBakeries = () => router.push(ROUTES.HOME.BAKERY_LIST);
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const isScrolled = useScrollDetection(scrollContainerRef);
   const searchParams = useSearchParams();
+
   useEffect(() => {
     if (searchParams.get('isNewUser') === 'true') {
       router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
+
   return (
     <div
       className="flex flex-col h-[100%]"
@@ -77,9 +190,7 @@ export default function Page() {
                 <span
                   className={`absolute -top-1 -right-1 text-xs rounded-full px-1 transition-all duration-100 ${
                     isScrolled ? 'text-white bg-primary' : 'text-primary bg-white'
-                  }`}>
-                  8
-                </span>
+                  }`}></span>
               </div>
             </Link>
           </div>
@@ -87,102 +198,10 @@ export default function Page() {
       </div>
 
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-4">
-        <div className="flex px-4 justify-between items-center my-8">
-          <div className="relative flex items-center">
-            <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>
-            <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
-          </div>
-          <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
-            <span>01월 27일</span>
-            <span>월요일</span>
-          </div>
-        </div>
-
-        <div className="flex gap-3 mx-4 overflow-x-auto pl-1">
-          <TodayBread subTitle="달콤한 아침" title="모카 크림빵" reserveTimes={['8:00', '10:00']} />
-          <TodayBread subTitle="라 메종 뒤 팡" title="생크림 식빵" reserveTimes={['8:00', '10:00', '14:00']} />
-          <TodayBread subTitle="빵굽는 집" title="크루아상" reserveTimes={['8:00', '10:00']} />
-        </div>
-
-        <div className="bg-white rounded-t-2xl mt-6 mb-1 p-4 w-[100%]">
-          <div className="flex mt-3 justify-between items-center">
-            <div className="flex flex-col">
-              <h2 className="text-lg font-bold text-gray900">핫한 빵 top 5</h2>
-              <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
-            </div>
-            <button onClick={navigateToBreads}>
-              <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
-            </button>
-          </div>
-          <div className="bg-white rounded-t-2xl my-1 w-[100%]">
-            <HotBreads breads={hotBreadsData} />
-          </div>
-
-          <div className="mt-6">
-            <div className="mb-6 flex justify-between items-center">
-              <div className="flex flex-col">
-                <h2 className="text-lg font-bold text-gray900">핫한 빵집 top 5</h2>
-                <p className="text-gray500 text-sm">최근 한 달 간 예약이 많은 순</p>
-              </div>
-              <button onClick={navigateToBakeries}>
-                <Image src={Detail} alt="더보기" className="w-4 h-4 transform -rotate-90" />
-              </button>
-            </div>
-            <div className="flex gap-4 overflow-x-auto pl-1 scrollbar-hide pb-10">
-              {[
-                {
-                  id: 1,
-                  name: '라 메종 뒤 팡 에 뒤 레브',
-                  operatingStatus: 'OPEN' as const,
-                  distance: 1.5,
-                  profileImage: Bakery.src,
-                },
-                {
-                  id: 2,
-                  name: '달콤한 아침',
-                  operatingStatus: 'CLOSED' as const,
-                  distance: 1.7,
-                  profileImage: Bakery.src,
-                },
-                {
-                  id: 3,
-                  name: '버터 앤 드림',
-                  operatingStatus: 'OPEN' as const,
-                  distance: 2.3,
-                  profileImage: Bakery.src,
-                },
-                {
-                  id: 4,
-                  name: '소금 한 꼬집',
-                  operatingStatus: 'CLOSED' as const,
-                  distance: 3.0,
-                  profileImage: Bakery.src,
-                },
-                {
-                  id: 5,
-                  name: '빵굽는 집',
-                  operatingStatus: 'OPEN' as const,
-                  distance: 3.5,
-                  profileImage: Bakery.src,
-                },
-              ].map((bakery, index) => (
-                <div key={index} className="flex-shrink-0 w-[250px] text-gray900">
-                  <BakeryCard
-                    bakeryId={bakery.id}
-                    name={bakery.name}
-                    operatingStatus={bakery.operatingStatus}
-                    distance={bakery.distance}
-                    profileImage={bakery.profileImage}
-                    rank={index + 1}
-                    size="large"
-                    showBookmark={false}
-                    isBookmarked={false}
-                    onToggleBookmark={() => {}}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+        <TodayProductsSection />
+        <div className="flex flex-col gap-[80px] bg-white rounded-t-2xl p-4 mt-[50px] w-[100%]">
+          <HotProductsSection />
+          <HotBakerySection />
         </div>
       </div>
 

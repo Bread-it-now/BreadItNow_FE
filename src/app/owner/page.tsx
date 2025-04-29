@@ -50,11 +50,22 @@ export default function Page() {
   const { data: productsInfo } = useBakeryProducts(bakeryId);
   const [activeChangeProductIds, setActiveChangeProductIds] = useState<number[]>([]);
   const {
-    hideMenuMutate,
+    hideProductsMutate,
     isOpen: isProductHideManagementBottomSheetOpen,
     open: openProductHideManagementBottomSheet,
     close: closeProductHideManagementBottomSheet,
   } = useProductHideManagementBottomSheet();
+
+  const getHiddenProductIds = (): number[] => {
+    return [
+      ...(productsInfo?.breadProducts
+        .filter((product: Product) => product.isHidden !== activeChangeProductIds.includes(product.productId))
+        .map((product: Product) => product.productId) || []),
+      ...(productsInfo?.otherProducts
+        .filter((product: Product) => product.isHidden !== activeChangeProductIds.includes(product.productId))
+        .map((product: Product) => product.productId) || []),
+    ];
+  };
 
   return (
     <div className="flex flex-col items-start gap-[10px] w-full bg-gray100">
@@ -103,7 +114,7 @@ export default function Page() {
             confirmText="확인"
             onConfirm={() => {
               // 빵집 메뉴 isAcitve 변경 API 호출
-              hideMenuMutate();
+              hideProductsMutate(bakeryId, getHiddenProductIds());
               closeProductHideManagementBottomSheet();
             }}
             confirmDisabled={activeChangeProductIds.length === 0}>
@@ -113,7 +124,7 @@ export default function Page() {
                   key={`${product.productId}-${product.name}`}
                   {...product}
                   isEditProductActive
-                  isActive={activeChangeProductIds.includes(product.productId) ? !product.isActive : product.isActive}
+                  isActive={activeChangeProductIds.includes(product.productId) ? !product.isHidden : product.isHidden}
                   handleProductActiveChange={setActiveChangeProductIds}
                 />
               ))}
@@ -122,7 +133,7 @@ export default function Page() {
                   key={`${product.productId}-${product.name}`}
                   {...product}
                   isEditProductActive
-                  isActive={activeChangeProductIds.includes(product.productId) ? !product.isActive : product.isActive}
+                  isActive={activeChangeProductIds.includes(product.productId) ? !product.isHidden : product.isHidden}
                   handleProductActiveChange={setActiveChangeProductIds}
                 />
               ))}

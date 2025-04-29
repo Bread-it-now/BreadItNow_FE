@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
+import { Dispatch, forwardRef, SetStateAction, useState } from 'react';
 import SearchIcon from '@/components/common/Icons/SearchIcon';
 import CloseIcon from '@/components/common/Icons/CloseIcon';
 
@@ -13,6 +13,7 @@ interface SearchInputProps {
   height?: string;
   onEnter?: () => void;
   onClear?: () => void;
+  handleVisibleResult?: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -26,7 +27,7 @@ interface SearchInputProps {
  * @param onClear - X 버튼 클릭 시 검색어를 초기화하는 함수 (optional)
  */
 
-const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function SearchBar(
+const InputSearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function SearchBar(
   {
     name,
     placeholder = '검색...',
@@ -36,6 +37,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
     onEnter,
     onClear,
     value,
+    handleVisibleResult,
   }: SearchInputProps,
   ref,
 ) {
@@ -44,12 +46,16 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && onEnter) {
       onEnter();
+      if (ref && 'current' in ref && ref.current) {
+        ref.current.blur();
+      }
+      setIsFocus(false);
     }
   };
 
   return (
     <label
-      className={`flex items-center rounded-[8px] bg-white transition-all px-4 shadow-sm 
+      className={`flex items-center rounded-[8px] bg-white transition-all px-4 shadow-sm max-w-[300px]
         ${width} ${height} ${
           isFocus ? 'outline outline-1 outline-gray400 text-black' : 'outline outline-1 outline-gray200 text-gray400'
         }`}
@@ -61,16 +67,23 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
         placeholder={placeholder}
         onChange={onChange}
         onKeyDown={handlePressEnter}
-        onFocus={() => setIsFocus(true)}
+        onFocus={() => {
+          setIsFocus(true);
+          if (handleVisibleResult) handleVisibleResult(false);
+        }}
         onBlur={() => setIsFocus(false)}
-        className="flex-1 bg-transparent border-none outline-none px-0 text-black"
+        autoComplete="off"
+        className="flex-1 bg-transparent border-none outline-none px-0 text-[14px] text-black placeholder:text-[14px] "
       />
 
       <div className="w-5 h-5 flex items-center justify-center mr-2">
         {value && (
           <button
             type="button"
-            onClick={onClear}
+            onClick={() => {
+              if (onClear) onClear();
+              if (handleVisibleResult) handleVisibleResult(false);
+            }}
             className="flex items-center justify-center w-5 h-5 p-1.5 bg-gray-100 rounded-full mr-2">
             <CloseIcon color="#808284" />
           </button>
@@ -84,4 +97,4 @@ const SearchBar = forwardRef<HTMLInputElement, SearchInputProps>(function Search
   );
 });
 
-export default SearchBar;
+export default InputSearchBar;

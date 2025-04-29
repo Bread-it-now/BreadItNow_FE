@@ -35,7 +35,9 @@ export default function Page() {
             {activeTab === 'bakery' ? (
               <FavoriteBakeryList sort={selectedFilter} handleTotalElementsCnt={setTotalElementsCnt} />
             ) : (
-              <FavoriteProductList sort={selectedFilter} handleTotalElementsCnt={setTotalElementsCnt} />
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <FavoriteProductList sort={selectedFilter} handleTotalElementsCnt={setTotalElementsCnt} />
+              </div>
             )}
           </div>
         </div>
@@ -74,13 +76,14 @@ const FavoriteBakeryList = ({
       { threshold: 1.0 },
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    const currentRef = observerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
@@ -141,13 +144,14 @@ const FavoriteProductList = ({
       { threshold: 1.0 },
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    const currentRef = observerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
@@ -160,11 +164,14 @@ const FavoriteProductList = ({
             <BreadCard
               key={product.productId}
               id={product.productId}
+              bakeryId={product.bakeryId}
               profileImgUrl={product.image}
               name={product.name}
-              description=""
+              bakeryName="맛있는 빵집"
+              direction="column"
               price={product.price}
               isBookmarked
+              isShowBookmark
             />
           )),
         )

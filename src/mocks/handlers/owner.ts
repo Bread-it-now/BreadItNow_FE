@@ -326,6 +326,22 @@ const readOwnerNotification = http.patch(
   },
 );
 
+const sendFreshProductNotification = http.post(
+  `/${MODULE.OWNER}/${API_VERSION_PREFIX}/${CONTROLLER.OWNER.NOTIFICATION}`,
+
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: { productId: mockProductsList.length + 1 },
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getBakeryInfo,
   getBakeryProoducts,
@@ -343,4 +359,5 @@ export default [
   editProduct,
   getOwnerNotifications,
   readOwnerNotification,
+  sendFreshProductNotification,
 ];

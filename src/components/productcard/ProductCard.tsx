@@ -14,6 +14,7 @@ import Drag from '@/assets/icons/drag.svg';
 import QuantityChip from '../common/chips/quantitychip/quantityChip';
 import Modal from '@/components/common/modal/Modal';
 import useModal from '@/hooks/useModal';
+import { sendFreshProductNotification } from '@/lib/api/notification';
 
 interface ProductCardProps extends Product {
   isEditProductActive?: boolean;
@@ -206,7 +207,10 @@ const ProductCard = ({
           onClose={dispatch.close}
           confirmText="알림 전송"
           cancelText="건너뛰기"
-          onConfirm={() => {}}
+          onConfirm={() => {
+            sendFreshProductNotification(bakeryId, productId);
+            dispatch.close();
+          }}
           cancelBtnFullWidth>
           <div className="text-center text-title-content-s font-normal">
             대기 중인 고객에게

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { useScrollDetection } from '@/hooks/useScrollDetection';
-import LocationBottomSheet from '@/components/bottomsheet/LocationBottomsheet';
+import LocationBottomSheet from '@/components/bottomsheet/locationbottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/todaybread/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { useSearchParams } from 'next/navigation';

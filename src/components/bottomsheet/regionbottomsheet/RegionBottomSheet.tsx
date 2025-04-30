@@ -4,7 +4,7 @@ import { GuGunRegion, SidoRegion } from '@/types/location';
 import LocationIcon from '@/assets/icons/location.svg';
 import { cn } from '@/utils/cn';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useGuGunRegions } from '@/lib/api/location';
+import { useGuGunRegions } from '@/lib/api/region';
 
 export const sidoRegions: SidoRegion[] = [
   { sidoCode: '11', sidoName: '서울' },
@@ -110,6 +110,10 @@ const RegionBottomSheet = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     <BottomSheet
       isOpen={isOpen}
       onClose={onClose}
+      onCancel={() => {
+        setSelectedGuGunRegions([]);
+        setSelectedSidoRegion({ ...sidoRegions[0] });
+      }}
       title="관심지역 설정"
       confirmText="관심지역 설정 완료"
       cancelText="초기화"

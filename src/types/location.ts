@@ -15,6 +15,16 @@ export interface LocationProps {
     subRegions: { id: number; name: string; selected: boolean }[];
   };
 }
+
+export interface SidoRegion {
+  sidoCode: string;
+  sidoName: string;
+}
+
+export interface SidoRegionWithSelectedCnt extends SidoRegion {
+  selectedCnt: number;
+}
+
 export interface Region {
   id: number;
   name: string;

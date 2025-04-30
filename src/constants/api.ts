@@ -60,6 +60,11 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot?page=${page}&size=${size}&sort=${sort}`,
 
   /** CUSTOMER - SEARCH */
+  SIDO_REGIONS: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido`,
+  SUB_REGIONS: (sidoCode: string) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/${sidoCode}/gugun`,
+
+  /** CUSTOMER - SEARCH */
   SEARCH_AUTOCOMPLETE: (keyword: string) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/autocomplete?keyword=${keyword}`,
   SEARCH_BAKERIES: (

@@ -92,7 +92,7 @@ const BottomSheet = ({
             )}
             onAnimationEnd={handleBottomSheetAnimationEnd}>
             <div className="relative flex flex-col h-full">
-              <div className="flex flex-col items-center h-full px-[1.25rem] gap-[1.5rem]">
+              <div className={cn(`flex flex-col items-center h-full px-[1.25rem] gap-[1.5rem]`)}>
                 {title && (
                   <div className="flex justify-between items-center w-full h-[1.5rem]">
                     <h2 className="text-gray-950 text-[18px] font-semibold">{title}</h2>

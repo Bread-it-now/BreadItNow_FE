@@ -13,6 +13,7 @@ import {
 import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { mockCustomerNotifications } from '../data/notification';
+import { mockSidoRegions } from '../data/region';
 
 const getCustomerReservations = http.get(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
@@ -665,6 +666,21 @@ const getSearchProducts = http.get(
   },
 );
 
+const getSidoRegions = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: mockSidoRegions,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -690,4 +706,5 @@ export default [
   getSearchAutoCompletes,
   getSearchBakeries,
   getSearchProducts,
+  getSidoRegions,
 ];

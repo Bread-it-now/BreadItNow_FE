@@ -37,3 +37,8 @@ export const SEARCH_QUERY_KEY = {
   BAKERIES: (keyword: string, sort: FilterKey) => [BASE_KEY.CUSTOMER, 'SEARCH', 'BAKERIES', keyword, sort],
   PRODUCTS: (keyword: string, sort: FilterKey) => [BASE_KEY.CUSTOMER, 'SEARCH', 'PRODUCTS', keyword, sort],
 };
+
+export const REGION_QUERY_KEY = {
+  SIDO_REGIONS: () => [BASE_KEY.CUSTOMER, 'REGION'],
+  SUB_REGIONS: (sidoCode: string) => [BASE_KEY.CUSTOMER, 'REGION', sidoCode],
+};

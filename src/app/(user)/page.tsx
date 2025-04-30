@@ -204,21 +204,7 @@ export default function Page() {
         </div>
       </div>
 
-      {isOpen && (
-        <LocationBottomSheet
-          isOpen={isOpen}
-          title="관심지역 설정"
-          cancelText="취소"
-          confirmText="관심지역 설정 완료"
-          onClose={dispatch.close}
-          onConfirm={() => {}}
-          selectedRegion={{
-            id: 0,
-            name: '',
-            subRegions: [],
-          }}
-        />
-      )}
+      {isOpen && <LocationBottomSheet isOpen={isOpen} onClose={dispatch.close} />}
     </div>
   );
 }

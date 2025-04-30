@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['picsum.photos', 'placehold.co'],
+    domains: ['picsum.photos', 'placehold.co', process.env.AWS_S3_DOMAIN_NAME!],
   },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
+    AWS_S3_DOMAIN_NAME: process.env.AWS_S3_DOMAIN_NAME,
   },
   async rewrites() {
     return [

@@ -61,8 +61,8 @@ export const API_END_POINT = {
 
   /** CUSTOMER - SEARCH */
   SIDO_REGIONS: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido`,
-  SUB_REGIONS: (sidoCode: string) =>
-    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/${sidoCode}/gugun`,
+  GUGUN_REGIONS: (sidoCode: string) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido/${sidoCode}/gugun`,
 
   /** CUSTOMER - SEARCH */
   SEARCH_AUTOCOMPLETE: (keyword: string) =>

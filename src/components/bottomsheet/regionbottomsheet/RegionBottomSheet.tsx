@@ -102,7 +102,15 @@ const GuGunList = ({
   );
 };
 
-const RegionBottomSheet = ({ isOpen, close }: { isOpen: boolean; close: () => void }) => {
+const RegionBottomSheet = ({
+  isOpen,
+  close,
+  handleRegionTitle,
+}: {
+  isOpen: boolean;
+  close: () => void;
+  handleRegionTitle: (title: string) => void;
+}) => {
   const [selectedSidoRegion, setSelectedSidoRegion] = useState<SidoRegion>({ ...sidoRegions[0] });
   const [selectedGuGunRegions, setSelectedGuGunRegions] = useState<GuGunRegion[]>([]);
 
@@ -125,6 +133,11 @@ const RegionBottomSheet = ({ isOpen, close }: { isOpen: boolean; close: () => vo
         const sidoCode = selectedGuGunRegions[0].sidoCode;
         const guguncodes = selectedGuGunRegions.map((gugunRegion: GuGunRegion) => gugunRegion.gugunCode);
         updateRegion(sidoCode, guguncodes);
+        handleRegionTitle(
+          selectedGuGunRegions.length === 1
+            ? selectedGuGunRegions[0].gugunName
+            : `${selectedGuGunRegions[0].gugunName} 외 ${selectedGuGunRegions.length - 1}건`,
+        );
         close();
       }}>
       <div className="flex flex-col items-center gap-8 flex-1 overflow-y-auto">

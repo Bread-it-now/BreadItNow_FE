@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -145,6 +145,7 @@ const HotBakerySection = () => {
 
 export default function Page() {
   const { isOpen, dispatch } = useBaseBottomSheet();
+  const [regionTitle, setRegionTitle] = useState<string>('전체');
 
   const router = useRouter();
 
@@ -176,7 +177,7 @@ export default function Page() {
               isScrolled ? 'text-black' : 'text-white'
             }`}>
             <MapIcon color={isScrolled ? '#ff7651' : 'white'} />
-            <span>전체</span>
+            <span>{regionTitle}</span>
             <Image src={isScrolled ? ArrowDownBlack : ArrowDown} alt="arrow" className="w-4 h-4" />
           </button>
           <div className="flex items-center gap-3">
@@ -204,7 +205,7 @@ export default function Page() {
         </div>
       </div>
 
-      {isOpen && <RegionBottomSheet isOpen={isOpen} close={dispatch.close} />}
+      {isOpen && <RegionBottomSheet isOpen={isOpen} close={dispatch.close} handleRegionTitle={setRegionTitle} />}
     </div>
   );
 }

@@ -23,7 +23,7 @@ export const useSidoRegions = () =>
   });
 
 export const getGuGunRegions = async (sidoCode: string): Promise<{ data: GuGunRegion[] }> => {
-  const response = await fetch(`/${API_END_POINT.GUGUN_REGIONS(sidoCode)}`, {
+  const response = await customFetch(`/${API_END_POINT.GUGUN_REGIONS(sidoCode)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -41,7 +41,7 @@ export const useGuGunRegions = (sidoCode: string) =>
   });
 
 export const updateRegion = async (sidoCode: string, gugunCodes: string[]): Promise<{ data: null }> => {
-  const response = await fetch(`/${API_END_POINT.UPDATE_REGION()}`, {
+  const response = await customFetch(`/${API_END_POINT.UPDATE_REGION()}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ sidoCode, gugunCodes }),

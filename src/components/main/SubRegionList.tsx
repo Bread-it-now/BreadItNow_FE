@@ -1,19 +1,6 @@
-import { useEffect } from 'react';
 import { SubRegionListProps, Region } from '@/types/location';
 
-const SubRegionList = ({
-  filteredSubRegions,
-  setFilteredSubRegions,
-  setRegions,
-  selectedRegion,
-  setSelectedRegion,
-}: SubRegionListProps) => {
-  useEffect(() => {
-    if (setFilteredSubRegions) {
-      setFilteredSubRegions(selectedRegion.subRegions);
-    }
-  }, [selectedRegion, setFilteredSubRegions]);
-
+const SubRegionList = ({ filteredSubRegions, setRegions, selectedRegion, setSelectedRegion }: SubRegionListProps) => {
   return (
     <div className="w-2/3 flex flex-col overflow-y-auto">
       {filteredSubRegions.map((subRegion) => (

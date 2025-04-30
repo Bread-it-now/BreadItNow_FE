@@ -39,3 +39,15 @@ export const useGuGunRegions = (sidoCode: string) =>
     queryFn: () => getGuGunRegions(sidoCode),
     select: (data: { data: GuGunRegion[] }) => data.data,
   });
+
+export const updateRegion = async (sidoCode: string, gugunCodes: string[]): Promise<{ data: null }> => {
+  const response = await fetch(`/${API_END_POINT.UPDATE_REGION()}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sidoCode, gugunCodes }),
+  });
+
+  if (!response?.ok) throw new Error('Failed to gugun Regions');
+
+  return response.json();
+};

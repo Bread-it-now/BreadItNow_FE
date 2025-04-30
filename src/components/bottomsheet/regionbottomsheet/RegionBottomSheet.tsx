@@ -4,7 +4,7 @@ import { GuGunRegion, SidoRegion } from '@/types/location';
 import LocationIcon from '@/assets/icons/location.svg';
 import { cn } from '@/utils/cn';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useGuGunRegions } from '@/lib/api/region';
+import { updateRegion, useGuGunRegions } from '@/lib/api/region';
 
 export const sidoRegions: SidoRegion[] = [
   { sidoCode: '11', sidoName: '서울' },
@@ -102,14 +102,14 @@ const GuGunList = ({
   );
 };
 
-const RegionBottomSheet = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+const RegionBottomSheet = ({ isOpen, close }: { isOpen: boolean; close: () => void }) => {
   const [selectedSidoRegion, setSelectedSidoRegion] = useState<SidoRegion>({ ...sidoRegions[0] });
   const [selectedGuGunRegions, setSelectedGuGunRegions] = useState<GuGunRegion[]>([]);
 
   return (
     <BottomSheet
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={close}
       onCancel={() => {
         setSelectedGuGunRegions([]);
         setSelectedSidoRegion({ ...sidoRegions[0] });
@@ -117,7 +117,16 @@ const RegionBottomSheet = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
       title="관심지역 설정"
       confirmText="관심지역 설정 완료"
       cancelText="초기화"
-      onConfirm={() => {}}>
+      onConfirm={() => {
+        if (selectedGuGunRegions.length === 0) {
+          close();
+          return;
+        }
+        const sidoCode = selectedGuGunRegions[0].sidoCode;
+        const guguncodes = selectedGuGunRegions.map((gugunRegion: GuGunRegion) => gugunRegion.gugunCode);
+        updateRegion(sidoCode, guguncodes);
+        close();
+      }}>
       <div className="flex flex-col items-center gap-8 flex-1 overflow-y-auto">
         <div className="w-[100%] px-5">
           <button

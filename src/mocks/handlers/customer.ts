@@ -715,6 +715,21 @@ const getGugunRegions = http.get(
   },
 );
 
+const updateRegion = http.patch(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/region`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -742,4 +757,5 @@ export default [
   getSearchProducts,
   getSidoRegions,
   getGugunRegions,
+  updateRegion,
 ];

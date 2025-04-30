@@ -204,7 +204,7 @@ export default function Page() {
         </div>
       </div>
 
-      {isOpen && <RegionBottomSheet isOpen={isOpen} onClose={dispatch.close} />}
+      {isOpen && <RegionBottomSheet isOpen={isOpen} close={dispatch.close} />}
     </div>
   );
 }

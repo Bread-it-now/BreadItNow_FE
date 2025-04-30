@@ -33,7 +33,7 @@ export const getGuGunRegions = async (sidoCode: string): Promise<{ data: GuGunRe
   return response.json();
 };
 
-export const useGugunRegions = (sidoCode: string) =>
+export const useGuGunRegions = (sidoCode: string) =>
   useQuery({
     queryKey: [...REGION_QUERY_KEY.GUGUN_REGIONS(sidoCode)],
     queryFn: () => getGuGunRegions(sidoCode),

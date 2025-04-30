@@ -9,10 +9,6 @@ export interface GuGunRegion {
   gugunName: string;
 }
 
-export interface SidoRegionWithSelectedCnt extends SidoRegion {
-  selectedCnt: number;
-}
-
 export interface Region {
   sidoRegion: SidoRegion;
   gugunRegion: GuGunRegion;

@@ -1,10 +1,10 @@
 import BottomSheet from '../Bottomsheet';
 import Image from 'next/image';
-import { SidoRegion, SidoRegionWithSelectedCnt } from '@/types/location';
+import { GuGunRegion, SidoRegion } from '@/types/location';
 import LocationIcon from '@/assets/icons/location.svg';
 import { cn } from '@/utils/cn';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useGugunRegions } from '@/lib/api/location';
+import { useGuGunRegions } from '@/lib/api/location';
 
 export const sidoRegions: SidoRegion[] = [
   { sidoCode: '11', sidoName: '서울' },
@@ -28,36 +28,33 @@ export const sidoRegions: SidoRegion[] = [
 
 const SidoRegionList = ({
   handleSelectedSidoRegion,
+  selectedGuGunRegions,
   selectedSidoRegion,
 }: {
   handleSelectedSidoRegion: Dispatch<SetStateAction<SidoRegion>>;
+  selectedGuGunRegions: GuGunRegion[];
   selectedSidoRegion: SidoRegion;
 }) => {
-  const sidoRegionsWithSelectedCnt: SidoRegionWithSelectedCnt[] = sidoRegions.map((region) => ({
-    ...region,
-    selectedCnt: 0,
-  }));
-
   return (
     <div className="flex flex-col  w-1/3 overflow-y-auto border-r border-gray-300">
-      {sidoRegionsWithSelectedCnt.map((sidoRegionWithSelectedCnt: SidoRegionWithSelectedCnt) => (
+      {sidoRegions.map((sidoRegion: SidoRegion) => (
         <div
-          key={sidoRegionWithSelectedCnt.sidoCode}
+          key={sidoRegion.sidoCode}
           className={cn(
-            'flex px-5 py-4 cursor-pointer text-[15px] justify-between items-center bg-gray50',
-            selectedSidoRegion.sidoCode === sidoRegionWithSelectedCnt.sidoCode ? 'bg-white' : 'bg-gray50',
+            'flex px-5 py-4 cursor-pointer text-[15px] gap-2 items-center bg-gray50',
+            selectedSidoRegion.sidoCode === sidoRegion.sidoCode ? 'bg-white' : 'bg-gray50',
           )}
           onClick={() => {
             handleSelectedSidoRegion({
-              sidoCode: sidoRegionWithSelectedCnt.sidoCode,
-              sidoName: sidoRegionWithSelectedCnt.sidoName,
+              sidoCode: sidoRegion.sidoCode,
+              sidoName: sidoRegion.sidoName,
             });
           }}>
-          <span>{sidoRegionWithSelectedCnt.sidoName}</span>
-          {sidoRegionWithSelectedCnt.selectedCnt > 0 && (
-            <span className="bg-primary text-white text-xs px-[6px] py-[2px] rounded-full">
-              {sidoRegionWithSelectedCnt.selectedCnt}
-            </span>
+          <span>{sidoRegion.sidoName}</span>
+          {selectedGuGunRegions.length !== 0 && selectedGuGunRegions[0].sidoCode === sidoRegion.sidoCode && (
+            <div className="flex items-center w-4 h-4 justify-center text-[10px] font-semibold text-white rounded-full bg-primary ">
+              <span>{selectedGuGunRegions.length}</span>
+            </div>
           )}
         </div>
       ))}
@@ -65,20 +62,34 @@ const SidoRegionList = ({
   );
 };
 
-const GuGunList = ({ selectedSidoRegion }: { selectedSidoRegion: SidoRegion }) => {
-  const { data: gugunRegions } = useGugunRegions(selectedSidoRegion.sidoCode);
+const GuGunList = ({
+  selectedSidoRegion,
+  selectedGuGunRegions,
+  handleSelectedGuGunRegions,
+}: {
+  selectedSidoRegion: SidoRegion;
+  selectedGuGunRegions: GuGunRegion[];
+  handleSelectedGuGunRegions: (gugunRegion: GuGunRegion) => void;
+}) => {
+  const { data: gugunRegions } = useGuGunRegions(selectedSidoRegion.sidoCode);
   return (
     <div className="w-2/3 flex flex-col overflow-y-auto">
       {gugunRegions &&
-        gugunRegions.map((gugunRegion) => (
+        gugunRegions.map((gugunRegion: GuGunRegion) => (
           <div
             key={gugunRegion.gugunCode}
             className="px-5 py-[6.8%] flex items-center justify-start gap-2 text-gray900 text-sm cursor-pointer"
-            onClick={() => {}}>
+            onClick={() => handleSelectedGuGunRegions(gugunRegion)}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M4 8.66667L8.66667 14L16 6"
-                stroke={1 ? '#FF7651' : '#D7D9DB'}
+                stroke={
+                  selectedGuGunRegions
+                    .map((gugunRegion: GuGunRegion) => gugunRegion.gugunCode)
+                    .includes(gugunRegion.gugunCode)
+                    ? '#FF7651'
+                    : '#D7D9DB'
+                }
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -91,8 +102,10 @@ const GuGunList = ({ selectedSidoRegion }: { selectedSidoRegion: SidoRegion }) =
   );
 };
 
-const LocationBottomSheet = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+const RegionBottomSheet = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [selectedSidoRegion, setSelectedSidoRegion] = useState<SidoRegion>({ ...sidoRegions[0] });
+  const [selectedGuGunRegions, setSelectedGuGunRegions] = useState<GuGunRegion[]>([]);
+
   return (
     <BottomSheet
       isOpen={isOpen}
@@ -112,12 +125,26 @@ const LocationBottomSheet = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         </div>
 
         <div className="flex w-full max-h-[400px] overflow-y-auto border-t border-gray200">
-          <SidoRegionList selectedSidoRegion={selectedSidoRegion} handleSelectedSidoRegion={setSelectedSidoRegion} />
-          <GuGunList selectedSidoRegion={selectedSidoRegion} />
+          <SidoRegionList
+            selectedSidoRegion={selectedSidoRegion}
+            handleSelectedSidoRegion={setSelectedSidoRegion}
+            selectedGuGunRegions={selectedGuGunRegions}
+          />
+          <GuGunList
+            selectedSidoRegion={selectedSidoRegion}
+            selectedGuGunRegions={selectedGuGunRegions}
+            handleSelectedGuGunRegions={(gugunRegion: GuGunRegion) => {
+              if (selectedGuGunRegions.length > 0 && selectedGuGunRegions[0].sidoCode === gugunRegion.sidoCode) {
+                setSelectedGuGunRegions((prev) => [...prev, gugunRegion]);
+              } else {
+                setSelectedGuGunRegions([gugunRegion]);
+              }
+            }}
+          />
         </div>
       </div>
     </BottomSheet>
   );
 };
 
-export default LocationBottomSheet;
+export default RegionBottomSheet;

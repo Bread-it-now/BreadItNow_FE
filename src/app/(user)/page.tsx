@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { useScrollDetection } from '@/hooks/useScrollDetection';
-import LocationBottomSheet from '@/components/bottomsheet/locationbottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/todaybread/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { useSearchParams } from 'next/navigation';
@@ -22,6 +21,7 @@ import { HotBakery, HotProduct } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import EmptyState from '@/components/common/EmptyState';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
+import RegionBottomSheet from '@/components/bottomsheet/regionbottomsheet/RegionBottomSheet';
 
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
@@ -204,7 +204,7 @@ export default function Page() {
         </div>
       </div>
 
-      {isOpen && <LocationBottomSheet isOpen={isOpen} onClose={dispatch.close} />}
+      {isOpen && <RegionBottomSheet isOpen={isOpen} onClose={dispatch.close} />}
     </div>
   );
 }

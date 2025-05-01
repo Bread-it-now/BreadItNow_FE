@@ -21,9 +21,12 @@ export const signUp = async (email: string, password: string, role: 'customer' |
 };
 
 export const chkDuplicateEmail = async (email: string) => {
-  const response = (await customFetch(`/customer-api/auth-api/api/v1/email/duplicate-check?email=${email}`, {
-    method: 'GET',
-  })) as Response;
+  const response = (await customFetch(
+    `/customer-api/auth-api/api/v1/email/duplicate-check?email=${encodeURIComponent(email)}`,
+    {
+      method: 'GET',
+    },
+  )) as Response;
   if (response.status === 200) {
     return response.json();
   }

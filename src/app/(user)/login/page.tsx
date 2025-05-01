@@ -10,13 +10,12 @@ import HotBreadTab from '@/components/common/tabs/HotBreadTab';
 import Button from '@/components/button/Button';
 import kakaoIcon from '@/assets/icons/kakao.svg';
 import naverIcon from '@/assets/icons/naver-white.svg';
-import googleIcon from '@/assets/icons/google.svg';
 import Alert from '@/components/common/Alert';
 import FirstLoginFlow from '@/components/login/FirstLoginFlow';
 import OwnerFirstLoginFlow from '@/components/login/OwnerFirstLoginFlow';
 import { API_END_POINT } from '@/constants/api';
 import { useSearchParams } from 'next/navigation';
-
+import { customFetch } from '@/lib/customFetch';
 export default function LoginPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'customer' | 'owner'>('customer');
@@ -36,12 +35,13 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      await fetch(`/${API_END_POINT.AUTH.SIGN_IN}`, {
+      await customFetch(`/${API_END_POINT.AUTH.SIGN_IN}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: email,
           password: password,
+          role: activeTab,
         }),
       });
     } catch {
@@ -96,7 +96,7 @@ export default function LoginPage() {
       <div className="flex flex-col px-5 gap-4 mt-4">
         <VerificationInput
           value={email}
-          maxLength={13}
+          maxLength={100}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="이메일"
         />
@@ -146,9 +146,9 @@ export default function LoginPage() {
               className="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center">
               <Image src={naverIcon} width={24} height={24} alt="네이버 로그인" />
             </button>
-            <button className="w-14 h-14 border border-gray-300 rounded-full flex items-center justify-center">
+            {/* <button className="w-14 h-14 border border-gray-300 rounded-full flex items-center justify-center">
               <Image src={googleIcon} width={24} height={24} alt="구글 로그인" />
-            </button>
+            </button> */}
           </div>
         </div>
       )}

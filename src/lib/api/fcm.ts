@@ -17,3 +17,11 @@ export const postOwnerFcmToken = async (token: string) => {
   });
   return response;
 };
+
+export const postNotification = async (bakeryId: number, productId: number) => {
+  const response = await customFetch('/owner-api/api/v1/notification', {
+    method: 'POST',
+    body: JSON.stringify({ bakeryId, productId }),
+  });
+  return response;
+};

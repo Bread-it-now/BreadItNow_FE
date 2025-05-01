@@ -18,9 +18,7 @@ const TodayBread = ({ bakeryName, productName, releaseTimes }: TodayProduct) => 
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
         }}>
-        {releaseTimes.map((time) => (
-          <Tag key={time} label={time} type="time" />
-        ))}
+        {releaseTimes && releaseTimes.map((time) => <Tag key={time} label={time} type="time" />)}
       </div>
     </div>
   );

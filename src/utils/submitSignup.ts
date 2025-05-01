@@ -1,7 +1,7 @@
 'use client';
 
 import { API_END_POINT } from '@/constants/api';
-
+import { customFetch } from '@/lib/customFetch';
 interface SubmitSignupParams {
   email: string;
   password: string;
@@ -12,12 +12,15 @@ interface SubmitSignupParams {
 
 export const submitSignup = async ({ email, password, role, onSuccess, onFail }: SubmitSignupParams) => {
   try {
-    const res = await fetch(`/${API_END_POINT.AUTH.SIGN_UP}`, {
+    const res = await customFetch(`/${API_END_POINT.AUTH.SIGN_UP}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, role }),
     });
-
+    if (!res) {
+      onFail?.('회원가입 중 오류가 발생했습니다.');
+      return;
+    }
     const result = await res.json();
 
     if (!res.ok || result.status !== 'SUCCESS') {

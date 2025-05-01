@@ -34,13 +34,15 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
   };
 
   try {
+    if (refreshToken) {
+      defaultHeaders.Authorization = `Bearer ${refreshToken}`;
+    }
     const response = await fetch(`${baseUrl}${url}`, {
       ...options,
       credentials: 'include',
       headers: {
         ...defaultHeaders,
         ...options.headers,
-        Authorization: `Bearer ${refreshToken}`,
       },
     });
 

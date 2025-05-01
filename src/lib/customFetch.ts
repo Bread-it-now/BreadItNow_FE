@@ -48,7 +48,7 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
     });
 
     // 401 또는 403 에러 발생 시 토큰 재발급 시도
-    if (response.status === 401 || response.status === 403) {
+    if (response.status === 401) {
       await handleTokenRefresh();
 
       // 토큰 재발급 후 원래 요청 재시도

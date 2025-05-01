@@ -35,8 +35,7 @@ export default function BreadCategorySelection({ nickname, onComplete }: { nickn
 
   const handleSubmit = async (categories: string[]) => {
     setLoading(true);
-    const result = await submitCategorySetting({ nickname, categories });
-
+    const result = await submitCategorySetting({ nickname, categories: categories.map((category, i) => i + 1) });
     setAlertTitle(result.success ? '설정 완료!' : '설정 실패');
     setAlertSubtitle(result.message);
     setShowAlert(true);

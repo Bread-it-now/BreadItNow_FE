@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -10,7 +10,6 @@ import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
 import TodayBread from '@/components/main/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { bakeryCardMockData } from '@/mocks/data/bakery';
-import { useSearchParams } from 'next/navigation';
 import MapIcon from '@/components/common/Icons/MapIcon';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
 import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
@@ -165,19 +164,9 @@ const HotBakerySection = () => {
 export default function Page() {
   const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
 
-  const router = useRouter();
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const isScrolled = useScrollDetection(scrollContainerRef);
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get('isNewUser') === 'true') {
-      router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
-    }
-  }, [searchParams, router]);
-
   return (
     <div
       className="flex flex-col h-[100%]"

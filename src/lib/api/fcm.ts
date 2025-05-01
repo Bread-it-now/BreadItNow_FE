@@ -7,15 +7,14 @@ export const postCustomerFcmToken = async (token: string) => {
       token: token,
     }),
   });
-  return response;
+  return response?.json();
 };
 
-export const postOwnerFcmToken = async (token: string) => {
+export const postOwnerFcmToken = async () => {
   const response = await customFetch('/owner-api/api/v1/fcm/update-token', {
     method: 'POST',
-    body: JSON.stringify({ token }),
   });
-  return response;
+  return response?.json();
 };
 
 export const postNotification = async (bakeryId: number, productId: number) => {
@@ -23,5 +22,5 @@ export const postNotification = async (bakeryId: number, productId: number) => {
     method: 'POST',
     body: JSON.stringify({ bakeryId, productId }),
   });
-  return response;
+  return response?.json();
 };

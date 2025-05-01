@@ -23,8 +23,8 @@ import { useHotBakeries, useHotProducts } from '@/lib/api/bakery';
 import { HotBakery, HotProduct } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import EmptyState from '@/components/common/EmptyState';
-import { requestPermissionAndGetToken, onForegroundMessage } from '@/lib/firebase';
-import { postNotification } from '@/lib/api/fcm';
+// import { requestPermissionAndGetToken, onForegroundMessage } from '@/lib/firebase';
+// import { postNotification } from '@/lib/api/fcm';
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
   const { month, date, day } = getMonthDateDay(new Date());
@@ -32,19 +32,19 @@ const TodayProductsSection = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    requestPermissionAndGetToken().then((token) => {
-      if (token) {
-        setToken(token);
-        postNotification(1, 1);
-      }
-    });
-    // .catch((err) => console.error('FCM Token Error', err));
+  // useEffect(() => {
+  //   requestPermissionAndGetToken().then((token) => {
+  //     if (token) {
+  //       setToken(token);
+  //       postNotification(1, 1);
+  //     }
+  //   });
+  //   // .catch((err) => console.error('FCM Token Error', err));
 
-    onForegroundMessage(() => {
-      // console.log('🔔 Foreground 메시지 수신:', payload);
-    });
-  }, []);
+  //   onForegroundMessage(() => {
+  //     // console.log('🔔 Foreground 메시지 수신:', payload);
+  //   });
+  // }, []);
   return (
     <>
       <div className="flex px-4 justify-between items-center my-8">

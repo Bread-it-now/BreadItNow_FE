@@ -53,7 +53,7 @@ export default function LoginPage() {
 
   const handleSignIn = async (provider: string) => {
     try {
-      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization/${provider}?redirect_url=${window.location.origin}`;
+      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization/${provider}?redirect_url=${window.location.origin}/social/callback`;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
       // console.error('Login error:', error)

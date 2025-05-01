@@ -24,6 +24,7 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
     try {
       const response = await fetch(`${baseUrl}/auth-api/api/v1/token/refresh`, {
         method: 'POST',
+        credentials: 'include',
         headers: defaultHeaders,
       });
       if (!response.ok) throw new Error('토큰 갱신 실패');

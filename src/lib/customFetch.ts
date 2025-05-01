@@ -1,6 +1,6 @@
-function getRefreshTokenFromCookie() {
+function getAccessTokenFromCookie() {
   const cookies = document.cookie.split(';');
-  const refreshTokenCookie = cookies.find((cookie) => cookie.trim().startsWith('refreshToken='));
+  const refreshTokenCookie = cookies.find((cookie) => cookie.trim().startsWith('accessToken='));
   if (refreshTokenCookie) {
     return refreshTokenCookie.split('=')[1];
   }
@@ -9,7 +9,7 @@ function getRefreshTokenFromCookie() {
 
 export const customFetch = async (url: string, options: RequestInit): Promise<Response | undefined> => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const refreshToken = getRefreshTokenFromCookie();
+  const refreshToken = getAccessTokenFromCookie();
   //TODO: 토큰 쿠키로 변경
   const defaultHeaders: HeadersInit = {
     Accept: 'application/json',

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -7,7 +7,6 @@ import { ROUTES } from '@/constants/routes';
 import { useScrollDetection } from '@/hooks/useScrollDetection';
 import TodayBread from '@/components/todaybread/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
-import { useSearchParams } from 'next/navigation';
 import MapIcon from '@/components/common/Icons/MapIcon';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
 import ArrowDownBlack from '@/assets/icons/arrow-down.svg';
@@ -20,12 +19,31 @@ import { useHotBakeries, useHotProducts } from '@/lib/api/bakery';
 import { HotBakery, HotProduct } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import EmptyState from '@/components/common/EmptyState';
+// import { requestPermissionAndGetToken, onForegroundMessage } from '@/lib/firebase';
+// import { postNotification } from '@/lib/api/fcm';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
 import RegionBottomSheet from '@/components/bottomsheet/regionbottomsheet/RegionBottomSheet';
 
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
   const { month, date, day } = getMonthDateDay(new Date());
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [token, setToken] = useState<string | null>(null);
+
+  // useEffect(() => {
+  //   requestPermissionAndGetToken().then((token) => {
+  //     if (token) {
+  //       setToken(token);
+  //       postNotification(1, 1);
+  //     }
+  //   });
+  //   // .catch((err) => console.error('FCM Token Error', err));
+
+  //   onForegroundMessage(() => {
+  //     // console.log('🔔 Foreground 메시지 수신:', payload);
+  //   });
+  // }, []);
   return (
     <>
       <div className="flex px-4 justify-between items-center my-8">
@@ -147,19 +165,9 @@ export default function Page() {
   const { isOpen, dispatch } = useBaseBottomSheet();
   const [regionTitle, setRegionTitle] = useState<string>('전체');
 
-  const router = useRouter();
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const isScrolled = useScrollDetection(scrollContainerRef);
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get('isNewUser') === 'true') {
-      router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
-    }
-  }, [searchParams, router]);
-
   return (
     <div
       className="flex flex-col h-[100%]"

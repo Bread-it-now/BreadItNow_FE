@@ -10,7 +10,9 @@ function BakeryImages({ images }: { images: string[] }) {
   };
   if (images.length === 0) {
     return (
-      <div className="w-full font-normal text-[13px] text-gray-500 py-5 text-center">등록된 이미지가 없습니다.</div>
+      <div className="w-full font-normal text-[13px] text-gray-500 py-5 text-center bg-white">
+        등록된 이미지가 없습니다.
+      </div>
     );
   }
   return (

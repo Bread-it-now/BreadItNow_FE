@@ -1,17 +1,19 @@
 import type { NextConfig } from "next";
-
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['picsum.photos', 'placehold.co'],
+    domains: ['picsum.photos', 'placehold.co', process.env.AWS_S3_DOMAIN_NAME!],
   },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
-    NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    KAKAO_CLIENT_ID: process.env.KAKAO_CLIENT_ID,
-    KAKAO_CLIENT_SECRET: process.env.KAKAO_CLIENT_SECRET,
+    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
+    FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
+    AWS_S3_DOMAIN_NAME: process.env.AWS_S3_DOMAIN_NAME,
   },
   async rewrites() {
     return [

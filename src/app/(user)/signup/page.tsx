@@ -55,7 +55,7 @@ export default function SignupPage() {
       ) : showEmailForm ? (
         <EmailSignupForm email={email} setEmail={setEmail} onNext={() => setShowPasswordForm(true)} />
       ) : userType ? (
-        <SignupOptions onSelectEmail={() => setShowEmailForm(true)} />
+        <SignupOptions onSelectEmail={() => setShowEmailForm(true)} userType={userType} />
       ) : (
         <UserTypeSelection onSelectType={setUserType} />
       )}

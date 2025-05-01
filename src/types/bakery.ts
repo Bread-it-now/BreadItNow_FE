@@ -12,6 +12,7 @@ export interface BaseInfo {
   phone: string;
   distance?: number;
   introduction: string;
+  isBakeryFavorite: boolean;
 }
 
 /** 빵집 운영 관련 정보 */

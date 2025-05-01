@@ -17,7 +17,7 @@ export const useImageSlider = ({ images, minSwipeDistance = 50, startIndex = 0 }
     (direction: 'next' | 'prev') => {
       setCurrentIndex((prevIndex: number) => {
         if (direction === 'next') {
-          return prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+          return prevIndex <= images.length ? prevIndex : prevIndex + 1;
         }
         return prevIndex === 0 ? images.length - 1 : prevIndex - 1;
       });

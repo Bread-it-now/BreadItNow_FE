@@ -14,7 +14,7 @@ const TagPagination = ({ currentPage, lastPage }: { currentPage: number; lastPag
     <div className="absolute text-white bg-gray-900/40 backdrop-blur-sm  bottom-5 right-5 py-1 px-[14px] font-semibold rounded-2xl text-[11px]">
       <span className="">{currentPage + 1}</span>
       <span className="mx-1 opacity-50">&#183;</span>
-      <span className="opacity-50">{lastPage}</span>
+      <span className="opacity-50">{lastPage + 1}</span>
     </div>
   );
 };
@@ -77,7 +77,6 @@ const ImageSlider = ({
     }
     return `translateX(-${currentIndex * 100}%)`;
   }, [currentIndex, isDragging, sliderRef, touchEnd, touchStart]);
-
   return (
     <div className="slider-container">
       <div

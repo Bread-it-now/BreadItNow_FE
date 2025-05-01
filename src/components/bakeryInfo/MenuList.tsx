@@ -8,7 +8,7 @@ import BookmarkFill from '@/assets/icons/bookmark_fill.svg';
 import Tag from '@/components/common/Tag';
 import IconButton from '@/components/button/IconButton';
 import { useState } from 'react';
-import { addBookmarkProduct, removeBookmarkProduct, setAlertProduct } from '@/lib/api/bakery';
+import { addBookmarkProduct, removeBookmarkProduct, addAlertProduct, deleteAlertProduct } from '@/lib/api/bakery';
 interface ProductReserveCardProps {
   menuList?: Product[];
   title: string;
@@ -44,7 +44,11 @@ function MenuFloatingButton({ productId, isActive }: { productId: number; isActi
   const [alarmChecked, setAlarmChecked] = useState<boolean>(isActive);
   const onClickAlarmBtn = async () => {
     try {
-      await setAlertProduct(productId);
+      if (alarmChecked) {
+        await deleteAlertProduct(productId);
+      } else {
+        await addAlertProduct(productId);
+      }
       setAlarmChecked(!alarmChecked);
     } catch (error) {
       // eslint-disable-next-line no-console

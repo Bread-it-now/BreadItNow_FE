@@ -1,15 +1,18 @@
+function getAccessTokenFromCookie() {
+  const cookies = document.cookie.split(';');
+  const refreshTokenCookie = cookies.find((cookie) => cookie.trim().startsWith('accessToken='));
+  if (refreshTokenCookie) {
+    return refreshTokenCookie.split('=')[1];
+  }
+  return null;
+}
+
 export const customFetch = async (url: string, options: RequestInit): Promise<Response | undefined> => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  // const cookieStr = document.cookie;
-  // const refreshToken = cookieStr
-  //   .split('; ')
-  //   .find(row => row.startsWith('refreshToken='))
-  //   ?.split('=')[1];
+  const refreshToken = getAccessTokenFromCookie();
   //TODO: 토큰 쿠키로 변경
   const defaultHeaders: HeadersInit = {
     Accept: 'application/json',
-    credentials: 'include',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
   };
 
   const mergedHeaders = {
@@ -32,14 +35,20 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
   };
 
   try {
+    if (refreshToken) {
+      defaultHeaders.Authorization = `Bearer ${refreshToken}`;
+    }
     const response = await fetch(`${baseUrl}${url}`, {
       ...options,
       credentials: 'include',
-      headers: mergedHeaders,
+      headers: {
+        ...defaultHeaders,
+        ...options.headers,
+      },
     });
 
     // 401 또는 403 에러 발생 시 토큰 재발급 시도
-    if (response.status === 401 || response.status === 403) {
+    if (response.status === 401) {
       await handleTokenRefresh();
 
       // 토큰 재발급 후 원래 요청 재시도

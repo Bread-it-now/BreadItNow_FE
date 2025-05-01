@@ -5,10 +5,10 @@ import Stack from '@/components/common/stack/Stack';
 import Button from '@/components/button/Button';
 import { useBakeryInfo, useBakeryProducts } from '@/lib/api/bakery';
 import { OperatingInfo, Product } from '@/types/bakery';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import useProductHideManagementBottomSheet from '@/hooks/useProductHideManagementBottomSheet';
 import BottomSheet from '@/components/bottomsheet/Bottomsheet';
-
+import { postOwnerFcmToken } from '@/lib/api/fcm';
 const bakeryId: number = 1;
 
 /** 로그인 시 가져온 bakeryId를 통해 빵집 정보 호출 */
@@ -21,6 +21,15 @@ const OperatingSection = ({
   operatingInfo: OperatingInfo;
   name: string;
 }) => {
+  useEffect(() => {
+    const fetchFcmToken = async () => {
+      const response = await postOwnerFcmToken();
+      if (response.status === 'SUCCESS') {
+        // console.log(response.data);
+      }
+    };
+    fetchFcmToken();
+  }, []);
   return (
     <Fragment>
       <section className="w-full bg-white rounded-b-[0.625rem]">

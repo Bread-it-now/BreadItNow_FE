@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { addBakeryBookmark, removeBakeryBookmark } from '@/lib/api/bakery';
 
 function StoreInfo({ bakery }: { bakery: Bakery }) {
-  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(bakery.isFavorite);
+  const [bookmarkChecked, setBookmarkChecked] = useState<boolean>(bakery.isBakeryFavorite);
   const onBookmarkClick = async () => {
     try {
       if (bookmarkChecked) {
@@ -16,10 +16,7 @@ function StoreInfo({ bakery }: { bakery: Bakery }) {
         await addBakeryBookmark(bakery.bakeryId);
       }
       setBookmarkChecked(!bookmarkChecked);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
+    } catch {}
   };
 
   return (

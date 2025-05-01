@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import useDeleteProductsBottomSheet from '@/hooks/useDeleteProductsBottomSheet';
 import useReorderProductsBottomSheet from '@/hooks/useReorderProductsBottomSheet';
-import ReorderProductsBottomSheet from '@/components/bottomsheet/ ReorderProductsBottomSheet/ ReorderProductsBottomSheet';
+import ReorderProductsBottomSheet from '@/components/bottomsheet/reorderproductsbottomsheet/ReorderProductsBottomSheet';
 
 const HEADER_TABS = [
   { key: 'bakeryInfo', label: '빵집정보' },

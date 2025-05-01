@@ -1,6 +1,6 @@
 import { customFetch } from '../customFetch';
 
-export const login = async (email: string, password: string, role: 'customer' | 'owner'): Promise<Response> => {
+export const login = async (email: string, password: string, role: 'customer' | 'owner') => {
   const response = (await customFetch('/auth-api/api/v1/auth/sign-in', {
     method: 'GET',
     body: JSON.stringify({ email, password, role }),
@@ -12,7 +12,7 @@ export const login = async (email: string, password: string, role: 'customer' | 
   return response.json();
 };
 
-export const signUp = async (email: string, password: string, role: 'customer' | 'owner'): Promise<Response> => {
+export const signUp = async (email: string, password: string, role: 'customer' | 'owner') => {
   const response = (await customFetch('/auth-api/api/v1/auth/sign-up', {
     method: 'POST',
     body: JSON.stringify({ email, password, role }),
@@ -20,7 +20,7 @@ export const signUp = async (email: string, password: string, role: 'customer' |
   return response.json();
 };
 
-export const chkDuplicateEmail = async (email: string): Promise<Response> => {
+export const chkDuplicateEmail = async (email: string) => {
   const response = (await customFetch(`/customer-api/auth-api/api/v1/email/duplicate-check?email=${email}`, {
     method: 'GET',
   })) as Response;
@@ -30,7 +30,7 @@ export const chkDuplicateEmail = async (email: string): Promise<Response> => {
   throw new Error('Failed to check duplicate email');
 };
 
-export const chkDuplicateNickname = async (nickname: string): Promise<Response> => {
+export const chkDuplicateNickname = async (nickname: string) => {
   const response = (await customFetch(`/customer-api/api/v1/customer/duplicate-nickname?nickname=${nickname}`, {
     method: 'GET',
   })) as Response;

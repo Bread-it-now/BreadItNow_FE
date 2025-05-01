@@ -17,7 +17,7 @@ export default function NicknameSetup({ nickname, setNickname, onNext }: Nicknam
   const [wornNicknameLabel, setWornNicknameLabel] = useState<string>('');
   const onCheckDuplicate = async () => {
     const response = await chkDuplicateNickname(nickname);
-    if (response.status === 200) {
+    if (response.status === 'SUCCESS') {
       setIsCorrectNickname(true);
       setWornNicknameLabel('사용 가능한 닉네임입니다.');
     } else {

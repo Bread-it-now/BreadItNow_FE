@@ -13,6 +13,8 @@ import {
 import { FilterKey, HotFilterKey } from '@/types/bakery';
 import { NotificationType } from '@/types/notification';
 import { mockCustomerNotifications } from '../data/notification';
+import { mockSidoRegions } from '../data/region';
+import { GuGunRegion } from '@/types/location';
 
 const getCustomerReservations = http.get(
   `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}`,
@@ -665,6 +667,69 @@ const getSearchProducts = http.get(
   },
 );
 
+const getSidoRegions = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: mockSidoRegions,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const getGugunRegions = http.get(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido/:sidoCode/gugun`,
+  async ({ params }) => {
+    const sidoCode: string = params?.sidoCode as string;
+
+    const sido = mockSidoRegions.find((region) => region.sidoCode === sidoCode);
+
+    const gugunList: GuGunRegion[] = [];
+
+    for (let i = 0; i < 20; i++) {
+      const indexStr = i.toString().padStart(2, '0');
+      const gugunCode = `${sidoCode}${indexStr}`;
+      const gugunName = `${sido?.sidoName} ${gugunCode}`;
+
+      gugunList.push({
+        sidoCode,
+        gugunCode,
+        gugunName,
+      });
+    }
+
+    return new HttpResponse(
+      JSON.stringify({
+        data: gugunList,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
+const updateRegion = http.patch(
+  `/${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/region`,
+  async () => {
+    return new HttpResponse(
+      JSON.stringify({
+        data: null,
+      }),
+      {
+        status: 200,
+        statusText: 'OK',
+      },
+    );
+  },
+);
+
 export default [
   getCustomerReservations,
   getCustomerReservationDetail,
@@ -690,4 +755,7 @@ export default [
   getSearchAutoCompletes,
   getSearchBakeries,
   getSearchProducts,
+  getSidoRegions,
+  getGugunRegions,
+  updateRegion,
 ];

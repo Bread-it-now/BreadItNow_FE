@@ -1,4 +1,4 @@
-import useBaseBottomSheet from "./useBaseBottomSheet";
+import useBaseBottomSheet from './useBaseBottomSheet';
 
 export const useReservationBottomSheet = () => {
   const { isOpen, dispatch } = useBaseBottomSheet();
@@ -10,6 +10,6 @@ export const useReservationBottomSheet = () => {
     open: dispatch.open,
     close: dispatch.close,
     handleAddReservation,
-    title: "예약하기",
+    title: '예약하기',
   };
 };

@@ -1,15 +1,12 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { useScrollDetection } from '@/hooks/useScrollDetection';
-import { useReservationBottomSheet } from '@/hooks/useReservationBottomSheet';
-import BottomSheet from '@/components/bottomsheet/LocationBottomsheet';
-import TodayBread from '@/components/main/TodayBread';
+import TodayBread from '@/components/todaybread/TodayBread';
 import BakeryCard from '@/components/bakerycard/BakeryCard';
-import { bakeryCardMockData } from '@/mocks/data/bakery';
 import { useSearchParams } from 'next/navigation';
 import MapIcon from '@/components/common/Icons/MapIcon';
 import ArrowDown from '@/assets/icons/arrow-down-white.svg';
@@ -23,6 +20,8 @@ import { useHotBakeries, useHotProducts } from '@/lib/api/bakery';
 import { HotBakery, HotProduct } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import EmptyState from '@/components/common/EmptyState';
+import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
+import RegionBottomSheet from '@/components/bottomsheet/regionbottomsheet/RegionBottomSheet';
 
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
@@ -145,7 +144,8 @@ const HotBakerySection = () => {
 };
 
 export default function Page() {
-  const { isOpen, open, close, handleAddReservation } = useReservationBottomSheet();
+  const { isOpen, dispatch } = useBaseBottomSheet();
+  const [regionTitle, setRegionTitle] = useState<string>('전체');
 
   const router = useRouter();
 
@@ -172,12 +172,12 @@ export default function Page() {
         }`}>
         <div className="flex justify-between items-center">
           <button
-            onClick={open}
+            onClick={dispatch.open}
             className={`flex items-center gap-2 text-lg font-medium transition-colors ${
               isScrolled ? 'text-black' : 'text-white'
             }`}>
             <MapIcon color={isScrolled ? '#ff7651' : 'white'} />
-            <span>전체</span>
+            <span>{regionTitle}</span>
             <Image src={isScrolled ? ArrowDownBlack : ArrowDown} alt="arrow" className="w-4 h-4" />
           </button>
           <div className="flex items-center gap-3">
@@ -205,25 +205,7 @@ export default function Page() {
         </div>
       </div>
 
-      <BottomSheet
-        isOpen={isOpen}
-        title="관심지역 설정"
-        cancelText="취소"
-        confirmText="관심지역 설정 완료"
-        onClose={close}
-        onConfirm={handleAddReservation}
-        selectedRegion={{
-          id: 0,
-          name: '',
-          subRegions: [],
-        }}>
-        <div className="grid grid-cols-2 gap-4">
-          <BakeryCard {...bakeryCardMockData} />
-          <BakeryCard {...bakeryCardMockData} />
-          <BakeryCard {...bakeryCardMockData} />
-          <BakeryCard {...bakeryCardMockData} />
-        </div>
-      </BottomSheet>
+      {isOpen && <RegionBottomSheet isOpen={isOpen} close={dispatch.close} handleRegionTitle={setRegionTitle} />}
     </div>
   );
 }

@@ -59,6 +59,12 @@ export const API_END_POINT = {
   HOT_PRODUCTS: (page: number, size: number, sort: HotFilterKey) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot?page=${page}&size=${size}&sort=${sort}`,
 
+  /** CUSTOMER - REGION */
+  SIDO_REGIONS: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido`,
+  GUGUN_REGIONS: (sidoCode: string) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido/${sidoCode}/gugun`,
+  UPDATE_REGION: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/region`,
+
   /** CUSTOMER - SEARCH */
   SEARCH_AUTOCOMPLETE: (keyword: string) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.SEARCH}/autocomplete?keyword=${keyword}`,

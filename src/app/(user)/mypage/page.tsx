@@ -54,7 +54,7 @@ export default function Page() {
           />
           <NavLink title={MYPAGE_TITLE.NOTIFICATIONS + ' 내역'} icon={bell} targetUrl={ROUTES.MYPAGE.NOTIFICATIONS} />
           <NavLink title={MYPAGE_TITLE.RESERVATIONS} icon={reservation} targetUrl={ROUTES.MYPAGE.RESERVATIONS} />
-          <NavLink title={MYPAGE_TITLE.BOOKMARKS} icon={bookmark} targetUrl={ROUTES.MYPAGE.BOOKMARKS} />
+          <NavLink title={MYPAGE_TITLE.FAVORITES} icon={bookmark} targetUrl={ROUTES.MYPAGE.FAVORITES} />
         </Stack>
       </section>
       <section className="flex flex-col items-start px-5 py-[1.875rem] gap-5 w-full rounded-2xl bg-white">

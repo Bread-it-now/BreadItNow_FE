@@ -10,6 +10,7 @@ import {
   HotBakery,
   HotFilterKey,
   HotProduct,
+  IReservationInfo,
   OPERATING_STATUS,
   Product,
   ProductForm,
@@ -674,4 +675,22 @@ export const useSearchProducts = ({
     },
     initialPageParam: 0,
   });
+};
+
+export const getReservation = async (reservationId: number): Promise<{ data: IReservationInfo }> => {
+  try {
+    const response = await customFetch(`/${API_END_POINT.RESERVATION(reservationId)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response?.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
 };

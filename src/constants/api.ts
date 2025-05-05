@@ -49,6 +49,8 @@ export const API_END_POINT = {
   DELETE_FAVORITE_BAKERY: (bakeryId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}/favorite`,
 
+  RESERVATION: (reservationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/${reservationId}`,
   /** CUSTOMER - PRODUCT */
   FAVORITE_PRODUCTS: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,

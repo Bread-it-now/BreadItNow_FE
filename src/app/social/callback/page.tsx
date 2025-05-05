@@ -1,10 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-// import { ROUTES } from '@/constants/routes';
-export default function SocialCallbackPage() {
+import { ROUTES } from '@/constants/routes';
+function SocialCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const handleTokenRefresh = async () => {
@@ -26,12 +26,19 @@ export default function SocialCallbackPage() {
 
   useEffect(() => {
     handleTokenRefresh();
-    // if (searchParams.get('isNewUser') === 'true') {
-    //   router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
-    // } else {
-    //   handleTokenRefresh().then(() => router.push('/'));
-    // }
-    // handleTokenRefresh().then(() => router.push('/'));
+    if (searchParams.get('isNewUser') === 'true') {
+      router.push(ROUTES.AUTH.LOGIN + '?isNewUser=true');
+    } else {
+      handleTokenRefresh().then(() => router.push('/'));
+    }
   }, [searchParams, router]);
   return <div></div>;
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <SocialCallbackPage />
+    </Suspense>
+  );
 }

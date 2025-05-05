@@ -8,7 +8,7 @@ import type { IReservationInfo } from '@/types/bakery';
 import Button from '@/components/button/Button';
 import CompletedReservationCard from '@/components/bakeryInfo/CompletedReservationCard';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getReservation } from '@/lib/api/bakery';
 import dayjs from 'dayjs';
 import { IFetchError } from '@/lib/customFetch';
@@ -130,11 +130,9 @@ function Page() {
     }
   };
 
-  useEffect(() => {
-    if (reservationId) {
-      getReservationInfo();
-    }
-  }, [reservationId]);
+  if (reservationId) {
+    getReservationInfo();
+  }
 
   return (
     <>

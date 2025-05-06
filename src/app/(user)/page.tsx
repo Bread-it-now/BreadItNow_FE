@@ -28,22 +28,6 @@ import RegionBottomSheet from '@/components/bottomsheet/regionbottomsheet/Region
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
   const { month, date, day } = getMonthDateDay(new Date());
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [token, setToken] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   requestPermissionAndGetToken().then((token) => {
-  //     if (token) {
-  //       setToken(token);
-  //       postNotification(1, 1);
-  //     }
-  //   });
-  //   // .catch((err) => console.error('FCM Token Error', err));
-
-  //   onForegroundMessage(() => {
-  //     // console.log('🔔 Foreground 메시지 수신:', payload);
-  //   });
-  // }, []);
 
   return (
     <>

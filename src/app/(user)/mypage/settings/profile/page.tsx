@@ -8,7 +8,7 @@ import PasswordInput from '@/components/common/Input/PasswordInput';
 import ConfirmModal from '@/components/modal/ConfirmModal';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
-import { IUser } from '@/store/userStore';
+import { IUser, updateUserInfo } from '@/lib/api/login';
 import { chkDuplicateNickname } from '@/lib/api/login';
 
 interface EditableInputProps {
@@ -16,7 +16,6 @@ interface EditableInputProps {
   value: string;
   buttonText: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  buttonMode: boolean;
   onButtonClick: () => void;
   isCorrectNickname?: boolean;
   wornNicknameLabel?: string;
@@ -25,10 +24,9 @@ interface EditableInputProps {
 function EditableInput({
   title,
   value,
-  onChange,
-  buttonMode,
-  onButtonClick,
   buttonText,
+  onChange,
+  onButtonClick,
   isCorrectNickname = true,
   wornNicknameLabel = '',
 }: EditableInputProps) {
@@ -39,14 +37,13 @@ function EditableInput({
         <Input
           className="border h-[48px] box-border border-gray-200 bg-gray-white rounded-lg"
           value={value}
-          disabled={!buttonMode}
           onChange={onChange}
         />
-        <Button className="grow" variant={buttonMode ? 'default' : 'primary'} onClick={onButtonClick}>
+        <Button className="grow" variant="primary" onClick={onButtonClick}>
           {buttonText}
         </Button>
-        <div className={`text-body-s ${isCorrectNickname ? 'text-primary' : 'text-red-500'}`}>{wornNicknameLabel}</div>
       </div>
+      <div className={`text-body-s ${isCorrectNickname ? 'text-secondary' : 'text-red-500'}`}>{wornNicknameLabel}</div>
     </>
   );
 }
@@ -62,18 +59,15 @@ export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const userInfo: IUser | null = JSON.parse(localStorage.getItem('user') || '{}');
-  // if (!userInfo || Object.keys(userInfo).length === 0) {
-  //   alert('로그인 후 이용해주세요.');
-  //   router.push(ROUTES.AUTH.LOGIN);
-  // }
   const [nickname, setNickname] = useState<string>(userInfo?.nickname || '');
   const [email, setEmail] = useState<string>(userInfo?.email || '');
   const [isCorrectNickname, setIsCorrectNickname] = useState<boolean>(false);
   const [wornNicknameLabel, setWornNicknameLabel] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>(userInfo?.phone || '');
-  const [nicknameButtonMode, setNicknameButtonMode] = useState<boolean>(false);
-  // const [phoneNumberButtonMode, setPhoneNumberButtonMode] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>('');
+  const [verifyPassword, setVerifyPassword] = useState<string>('');
   const [changePassword, setChangePassword] = useState<boolean>(false);
+  const [profileImage, setProfileImage] = useState<File | undefined>(undefined);
   //파일 업로드
   const fileRef = useRef<HTMLInputElement>(null);
   const handleFileButtonClick = () => {
@@ -86,16 +80,13 @@ export default function Page() {
   };
 
   const onNicknameChange = async () => {
-    if (nicknameButtonMode === false) {
-      setNicknameButtonMode(true);
-      const response = await chkDuplicateNickname(nickname);
-      if (response.status === 'SUCCESS') {
-        setIsCorrectNickname(true);
-        setWornNicknameLabel('사용 가능한 닉네임입니다.');
-      } else {
-        setIsCorrectNickname(false);
-        setWornNicknameLabel('이미 사용 중인 닉네임입니다.');
-      }
+    const response = await chkDuplicateNickname(nickname);
+    if (response.status === 'SUCCESS') {
+      setIsCorrectNickname(true);
+      setWornNicknameLabel('사용 가능한 닉네임입니다.');
+    } else {
+      setIsCorrectNickname(false);
+      setWornNicknameLabel('이미 사용 중인 닉네임입니다.');
     }
   };
 
@@ -104,11 +95,10 @@ export default function Page() {
     if (type === 'default') {
     } else {
       if (fileRef.current!.files && fileRef.current!.files.length) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const file: File = fileRef.current!.files[0];
-        // console.log('file:', file.text);
+        setProfileImage(file);
       } else {
-        //선택된 파일이 없습니다.
+        setProfileImage(undefined);
       }
     }
   };
@@ -131,8 +121,30 @@ export default function Page() {
     setIsModalOpen(true);
   };
 
-  const onSave = () => {
-    // console.log('저장');
+  const onSave = async () => {
+    if (!nickname || !password || !phoneNumber) {
+      alert('모든 항목을 입력해주세요.');
+      return;
+    }
+    if (password !== verifyPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    try {
+      const params = {
+        nickname,
+        phone: phoneNumber,
+        newPassword: password,
+      };
+      const response = await updateUserInfo(params, profileImage);
+      if (response.status !== 'SUCCESS') {
+        throw new Error('저장 실패');
+      }
+      localStorage.setItem('user', JSON.stringify(response.data));
+      router.push(ROUTES.MYPAGE.HOME);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -143,7 +155,13 @@ export default function Page() {
           <div className="text-body-s">프로필 사진</div>
           <div className="text-center mt-2">
             <div className="w-20 h-20 bg-gray-50 rounded-full border border-gray-200 mx-auto">
-              <Image src={Profile} width={80} height={80} className="mx-auto" alt="프로필" />
+              <Image
+                src={profileImage ? URL.createObjectURL(profileImage) : userInfo?.profileImage || Profile}
+                width={80}
+                height={80}
+                className="mx-auto"
+                alt="프로필"
+              />
             </div>
             <div className="mt-4 mb-5 text-[13px] text-gray-900 font-semibold">
               빵잇나우에서 사용할 프로필 사진을 등록해주세요.
@@ -155,11 +173,13 @@ export default function Page() {
             </Button>
             <Button id="profile-file" className="!h-full grow" variant="default" onClick={handleFileButtonClick}>
               <div className="text-body-s">이미지 변경</div>
+
               <input
                 onChange={() => onSubmitProfileImage('custom')}
                 ref={fileRef}
                 id="profile-file"
                 type="file"
+                accept="image/*"
                 className="hidden"
               />
             </Button>
@@ -168,9 +188,8 @@ export default function Page() {
             <EditableInput
               title="닉네임"
               value={nickname}
-              buttonText={nicknameButtonMode ? '변경하기' : '중복확인'}
+              buttonText="중복확인"
               onChange={onChangeNickname}
-              buttonMode={nicknameButtonMode}
               onButtonClick={onNicknameChange}
               isCorrectNickname={isCorrectNickname}
               wornNicknameLabel={wornNicknameLabel}
@@ -187,7 +206,6 @@ export default function Page() {
             <Input
               className="border w-full border-gray-200 rounded-lg"
               value={email}
-              disabled
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -196,7 +214,6 @@ export default function Page() {
             <Input
               className="border w-full border-gray-200 rounded-lg"
               value={phoneNumber}
-              disabled
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
@@ -206,14 +223,14 @@ export default function Page() {
               <>
                 <PasswordInput
                   className="mt-2 border rounded-lg"
-                  value={nickname}
-                  onChange={onChangeNickname}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="영문, 숫자, 특수기호 모두 포함 (8글자 이상)"
                 />
                 <PasswordInput
                   className="mt-2 border rounded-lg"
-                  value={nickname}
-                  onChange={onChangeNickname}
+                  value={verifyPassword}
+                  onChange={(e) => setVerifyPassword(e.target.value)}
                   placeholder="새 비밀번호 확인"
                 />
                 <Button

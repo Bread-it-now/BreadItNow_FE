@@ -1,6 +1,13 @@
 import { API_END_POINT } from '@/constants/api';
 import { customFetch } from '../customFetch';
-import { IUser } from '@/store/userStore';
+export interface IUser {
+  customerId: number;
+  email?: string;
+  nickname?: string;
+  profileImage?: string;
+  isSocialLogin: boolean;
+  phone?: string;
+}
 export const login = async (email: string, password: string, role: 'customer' | 'owner') => {
   const response = (await customFetch('/auth-api/api/v1/auth/sign-in', {
     method: 'GET',
@@ -44,6 +51,32 @@ export const chkDuplicateNickname = async (nickname: string) => {
 export const getMyInfo = async (): Promise<{ data: IUser }> => {
   const response = await customFetch(`/${API_END_POINT.MY_INFO()}`, {
     method: 'GET',
+  });
+  return response.json();
+};
+
+export const validatePassword = async (password: string) => {
+  const response = await customFetch(`/${API_END_POINT.VALIDATE_PASSWORD()}`, {
+    method: 'POST',
+    body: JSON.stringify({ password }),
+  });
+  return response.json();
+};
+
+export const updateUserInfo = async (
+  user: { nickname: string; phone: string; newPassword: string },
+  profileImage?: File,
+) => {
+  const formData = new FormData();
+  formData.append('data', JSON.stringify(user));
+  if (profileImage) {
+    formData.append('profileImage', profileImage);
+  }
+
+  const response = await customFetch(`/${API_END_POINT.UPDATE_USER_INFO()}`, {
+    method: 'POST',
+    // headers: { 'Content-Type': 'multipart/form-data' }, // 이 줄을 삭제!
+    body: formData,
   });
   return response.json();
 };

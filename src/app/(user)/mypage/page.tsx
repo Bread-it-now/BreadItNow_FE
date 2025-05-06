@@ -12,7 +12,7 @@ import bookmark from '@/assets/icons/bookmark-20.svg';
 import reservation from '@/assets/icons/reservation-20.svg';
 import inquiry from '@/assets/icons/inquiry.svg';
 import Stack from '@/components/common/stack/Stack';
-import { IUser } from '@/store/userStore';
+import { IUser } from '@/lib/api/login';
 
 const notificationCnt: number = 8;
 

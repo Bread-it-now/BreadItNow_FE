@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import lock from '@/assets/images/lock.png';
-import CloseIcon from '@/components/common/Icons/CloseIcon';
 import PasswordInput from '@/components/common/Input/PasswordInput';
 import Button from '@/components/button/Button';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import KakaoIcon from '@/assets/images/kakao.png';
 import NaverIcon from '@/assets/images/naver.png';
+import { validatePassword } from '@/lib/api/login';
 // import GoogleIcon from '@/assets/icons/google.svg';
 function Page() {
   const router = useRouter();
@@ -17,15 +17,24 @@ function Page() {
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
+
+  const onValidatePassword = async () => {
+    const response = await validatePassword(password);
+    if (response.status === 'SUCCESS') {
+      router.push(ROUTES.MYPAGE.PROFILE_SETTING);
+    } else {
+      alert('비밀번호가 틀렸습니다.');
+    }
+  };
   return (
-    <div className="bg-white h-screen px-5 w-full text-black flex flex-col">
+    <div className="bg-white h-full px-5 w-full text-black flex flex-col">
       <div className="grow">
-        <div className="flex py-[13px] text-left gap-5">
+        {/* <div className="flex py-[13px] text-left gap-5">
           <div className="text-title-content-l grow">비밀번호 확인</div>
           <button className="w-6 h-6" onClick={() => router.push(ROUTES.MYPAGE.HOME)}>
             <CloseIcon />
           </button>
-        </div>
+        </div> */}
         <div className="text-center mt-6 pb-5">
           <Image className="mx-auto" src={lock} width={70} height={70} alt="잠금 아이콘" />
           <div className="mt-6">
@@ -39,11 +48,7 @@ function Page() {
           value={password}
           placeholder="비밀번호"
         />
-        <Button
-          fullWidth
-          onClick={() => router.push(ROUTES.MYPAGE.PROFILE_SETTING)}
-          className="mt-[30px]"
-          variant="primary">
+        <Button fullWidth onClick={onValidatePassword} className="mt-[30px]" variant="primary">
           <div>다음</div>
         </Button>
       </div>
@@ -71,6 +76,7 @@ function Page() {
               after:w-[calc(50%-80px)]
               after:right-0
               after:bg-gray-200
+              mt-[30px]
             ">
             소셜 로그인 회원의 경우
           </div>

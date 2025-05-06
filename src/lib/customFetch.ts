@@ -8,9 +8,7 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const refreshToken = localStorage.getItem('accessToken');
   //TODO: 토큰 쿠키로 변경
-  const defaultHeaders: HeadersInit = {
-    Accept: 'application/json',
-  };
+  const defaultHeaders: HeadersInit = {};
 
   const mergedHeaders = {
     ...defaultHeaders,
@@ -36,7 +34,7 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
   };
 
   if (refreshToken) {
-    defaultHeaders.Authorization = `Bearer ${refreshToken}`;
+    defaultHeaders.Authorization = refreshToken;
   }
   try {
     const response = await fetch(`${baseUrl}${url}`, {

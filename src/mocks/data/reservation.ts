@@ -18,7 +18,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 10000,
     totalReservationProducts: 12,
     mainReservationProductName: '소보로',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 501,
@@ -30,7 +30,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 20000,
     totalReservationProducts: 12,
     mainReservationProductName: '소보로',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T10:30:00Z',
   },
   {
@@ -43,7 +43,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 30000,
     totalReservationProducts: 12,
     mainReservationProductName: '소보로',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T10:30:00Z',
   },
   {
@@ -56,7 +56,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 40000,
     totalReservationProducts: 12,
     mainReservationProductName: '소보로',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 504,
@@ -68,7 +68,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 50000,
     totalReservationProducts: 12,
     mainReservationProductName: '소보로',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 505,
@@ -80,7 +80,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 60000,
     totalReservationProducts: 12,
     mainReservationProductName: '소보로',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 506,
@@ -92,7 +92,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalReservationProducts: 12,
     mainReservationProductName: '소보로',
     totalPrice: 70000,
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 507,
@@ -103,7 +103,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 8000,
     totalReservationProducts: 8,
     mainReservationProductName: '크림빵',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 508,
@@ -115,7 +115,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 15000,
     totalReservationProducts: 10,
     mainReservationProductName: '단팥빵',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T11:30:00Z',
   },
   {
@@ -128,7 +128,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 22000,
     totalReservationProducts: 15,
     mainReservationProductName: '모카번',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 510,
@@ -139,7 +139,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 18000,
     totalReservationProducts: 6,
     mainReservationProductName: '햄치즈토스트',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 511,
@@ -151,7 +151,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 24000,
     totalReservationProducts: 8,
     mainReservationProductName: '불고기토스트',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T13:30:00Z',
   },
   {
@@ -164,7 +164,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 32000,
     totalReservationProducts: 10,
     mainReservationProductName: '치킨마요토스트',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 513,
@@ -176,7 +176,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 35000,
     totalReservationProducts: 9,
     mainReservationProductName: '마들렌',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T14:30:00Z',
   },
   {
@@ -188,7 +188,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 20000,
     totalReservationProducts: 6,
     mainReservationProductName: '휘낭시에',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 515,
@@ -200,7 +200,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 27000,
     totalReservationProducts: 7,
     mainReservationProductName: '까눌레',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   // 계속 추가
   {
@@ -213,7 +213,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 33000,
     totalReservationProducts: 9,
     mainReservationProductName: '크루아상',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T16:00:00Z',
   },
   {
@@ -225,7 +225,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 29000,
     totalReservationProducts: 10,
     mainReservationProductName: '페이스트리',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 518,
@@ -237,7 +237,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 36000,
     totalReservationProducts: 11,
     mainReservationProductName: '브리오슈',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 519,
@@ -249,7 +249,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 12000,
     totalReservationProducts: 5,
     mainReservationProductName: '바게트',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 520,
@@ -260,7 +260,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 13000,
     totalReservationProducts: 6,
     mainReservationProductName: '치즈바게트',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 521,
@@ -272,7 +272,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 17000,
     totalReservationProducts: 8,
     mainReservationProductName: '감자치아바타',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T18:30:00Z',
   },
   {
@@ -285,7 +285,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 21000,
     totalReservationProducts: 7,
     mainReservationProductName: '호두과자',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T19:00:00Z',
   },
   {
@@ -297,7 +297,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 25000,
     totalReservationProducts: 9,
     mainReservationProductName: '마카롱',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 524,
@@ -309,7 +309,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 28000,
     totalReservationProducts: 10,
     mainReservationProductName: '스콘',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T20:00:00Z',
   },
   {
@@ -322,7 +322,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 30000,
     totalReservationProducts: 11,
     mainReservationProductName: '소금빵',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 526,
@@ -333,7 +333,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 31000,
     totalReservationProducts: 12,
     mainReservationProductName: '팡도르',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 527,
@@ -345,7 +345,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 32000,
     totalReservationProducts: 13,
     mainReservationProductName: '카스텔라',
-    profileImage: bakery,
+    profileImage: bakery.src,
   },
   {
     reservationId: 528,
@@ -357,7 +357,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 34000,
     totalReservationProducts: 14,
     mainReservationProductName: '생크림빵',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T22:00:00Z',
   },
   {
@@ -370,7 +370,7 @@ export const mockCustomerReservations: CustomerReservation[] = [
     totalPrice: 36000,
     totalReservationProducts: 15,
     mainReservationProductName: '앙버터',
-    profileImage: bakery,
+    profileImage: bakery.src,
     pickupDeadline: '2025-02-01T22:30:00Z',
   },
 ];
@@ -382,7 +382,7 @@ export const reservationItems: ReservationProduct[] = [
     quantity: 3,
     unitPrice: 4000,
     totalPrice: 12000,
-    breadImage: bread,
+    breadImage: bread.src,
   },
   {
     productId: 2,
@@ -390,7 +390,7 @@ export const reservationItems: ReservationProduct[] = [
     quantity: 1,
     unitPrice: 5000,
     totalPrice: 5000,
-    breadImage: bread,
+    breadImage: bread.src,
   },
   {
     productId: 3,
@@ -398,7 +398,7 @@ export const reservationItems: ReservationProduct[] = [
     quantity: 3,
     unitPrice: 4000,
     totalPrice: 12000,
-    breadImage: bread,
+    breadImage: bread.src,
   },
   {
     productId: 4,
@@ -406,7 +406,7 @@ export const reservationItems: ReservationProduct[] = [
     quantity: 3,
     unitPrice: 4000,
     totalPrice: 12000,
-    breadImage: bread,
+    breadImage: bread.src,
   },
   {
     productId: 5,
@@ -414,7 +414,7 @@ export const reservationItems: ReservationProduct[] = [
     quantity: 3,
     unitPrice: 4000,
     totalPrice: 12000,
-    breadImage: bread,
+    breadImage: bread.src,
   },
   {
     productId: 6,
@@ -422,7 +422,7 @@ export const reservationItems: ReservationProduct[] = [
     quantity: 3,
     unitPrice: 4000,
     totalPrice: 12000,
-    breadImage: bread,
+    breadImage: bread.src,
   },
   {
     productId: 7,
@@ -430,7 +430,7 @@ export const reservationItems: ReservationProduct[] = [
     quantity: 3,
     unitPrice: 4000,
     totalPrice: 12000,
-    breadImage: bread,
+    breadImage: bread.src,
   },
 ];
 
@@ -439,11 +439,13 @@ export const mockCustomerReservationDetailList: CustomerReservationDetail[] = mo
     const bakeryInfo = {
       bakeryId: reservation.bakeryId,
       name: reservation.bakeryName,
+      isFavorite: false,
+      isBakeryFavorite: false,
       address: `서울시 강남구 가상도로 ${reservation.bakeryId}번길`,
       phone: '010-1234-5678',
       introduction: '정성껏 빵을 굽는 동네 빵집입니다.',
       openTime: '08:00',
-      operatingStatus: 'OPEN',
+      operatingStatus: 'CLOSED' as const,
       profileImage: reservation.profileImage,
     };
 

@@ -186,5 +186,30 @@ export interface SearchAutoComplete {
   type: 'BAKERY' | 'PRODUCT';
 }
 
+/** 예약 정보 */
+
+export interface IReservationItem {
+  productId: number;
+  name: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+  breadImage: string;
+}
+export interface IReservation {
+  reservationId: number;
+  reservationNumber: number;
+  reservationDate: string;
+  pickupDeadline: string;
+  status: string;
+  totalPrice: number;
+  reservationItems: IReservationItem[];
+}
+
+export interface IReservationInfo {
+  bakery: Bakery;
+  reservation: IReservation;
+}
+
 export type FilterKey = 'latest' | 'popular' | 'distance';
 export type HotFilterKey = 'reservation' | 'favorite';

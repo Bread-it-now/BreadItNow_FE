@@ -8,8 +8,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import KakaoIcon from '@/assets/images/kakao.png';
-import NaverIcon from '@/assets/icons/naver.svg';
-import GoogleIcon from '@/assets/icons/google.svg';
+import NaverIcon from '@/assets/images/naver.png';
+// import GoogleIcon from '@/assets/icons/google.svg';
 function Page() {
   const router = useRouter();
   const [password, setPassword] = useState<string>('');
@@ -33,7 +33,12 @@ function Page() {
             <div className="text-sm text-gray-500 mt-2">개인정보 보호를 위해 비밀번호 확인이 필요합니다.</div>
           </div>
         </div>
-        <PasswordInput className="mt-[30px]" onChange={onChangePassword} value={password} placeholder="비밀번호" />
+        <PasswordInput
+          className="mt-[30px] border rounded-lg"
+          onChange={onChangePassword}
+          value={password}
+          placeholder="비밀번호"
+        />
         <Button
           fullWidth
           onClick={() => router.push(ROUTES.MYPAGE.PROFILE_SETTING)}
@@ -70,24 +75,36 @@ function Page() {
             소셜 로그인 회원의 경우
           </div>
         </div>
-        <Button fullWidth onClick={() => {}} className="mt-[30px]" variant="default">
+        <Button
+          fullWidth
+          onClick={() =>
+            window.open(
+              'https://accounts.kakao.com/weblogin/find_password?continue=%2Flogin%3Fcontinue%3Dhttps%253A%252F%252Faccounts.kakao.com%252Fweblogin%252Faccount&lang=ko&showHeader=false',
+            )
+          }
+          className="mt-[30px]"
+          variant="default">
           <div className="flex items-center gap-2">
             <Image src={KakaoIcon} width={20} height={20} alt="카카오" />
             카카오로 확인하기
           </div>
         </Button>
-        <Button fullWidth onClick={() => {}} className="mt-[30px]" variant="default">
+        <Button
+          fullWidth
+          onClick={() => window.open('https://nid.naver.com/user2/help/pwInquiry.nhn?menu=pwinquiry', '_blank')}
+          className="mt-[30px]"
+          variant="default">
           <div className="flex items-center gap-2">
             <Image src={NaverIcon} width={20} height={20} alt="네이버" />
             네이버로 확인하기
           </div>
         </Button>
-        <Button fullWidth onClick={() => {}} className="mt-[30px]" variant="default">
+        {/* <Button fullWidth onClick={() => {}} className="mt-[30px]" variant="default">
           <div className="flex items-center gap-2">
             <Image src={GoogleIcon} width={20} height={20} alt="구글" />
             구글로 확인하기
           </div>
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

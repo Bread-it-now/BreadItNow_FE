@@ -49,6 +49,8 @@ export const API_END_POINT = {
   DELETE_FAVORITE_BAKERY: (bakeryId: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${bakeryId}/favorite`,
 
+  RESERVATION: (reservationId: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.RESERVATION}/${reservationId}`,
   /** CUSTOMER - PRODUCT */
   FAVORITE_PRODUCTS: (page: number, size: number, sort: FilterKey, latitude: number, longitude: number) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/favorite?page=${page}&size=${size}&sort=${sort}&latitude=${latitude}&longitude=${longitude}`,
@@ -58,6 +60,8 @@ export const API_END_POINT = {
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.BAKERY}/${productId}/favorite`,
   HOT_PRODUCTS: (page: number, size: number, sort: HotFilterKey) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot?page=${page}&size=${size}&sort=${sort}`,
+
+  MY_INFO: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/info`,
 
   /** CUSTOMER - REGION */
   SIDO_REGIONS: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido`,

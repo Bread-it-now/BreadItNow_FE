@@ -17,9 +17,9 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
 
   return (
-    <div>
+    <div className="w-full h-full bg-gray50 text-black">
       <Topbar title={MYPAGE_TITLE[getPageRoute(pathname)]} />
-      <div className="flex flex-col gap-[0.625rem] bg-gray100 w-full h-full">{children}</div>
+      <div className="flex flex-col gap-[0.625rem]">{children}</div>
     </div>
   );
 }

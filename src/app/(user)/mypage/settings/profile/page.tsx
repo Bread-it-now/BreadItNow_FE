@@ -6,6 +6,10 @@ import Input from '@/components/common/Input/Input';
 import { useState, useRef } from 'react';
 import PasswordInput from '@/components/common/Input/PasswordInput';
 import ConfirmModal from '@/components/modal/ConfirmModal';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
+import { IUser } from '@/store/userStore';
+import { chkDuplicateNickname } from '@/lib/api/login';
 
 interface EditableInputProps {
   title: string;
@@ -14,9 +18,20 @@ interface EditableInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   buttonMode: boolean;
   onButtonClick: () => void;
+  isCorrectNickname?: boolean;
+  wornNicknameLabel?: string;
 }
 
-function EditableInput({ title, value, onChange, buttonMode, onButtonClick, buttonText }: EditableInputProps) {
+function EditableInput({
+  title,
+  value,
+  onChange,
+  buttonMode,
+  onButtonClick,
+  buttonText,
+  isCorrectNickname = true,
+  wornNicknameLabel = '',
+}: EditableInputProps) {
   return (
     <>
       <div className="text-body-s">{title}</div>
@@ -27,20 +42,16 @@ function EditableInput({ title, value, onChange, buttonMode, onButtonClick, butt
           disabled={!buttonMode}
           onChange={onChange}
         />
-        <Button className="grow bg-primaryLight" variant="primary" onClick={onButtonClick}>
-          <div className="text-primary">{buttonText}</div>
+        <Button className="grow" variant={buttonMode ? 'default' : 'primary'} onClick={onButtonClick}>
+          {buttonText}
         </Button>
+        <div className={`text-body-s ${isCorrectNickname ? 'text-primary' : 'text-red-500'}`}>{wornNicknameLabel}</div>
       </div>
     </>
   );
 }
 
 export default function Page() {
-  const [nickname, setNickname] = useState<string>('');
-  const [nicknameButtonMode, setNicknameButtonMode] = useState<boolean>(false);
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [phoneNumberButtonMode, setPhoneNumberButtonMode] = useState<boolean>(false);
-  const [changePassword, setChangePassword] = useState<boolean>(false);
   //TODO... 전역 상태가 필요할 경우 로직 분리 필요
   const [modalInfo, setModalInfo] = useState<{
     title?: string;
@@ -49,7 +60,20 @@ export default function Page() {
     onCancel?: () => void;
   }>({});
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+  const router = useRouter();
+  const userInfo: IUser | null = JSON.parse(localStorage.getItem('user') || '{}');
+  // if (!userInfo || Object.keys(userInfo).length === 0) {
+  //   alert('로그인 후 이용해주세요.');
+  //   router.push(ROUTES.AUTH.LOGIN);
+  // }
+  const [nickname, setNickname] = useState<string>(userInfo?.nickname || '');
+  const [email, setEmail] = useState<string>(userInfo?.email || '');
+  const [isCorrectNickname, setIsCorrectNickname] = useState<boolean>(false);
+  const [wornNicknameLabel, setWornNicknameLabel] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>(userInfo?.phone || '');
+  const [nicknameButtonMode, setNicknameButtonMode] = useState<boolean>(false);
+  // const [phoneNumberButtonMode, setPhoneNumberButtonMode] = useState<boolean>(false);
+  const [changePassword, setChangePassword] = useState<boolean>(false);
   //파일 업로드
   const fileRef = useRef<HTMLInputElement>(null);
   const handleFileButtonClick = () => {
@@ -61,19 +85,17 @@ export default function Page() {
     setNickname(e.target.value);
   };
 
-  const onChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
-  };
-
-  const onNicknameChange = () => {
+  const onNicknameChange = async () => {
     if (nicknameButtonMode === false) {
       setNicknameButtonMode(true);
-    }
-  };
-
-  const onPhoneNumberChange = () => {
-    if (phoneNumberButtonMode === false) {
-      setPhoneNumberButtonMode(true);
+      const response = await chkDuplicateNickname(nickname);
+      if (response.status === 'SUCCESS') {
+        setIsCorrectNickname(true);
+        setWornNicknameLabel('사용 가능한 닉네임입니다.');
+      } else {
+        setIsCorrectNickname(false);
+        setWornNicknameLabel('이미 사용 중인 닉네임입니다.');
+      }
     }
   };
 
@@ -109,8 +131,12 @@ export default function Page() {
     setIsModalOpen(true);
   };
 
+  const onSave = () => {
+    // console.log('저장');
+  };
+
   return (
-    <div className="bg-gray-200 text-black overflow-y-auto flex flex-col gap-[10px]">
+    <div className="bg-gray-200 relative text-black overflow-y-auto flex flex-col gap-[10px]">
       <div className="px-5 pb-[30px] bg-white rounded-b-2xl">
         <div className="text-title-content-l">기본 정보</div>
         <div className="mt-6">
@@ -146,6 +172,8 @@ export default function Page() {
               onChange={onChangeNickname}
               buttonMode={nicknameButtonMode}
               onButtonClick={onNicknameChange}
+              isCorrectNickname={isCorrectNickname}
+              wornNicknameLabel={wornNicknameLabel}
             />
           </div>
         </div>
@@ -158,19 +186,18 @@ export default function Page() {
           <div className="mt-2 flex items-center align gap-2">
             <Input
               className="border w-full border-gray-200 rounded-lg"
-              value={nickname}
+              value={email}
               disabled
-              onChange={onChangeNickname}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mt-[30px]">
-            <EditableInput
-              title="휴대폰 번호"
+            <div className="text-body-s mb-2">휴대폰 번호</div>
+            <Input
+              className="border w-full border-gray-200 rounded-lg"
               value={phoneNumber}
-              buttonText={phoneNumberButtonMode ? '변경하기' : '인증하기'}
-              onChange={onChangePhoneNumber}
-              buttonMode={phoneNumberButtonMode}
-              onButtonClick={onPhoneNumberChange}
+              disabled
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
           <div className="mt-[30px]">
@@ -178,30 +205,27 @@ export default function Page() {
             {changePassword ? (
               <>
                 <PasswordInput
-                  className="mt-2"
+                  className="mt-2 border rounded-lg"
                   value={nickname}
                   onChange={onChangeNickname}
                   placeholder="영문, 숫자, 특수기호 모두 포함 (8글자 이상)"
                 />
                 <PasswordInput
-                  className="mt-2"
+                  className="mt-2 border rounded-lg"
                   value={nickname}
                   onChange={onChangeNickname}
                   placeholder="새 비밀번호 확인"
                 />
                 <Button
                   onClick={() => setChangePassword(!changePassword)}
-                  className="mt-2 grow w-full bg-primaryLight"
+                  className="mt-2 grow w-full"
                   variant="primary">
-                  <div className="text-primary">비밀번호 변경 취소</div>
+                  비밀번호 변경 취소
                 </Button>
               </>
             ) : (
-              <Button
-                onClick={() => setChangePassword(!changePassword)}
-                className="mt-2 grow w-full bg-primaryLight"
-                variant="primary">
-                <div className="text-primary">비밀번호 변경하기</div>
+              <Button onClick={() => setChangePassword(!changePassword)} className="mt-2 grow w-full" variant="primary">
+                비밀번호 변경하기
               </Button>
             )}
           </div>
@@ -218,6 +242,14 @@ export default function Page() {
       </div>
 
       <ConfirmModal {...modalInfo} isOpen={isModalOpen} />
+      <div className="sticky bottom-0 left-0 w-full max-w-[375px] bg-white flex gap-2 p-5 h-[92px]">
+        <Button className="grow" variant="default" onClick={() => router.push(ROUTES.MYPAGE.HOME)}>
+          <div>취소</div>
+        </Button>
+        <Button className="grow" variant="primary" onClick={onSave}>
+          <div>저장</div>
+        </Button>
+      </div>
     </div>
   );
 }

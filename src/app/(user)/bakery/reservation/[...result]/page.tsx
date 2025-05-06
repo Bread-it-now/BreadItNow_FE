@@ -4,49 +4,14 @@ import BackIcon from '@/assets/icons/back.svg';
 import Image from 'next/image';
 import BreadSuccess from '@/assets/icons/reserve-success.svg';
 import BreadFail from '@/assets/icons/reserve-fail.svg';
-import type { Product } from '@/types/bakery';
+import type { IReservationInfo } from '@/types/bakery';
 import Button from '@/components/button/Button';
 import CompletedReservationCard from '@/components/bakeryInfo/CompletedReservationCard';
-import { useParams } from 'next/navigation';
-const breadList: Product[] = [
-  {
-    productId: 1,
-    bakeryId: 1,
-    productType: 'BREAD',
-    name: '소금빵',
-    price: 1000,
-    stock: 10,
-    description: '소금빵 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-    isHidden: false,
-  },
-  {
-    productId: 2,
-    bakeryId: 1,
-    productType: 'BREAD',
-    name: '휘낭시에',
-    price: 1000,
-    stock: 10,
-    description: '휘낭시에 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-    isHidden: false,
-  },
-  {
-    productId: 3,
-    bakeryId: 1,
-    productType: 'BREAD',
-    name: '마들렌',
-    price: 1000,
-    stock: 10,
-    description: '마들렌 소개',
-    image: 'https://placehold.co/600x400/png',
-    isActive: true,
-    isHidden: false,
-  },
-];
-
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { getReservation } from '@/lib/api/bakery';
+import dayjs from 'dayjs';
+import { IFetchError } from '@/lib/customFetch';
 function ReservationFail({ failReason }: { failReason: string }) {
   const router = useRouter();
   return (
@@ -60,7 +25,7 @@ function ReservationFail({ failReason }: { failReason: string }) {
       <div className="w-full grow px-5 py-6 flex overflow-hidden bg-white flex-col items-center mx-auto">
         <Image src={BreadFail} alt="bread-success" width={70} height={70} />
         <div className="mt-4 text-center">
-          <div className="font-semibold text-[22px] text-black">빵 예약을 실패했습니다.</div>
+          <div className="font-semibold text-[22px] text-black">빵 예약에 실패했습니다.</div>
           <div className="font-normal text-sm text-gray-500">{failReason}</div>
         </div>
       </div>
@@ -73,8 +38,9 @@ function ReservationFail({ failReason }: { failReason: string }) {
   );
 }
 
-function ReservationSuccess() {
+function ReservationSuccess({ reservationInfo }: { reservationInfo: IReservationInfo | null }) {
   const router = useRouter();
+  const reservationDate = dayjs(reservationInfo?.reservation.reservationDate).format('YYYY-MM-DD');
   return (
     <div className="w-full h-full">
       <div className="flex items-center gap-2 px-5 py-[13px] bg-white">
@@ -88,7 +54,7 @@ function ReservationSuccess() {
           <Image src={BreadSuccess} alt="bread-success" width={70} height={70} />
           <div className="text-center">
             <div className="font-semibold text-[22px] text-black mt-4">빵 예약 요청이 접수되었습니다.</div>
-            <div className="font-normal text-sm text-gray-500 mt-2">판매바의 승인이 완료되면 예약이 확정됩니다.</div>
+            <div className="font-normal text-sm text-gray-500 mt-2">판매자의 승인이 완료되면 예약이 확정됩니다.</div>
           </div>
         </div>
 
@@ -97,31 +63,34 @@ function ReservationSuccess() {
           <div className="mt-5">
             <div className="flex justify-between">
               <div className="font-normal text-sm text-gray-500">예약 빵집</div>
-              <div className="font-medium text-sm">소금 한 꼬집</div>
+              <div className="font-medium text-sm">{reservationInfo?.bakery.name}</div>
             </div>
             <div className="flex justify-between mt-4">
               <div className="font-normal text-sm text-gray-500">예약 일시</div>
-              <div className="text-sm font-medium">2025.03.01</div>
+              <div className="text-sm font-medium">{reservationDate}</div>
             </div>
           </div>
         </div>
 
         <div className="rounded-xl w-full border-box px-5 py-6 overflow-hidden text-black bg-white">
           <div className="text-title-content-m mb-5">예약 상품</div>
-          {breadList.map((product, index) => {
+          {reservationInfo?.reservation.reservationItems.map((product, index) => {
             return (
-              <>
-                <CompletedReservationCard key={`${product.productId}-${index}`} {...product} />
-                {index !== breadList.length - 1 && <hr className="w-full border-gray-200 my-5" />}
-              </>
+              <div key={`${product.productId}-${index}`}>
+                <CompletedReservationCard {...product} />
+                {index !== reservationInfo?.reservation.reservationItems.length - 1 && (
+                  <hr className="w-full border-gray-200 my-5" />
+                )}
+              </div>
             );
           })}
           <div className="mt-[30px] bg-gray-50 font-semibold">
             <div className="px-5 py-[23px] flex justify-between items-center text-black">
               <div>
-                총<span className="text-primary">{breadList.length}</span>건 상품 금액
+                총<span className="text-primary">{reservationInfo?.reservation.reservationItems.length}</span>건 상품
+                금액
               </div>
-              <div className="text-primary">22,100원</div>
+              <div className="text-primary">{reservationInfo?.reservation.totalPrice}원</div>
             </div>
           </div>
         </div>
@@ -130,28 +99,51 @@ function ReservationSuccess() {
         <Button onClick={() => router.push('/')} variant="default" fullWidth>
           메인
         </Button>
-        <Button onClick={() => alert('예약 상세')} variant="primary" fullWidth>
+        {/* <Button onClick={() => alert('예약 상세')} variant="primary" fullWidth>
           예약 상세
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
 }
 
 function Page() {
-  const params = useParams();
-  const status = params.result;
-  if (!status || status.length === 0) {
-    return <div>예약 결과가 없습니다.</div>;
+  const [reservationInfo, setReservationInfo] = useState<IReservationInfo | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
+  const [failReason, setFailReason] = useState<string>('');
+  const searchParams = useSearchParams();
+  const reservationId = searchParams.get('reservation_id');
+  const getReservationInfo = async () => {
+    if (!reservationId) return;
+    try {
+      setIsLoading(true);
+      const res = await getReservation(Number(reservationId));
+      setReservationInfo(res.data);
+      setIsSuccess(true);
+    } catch (error) {
+      const customError = (await error) as IFetchError;
+      setFailReason(customError.message);
+      setIsSuccess(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (reservationId) {
+    getReservationInfo();
   }
-  const isSuccess = status[1] === 'success';
 
   return (
     <>
-      {isSuccess ? (
-        <ReservationSuccess />
+      {isLoading ? (
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="w-10 h-10 border-t-transparent border-b-transparent border-r-transparent border-l-primary rounded-full animate-spin"></div>
+        </div>
+      ) : isSuccess ? (
+        <ReservationSuccess reservationInfo={reservationInfo} />
       ) : (
-        <ReservationFail failReason="빵집 운영시간이 아닙니다.(실패 사유 노출영역)" />
+        <ReservationFail failReason={failReason} />
       )}
     </>
   );

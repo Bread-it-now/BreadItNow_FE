@@ -16,6 +16,8 @@ import {} from '@/lib/shared/date';
 import { ENG_DAY } from '@/types/date';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { onForegroundMessage, requestPermissionAndGetToken } from '@/lib/firebase';
+import { postNotification } from '@/lib/api/fcm';
 
 export interface DoNotDisturbFormProps {
   initValue: DoNotDisturbForm;
@@ -192,7 +194,22 @@ const DoNotDisturbSettingForm = ({ initValue, mutate }: DoNotDisturbFormProps) =
 export default function Page() {
   const { data: doNotDisturb } = useDoNotDisturbSetting();
   const onOffDoNotDisturbMutation = useOnOffDoNotDisturbSetting();
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [token, setToken] = useState<string | null>(null);
+  const onToggle = () => {
+    onOffDoNotDisturbMutation.mutate();
+    if (doNotDisturb?.active) {
+      requestPermissionAndGetToken().then((token) => {
+        if (token) {
+          setToken(token);
+          postNotification(1, 1);
+        }
+      });
+      onForegroundMessage(() => {
+        // console.log('🔔 Foreground 메시지 수신:', payload);
+      });
+    }
+  };
   return (
     <>
       <section>
@@ -204,7 +221,7 @@ export default function Page() {
                 설정한 요일, 시간동안 모든 빵 알림이 오지 않습니다.
               </p>
             </div>
-            {<ToggleSwitch checked={doNotDisturb?.active} toggleMutate={() => onOffDoNotDisturbMutation.mutate()} />}
+            {<ToggleSwitch checked={doNotDisturb?.active} toggleMutate={() => onToggle()} />}
           </div>
         )}
       </section>

@@ -20,6 +20,7 @@ export const customFetch = async (url: string, options: RequestInit): Promise<Re
   const handleTokenRefresh = async () => {
     try {
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('user');
       const response = await fetch(`${baseUrl}/auth-api/api/v1/token/refresh`, {
         method: 'POST',
         credentials: 'include',

@@ -61,6 +61,8 @@ export const API_END_POINT = {
   HOT_PRODUCTS: (page: number, size: number, sort: HotFilterKey) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.PRODUCT}/hot?page=${page}&size=${size}&sort=${sort}`,
 
+  MY_INFO: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/info`,
+
   /** CUSTOMER - REGION */
   SIDO_REGIONS: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido`,
   GUGUN_REGIONS: (sidoCode: string) =>

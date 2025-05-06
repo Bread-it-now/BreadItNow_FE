@@ -19,6 +19,7 @@ import { useHotBakeries, useHotProducts } from '@/lib/api/bakery';
 import { HotBakery, HotProduct } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import EmptyState from '@/components/common/EmptyState';
+
 // import { requestPermissionAndGetToken, onForegroundMessage } from '@/lib/firebase';
 // import { postNotification } from '@/lib/api/fcm';
 import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
@@ -27,7 +28,6 @@ import RegionBottomSheet from '@/components/bottomsheet/regionbottomsheet/Region
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
   const { month, date, day } = getMonthDateDay(new Date());
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken] = useState<string | null>(null);
 
@@ -44,6 +44,7 @@ const TodayProductsSection = () => {
   //     // console.log('🔔 Foreground 메시지 수신:', payload);
   //   });
   // }, []);
+
   return (
     <>
       <div className="flex px-4 justify-between items-center my-8">

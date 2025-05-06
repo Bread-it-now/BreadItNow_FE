@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { getMyInfo } from '@/lib/api/login';
 function SocialCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -18,6 +19,8 @@ function SocialCallbackPage() {
       if (accessToken) {
         localStorage.setItem('accessToken', accessToken);
       }
+      const user = await getMyInfo();
+      localStorage.setItem('user', JSON.stringify(user.data));
       return result;
     } catch (error) {
       throw error;

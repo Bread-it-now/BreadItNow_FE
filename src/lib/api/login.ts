@@ -1,5 +1,6 @@
+import { API_END_POINT } from '@/constants/api';
 import { customFetch } from '../customFetch';
-
+import { IUser } from '@/store/userStore';
 export const login = async (email: string, password: string, role: 'customer' | 'owner') => {
   const response = (await customFetch('/auth-api/api/v1/auth/sign-in', {
     method: 'GET',
@@ -37,5 +38,12 @@ export const chkDuplicateNickname = async (nickname: string) => {
   const response = (await customFetch(`/customer-api/api/v1/customer/duplicate-nickname?nickname=${nickname}`, {
     method: 'GET',
   })) as Response;
+  return response.json();
+};
+
+export const getMyInfo = async (): Promise<{ data: IUser }> => {
+  const response = await customFetch(`/${API_END_POINT.MY_INFO()}`, {
+    method: 'GET',
+  });
   return response.json();
 };

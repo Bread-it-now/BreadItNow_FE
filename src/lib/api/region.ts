@@ -51,3 +51,24 @@ export const updateRegion = async (sidoCode: string, gugunCodes: string[]): Prom
 
   return response.json();
 };
+
+export const getLocationRegion = async (
+  latitude: number,
+  longitude: number,
+): Promise<{ data: { sidoName: string; gugunCode: string; gugunName: string } }> => {
+  const response = await customFetch(`/${API_END_POINT.LOCATION_REGION(latitude, longitude)}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response?.ok) throw new Error('Failed to location Regions');
+
+  return response.json();
+};
+
+export const useLocationRegion = (latitude: number, longitude: number) =>
+  useQuery({
+    queryKey: [...REGION_QUERY_KEY.LOCATION_REGION(latitude, longitude)],
+    queryFn: () => getLocationRegion(latitude, longitude),
+    select: (data: { data: { sidoName: string; gugunCode: string; gugunName: string } }) => data.data,
+  });

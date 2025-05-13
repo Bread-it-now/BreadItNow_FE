@@ -4,7 +4,7 @@ import { GuGunRegion, SidoRegion } from '@/types/location';
 import LocationIcon from '@/assets/icons/location.svg';
 import { cn } from '@/utils/cn';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { updateRegion, useGuGunRegions } from '@/lib/api/region';
+import { updateRegion, useGuGunRegions, useLocationRegion } from '@/lib/api/region';
 
 export const sidoRegions: SidoRegion[] = [
   { sidoCode: '11', sidoName: '서울' },
@@ -106,13 +106,19 @@ const RegionBottomSheet = ({
   isOpen,
   close,
   handleRegionTitle,
+  latitude,
+  longitude,
 }: {
   isOpen: boolean;
   close: () => void;
   handleRegionTitle: (title: string) => void;
+  latitude: number;
+  longitude: number;
 }) => {
   const [selectedSidoRegion, setSelectedSidoRegion] = useState<SidoRegion>({ ...sidoRegions[0] });
   const [selectedGuGunRegions, setSelectedGuGunRegions] = useState<GuGunRegion[]>([]);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const { data: locationRegion } = useLocationRegion(latitude, longitude);
 
   return (
     <BottomSheet
@@ -126,6 +132,11 @@ const RegionBottomSheet = ({
       confirmText="관심지역 설정 완료"
       cancelText="초기화"
       onConfirm={() => {
+        if (isChecked && locationRegion) {
+          handleRegionTitle(`${locationRegion.sidoName} ${locationRegion.gugunName}`);
+          close();
+          return;
+        }
         if (selectedGuGunRegions.length === 0) {
           close();
           return;
@@ -143,8 +154,8 @@ const RegionBottomSheet = ({
       <div className="flex flex-col items-center gap-8 flex-1 overflow-y-auto">
         <div className="w-[100%] px-5">
           <button
-            className="px-5 h-[40px] text-gray900 w-full flex items-center justify-center gap-2 py-3 border border-gray200 rounded-lg text-sm font-medium"
-            onClick={() => {}}>
+            className={`px-5 h-[40px] text-gray900 w-full flex items-center justify-center gap-2 py-3 border border-gray200 rounded-lg text-sm font-medium ${isChecked ? 'bg-gray50 text-gray500' : 'bg-white'}`}
+            onClick={() => setIsChecked((prev) => !prev)}>
             <Image src={LocationIcon} width={20} height={20} alt="위치" />
             현재 위치로 설정
           </button>

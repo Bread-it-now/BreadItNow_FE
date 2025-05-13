@@ -12,6 +12,7 @@ import {
   PageInfo,
 } from '@/types/reservation';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { customFetch } from '../customFetch';
 
 export const getCustomerReservations = async ({
   pageParam = 0,
@@ -22,7 +23,7 @@ export const getCustomerReservations = async ({
   size?: number;
   reservationStatus: CustomerReservationStatus | 'ALL';
 }): Promise<{ data: { reservations: CustomerReservation[]; pageInfo: PageInfo } }> => {
-  const response = await fetch(`/${API_END_POINT.CUSTOMER_RESERVATIONS(reservationStatus, pageParam, size)}`, {
+  const response = await customFetch(`/${API_END_POINT.CUSTOMER_RESERVATIONS(reservationStatus, pageParam, size)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -55,7 +56,7 @@ export const useCustomerReservations = ({
 export const getCustomerReservationDetail = async (
   reservationId: number,
 ): Promise<{ data: CustomerReservationDetail }> => {
-  const response = await fetch(`/${API_END_POINT.CUSTOMER_RESERVATION_DETAIL(reservationId)}`, {
+  const response = await customFetch(`/${API_END_POINT.CUSTOMER_RESERVATION_DETAIL(reservationId)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -75,7 +76,7 @@ export const useCustomerReservationDetail = (reservationId: number) =>
 export const cancelCustomerReservation = async (
   reservationId: number,
 ): Promise<{ data: CustomerReservationDetail }> => {
-  const response = await fetch(`/${API_END_POINT.CUSTOMER_RESERVATION_CANCEL(reservationId)}`, {
+  const response = await customFetch(`/${API_END_POINT.CUSTOMER_RESERVATION_CANCEL(reservationId)}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ reason: '개인 사정으로 인한 취소' }),
@@ -91,7 +92,7 @@ export const getOwnerReservations = async (
   page: number = 0,
   size = 10,
 ): Promise<{ data: OwnerReservations }> => {
-  const response = await fetch(`/${API_END_POINT.OWNER_RESERVATIONS(reservationStatus, page, size)}`, {
+  const response = await customFetch(`/${API_END_POINT.OWNER_RESERVATIONS(reservationStatus, page, size)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -118,7 +119,7 @@ export const useOwnerReservations = ({
   });
 
 export const getOwnerReservationDetail = async (reservationId: number): Promise<{ data: OwnerReservationDetail }> => {
-  const response = await fetch(`/${API_END_POINT.OWNER_RESERVATION_DETAIL(reservationId)}`, {
+  const response = await customFetch(`/${API_END_POINT.OWNER_RESERVATION_DETAIL(reservationId)}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });

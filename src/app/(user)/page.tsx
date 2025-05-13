@@ -19,11 +19,12 @@ import { useHotBakeries, useHotProducts } from '@/lib/api/bakery';
 import { HotBakery, HotProduct } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import EmptyState from '@/components/common/EmptyState';
+import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
+import RegionBottomSheet from '@/components/bottomsheet/regionbottomsheet/RegionBottomSheet';
+import useLocation from '@/hooks/useLocation';
 
 // import { requestPermissionAndGetToken, onForegroundMessage } from '@/lib/firebase';
 // import { postNotification } from '@/lib/api/fcm';
-import useBaseBottomSheet from '@/hooks/useBaseBottomSheet';
-import RegionBottomSheet from '@/components/bottomsheet/regionbottomsheet/RegionBottomSheet';
 
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
@@ -149,6 +150,7 @@ const HotBakerySection = () => {
 export default function Page() {
   const { isOpen, dispatch } = useBaseBottomSheet();
   const [regionTitle, setRegionTitle] = useState<string>('전체');
+  const { latitude, longitude } = useLocation();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -198,7 +200,15 @@ export default function Page() {
         </div>
       </div>
 
-      {isOpen && <RegionBottomSheet isOpen={isOpen} close={dispatch.close} handleRegionTitle={setRegionTitle} />}
+      {isOpen && (
+        <RegionBottomSheet
+          isOpen={isOpen}
+          close={dispatch.close}
+          handleRegionTitle={setRegionTitle}
+          latitude={latitude ?? 0}
+          longitude={longitude ?? 0}
+        />
+      )}
     </div>
   );
 }

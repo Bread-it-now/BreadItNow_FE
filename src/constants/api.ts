@@ -68,6 +68,8 @@ export const API_END_POINT = {
   GUGUN_REGIONS: (sidoCode: string) =>
     `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/sido/${sidoCode}/gugun`,
   UPDATE_REGION: () => `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.CUSTOMER}/me/region`,
+  LOCATION_REGION: (latitude: number, longitude: number) =>
+    `${MODULE.CUSTOMER}/${API_VERSION_PREFIX}/${CONTROLLER.CUSTOMER.REGION}/location?latitude=${latitude}&longitude=${longitude}`,
 
   /** CUSTOMER - SEARCH */
   SEARCH_AUTOCOMPLETE: (keyword: string) =>

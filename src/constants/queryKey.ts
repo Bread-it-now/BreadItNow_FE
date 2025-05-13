@@ -41,4 +41,5 @@ export const SEARCH_QUERY_KEY = {
 export const REGION_QUERY_KEY = {
   SIDO_REGIONS: () => [BASE_KEY.CUSTOMER, 'REGION'],
   GUGUN_REGIONS: (sidoCode: string) => [BASE_KEY.CUSTOMER, 'REGION', sidoCode],
+  LOCATION_REGION: (latitude: number, longitude: number) => [BASE_KEY.CUSTOMER, 'REGION', latitude, longitude],
 };

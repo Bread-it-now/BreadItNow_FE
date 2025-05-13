@@ -7,6 +7,7 @@ import BakeryCard from '@/components/bakerycard/BakeryCard';
 import { FavoriteBakery, FavoriteProduct, FilterKey } from '@/types/bakery';
 import BreadCard from '@/components/bakerycard/BreadCard';
 import { useFavoriteBakeryList, useFavoriteProductList } from '@/lib/api/bakery';
+import useLocation from '@/hooks/useLocation';
 
 const HEADER_TABS = [
   { key: 'bakery', label: '빵집' },
@@ -53,10 +54,11 @@ const FavoriteBakeryList = ({
   sort: FilterKey;
   handleTotalElementsCnt: (value: number) => void;
 }) => {
+  const { latitude, longitude } = useLocation();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFavoriteBakeryList({
     sort,
-    latitude: 10,
-    longitude: 10,
+    latitude: latitude ?? undefined,
+    longitude: longitude ?? undefined,
   });
 
   const observerRef = useRef<HTMLDivElement | null>(null);

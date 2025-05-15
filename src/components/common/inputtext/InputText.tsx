@@ -1,4 +1,5 @@
-import { ComponentProps, ForwardedRef, ReactNode, forwardRef } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import { ComponentProps, ForwardedRef, forwardRef } from 'react';
 
 interface InputTextProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
@@ -7,8 +8,9 @@ interface InputTextProps extends React.InputHTMLAttributes<HTMLInputElement> {
   currentLength?: number;
   maxLength?: number;
   label?: string;
-  icon?: ReactNode;
+  icon?: string | StaticImageData;
   unit?: string;
+  onIconClick?: () => void;
 }
 
 const InputText = forwardRef<HTMLInputElement, ComponentProps<'input'> & InputTextProps>(
@@ -25,6 +27,7 @@ const InputText = forwardRef<HTMLInputElement, ComponentProps<'input'> & InputTe
       icon,
       disabled,
       unit,
+      onIconClick,
       ...props
     }: InputTextProps,
     ref: ForwardedRef<HTMLInputElement>,
@@ -57,7 +60,16 @@ const InputText = forwardRef<HTMLInputElement, ComponentProps<'input'> & InputTe
             <span className="text-gray400">/{maxLength}</span>
           </div>
         )}
-        {icon && <div className="absolute bottom-4 right-4 cursor-pointer">{icon}</div>}
+        {icon && (
+          <Image
+            className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+            src={icon}
+            alt="show"
+            width={22}
+            height={22}
+            onClick={onIconClick}
+          />
+        )}
       </div>
     );
   },

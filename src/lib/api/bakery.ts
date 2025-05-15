@@ -22,6 +22,7 @@ import {
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { customFetch } from '../customFetch';
 import { PageInfo } from '@/types/reservation';
+import { EditPasswordForm } from '@/types/auth';
 
 export const getBakeryInfo = async (bakeryId: number): Promise<{ data: Bakery }> => {
   const response = await customFetch(`/${API_END_POINT.BAKERY_INFO(bakeryId)}`, {
@@ -695,13 +696,25 @@ export const getReservation = async (reservationId: number): Promise<{ data: IRe
   }
 };
 
-//* 추후 해당 로직 이동
+// 추후 해당 로직 이동
 export const logout = async (): Promise<{ data: null }> => {
   const response = (await customFetch(`/${API_END_POINT.AUTH.LOGOUT}}`, {
     method: 'POST',
   })) as Response;
   if (!response.ok) {
     throw new Error('Failed to logut');
+  }
+  return response.json();
+};
+
+// 추후 해당 로직 이동
+export const editOwnerPassword = async (editPasswordForm: EditPasswordForm): Promise<{ data: null }> => {
+  const response = (await customFetch(`/${API_END_POINT.OWNER_EDIT_PASSWORD()}}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ newPassword: editPasswordForm.newPassword }),
+  })) as Response;
+  if (!response.ok) {
+    throw new Error('Failed to edit password');
   }
   return response.json();
 };

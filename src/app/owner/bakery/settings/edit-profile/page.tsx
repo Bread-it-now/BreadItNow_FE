@@ -1,7 +1,11 @@
+'use client';
+
+import { EditPasswordForm } from '@/types/auth';
+import { EditPasswordFormLayout } from '@/components/editpasswordFormlayout/EditPasswordFormLayout';
+import { editOwnerPassword } from '@/lib/api/bakery';
+
 export default function Page() {
   return (
-    <div>
-      <h1>내 정보 수정 페이지</h1>
-    </div>
+    <EditPasswordFormLayout mutate={(editPasswordForm: EditPasswordForm) => editOwnerPassword(editPasswordForm)} />
   );
 }

@@ -34,7 +34,7 @@ export const EditPasswordFormLayout = ({ mutate }: EditPasswordFormLayoutProps) 
           mutate(data);
           router.push(ROUTES.OWNER.HOME);
         })}>
-        <LabelForm name="newPassword" label="비밀 번호" errors={errors} className="w-full">
+        <LabelForm name="newPassword" label="비밀번호" errors={errors} className="w-full">
           <Controller
             control={control}
             rules={{

@@ -694,3 +694,14 @@ export const getReservation = async (reservationId: number): Promise<{ data: IRe
     throw error;
   }
 };
+
+//* 추후 해당 로직 이동
+export const logout = async (): Promise<{ data: null }> => {
+  const response = (await customFetch(`/${API_END_POINT.AUTH.LOGOUT}}`, {
+    method: 'POST',
+  })) as Response;
+  if (!response.ok) {
+    throw new Error('Failed to logut');
+  }
+  return response.json();
+};

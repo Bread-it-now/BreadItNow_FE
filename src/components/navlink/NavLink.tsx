@@ -7,9 +7,10 @@ interface NavLinkProps {
   icon: string;
   title: string;
   targetUrl: string;
+  showBtn?: boolean;
 }
 
-const NavLink = ({ icon, title, targetUrl }: NavLinkProps) => {
+const NavLink = ({ icon, title, targetUrl, showBtn = true }: NavLinkProps) => {
   const router = useRouter();
   return (
     <div className="flex items-center gap-5 w-full h-[21px] bg-white">
@@ -19,9 +20,11 @@ const NavLink = ({ icon, title, targetUrl }: NavLinkProps) => {
         </div>
         <div className="w-full text-title-subtitle text-gray900">{title}</div>
       </div>
-      <button onClick={() => router.push(targetUrl)}>
-        <Image src={arrow} width={20} height={20} alt="link" />
-      </button>
+      {showBtn && (
+        <button onClick={() => router.push(targetUrl)}>
+          <Image src={arrow} width={20} height={20} alt="link" />
+        </button>
+      )}
     </div>
   );
 };

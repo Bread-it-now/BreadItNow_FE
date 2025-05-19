@@ -37,7 +37,7 @@ export const LabelForm = <T extends FieldValues = FieldValues>({
     <div className={cn('relative flex flex-col gap-2', className)}>
       {label && (
         <div className="flex items-start gap-[2px]">
-          <span className={labelSize === 'LARGE' ? 'text-title-content-m text-gray900' : ' text-title-content-xs'}>
+          <span className={labelSize === 'LARGE' ? 'text-title-content-m text-gray900' : 'text-title-content-xs'}>
             {label}
           </span>
           {isRequired && (

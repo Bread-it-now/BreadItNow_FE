@@ -26,35 +26,58 @@ import useLocation from '@/hooks/useLocation';
 // import { requestPermissionAndGetToken, onForegroundMessage } from '@/lib/firebase';
 // import { postNotification } from '@/lib/api/fcm';
 
+const isLoggedIn = true;
+
 const TodayProductsSection = () => {
   const { data: todayProducts } = useTodayAlertProducts();
   const { month, date, day } = getMonthDateDay(new Date());
+  const router = useRouter();
 
   return (
     <>
-      <div className="flex px-4 justify-between items-center my-8">
-        <div className="relative flex items-center">
-          <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>
-          <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
-        </div>
-        <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
-          <span>
-            {month} {date}
-          </span>
-          <span>{day}</span>
-        </div>
-      </div>
-      <div
-        className={`flex gap-3 mx-4 overflow-x-auto pl-1 'min-h-[161px]' ${todayProducts && todayProducts.length === 0 ? 'items-center min-h-[80px]' : 'min-h-[161px]'}`}>
-        {todayProducts &&
-          (todayProducts.length !== 0 ? (
-            todayProducts.map((product) => <TodayBread key={product.productId} {...product} />)
-          ) : (
-            <div className="flex justify-center text-title-content-l w-full h-full text-white">
-              오늘의 빵을 설정해주세요
+      {' '}
+      {isLoggedIn ? (
+        <>
+          <div className="flex px-4 justify-between items-center my-8">
+            <div className="relative flex items-center">
+              <div className="text-white text-2xl font-semibold leading-[34px]">오늘의 빵 It Now</div>
+              <div className="absolute top-0 -right-1 transform translate-x-1/2 -translate-y-1/2 bg-[#6BFFD5] w-2 h-2 rounded-full"></div>
             </div>
-          ))}
-      </div>
+            <div className="flex flex-col items-end text-white text-sm leading-tight opacity-70">
+              <span>
+                {month} {date}
+              </span>
+              <span>{day}</span>
+            </div>
+          </div>
+          <div
+            className={`flex gap-3 mx-4 overflow-x-auto pl-1 'min-h-[161px]' ${todayProducts && todayProducts.length === 0 ? 'items-center min-h-[80px]' : 'min-h-[161px]'}`}>
+            {todayProducts &&
+              (todayProducts.length !== 0 ? (
+                todayProducts.map((product) => <TodayBread key={product.productId} {...product} />)
+              ) : (
+                <div className="flex justify-center text-title-content-l w-full h-full text-white">
+                  오늘의 빵을 설정해주세요
+                </div>
+              ))}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex flex-col items-start gap-[30px] min-h-[158px] px-4 ">
+            <div className="text-white text-2xl font-semibold leading-[34px] max-w-[240px] py-4">
+              원하는 빵, 가장 맛있을 때 알림받고 예약하기!
+            </div>
+            <button
+              onClick={() => {
+                router.push(ROUTES.AUTH.LOGIN);
+              }}
+              className="w-full h-[60px] px-6 rounded-lg text-title-content-m font-semibold text-primary bg-white hover:cursor-pointer hover:bg-gray50">
+              빵잇나우 로그인
+            </button>
+          </div>
+        </>
+      )}
     </>
   );
 };
@@ -75,7 +98,7 @@ const HotProductsSection = () => {
           <Image src={ArrowRight} alt="더보기" />
         </button>
       </div>
-      <div className="flex flex-col gap-4 bg-white rounded-t-2xl my-1 w-[100%]">
+      <div className="flex flex-col gap-4 bg-white rounded-t-2xl my-1 w-[100%] min-h-[196px]">
         <>
           {data?.pages[0].data.hotProducts.length !== 0 ? (
             data?.pages.map((page) =>
@@ -121,7 +144,7 @@ const HotBakerySection = () => {
           <Image src={ArrowRight} alt="더보기" />
         </button>
       </div>
-      <div className="flex gap-4 overflow-x-auto pl-1 scrollbar-hide">
+      <div className="flex gap-4 overflow-x-auto pl-1 scrollbar-hide min-h-[216px]">
         {data?.pages[0].data.hotBakeries.length !== 0 ? (
           data?.pages.map((page) =>
             page.data.hotBakeries.map((bakery: HotBakery, idx: number) => (
